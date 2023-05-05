@@ -1,0 +1,311 @@
+﻿@page "/Admin/Students/Studentlist"
+@page "/Admin/Students/Studentlist/Canteen/{CanteenID}"
+@page "/Admin/Students/Studentlist/School/{SchoolID}"
+
+@using ICWebApp.Components.Canteen
+@layout MainLayout
+
+<div class="small-element-separator"></div>
+<div class="dashboard-card dashboard-card-large">
+    <div class="h5 card-title custom-color-primary">
+        @TextProvider.Get("CANTEEN_STUDENTS_DASHBOARD_ALL")
+    </div>
+    <div class="extra-small-element-separator"></div>
+    <div class="card-data">
+        <div class="numbers-container">
+            <div class="number-item number-total">
+                <div class="value-container">
+                    @(MovementsList.Count())
+                </div>
+                <div class="number-text font-small">
+                    @TextProvider.Get("CANTEEN_STUDENTS_TOTAL")
+                </div>
+            </div>
+            @if (MenuTypes != null && MenuTypes.Count() > 0)
+            {
+                @foreach (var menu in MenuTypes.OrderBy(p => p.SortOrder))
+                {
+                    if (menu != null)
+                    {
+                        <div class="number-item number-default">
+                            <div class="value-container">
+                                @MovementsList.Where(p => p.CanteenMenuID == menu.ID).Count()
+                            </div>
+                            <div class="number-text font-small">
+                                @TextProvider.Get(menu.TEXT_SystemTexts_Code)
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+    <div class="element-separator"></div>
+    <div class="dashboard-card-toolbar">
+        <div class="btn btn-secondary" @onclick="@(() => ExportToExcel())">
+            <i class="fa-solid fa-file-excel"></i>
+            @TextProvider.Get("BUTTON_EXPORT")
+        </div>
+    </div>
+</div>
+<div class="element-separator"></div>
+<div class="canteen-list-container">
+    <CustomLoader Visible="@(IsDataBusy)"
+                  Text="@null" Class="initial-data-loader">
+    </CustomLoader>
+    <TelerikGrid Data="@MovementsList.OrderBy(p => p.CanteenName).ThenBy(p => p.SchoolName).ThenBy(p => p.SchoolClass).ThenBy(p => p.FullName).ToList()" Pageable="true" Sortable="true" Resizable="false" PageSize="500" Navigable="true"
+                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="true">
+        <GridToolBarTemplate>
+            <GridSearchBox DebounceDelay="200"></GridSearchBox>
+            <div class="filter-group-container">
+                @if (Canteens != null && Canteens.Count() > 1)
+                {
+                    <div class="canteen-filter-container">
+                        <div class="filter-element filter-authorities">
+                            @if (SelectedCanteen != null && SelectedCanteen.Count() > 0)
+                            {
+                                <div class="btn btn-secondary authority-tag" @onclick="@(() => ClearCanteenFilter())" @onclick:stopPropagation="true">
+                                    <span>
+                                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                                        @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="btn btn-primary authority-tag" @onclick:stopPropagation="true">
+                                    <span>
+                                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                                        @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                                    </span>
+                                </div>
+                            }
+
+                            @foreach (var item in Canteens.OrderBy(p => p.Name))
+                            {
+                                string buttonCSS = "btn-secondary";
+
+                                if (SelectedCanteen != null && SelectedCanteen.Contains(item.ID))
+                                {
+                                    buttonCSS = "btn-primary";
+                                }
+
+                                <div class="btn @buttonCSS authority-tag" @onclick="@(() => AddCanteenFilter(item.ID))" @onclick:stopPropagation="true">
+                                    <span>
+                                        @item.Name
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (Schools != null && Schools.Count() > 1)
+                {
+                    <div class="school-filter-container">
+                        <div class="filter-element filter-authorities">
+                            @if (SelectedSchools != null && SelectedSchools.Count() > 0)
+                            {
+                                <div class="btn btn-secondary authority-tag" @onclick="@(() => ClearSchoolFilter())" @onclick:stopPropagation="true">
+                                    <span>
+                                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                                        @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="btn btn-primary authority-tag" @onclick:stopPropagation="true">
+                                    <span>
+                                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                                        @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                                    </span>
+                                </div>
+                            }
+
+                            @foreach (var item in Schools.OrderBy(p => p.Name))
+                            {
+                                string buttonCSS = "btn-secondary";
+
+                                if (SelectedSchools != null && SelectedSchools.Contains(item.ID))
+                                {
+                                    buttonCSS = "btn-primary";
+                                }
+
+                                <div class="btn @buttonCSS authority-tag" @onclick="@(() => AddSchoolFilter(item.ID))" @onclick:stopPropagation="true">
+                                    <span>
+                                        @item.Name
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (WeekDays != null && WeekDays.Count() > 1)
+                {
+                    <div class="weekday-filter-container">
+                        <div class="filter-element filter-authorities">
+                            @if (SelectedWeekDays != null && SelectedWeekDays.Count() > 0)
+                            {
+                                <div class="btn btn-secondary authority-tag" @onclick="@(() => ClearWeekDayFilter())" @onclick:stopPropagation="true">
+                                    <span>
+                                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                                        @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="btn btn-primary authority-tag" @onclick:stopPropagation="true">
+                                    <span>
+                                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                                        @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                                    </span>
+                                </div>
+                            }
+
+                            @foreach (var item in WeekDays)
+                            {
+                                string buttonCSS = "btn-secondary";
+
+                                if (SelectedWeekDays != null && SelectedWeekDays.Contains(item))
+                                {
+                                    buttonCSS = "btn-primary";
+                                }
+
+                                <div class="btn @buttonCSS authority-tag" @onclick="@(() => AddWeekDayFilter(item))" @onclick:stopPropagation="true">
+                                    <span>
+                                        @item
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </GridToolBarTemplate>
+        <GridColumns>
+            <GridColumn Field="@nameof(V_CANTEEN_Students.CanteenName)" Title="@TextProvider.GetOrCreate("CANTEEN_STUDENT_CANTEEN")"></GridColumn>
+            <GridColumn Field="@nameof(V_CANTEEN_Students.SchoolName)" Title="@TextProvider.GetOrCreate("CANTEEN_STUDENT_SCHOOL")"></GridColumn>
+            <GridColumn Field="@nameof(V_CANTEEN_Students.SchoolClass)" Title="@TextProvider.GetOrCreate("CANTEEN_STUDENT_SCHOOL_CLASS")"></GridColumn>
+            <GridColumn Field="@nameof(V_CANTEEN_Students.FullName)" Title="@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_NAME")"></GridColumn>
+            <GridColumn Field="@nameof(V_CANTEEN_Students.TaxNumber)" Title="@TextProvider.GetOrCreate("CANTEEN_TAXNUMBER")"></GridColumn>
+            <GridColumn Field="@nameof(V_CANTEEN_Students.DayMo)" Title="@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_WEEKDAYS")" Width="280px">
+                <Template>
+                    @{
+                        var item = context as V_CANTEEN_Students;
+                        @if (item != null)
+                        {
+                            <table class="weekday-table">
+                                <tr>
+                                    @if (item.DayMo == true)
+                                    {
+                                        <td class="weekday-table-cell-aktive">
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_MO")</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_MO")</span>
+                                        </td>
+                                    }
+                                    @if (item.DayTue == true)
+                                    {
+                                        <td class="weekday-table-cell-aktive">
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_TUE")</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_TUE")</span>
+                                        </td>
+                                    }
+
+                                    @if (item.DayWed == true)
+                                    {
+                                        <td class="weekday-table-cell-aktive">
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_WED")</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_WED")</span>
+                                        </td>
+                                    }
+                                    @if (item.DayThu == true)
+                                    {
+                                        <td class="weekday-table-cell-aktive">
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_THU")</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_THU")</span>
+                                        </td>
+                                    }
+                                    @if (item.DayFri == true)
+                                    {
+                                        <td class="weekday-table-cell-aktive">
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_FRI")</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span>@TextProvider.GetOrCreate("CANTEEN_DASHBOARD_SHORT_FRI")</span>
+                                        </td>
+                                    }
+                                </tr>
+                            </table>
+                        }
+                    }
+                </Template>
+            </GridColumn>
+            <GridColumn Field="@nameof(V_CANTEEN_Students.CanteenMenuID)" Title="@TextProvider.GetOrCreate("CANTEEN_MEALMENU")">
+                <Template>
+                    @{
+                        var item = context as V_CANTEEN_Students;
+                        if (item.MenuTextCode != null)
+                        {
+                            <span>
+                                @TextProvider.Get(item.MenuTextCode)
+                            </span>
+                        }
+
+                    }
+                </Template>
+            </GridColumn>
+            <GridColumn Field="@nameof(V_CANTEEN_Students.IsLactoseIntolerance)" Title="@TextProvider.GetOrCreate("CANTEEN_CREATE_SUBSCRIPTION_PATHOLOGIES")">
+                <Template>
+                    @{
+                        var item = context as V_CANTEEN_Students;
+                        string result = "";
+                        if (item.IsLactoseIntolerance)
+                        {
+                            result = result + TextProvider.GetOrCreate("CANTEEN_CREATE_SUBSCRIPTION_LACTOSE") + ",";
+                        }
+                        if (item.IsGlutenIntolerance)
+                        {
+                            result = result + TextProvider.GetOrCreate("CANTEEN_CREATE_SUBSCRIPTION_GLUTEN") + ",";
+                        }
+                        if (item.AdditionalIntolerance != null)
+                        {
+                            result = result + item.AdditionalIntolerance;
+                        }
+                        result = result.TrimEnd(',');
+
+                        <span>@result </span>
+
+                    }
+                </Template>
+            </GridColumn>
+        </GridColumns>
+    </TelerikGrid>
+</div>
+<div class="element-separator"></div>
+<div class="segment-button-toolbar">
+    <div class="btn btn-secondary" @onclick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_RETURN")</div>
+</div>

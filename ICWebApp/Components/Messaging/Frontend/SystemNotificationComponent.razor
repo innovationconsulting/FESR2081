@@ -1,0 +1,69 @@
+﻿@if (SystemNotifications.Any())
+{
+    <div class="nav-item">
+        <a class="btn-primary btn-icon btn-full notification-button" data-bs-toggle="dropdown" id="dropdownNotification">
+            <span class="notification-icon">
+                <i class="fa-solid fa-message-exclamation"></i>
+            </span>
+        </a>
+        <div class="system-notification-popupwindow dropdown-menu @_priorityClass" aria-labelledby="dropdownNotification">
+            @foreach (var notification in SystemNotifications.OrderBy(p => p.MSG_SystemMessageTypes.Priority).Take(1).ToList())
+            {
+                @if (notification != null)
+                {
+                    var markupSubject = new MarkupString(notification.Subject);
+                    var markupBody = new MarkupString(notification.Body);
+
+                    @if (notification.MSG_SystemMessageTypesID == Guid.Parse("167A05D5-B17C-4797-BFF9-7CF0CC3DB579"))
+                    {
+                        <div class="system-notification-container">
+                            <div class="system-notification-close-button">
+                                <button class="system-notification-btn k-icon-size-medium">
+                                    <TelerikIcon Icon="SvgIcon.X" />
+                                </button>
+                            </div>
+                            <div class="system-notification-title">@markupSubject</div>
+                            <div class="system-notification-text">@markupBody</div>
+                        </div>
+                    }
+                    else if (notification.MSG_SystemMessageTypesID == Guid.Parse("9574B88A-DAC4-4101-A27A-E5306224A6C0"))
+                    {
+                        <div class="system-notification-container">
+                            <div class="system-notification-close-button">
+                                <button class="system-notification-btn k-icon-size-medium">
+                                    <TelerikIcon Icon="SvgIcon.X" />
+                                </button>
+                            </div>
+                            <div class="system-notification-title">@markupSubject</div>
+                            <div class="system-notification-text">@markupBody</div>
+                        </div>
+                    }
+                    else if (notification.MSG_SystemMessageTypesID == Guid.Parse("CAFDC016-4F6A-47D8-BCA4-4F6968F8F7C2"))
+                    {
+                        <div class="system-notification-container">
+                            <div class="system-notification-close-button">
+                                <button class="system-notification-btn k-icon-size-medium">
+                                    <TelerikIcon Icon="SvgIcon.X" />
+                                </button>
+                            </div>
+                            <div class="system-notification-title">@markupSubject</div>
+                            <div class="system-notification-text">@markupBody</div>
+                        </div>
+                    }
+                    else if (notification.MSG_SystemMessageTypesID == Guid.Parse("FAF152DF-BF5F-4FAD-A563-3E2851003D05"))
+                    {
+                        <div class="system-notification-container">
+                            <div class="system-notification-close-button">
+                                <button class="system-notification-btn k-icon-size-medium">
+                                    <TelerikIcon Icon="SvgIcon.X" />
+                                </button>
+                            </div>
+                            <div class="system-notification-title">@markupSubject</div>
+                            <div class="system-notification-text">@markupBody</div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+}

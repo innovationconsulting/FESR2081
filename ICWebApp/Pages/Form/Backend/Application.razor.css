@@ -1,0 +1,23 @@
+﻿.backend-form-selection
+{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.backend-form-selection div{
+    flex: 1;
+}
+
+.backend-step-container{
+    min-height: 500px;
+}
+
+.previous-selection-container {
+    display: flex;
+    gap: 100px;
+    justify-content: flex-start;
+    border-bottom: 1px solid #0F7173;
+    padding-bottom: 20px;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,49 @@
+.form-detail-download[b-odqgt0wt5d]
+{
+    display: flex;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+    .form-detail-download:hover[b-odqgt0wt5d] {
+        color: #25CCDB !important;
+    }
+        .form-detail-download:hover .form-detail-download-description[b-odqgt0wt5d] {
+            color: #25CCDB !important;
+        }
+
+    .form-detail-download-icon .icon[b-odqgt0wt5d]{
+        fill: #0F7173 !important;
+    }
+    .form-detail-download-description[b-odqgt0wt5d] {
+        line-height: 28px;
+        color: #0F7173;
+        text-decoration: underline;
+    }
+
+.form-detail-event-container[b-odqgt0wt5d] {
+    border: 1px solid #d9d9d9;
+    padding: 10px;
+    max-width: 800px;
+    display: flex;
+    gap: 10px;
+}
+
+.font-detail-event-date-container[b-odqgt0wt5d]{
+    display: flex;
+    gap: 50px;
+}
+
+.form-detail-event-container-left[b-odqgt0wt5d] {
+    font-size: 28px;
+    padding-right: 5px;
+    padding-left: 5px;
+    color: black;
+}
+
+.form-deadline-expired-message[b-odqgt0wt5d]{
+    color: red;
+}
+.form-detail-container[b-odqgt0wt5d]{
+    position: relative;
+}

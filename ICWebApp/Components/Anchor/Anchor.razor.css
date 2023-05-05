@@ -1,0 +1,17 @@
+﻿.card{
+    background-color: white;
+
+}
+.subtitle-small{
+    padding-bottom: 10px;
+}
+.anchor-title-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    word-break: break-word;
+}
+    .anchor-title-container a {
+        line-height: 50px;
+    }

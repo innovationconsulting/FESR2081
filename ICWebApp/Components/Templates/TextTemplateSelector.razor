@@ -1,0 +1,71 @@
+﻿<div class="selection-container">
+    <SfDropDownList DataSource="@Data" @bind-Value="@SelectedTemplate" TValue="V_TEXT_Template" TItem="@V_TEXT_Template" Placeholder="@TextProvider.Get("TEXT_TEMPLATES_PLACEHOLDER")" OnChange="SelectionChanged">
+        <DropDownListFieldSettings Text="Name" Value="ID"></DropDownListFieldSettings>
+    </SfDropDownList>
+</div>
+<div class="small-element-separator"></div>
+<div class="template-editor-input">
+    <CustomLoader Visible="@IsDataBusy">
+    </CustomLoader>
+    <div class="formbuilder-language-picker form-group-small">
+        <label class="form-label">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+        <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+            <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+            <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+        </TelerikButtonGroup>
+    </div>
+    <div class="extra-small-element-separator"></div>
+    <div class="form-group form-group-small">
+        <label class="form-label">@TextProvider.Get("TEXT_TEMPLATE_EDIT_CONTENT")</label>
+    </div>
+    <div class="extra-small-element-separator"></div>
+    <div class="form-group">
+        <div class="template-input-container">
+            <div class="editor-container">
+                @if (TextItem != null)
+                {
+                    @if (CurrentLanguage == LanguageSettings.German)
+                    {
+                        <TelerikEditor @bind-Value="TextItem.German"
+                               Tools="@Tools"
+                               EditMode="@EditorEditMode.Div"
+                               Class="font-normal"
+                               Id="template-input"
+                               Height="400px">
+                            <EditorSettings>
+                                <EditorPasteSettings ConvertMsLists="true"
+                                             RemoveMsClasses="true"
+                                             RemoveMsStyles="true"
+                                             RemoveHtmlComments="true"
+                                             RemoveAllAttributes="true"
+                                             StripTags="@StripTags"
+                                             RemoveAttributes="@RemoveAttributes">
+                                </EditorPasteSettings>
+                            </EditorSettings>
+                        </TelerikEditor>
+                    }
+                    else if (CurrentLanguage == LanguageSettings.Italian)
+                    {
+                        <TelerikEditor @bind-Value="TextItem.Italian"
+                               Tools="@Tools"
+                               EditMode="@EditorEditMode.Div"
+                               Class="font-normal"
+                               Id="template-input"
+                               Height="400px">
+                            <EditorSettings>
+                                <EditorPasteSettings ConvertMsLists="true"
+                                             RemoveMsClasses="true"
+                                             RemoveMsStyles="true"
+                                             RemoveHtmlComments="true"
+                                             RemoveAllAttributes="true"
+                                             StripTags="@StripTags"
+                                             RemoveAttributes="@RemoveAttributes">
+                                </EditorPasteSettings>
+                            </EditorSettings>
+                        </TelerikEditor>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

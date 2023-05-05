@@ -1,0 +1,339 @@
+﻿@using ICWebApp.Domain.Models.Rooms
+
+@if(Filter != null)
+{
+    <div class="room-filter-component">
+        <div id="room-meeting-window">
+            <div class="series-top-bar">
+                <div class="create-series-button" @onclick="CreateSeries">
+                    @TextProvider.Get("FRONTEND_BOOKING_MEETING_CREATE_SERIES")
+                    <i class="fa-regular fa-arrows-repeat"></i>
+                </div>
+            </div>
+            <div class="meeting-filter-container">
+                <div class="meeting-datetime-picker-from">
+                    <div class="meeting-label">
+                        @TextProvider.Get("FRONTEND_BOOKING_MEETING_FROM")
+                    </div>
+                    <div class="meeting-value">
+                        <div class="meeting-date">
+                            <TelerikDatePicker @bind-Value="Filter.Meeting_FromDate" Width="100%" Min="@MinDate" Max="@MaxDate"></TelerikDatePicker>
+                        </div>
+                        <div class="meeting-time">
+                            <TelerikTimePicker @bind-Value="Filter.Meeting_FromHour" Width="100%"></TelerikTimePicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="meeting-datetime-picker-to">
+                    <div class="meeting-datetime-picker-from">
+                        <div class="meeting-label">
+                            @TextProvider.Get("FRONTEND_BOOKING_MEETING_TO")
+                        </div>
+                        <div class="meeting-value">
+                            <div class="meeting-date">
+                                <TelerikDatePicker @bind-Value="Filter.Meeting_ToDate" Width="100%" Min="@MinDate" Max="@MaxDate"></TelerikDatePicker>
+                            </div>
+                            <div class="meeting-time">
+                                <TelerikTimePicker @bind-Value="Filter.Meeting_ToHour" Width="100%"></TelerikTimePicker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="meeting-duration">
+                    <div class="meeting-label">
+                        @TextProvider.Get("FRONTEND_BOOKING_MEETING_DURATION")
+                    </div>
+                    <div class="meeting-value">
+                        @if (Filter.Meeting_From_Combined != null && Filter.Meeting_To_Combined != null)
+                        {
+                            var timeSpan = (Filter.Meeting_To_Combined.Value - Filter.Meeting_From_Combined.Value);
+                            string result = "";
+
+                            @if (timeSpan.TotalMinutes > 0)
+                            {
+                                @if(timeSpan.Days > 0) 
+                                {
+                                    result += timeSpan.ToString("%d") + " " + TextProvider.Get("FRONTEND_BOOKING_MEETING_DAY") + " ";
+                                }
+                                @if(timeSpan.Hours > 0)
+                                {
+                                    result += timeSpan.ToString("%h") + " " + TextProvider.Get("FRONTEND_BOOKING_MEETING_HOUR") + " ";
+                                }
+                                @if (timeSpan.Minutes > 0)
+                                {
+                                    result += timeSpan.ToString("%m") + " " + TextProvider.Get("FRONTEND_BOOKING_MEETING_MINUTES") + " ";
+                                }
+                            }
+                            else
+                            {
+                                result = "-";
+                            }
+                            @result
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="meeting-toolbar">
+                <div class="meeting-toolbar-content">
+                    <div class="search-button btn btn-secondary" @onclick="Search">@TextProvider.Get("FRONTEND_BOOKING_SEARCH")</div>
+                </div>
+            </div>
+        </div>
+        <div class="series-extended-window" id="room-series-window" style="display: none">
+            <div class="series-top-bar">
+                <div class="create-series-button" @onclick="CreateSeries">
+                    @TextProvider.Get("FRONTEND_BOOKING_MEETING_CREATE_SINGLE_MEETING")
+                    <i class="fa-regular fa-arrows-repeat"></i>
+                </div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="series-meeting-container">
+                <div class="h5 custom-color-primary container-title">@TextProvider.Get("FRONTEND_BOOKING_SERIES_DURATION_TITLE")</div>
+                <div class="extra-small-element-separator"></div>
+                <div class="series-meeting-container-second-row">
+                    <div class="meeting-series-duration-from">
+                        <div class="meeting-label">
+                            @TextProvider.Get("FRONTEND_BOOKING_MEETING_FROM")
+                        </div>
+                        <div class="series-time">
+                            <TelerikDatePicker @bind-Value="Filter.Series_StartDate" Width="100%" Min="@MinDate" Max="@MaxDate"></TelerikDatePicker>
+                        </div>
+                    </div>
+                    <div class="meeting-series-duration-selecton">
+                        <InputRadioGroup type="radio" @bind-Value="@Filter.Series_Duration_Type">
+                            <div class="element-radio-button advanced-radio-button">
+                                <InputRadio Value="SeriesDurationType.Date"></InputRadio>
+                                <label class="radio-label">@TextProvider.Get("FRONTEND_BOOKING_SERIES_DURATION_FINISH_AT")</label>
+                                <div class="meeting-duration-date">
+                                    <TelerikDatePicker @bind-Value="Filter.Series_EndDate" Width="100%" Enabled="Filter.Series_Duration_Type == SeriesDurationType.Date" Min="@MinDate" Max="@MaxDate"></TelerikDatePicker>
+                                </div>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="element-radio-button advanced-radio-button">
+                                <InputRadio Value="SeriesDurationType.Repetitions"></InputRadio>
+                                <label class="radio-label">@TextProvider.Get("FRONTEND_BOOKING_SERIES_DURATION_REPETITION")</label>
+                                <div class="meeting-duration-input">
+                                    @if (SeriesDurationType.Repetitions == Filter.Series_Duration_Type)
+                                    {
+                                        <InputNumber class="form-control" @bind-Value="@Filter.Series_RepetitionCount"></InputNumber>
+                                    }
+                                    else
+                                    {
+                                        <InputNumber class="form-control" @bind-Value="@Filter.Series_RepetitionCount" disabled readonly></InputNumber>
+                                    }
+                                    <label class="radio-label">@TextProvider.Get("FRONTEND_BOOKING_SERIES_DURATION_REPETITION_SELECTION")</label>
+                                </div>
+                            </div>
+                        </InputRadioGroup>
+                    </div>
+                </div>
+            </div>
+            <div class="element-separator"></div>
+            <div class="series-meeting-container">
+                <div class="h5 custom-color-primary container-title">@TextProvider.Get("FRONTEND_BOOKING_SERIES_TYPE")</div> 
+                <div class="extra-small-element-separator"></div>
+                <div class="series-type-container-second-row">
+                    <div class="type-container-left">
+                        <InputRadioGroup type="radio" @bind-Value="@Filter.Series_Type">                    
+                            <div class="element-radio-button">
+                                <InputRadio Value="@SeriesType.Daily"></InputRadio>
+                                @TextProvider.Get("BOOKING_SERIES_TYPE_DAILY")
+                            </div>                        
+                            <div class="element-radio-button">
+                                <InputRadio Value="@SeriesType.Weekly"></InputRadio>
+                                @TextProvider.Get("BOOKING_SERIES_TYPE_WEEKLY")
+                            </div>
+                            <div class="element-radio-button">
+                                <InputRadio Value="@SeriesType.Monthly"></InputRadio>
+                                @TextProvider.Get("BOOKING_SERIES_TYPE_MONTHLY")
+                            </div>
+                        </InputRadioGroup>
+                    </div>
+                    <div class="type-container-right">
+                        @if (Filter.Series_Type == SeriesType.Daily)
+                        {
+                            <InputRadioGroup type="radio" @bind-Value="@Filter.Daily_EveryDay">
+                                <div class="element-radio-button advanced-radio-button">
+                                    <InputRadio Value="false"></InputRadio>
+                                    <label class="radio-label">@TextProvider.Get("BOOKING_DAILY_DAY_SELECTION")</label>
+                                    <div class="daily-day-input">
+                                        @if (!Filter.Daily_EveryDay)
+                                        {
+                                            <InputNumber class="form-control" @bind-Value="@Filter.Daily_DayInterval"></InputNumber>
+                                        }
+                                        else
+                                        {
+                                            <InputNumber class="form-control" @bind-Value="@Filter.Daily_DayInterval" disabled readonly></InputNumber>
+                                        }
+                                        <label>@TextProvider.Get("BOOKING_DAILY_DAY_SELECTION_TEXT")</label>
+                                    </div>
+                                </div>
+                                <div class="element-radio-button">
+                                    <InputRadio Value="true"></InputRadio>
+                                    @TextProvider.Get("BOOKING_DAILY_DAY_EVERYDAY")
+                                </div>
+                            </InputRadioGroup>
+                        }
+                        else if (Filter.Series_Type == SeriesType.Weekly)
+                        {
+                            <div class="weekly-input">
+                                <label class="radio-label">@TextProvider.Get("BOOKING_WEEKLY_SELECTION")</label>
+                                <InputNumber class="form-control" @bind-Value="@Filter.Weekly_DayInterval"></InputNumber>
+                                <label>@TextProvider.Get("BOOKING_WEEKLY_SELECTION_TEXT")</label>
+                            </div>
+                            <div class="week-day-container">
+                                <SfCheckBox Label="@TextProvider.Get("MONDAY")" CssClass="sf-form-checkbox" TChecked="bool" Checked="@GetWeekDayValue(WeekDay.Monday)" @onchange="@(() => OnWeekDayChanged(WeekDay.Monday))"></SfCheckBox>
+                                <SfCheckBox Label="@TextProvider.Get("TUESDAY")" CssClass="sf-form-checkbox" TChecked="bool" Checked="@GetWeekDayValue(WeekDay.Tuesday)" @onchange="@(() => OnWeekDayChanged(WeekDay.Tuesday))"></SfCheckBox>
+                                <SfCheckBox Label="@TextProvider.Get("WEDNESDAY")" CssClass="sf-form-checkbox" TChecked="bool" Checked="@GetWeekDayValue(WeekDay.Wednesday)" @onchange="@(() => OnWeekDayChanged(WeekDay.Wednesday))"></SfCheckBox>
+                                <SfCheckBox Label="@TextProvider.Get("THURSDAY")" CssClass="sf-form-checkbox" TChecked="bool" Checked="@GetWeekDayValue(WeekDay.Thursday)" @onchange="@(() => OnWeekDayChanged(WeekDay.Thursday))"></SfCheckBox>
+                                <SfCheckBox Label="@TextProvider.Get("FRIDAY")" CssClass="sf-form-checkbox" TChecked="bool" Checked="@GetWeekDayValue(WeekDay.Friday)" @onchange="@(() => OnWeekDayChanged(WeekDay.Friday))"></SfCheckBox>
+                                <SfCheckBox Label="@TextProvider.Get("SATURDAY")" CssClass="sf-form-checkbox" TChecked="bool" Checked="@GetWeekDayValue(WeekDay.Saturday)" @onchange="@(() => OnWeekDayChanged(WeekDay.Saturday))"></SfCheckBox>
+                                <SfCheckBox Label="@TextProvider.Get("SUNDAY")" CssClass="sf-form-checkbox" TChecked="bool" Checked="@GetWeekDayValue(WeekDay.Sunday)" @onchange="@(() => OnWeekDayChanged(WeekDay.Sunday))"></SfCheckBox>
+                            </div>
+                        }
+                        else if (Filter.Series_Type == SeriesType.Monthly)
+                        {
+                            <InputRadioGroup type="radio" @bind-Value="@Filter.Monthly_Type">
+                                <div class="element-radio-button advanced-radio-button">
+                                    <InputRadio Value="MonthlyType.FixedDate"></InputRadio>
+                                    
+                                        <label class="radio-label">@TextProvider.Get("BOOKING_MONTHLY_DAY_AT")</label>
+                                        @if (Filter.Monthly_Type == MonthlyType.FixedDate)
+                                        {
+                                            <div class="monthly-input">
+                                                <InputNumber class="form-control" @bind-Value="@Filter.Monthly_DayOfMonth" Width="100px"></InputNumber>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="monthly-input">
+                                                <InputNumber class="form-control" @bind-Value="@Filter.Monthly_DayOfMonth" disabled readonly Width="100px"></InputNumber>
+                                            </div>
+                                        }
+                                        <label>@TextProvider.Get("BOOKING_MONTHLY_DAY_OF_MONTH")</label>
+                                        @if (Filter.Monthly_Type == MonthlyType.FixedDate)
+                                        {
+                                            <div class="monthly-input">
+                                                <InputNumber class="form-control" @bind-Value="@Filter.Monthly_MonthInterval"></InputNumber>
+                                            </div>
+                                        }
+                                        else{
+                                            <div class="monthly-input">
+                                                <InputNumber class="form-control" @bind-Value="@Filter.Monthly_MonthInterval" disabled readonly></InputNumber>
+                                            </div>
+                                        }
+                                        <label>@TextProvider.Get("BOOKING_MONTHLY_MONTH_SELECTION_TEXT")</label>
+                                   
+                                </div>
+                                <div class="element-radio-button advanced-radio-button">
+                                    <InputRadio Value="MonthlyType.WeekRelevant"></InputRadio>
+                                                                      
+                                        <label class="radio-label">@TextProvider.Get("BOOKING_MONTHLY_DAY_AT")</label>
+                                        <SfDropDownList DataSource="@WeekDayOfMonthList" @bind-Value="@Filter.Monthly_WeekInterval" Enabled="Filter.Monthly_Type == MonthlyType.WeekRelevant"
+                                            TValue="WeekDayOfMonth" TItem="@WeekDayOfMonth" Width="100px">
+                                            <DropDownListTemplates TItem="WeekDayOfMonth">
+                                                <ItemTemplate>
+                                                    <span class='name'>@TextProvider.Get("BOOKING_WEEKLY_INTERVAL_" + context.ToString().ToUpper())</span>
+                                                </ItemTemplate>
+                                                <ValueTemplate>
+                                                    <span class='dropdown-template-value'>@TextProvider.Get("BOOKING_WEEKLY_INTERVAL_" + context.ToString().ToUpper())</span>
+                                                </ValueTemplate>
+                                            </DropDownListTemplates>
+                                            <DropDownListFieldSettings Text="Fullname" Value="ID"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                        <SfDropDownList DataSource="@WeekDayList" @bind-Value="@Filter.Monthly_WeekDay" Enabled="Filter.Monthly_Type == MonthlyType.WeekRelevant"
+                                                        TValue="WeekDay" TItem="@WeekDay" Width="140px">
+                                            <DropDownListTemplates TItem="WeekDay">
+                                                <ItemTemplate>
+                                                    <span class='name'>@TextProvider.Get(context.ToString().ToUpper())</span>
+                                                </ItemTemplate>
+                                                <ValueTemplate>
+                                                    <span class='dropdown-template-value'>@TextProvider.Get(context.ToString().ToUpper())</span>
+                                                </ValueTemplate>
+                                            </DropDownListTemplates>
+                                            <DropDownListFieldSettings Text="Fullname" Value="ID"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                        <label>@TextProvider.Get("BOOKING_MONTHLY_SECOND_TEXT")</label>
+                                        @if (Filter.Monthly_Type == MonthlyType.WeekRelevant)
+                                        {
+                                            <div class="monthly-input">
+                                                <InputNumber class="form-control" @bind-Value="@Filter.Monthly_MonthInterval"></InputNumber>
+                                            </div>
+                                            
+                                        }
+                                        else
+                                        {
+                                            <div class="monthly-input">
+                                                <InputNumber class="form-control" @bind-Value="@Filter.Monthly_MonthInterval" disabled readonly></InputNumber>
+                                            </div>
+                                        }
+                                        <label>@TextProvider.Get("BOOKING_MONTHLY_FINAL_TEXT")</label>                                        
+                                    
+                                </div>
+                            </InputRadioGroup>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="element-separator"></div>
+            <div class="series-meeting-container">
+                <div class="h5 custom-color-primary container-title">@TextProvider.Get("FRONTEND_BOOKING_SERIES_MEETING_TITLE")</div>
+                <div class="extra-small-element-separator"></div>
+                <div class="series-meeting-container-second-row">
+                    <div class="meeting-series-from">
+                        <div class="meeting-label">
+                            @TextProvider.Get("FRONTEND_BOOKING_MEETING_FROM")
+                        </div>
+                        <div class="series-time">
+                            <TelerikTimePicker @bind-Value="Filter.Meeting_FromHour" Width="100%"></TelerikTimePicker>
+                        </div>
+                    </div><div class="meeting-series-to">
+                        <div class="meeting-label">
+                            @TextProvider.Get("FRONTEND_BOOKING_MEETING_TO")
+                        </div>
+                        <div class="series-time">
+                            <TelerikTimePicker @bind-Value="Filter.Meeting_ToHour" Width="100%"></TelerikTimePicker>
+                        </div>
+                    </div>
+                    <div class="meeting-duration">
+                        <div class="meeting-label">
+                            @TextProvider.Get("FRONTEND_BOOKING_MEETING_DURATION")
+                        </div>
+                        <div class="meeting-value">
+                            @if (Filter.Meeting_ToHour != null && Filter.Meeting_FromHour != null)
+                            {
+                                var timeSpan = (Filter.Meeting_ToHour.Value - Filter.Meeting_FromHour.Value);
+                                string result = "";
+
+                                @if (timeSpan.TotalMinutes > 0)
+                                {
+                                    @if (timeSpan.Days > 0)
+                                    {
+                                        result += timeSpan.ToString("%d") + " " + TextProvider.Get("FRONTEND_BOOKING_MEETING_DAY") + " ";
+                                    }
+                                    @if (timeSpan.Hours > 0)
+                                    {
+                                        result += timeSpan.ToString("%h") + " " + TextProvider.Get("FRONTEND_BOOKING_MEETING_HOUR") + " ";
+                                    }
+                                    @if (timeSpan.Minutes > 0)
+                                    {
+                                        result += timeSpan.ToString("%m") + " " + TextProvider.Get("FRONTEND_BOOKING_MEETING_MINUTES") + " ";
+                                    }
+                                }
+                                else
+                                {
+                                    result = "-";
+                                }
+                                @result
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="element-separator"></div>
+            <div class="series-search-container">
+                <div class="btn btn-secondary" @onclick="Search">@TextProvider.Get("FRONTEND_BOOKING_SEARCH")</div>
+            </div>
+        </div>
+    </div>
+}

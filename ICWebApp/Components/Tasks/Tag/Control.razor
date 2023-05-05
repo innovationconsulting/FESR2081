@@ -1,0 +1,89 @@
+﻿@using System.Drawing
+@if(TagList != null && TagsToAdd != null)
+{
+    string ShowInputFieldCSS = "";
+
+    if (!ShowInputField)
+    {
+        ShowInputFieldCSS = "input-hidden";
+    }
+
+    <div class="tag-control-container @ShowInputFieldCSS" >
+        @if(ShowInputField)
+        {
+            <div class="tag-list-container" style="width: 100%" @onclick="ToggleTagsDropdown" @onclick:stopPropagation="true">
+                @foreach(var item in TagList.OrderBy(p => p.SortOrder))
+                {
+                    var tag = AllTags.FirstOrDefault(p => p.ID == item.TASK_Tag_ID);
+
+                    if (tag != null)
+                    {
+                        <div class="tag-item" style="background-color: @(tag.Color + "aa") !important; border-color: @(tag.Color) !important" onclick="@(() => RemoveTag(tag))" @onclick:stopPropagation="true">
+                            <div class="tag-description" style="color: @CalculateTagTextColor(tag.Color)">
+                                @tag.Description
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="tag-tool">
+                <div class="tag-button" @onclick="ToggleTagsDropdown" @onclick:stopPropagation="true">
+                    <i class="fa-regular fa-chevron-down"></i>
+                </div>
+            </div>
+        }
+        @if (TagsDropdownVisibility || !ShowInputField)
+        {
+            <div class="tag-dropdown" id="tag-dropdown">
+                <div class="tag-dropdown-container">
+                    @if(ShowInputField)
+                    {
+                        <Virtualize Items="@TagsToAdd.OrderBy(p => p.SortOrder).ToList()" Context="tag" OverscanCount="3">
+                            <div class="tag-item-container" @onclick="@(() => AddTag(tag))" @onclick:stopPropagation="true">
+                                <div class="tag-item" style="background-color: @(tag.Color + "aa") !important; border-color: @(tag.Color) !important">
+                                    <div class="tag-description" style="color: @CalculateTagTextColor(tag.Color)">
+                                        @tag.Description
+                                    </div>
+                                </div>
+                            </div>
+                        </Virtualize>
+                    }
+                    else
+                    {
+                        <Virtualize Items="@AllTags.OrderBy(p => p.SortOrder).ToList()" Context="tag" OverscanCount="3">
+                            @if (TagList.Select(p => p.TASK_Tag_ID).Contains(tag.ID))
+                            {
+                                <div class="tag-item-container" @onclick="@(() => RemoveTag(tag))" @onclick:stopPropagation="true">
+                                        <div class="tag-item" style="background-color: @(tag.Color + "aa") !important; border-color: @(tag.Color) !important" >
+                                            <div class="tag-description" style="color: @CalculateTagTextColor(tag.Color)">
+                                                @tag.Description
+                                            </div>
+                                        </div>
+                                        <div class="tag-item-remove tag-item-remove-aktive">
+                                            <i class="fa-regular fa-link-simple-slash"></i>
+                                        </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="tag-item-container" @onclick="@(() => AddTag(tag))" @onclick:stopPropagation="true">
+                                    <div class="tag-item" style="background-color: @(tag.Color + "aa") !important; border-color: @(tag.Color) !important" >
+                                        <div class="tag-description" style="color: @CalculateTagTextColor(tag.Color)">
+                                            @tag.Description
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </Virtualize>
+                    }
+                </div>
+            </div>
+
+            @if (!ShowInputField)
+            {
+                <div class="drop-down-overlay" @onclick="@InvokeOverlayClicked" @onclick:stopPropagation="true">
+                </div>
+            }
+        }
+    </div>
+}

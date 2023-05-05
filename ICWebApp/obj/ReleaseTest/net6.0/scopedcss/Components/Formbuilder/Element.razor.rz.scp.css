@@ -1,0 +1,98 @@
+.element-container[b-xjrokqquv5]{
+    display: flex;
+    gap: 10px;
+    height: 100px;
+    overflow: hidden;
+}
+.element-content[b-xjrokqquv5]{
+    justify-content: flex-start;
+    width: 100%;
+}
+.element-toolbar[b-xjrokqquv5] {
+    border-left: 1px solid #dfdfdf;
+    padding-left: 10px;
+    display: flex;
+    gap: 10px;
+}
+.element-edit[b-xjrokqquv5]{
+    margin: auto;
+}
+.element-sorter[b-xjrokqquv5] {
+    margin: auto;
+}
+.element-container label[b-xjrokqquv5] {
+    color: #0F7173;
+}
+.element-dbname[b-xjrokqquv5]{
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+.element-fieldname[b-xjrokqquv5]{
+    margin: auto;
+}
+.element-edit-toolbar[b-xjrokqquv5]{
+    display: flex;
+    justify-content: space-between;
+}
+.element-required[b-xjrokqquv5]{
+    height: 30px;
+}
+.element-anchor[b-xjrokqquv5]{
+    height: 30px;
+}
+.element-multicolumn[b-xjrokqquv5] {
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+.element-multicolumn .form-group[b-xjrokqquv5]{
+    width: 100%;
+}
+
+.element-subtypeselector[b-xjrokqquv5]{
+    width: 200px;
+}
+.element-first-row[b-xjrokqquv5]{
+    display: flex;
+    justify-content: space-between;
+}
+.element-left[b-xjrokqquv5] {
+}
+.element-right[b-xjrokqquv5]{
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    font-size: 14px;
+}
+.element-option-label[b-xjrokqquv5]{
+    margin-top: 15px;
+    font-size: 12px;
+}
+.element-option-selection[b-xjrokqquv5]{
+    padding: 5px;
+}
+.element-option-selection-item[b-xjrokqquv5] {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.element-option-selection-value[b-xjrokqquv5]{
+    width: 100%;
+}
+.element-option-selection-remove[b-xjrokqquv5]{
+    margin: auto;
+}
+.element-option-selection-add[b-xjrokqquv5] {
+    border: 1px dashed #dfdfdf;
+    text-align: center;
+    padding: 10px;
+    color: #0F7173;
+    font-size: 12px;
+}
+.element-option-selection-add:hover[b-xjrokqquv5]{
+    border-color: #0F7173 !important;
+}
+.element-toolbar-right[b-xjrokqquv5]{
+    display: flex;
+    gap: 10px;
+}

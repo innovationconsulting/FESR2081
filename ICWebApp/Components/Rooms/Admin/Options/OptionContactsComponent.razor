@@ -1,0 +1,66 @@
+﻿@if (Contacts != null)
+{
+    <div class="contact-container">
+        <TelerikGrid Data="@Contacts.Where(p => p.CONT_Contact != null).OrderBy(p => p.CONT_Contact.Fullname).ToList()"
+                     Pageable="false"
+                     Sortable="true"
+                     Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable"
+                     Groupable="false"
+                     Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@AddContact" Icon="SvgIcon.Plus">@TextProvider.GetOrCreate("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(ROOM_RoomOptions_Contact.Fullname)" Title="@TextProvider.GetOrCreate("ROOM_OPTION_CONTACT_FULLNAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(ROOM_RoomOptions_Contact.SendEmail)" Title="@TextProvider.GetOrCreate("ROOM_OPTION_CONTACT_EMAIL")" Width="140px">
+                    <Template>
+                        @{
+                            ROOM_RoomOptions_Contact item = context as ROOM_RoomOptions_Contact;
+
+                            <TelerikSwitch @bind-Value="@item.SendEmail" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="@nameof(ROOM_RoomOptions_Contact.SendSMS)" Title="@TextProvider.GetOrCreate("ROOM_OPTION_CONTACT_SMS")" Width="140px"> 
+                    <Template>
+                        @{
+                            ROOM_RoomOptions_Contact item = context as ROOM_RoomOptions_Contact;
+
+                            <TelerikSwitch @bind-Value="@item.SendSMS" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        ROOM_RoomOptions_Contact item = context as ROOM_RoomOptions_Contact;
+
+                        if (item != null)
+                        {
+                            <div class="table-toolbar">
+                                <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => ToggleEmail(item))" Icon="@("fa-solid fa-at")" title="@TextProvider.GetOrCreate("TOOLTIP_TOGGLE_EMAIL")"></GridCommandButton>
+                                <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => ToggleSMS(item))" Icon="@("fa-solid fa-comment-sms")" title="@TextProvider.GetOrCreate("TOOLTIP_TOGGLE_SMS")"></GridCommandButton>
+                                <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => RemoveContact(item))" Icon="SvgIcon.Trash" title="@TextProvider.GetOrCreate("TOOLTIP_DELETE")"></GridCommandButton>
+                            </div>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+
+
+    <TelerikWindow Modal="true" @bind-Visible="@ShowContactSelection" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("CONTACT_SELECTION")
+        </WindowTitle>
+        <WindowContent>
+            <div class="contact-container">
+                <SelectionComponent ContactSelected="SaveContact" ExistingContacts="Contacts.Where(p => p.CONT_Contact_ID != null).Select(p => p.CONT_Contact_ID.Value).ToList()"></SelectionComponent>
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="CloseContact" />
+        </WindowActions>
+    </TelerikWindow>
+}

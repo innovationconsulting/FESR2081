@@ -1,0 +1,64 @@
+﻿@page "/Form/Definition/Ressource/Add/{DefinitionID}/{ID}/{WizardIndex}/{ActiveIndex}"
+
+@layout MainLayout
+
+@if (Data != null)
+{
+    <div class="segment-container custom-background-default">
+        <EditForm Model="Data">
+            <DataAnnotationsValidator/>
+            <div class="segment-title custom-color-primary">
+                @if (ID == "New")
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_RESSOURCE_TITLE_ADD")</h3>
+                }
+                else
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_RESSOURCE_TITLE_EDIT")</h3>
+                }
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="segment-separator custom-border-primary"></div>
+            <div class="small-element-separator"></div>
+            <div class="formbuilder-language-picker form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                    <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                    <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                </TelerikButtonGroup>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_RESSOURCE_TITLE_GENERAL")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_RESSOURCE_DESCRIPTION")</label>
+                @if (Data.FORM_Definition_Ressources_Extended != null && Data.FORM_Definition_Ressources_Extended.Count() > 0 && CurrentLanguage != null)
+                {
+                    <label class="font-detail">@Data.FORM_Definition_Ressources_Extended.FirstOrDefault(p => p.LANG_Language_ID != CurrentLanguage).Description</label>
+                    <InputText @bind-Value="Data.FORM_Definition_Ressources_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Description" class="form-control"></InputText>
+                }
+            </div>
+            @{
+                var list = (CurrentLanguage == LanguageSettings.German) ? FileList : FileListIt;
+            }
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_RESSOURCE_UPLOAD")</label>
+                <UploadComponent FileInfoList="@list" OnRemove="OnRemove"></UploadComponent>
+            </div>
+
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                               OnClick="@ReturnToPreviousPage">
+                    @TextProvider.Get("BUTTON_CANCEL")
+                </TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                               OnClick="@SaveForm">
+                    @TextProvider.Get("BUTTON_SAVE")
+                </TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

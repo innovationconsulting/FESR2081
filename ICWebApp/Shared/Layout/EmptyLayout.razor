@@ -1,0 +1,22 @@
+﻿@inherits LayoutComponentBase
+<TelerikRootComponent>
+    <div class="main-page">
+        <AuthorizeView>
+            <Authorized>
+                <BusyIndicator></BusyIndicator>
+                <DialogWindow/>
+                <main class="main-container">
+                    @Body
+                </main>
+            </Authorized>
+            <NotAuthorized>
+                <BusyIndicator></BusyIndicator>
+                <DialogWindow/>
+                <main class="main-container">
+                    @Body
+                </main>
+            </NotAuthorized>
+        </AuthorizeView>
+
+    </div>
+</TelerikRootComponent>

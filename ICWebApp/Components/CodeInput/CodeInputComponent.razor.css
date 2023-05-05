@@ -1,0 +1,28 @@
+﻿.code-input-container
+{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.code-input-field {
+    width: 40px;
+    height: 40px;
+}
+
+    .code-input-field input {
+        width: 40px;
+        height: 40px;
+        border-radius: 0px;
+        border: 1px solid black;
+        text-align: center;
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+    }
+
+        .code-input-field input::-webkit-outer-spin-button,
+        .code-input-field input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }

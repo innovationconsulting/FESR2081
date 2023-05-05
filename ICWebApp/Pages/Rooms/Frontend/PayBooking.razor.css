@@ -1,0 +1,34 @@
+﻿
+
+.segment-left {
+    justify-content: flex-start;
+    padding: 30px;
+    width: 100%;
+    min-height: 320px;
+}
+
+.segment-right {
+    justify-content: flex-end;
+    width: 100%;
+    padding: 30px;
+}
+
+.segment-separator {
+    border-bottom: 1px solid;
+    height: 1px;
+}
+
+.segment-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.segment-line-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.segment-title {
+    flex: 1;
+}
+

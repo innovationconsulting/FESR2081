@@ -1,0 +1,11 @@
+@page "/Canteen/TaxReports"
+
+@layout FrontendLayout
+<AuthorizeView>
+    <Authorized>
+        <ICWebApp.Components.Canteen.Frontend.TaxReports></ICWebApp.Components.Canteen.Frontend.TaxReports>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+        </NotAuthorized>
+</AuthorizeView>

@@ -1,0 +1,48 @@
+.telerik-report-container[b-iie0dy04gb] {
+    height: 100%;
+    padding-bottom: 30px;
+}
+
+@media(min-width: 926px){
+    .telerik-report-container[b-iie0dy04gb] {
+        padding-bottom: 60px;
+    }
+}
+
+.telerik-report-toolbar[b-iie0dy04gb]{
+    margin-bottom: 10px;
+}
+
+.telerik-report-viewer[b-iie0dy04gb] {
+    height: 100%;
+}
+.telerik-image-viewer[b-iie0dy04gb]{
+    height: 100%;
+    overflow: auto;
+}
+.telerik-image-viewer img[b-iie0dy04gb] {
+    width: 100%;
+}
+.form-detail-download[b-iie0dy04gb] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+    .form-detail-download:hover[b-iie0dy04gb] {
+        color: #0F7173;
+    }
+
+        .form-detail-download:hover .form-detail-download-icon[b-iie0dy04gb] {
+            color: #0F7173 !important;
+        }
+
+.form-detail-download-icon[b-iie0dy04gb] {
+    font-size: 24px;
+    color: #808080;
+}
+
+.form-detail-download-description[b-iie0dy04gb] {
+    line-height: 34px;
+}

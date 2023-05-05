@@ -1,0 +1,216 @@
+﻿@page "/Form/Detail/{ID}"
+@using HtmlAgilityPack
+
+@layout FrontendLayout
+
+@{
+    int orderID = 0;
+}
+<div class="container">
+    <div class="row mt-lg-80 mt-3 mb-4">
+        <div class="col-lg-3 mb-4 border-col hide-max-576">
+            <AnchorList></AnchorList>
+        </div>
+        <div class="col-lg-8 offset-lg-1">
+            <div class="form-detail-container it-page-sections-container">
+                @if (Data != null)
+                {
+                    @if (!string.IsNullOrEmpty(Data.FORM_Description))
+                    {
+                        HtmlDocument doc = new HtmlDocument();
+                        doc.LoadHtml(Data.FORM_Description);
+                        string stripped = doc.DocumentNode.InnerText;
+                        @if (!string.IsNullOrEmpty(stripped.Trim()))
+                        {
+                            var markupDescription = new MarkupString(Data.FORM_Description);
+
+                            <Anchor Title="@(TextProvider.Get("FORM_DETAIL_DESCRIPTION"))" ID="@(TextProvider.Get("FORM_DETAIL_DESCRIPTION"))" Order="orderID">
+                                <div class="styled-list-container">
+                                    @markupDescription
+                                </div>
+                            </Anchor>
+
+                            orderID++;
+                        }
+                    }
+
+
+                    @if ((Data.EstimateProcessingTime != null && Data.EstimateProcessingTime > 0) || (Data.LegalDeadline != null) || (Data.ApplicationDeadline != null))
+                    {
+                        <Anchor Title="@(TextProvider.Get("FORM_LIST_AUTHORITY_TIMES_AND_DEADLINES"))" ID="@(TextProvider.Get("FORM_LIST_AUTHORITY_TIMES_AND_DEADLINES"))" Order="orderID">
+                            @if (Data.EstimateProcessingTime != null && Data.EstimateProcessingTime > 0)
+                            {
+                                @(TextProvider.Get("FORM_LIST_AUTHORITY_ESTIMATE_TIME") + ": " + Data.EstimateProcessingTime + " " + TextProvider.Get("DAYS"))
+                                <br />
+                            }
+
+                            @*@if (Data.ApplicationDeadline != null)
+                            {
+                                @(TextProvider.Get("FORM_LIST_AUTHORITY_APPLICATION_DEADLINE") + ": " + Data.ApplicationDeadline.Value.ToString("dd.MM.yyyy HH:mm"))
+                                <br />
+                            }*@
+
+                            @if (Data.LegalDeadline != null)
+                            {
+                                @(TextProvider.Get("FORM_LIST_AUTHORITY_LEGAL_DEADLINE") + ": " + Data.LegalDeadline.Value + " " + TextProvider.Get("DAYS"))
+                                <br />
+                            }
+                        </Anchor>
+
+                        orderID++;
+                    }
+
+                    @if (DataEvents != null && DataEvents.Count() > 0)
+                    {
+                        <Anchor Title="@(TextProvider.Get("FORM_DETAIL_EVENTS"))" ID="@(TextProvider.Get("FORM_DETAIL_EVENTS"))" Order="@orderID">
+                            <div class="calendar-vertical mb-3">
+                                @if (Data.ApplicationDeadline != null)
+                                {
+                                    <div class="calendar-date">
+                                        <div class="calendar-date-day">
+                                            <h3 class="calendar-date-day-content">
+                                                <small class="calendar-date-day__year">@Data.ApplicationDeadline.Value.ToString("yyyy")</small>
+                                                <span class="title-xxlarge-regular d-flex justify-content-center">@Data.ApplicationDeadline.Value.ToString("dd")</span>
+                                                <small class="calendar-date-day__month">@Data.ApplicationDeadline.Value.ToString("MMM")</small>
+                                            </h3>
+                                        </div>
+                                        <div class="calendar-date-description rounded">
+                                            <div class="calendar-date-description-content">
+                                                <h4 class="h5 mb-0 ">@TextProvider.Get("FORM_LIST_AUTHORITY_APPLICATION_DEADLINE")</h4>
+                                                <p class="text-paragraph">@TextProvider.Get("APPLICATION_DEADLINE_DESCRIPTION").Replace("{Date}", Data.ApplicationDeadline.Value.ToShortDateString()).Replace("{Time}", Data.ApplicationDeadline.Value.ToShortTimeString())</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @foreach (var e in DataEvents.OrderBy(p => p.FromDate))
+                                {
+                                    <div class="calendar-date">
+                                        <div class="calendar-date-day">
+                                            <h3 class="calendar-date-day-content">
+                                                @{
+                                                    if (e.DisplayStartDate != null && e.DisplayStartDate.Value)
+                                                    {
+                                                        @if (e.FromDate != null)
+                                                        {
+                                                            <small class="calendar-date-day__year">@e.FromDate.Value.ToString("yyyy")</small>
+                                                            <span class="title-xxlarge-regular d-flex justify-content-center">@e.FromDate.Value.ToString("dd")</span>
+                                                            <small class="calendar-date-day__month">@e.FromDate.Value.ToString("MMM")</small>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @if (e.ToDate != null)
+                                                        {
+                                                            <small class="calendar-date-day__year">@e.ToDate.Value.ToString("yyyy")</small>
+                                                            <span class="title-xxlarge-regular d-flex justify-content-center">@e.ToDate.Value.ToString("dd")</span>
+                                                            <small class="calendar-date-day__month">@e.ToDate.Value.ToString("MMM")</small>
+                                                        }
+                                                    }
+                                                }
+                                            </h3>
+                                        </div>
+                                        <div class="calendar-date-description rounded">
+                                            <div class="calendar-date-description-content">
+                                                @if (!string.IsNullOrEmpty(e.Title))
+                                                {
+                                                    <h4 class="h5 mb-0 ">@e.Title</h4>
+                                                }
+                                                @if (!string.IsNullOrEmpty(e.Description))
+                                                {
+                                                    <p class="text-paragraph">@((MarkupString)e.Description)</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </Anchor>
+                        orderID++;
+                    }
+                    @if (DataProperties != null)
+                    {
+                        @foreach (var p in DataProperties.OrderBy(p => p.SortOrder))
+                        {
+                            if (!string.IsNullOrEmpty(p.Description))
+                            {
+                                var markupDescription = new MarkupString(p.Description);
+
+                                <Anchor Title="@p.Title" ID="@p.Title" Order="@orderID">
+                                    @markupDescription
+                                </Anchor>
+
+                                orderID++;
+                            }
+                        }
+                    }
+                    @if (DataRessources != null && DataRessources.Count() > 0)
+                    {
+                        <Anchor Title="@(TextProvider.Get("FORM_DETAIL_RESSOURCES"))" ID="@(TextProvider.Get("FORM_DETAIL_RESSOURCES"))" Order="@orderID">
+                            @foreach (var r in DataRessources.OrderBy(p => p.SortOrder))
+                            {
+                                var res = DataResourceExtendeds.FirstOrDefault(e => e.FORM_Definition_Ressources_ID == r.ID);
+
+                                if (res != null && res.FILE_FileInfo_ID != null)
+                                {
+                                    var fileSize = FileProvider.GetFileSize(res.FILE_FileInfo_ID.Value);
+
+                                    <div class="form-detail-download" @onclick="@(() => DownloadRessource(res.FILE_FileInfo_ID.Value, res.Description))">
+                                        <div class="form-detail-download-icon">
+                                            <svg class="icon icon-primary icon-sm me-1" aria-hidden="true">
+                                                <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="form-detail-download-description font-normal">
+                                            @res.Description (@(fileSize / 1024) kb)
+                                        </div>
+                                    </div>
+                                }
+                                if (r.FILE_FileInfo_ID != null)
+                                {
+                                    var fileSize = FileProvider.GetFileSize(r.FILE_FileInfo_ID.Value);
+
+                                    <div class="form-detail-download" @onclick="@(() => DownloadRessource(r.FILE_FileInfo_ID.Value, r.Description))">
+                                        <div class="form-detail-download-icon">
+                                            <svg class="icon icon-primary icon-sm me-1" aria-hidden="true">
+                                                <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="form-detail-download-description font-normal">
+                                            @r.Description (@(fileSize / 1024) kb)
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </Anchor>
+
+                        orderID++;
+                    }
+                    @if (ApplicationAlreadyRunning)
+                    {
+                        <div class="element-separator"></div>
+                        <div class="form-deadline-expired-message font-normal">
+                            @TextProvider.Get("FORM_DETAIL_APPLICATION_ALREADY_RUNNING")
+                        </div>
+                        <br />
+                    }
+                    else if (Data.ApplicationDeadline == null || Data.ApplicationDeadline >= DateTime.Now)
+                    {
+                        <div class="element-separator"></div>
+                        <div class="form-detail-footer">
+                            <div class="btn btn-primary" @onclick="SubmitForm">@TextProvider.Get("FORM_DETAIL_SUBMIT_BUTTON")</div>
+                        </div>
+                        <br />
+                    }
+                    else
+                    {
+                        <div class="element-separator"></div>
+                        <div class="form-deadline-expired-message font-normal">
+                            @TextProvider.Get("FORM_DETAIL_DEADLINE_EXPIRED").Replace("{0}", Data.ApplicationDeadline.Value.ToString("dd.MM.yyyy HH:mm"))
+                        </div>
+                        <br />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+.system-notification-title[b-8ppnxjpenm] {
+    font-weight: bold;
+}
+
+.system-notification-container[b-8ppnxjpenm] {
+    position: relative;
+    padding: 10px;
+    border-radius: 3px;
+    width: 100%;
+    margin-bottom: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
+}
+
+.system-notification-close-button[b-8ppnxjpenm] {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 30px;
+    width: 30px;
+    background-color: inherit;
+    border-radius: 3px;
+}
+
+    .system-notification-close-button:hover[b-8ppnxjpenm] {
+        background-color: rgba(255,255,255,0.1);
+    }
+
+    .system-notification-btn[b-8ppnxjpenm] {
+        height: 30px;
+        width: 30px;
+        background-color: inherit;
+        /*border: 1px solid white;*/
+        border: 0px;
+        border-radius: 3px;
+        color: white;
+    }
+
+    .system-notification-btn[b-8ppnxjpenm]::deep {
+        display: flex;
+    }

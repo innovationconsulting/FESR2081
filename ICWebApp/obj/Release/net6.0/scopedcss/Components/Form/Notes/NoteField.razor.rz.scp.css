@@ -1,0 +1,37 @@
+.field-container[b-hks7sym6a8]
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border :1px solid #F2F2F2;
+    padding: 15px;
+}
+.field-description[b-hks7sym6a8]{
+    
+}
+.field-data-container[b-hks7sym6a8]{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.field-button-container[b-hks7sym6a8]{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+    .field-button-container .btn[b-hks7sym6a8] {
+        width: 38px !important;
+        height: 38px;
+    }
+.field-value[b-hks7sym6a8]{
+    height: 38px;
+    line-height: 38px;
+    width: 100%;
+}
+.field-value-container[b-hks7sym6a8]{
+    width: 100%;
+}
+.field-value div[b-hks7sym6a8] {
+    width: 100%;
+    flex: 1;
+}

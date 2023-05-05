@@ -1,0 +1,40 @@
+﻿<div class="additional-room-container">
+    <TelerikGrid Data="@AdditionalRoomList"
+                 Pageable="false"
+                 Sortable="true"
+                 Resizable="false"
+                 ScrollMode="@GridScrollMode.Scrollable"
+                 Groupable="false"
+                 Reorderable="false">
+        <GridColumns>
+            <GridColumn Field="@nameof(V_ROOM_Rooms.Enabled)" Title="@TextProvider.Get("BACKEND_ROOM_ENABLED")" Width="120px">
+                <Template>
+                    @{
+                        V_ROOM_Rooms item = context as V_ROOM_Rooms;
+
+                        if (item != null)
+                        {
+                            <TelerikSwitch @bind-Value="@item.Enabled" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    }
+                </Template>
+            </GridColumn>
+            <GridColumn Field="@nameof(V_ROOM_Rooms.Name)" Title="@TextProvider.Get("BACKEND_ROOM_BOOKING_ROOMNAME")" Width="120px"></GridColumn>
+            <GridColumn Field="@nameof(V_ROOM_Rooms.MaxCapacity)" Title="@TextProvider.Get("BACKEND_ROOM_CAPACITY")" Width="auto"></GridColumn>
+            <GridColumn Field="@nameof(V_ROOM_Rooms.SurfaceM2)" Title="@TextProvider.Get("BACKEND_ROOM_SURFACE")" Width="auto"></GridColumn>
+            <GridCommandColumn Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                @{
+                    V_ROOM_Rooms item = context as V_ROOM_Rooms;
+
+                    if (item != null)
+                    {
+                        <div class="table-toolbar">
+                            <GridCommandButton Command="MyPrimaryCommand" Class="btn btn-secondary" OnClick="@(() => EditAdditionalRoom(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                            <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => DeleteAdditionalRoom(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                        </div>
+                    }
+                }
+            </GridCommandColumn>
+        </GridColumns>
+    </TelerikGrid>
+</div>

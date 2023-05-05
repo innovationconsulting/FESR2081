@@ -1,0 +1,256 @@
+﻿@if (Item != null)
+{
+    <div class="accordion-item">
+    <div class="accordion-header" id="heading-@ItemID">
+        <button class="accordion-button collapsed title-snall-semi-bold" type="button" @onclick="ReadMessage" data-bs-toggle="collapse" data-bs-target="#collapse-@ItemID" aria-expanded="true" aria-controls="collapse-@ItemID" data-focus-mouse="false">
+            <div class="button-wrapper">
+                <div class="service-item-title">
+                    @if (Item.MessageIsRead != null && !Item.MessageIsRead.Value)
+                    {
+                        <div class="red-circle"></div>
+                    }
+                    @Item.Title
+                </div>
+                @if (!string.IsNullOrEmpty(Item.StatusText))
+                {
+                    <div class="icon-wrapper @Item.StatusCSS">
+                        <span>@Item.StatusText</span>
+                        <i class="@Item.StatusIcon"></i>
+                    </div>
+                }
+            </div>
+        </button>
+        @if (Item.LastChangeDate != null)
+        {
+            <p class="accordion-date title-xsmall-regular mb-0">@Item.LastChangeDate.Value.ToString("dd MMM yyyy HH:mm")</p>
+        }
+        else
+        {
+            @if (Item.CreationDate != null)
+            {
+                <p class="accordion-date title-xsmall-regular mb-0">@Item.CreationDate.Value.ToString("dd MMM yyyy")</p>
+            }
+        }
+        @if (Item.OrgUserRole != null)
+        {
+            <p class="accordion-date title-xsmall-regular mb-0">@Item.OrgUserRole</p>
+        }
+    </div>
+    <div id="collapse-@ItemID" class="accordion-collapse collapse p-0" data-bs-parent="#accordion-@ParentID" role="region" aria-labelledby="heading-@ItemID">
+    <div class="accordion-body">
+    @if (Item.ProtocollNumber != null)
+    {
+        <p class="mb-2 fw-normal">
+            <span class="label-name">@TextProvider.Get("FRONTEND_SERVICE_ITEM_PROGRESSIVE_NUMBER")</span><span class="label">@Item.ProtocollNumber</span>
+        </p>
+    }
+    @if (Item.LastChangeDate != null && Item.CreationDate != null)
+    {
+        <p class="mb-2 fw-normal">
+            <span class="label-name">@TextProvider.Get("FRONTEND_SERVICE_ITEM_SUBMIT_DATE")</span><span class="label">@Item.CreationDate.Value.ToString("dd MMM yyyy")</span>
+        </p>
+    }
+    @if (!string.IsNullOrEmpty(Item.Description))
+    {
+        <p class="mb-2 fw-normal">@((MarkupString)Item.Description)</p>
+    }
+    @if (!string.IsNullOrEmpty(Item.WarningText))
+    {
+        <p class="mb-2 fw-normal" style="color: red;">@((MarkupString)Item.WarningText)</p>
+    }
+    @if (Item.Rooms != null)
+    {
+        <p class="mb-2 fw-normal">
+            <div class="segment-detail-rooms mb-2 fw-normal">
+                <div class="segment-detail-icon">
+                    <TelerikIcon Icon="@("fa-regular fa-house")"></TelerikIcon>
+                </div>
+                <div class="segment-detail-value">
+                    @if (Item.Rooms != null)
+                    {
+                        var RoomList = Item.Rooms.Split(" | ").Distinct().ToList();
+
+                        string rooms = "";
+
+                        foreach (var room in RoomList.OrderBy(p => p).Take(2).ToList())
+                        {
+                            rooms += room + "<br>";
+                        }
+
+                        <div class="font-large">
+                            @((MarkupString)rooms.TrimEnd("<br>".ToArray()))
+                        </div>
+                        @if (RoomList.Count() > 2)
+                        {
+                            <div class="font-detail more-button">
+                                @(TextProvider.Get("FRONTEND_BOOKING_MORE").Replace("{0}", (RoomList.Count() - 2).ToString()))
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </p>
+    }
+    @if (Item.Days != null)
+    {
+        <p class="mb-2 fw-normal">
+            <div class="segment-detail-date">
+                <div class="segment-detail-icon">
+                    <TelerikIcon Icon="@("fa-regular fa-calendar")"></TelerikIcon>
+                </div>
+                <div class="segment-detail-value">
+                    @if (Item.Days != null)
+                    {
+                        var dayList = Item.Days.Split("|").Distinct().ToList();
+
+                        string days = "";
+
+                        foreach (var day in dayList.OrderBy(p => p).Take(2).ToList())
+                        {
+                            days += day + "<br>";
+                        }
+
+                        <div class="font-large">
+                            @((MarkupString)days.TrimEnd("<br>".ToArray()))
+                        </div>
+                        @if (dayList.Count() > 2)
+                        {
+                            <div class="font-detail more-button">
+                                @(TextProvider.Get("FRONTEND_BOOKING_MORE").Replace("{0}", (dayList.Count() - 2).ToString()))
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </p>
+    }
+    @*Org Users*@
+    @if (Item.OrgUserTaxNumber != null)
+    {
+        <p class="mb-2 fw-normal">
+            <span class="label-name">@TextProvider.Get("FISCAL_CODE")</span><span class="label">@Item.OrgUserTaxNumber</span>
+        </p>
+    }
+    @if (Item.OrgUserJoinDate != null)
+    {
+        <p class="mb-2 fw-normal">
+            <span class="label-name">@TextProvider.Get("FRONTEND_SERVICE_ITEM_JOINED_AT")</span><span class="label">@Item.OrgUserJoinDate.Value.ToString("dd MMM yyyy")</span>
+        </p>
+    }
+    @if (Item.OrgUserDelete != null || Item.OrgUserChangeRole != null || Item.OrgUserToggleActive != null || Item.OrgUserConfirm != null)
+    {
+        <div>
+            <p class="mb-2 fw-normal">
+                <span class="label-name">@TextProvider.Get("ACTIONS")</span>
+            </p>
+            <div class="service-item-button-container">
+                @if (Item.OrgUserChangeRole != null)
+                {
+                    <button class="service-item-text-button" type="button" @onclick="Item.OrgUserChangeRole">@TextProvider.Get("TOOLTIP_EDIT_ROLE")</button>
+                }
+                @if (Item.OrgUserToggleActive != null)
+                {
+                    <button class="service-item-text-button" type="button" @onclick="Item.OrgUserToggleActive">@TextProvider.Get(Item.OrgUserToggleActiveTextCode ?? "TOOLTIP_DEAKTIVATE")</button>
+                }
+                @if (Item.OrgUserConfirm != null)
+                {
+                    <button class="service-item-text-button" type="button" @onclick="Item.OrgUserConfirm">@TextProvider.Get("TOOLTIP_CONFIRM")</button>
+                }
+                @if (Item.OrgUserDelete != null)
+                {
+                    <button class="service-item-text-button" type="button" @onclick="Item.OrgUserDelete">@TextProvider.Get("TOOLTIP_DELETE")</button>
+                }
+            </div>
+        </div>
+    }
+    @if (Item.File_FileInfo_ID != null)
+    {
+        <div class="cmp-icon-list">
+            <div class="link-list-wrapper">
+                <ul class="link-list">
+                    <li class="shadow p-0">
+                        <a class="list-item icon-left t-primary title-small-semi-bold" @onclick="@(() => DownloadRessource(Item.File_FileInfo_ID.Value, Item.Title))" aria-label="@TextProvider.Get("FRONTEND_SERVICE_ITEM_DOWNLOAD_FILE_DESC")">
+                            <span class="list-item-title-icon-wrapper">
+                                <svg class="icon icon-sm align-self-start icon-color" aria-hidden="true">
+                                    <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                </svg>
+                                <span class="list-item-title title-small-semi-bold">@TextProvider.Get("FRONTEND_SERVICE_ITEM_DOWNLOAD_FILE")</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+    @if (Item.CanteenReportGerman != null)
+    {
+        <div class="cmp-icon-list">
+            <div class="link-list-wrapper">
+                <ul class="link-list">
+                    <li class="shadow p-0">
+                        <a class="list-item icon-left t-primary title-small-semi-bold" @onclick="@(() => DownloadRessource(Item.CanteenReportGerman.Value, Item.Title))" aria-label="@TextProvider.Get("FRONTEND_SERVICE_ITEM_DOWNLOAD_FILE_DESC")">
+                            <span class="list-item-title-icon-wrapper">
+                                <svg class="icon icon-sm align-self-start icon-color" aria-hidden="true">
+                                    <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                </svg>
+                                <span class="list-item-title title-small-semi-bold">@(Item.Title + " - " + TextProvider.Get("LANGUAGE_GERMAN"))</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+    @if (Item.CanteenReportItalian != null)
+    {
+        <div class="cmp-icon-list">
+            <div class="link-list-wrapper">
+                <ul class="link-list">
+                    <li class="shadow p-0">
+                        <a class="list-item icon-left t-primary title-small-semi-bold" @onclick="@(() => DownloadRessource(Item.CanteenReportItalian.Value, Item.Title))" aria-label="@TextProvider.Get("FRONTEND_SERVICE_ITEM_DOWNLOAD_FILE_DESC")">
+                            <span class="list-item-title-icon-wrapper">
+                                <svg class="icon icon-sm align-self-start icon-color" aria-hidden="true">
+                                    <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                </svg>
+                                <span class="list-item-title title-small-semi-bold">@(Item.Title + " - " + TextProvider.Get("LANGUAGE_ITALIAN"))</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+    @if (Item.CancelAction != null)
+    {
+        <div class="cancel-button-container">
+            <button type="button" class="btn btn-secondary justify-content-center my-3" @onclick="Item.CancelAction">
+                @if (!string.IsNullOrEmpty(Item.CancelTextCode))
+                {
+                    @TextProvider.Get(Item.CancelTextCode)
+                }
+                else
+                {
+                    @TextProvider.Get("BUTTON_BOOKING_CANCEL")
+                }
+            </button>
+        </div>
+    }
+    @if (Item.DetailAction != null)
+    {
+        <div class="detail-button-container">
+            <button type="button" class="btn btn-primary justify-content-center my-3" @onclick="Item.DetailAction">
+                @if (!string.IsNullOrEmpty(Item.DetailTextCode))
+                {
+                    @TextProvider.Get(Item.DetailTextCode)
+                }
+                else
+                {
+                    @TextProvider.Get("FRONTEND_SERVICE_ITEM_GO_TO_DETAILS")
+                }
+            </button>
+        </div>
+    }
+    </div>
+    </div>
+    </div>
+}

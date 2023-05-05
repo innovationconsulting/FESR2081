@@ -1,0 +1,19 @@
+﻿.btn {
+    padding-left: 6px !important;
+    padding-right: 0px !important;
+}
+.nav-item a{
+    width: auto !important;
+}
+.user-text {
+    color: #0C5152 !important;
+}
+.user-text:hover {
+    color: #25CCDB !important;
+    text-decoration: underline;
+}
+.user-item{
+    display: flex;
+    justify-content: flex-start;
+    gap: 3px;
+}

@@ -1,0 +1,27 @@
+﻿.loader-container {
+    position: absolute;
+    background-color: #FFFFFFAA;
+    width: 100%;
+    height: 100%;
+    z-index: 9998;
+    top: 0;
+}
+
+.logo-icon {
+    height: 80px !important;
+    width: 80px !important;
+    margin: auto;
+}
+
+    .logo-icon img {
+        height: 80px !important;
+        width: 80px !important;
+    }
+.logo-text{
+    margin: auto;
+    text-align: center;
+}
+
+.logo-icon i{
+    font-size: 28px;
+}

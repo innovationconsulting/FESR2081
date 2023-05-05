@@ -1,0 +1,153 @@
+﻿@if (SessionWrapper != null)
+{
+    <div class="nav-item dropdown">
+        @if (SessionWrapper.CurrentUser != null)
+        {
+            <a class="btn btn-primary btn-icon btn-full" data-bs-toggle="dropdown" id="dropdownUser" data-element="personal-area-login" data-focus-mouse="false">
+                @{
+                    var iconClass = "rounded-icon";
+                    if (_userHasUnreadMessages)
+                        iconClass += " unread-messages";
+                }
+                <span class="@iconClass" aria-hidden="true">
+                    <svg class="icon icon-primary">
+                        <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-user"></use>
+                    </svg>
+                </span>
+                @if (SessionWrapper.CurrentSubstituteUser != null)
+                {
+                    <span class="d-none d-lg-block">@SessionWrapper.CurrentSubstituteUser.Firstname @SessionWrapper.CurrentSubstituteUser.Lastname (@SessionWrapper.CurrentUser.Firstname @SessionWrapper.CurrentUser.Lastname)</span>
+                }
+                else
+                {
+                    <span class="d-none d-lg-block">@SessionWrapper.CurrentUser.Firstname @SessionWrapper.CurrentUser.Lastname</span>
+                }
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownUser">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="link-list-wrapper">
+                            <ul class="link-list">
+                                <li>
+                                    @{
+                                        var css = "";
+                                        if (_userHasUnreadMessages)
+                                            css += "unread-messages t0r4";
+                                    }
+                                    <a class="dropdown-item list-item" @onclick="@ShowMyServices">
+                                        <span class="@css">
+                                            <svg class="icon icon-primary icon-sm left">
+                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-user">
+                                                </use>
+                                            </svg>
+                                        </span>
+
+                                        <span>@TextProvider.Get("USER_PERSONAL_AREA")</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <span class="divider"></span>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item list-item" @onclick="@UserSettingsPage">
+                                        <svg class="icon icon-primary icon-sm left">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-settings">
+                                            </use>
+                                        </svg>
+                                        <span>@TextProvider.Get("USER_SETTINGS")</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="list-item left-icon" @onclick="HandleLogout">
+                                        <svg class="icon icon-primary icon-sm left">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-logout">
+                                            </use>
+                                        </svg>
+                                        <span class="fw-bold">@TextProvider.Get("LOGOUT_BUTTON")</span>
+                                    </a>
+                                </li>
+                                @if (SessionWrapper.MunicipalityApps != null && SessionWrapper.MunicipalityApps.Select(p => p.APP_Application_ID).ToList().Contains(Applications.Organisations)) //VERTRETUNGEN
+                                {
+                                    <li>
+                                        <span class="divider"></span>
+                                    </li>
+                                    @if (DropDownData != null && DropDownData.Count() > 1)
+                                    {
+                                        @foreach (var item in DropDownData)
+                                        {
+                                            <li>
+                                                @if (SessionWrapper.CurrentSubstituteUser != null && item.ID == SessionWrapper.CurrentSubstituteUser.ID)
+                                                {
+                                                    <a class="list-item left-icon">
+                                                        <div class="user-item">
+                                                            <svg class="icon icon-primary icon-sm left">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-check-circle">
+                                                                </use>
+                                                            </svg>
+                                                            <div class="fw-bold user-text">@item.Name</div>
+                                                        </div>
+                                                    </a>
+                                                }
+                                                else if (SessionWrapper.CurrentSubstituteUser == null && SessionWrapper.CurrentUser != null && item.ID == SessionWrapper.CurrentUser.ID)
+                                                {
+                                                    <a class="list-item left-icon">
+                                                        <div class="user-item">
+                                                            <svg class="icon icon-primary icon-sm left">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-check-circle">
+                                                                </use>
+                                                            </svg>
+                                                            <div class="fw-bold user-text">@item.Name</div>
+                                                        </div>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="list-item left-icon" @onclick="@(() => SelectOrg(item.ID.Value))">
+                                                        <div class="user-item">
+                                                            <svg class="icon icon-primary icon-sm left">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-chevron-right">
+                                                                </use>
+                                                            </svg>
+                                                            <div class="user-text">@item.Name</div>
+                                                        </div>
+                                                    </a>
+                                                }
+                                            </li>
+                                        }
+                                        <li>
+                                            <span class="divider"></span>
+                                        </li>
+                                        <li>
+                                            <a class="list-item" @onclick="HandleOrganizationRequest">
+                                                <span>@TextProvider.Get("BUTTON_ORG_DASHBOARD")</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a class="list-item" @onclick="HandleNewOrganizationRequest">
+                                                <span>@TextProvider.Get("ORG_REQUEST_NEW_ORGANISATION")</span>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <a class="btn btn-primary btn-icon btn-full" @onclick="GoToLogin">
+                <span class="rounded-icon" aria-hidden="true">
+                    <svg class="icon icon-primary">
+                        <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-user"></use>
+                    </svg>
+                </span>
+                <span class="d-none d-lg-block">@TextProvider.Get("AGID_AREA_PERSONALE")</span>
+            </a>
+        }
+    </div>
+}

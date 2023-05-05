@@ -1,0 +1,155 @@
+.registration-container[b-jvvq70dr17] {
+/*    background-color: white;
+    padding: 20px;
+    border-radius: 3px;
+    position: fixed;
+    height: auto;
+    width: 500px;
+    margin-left: calc(50% - 250px);
+    margin-left: -moz-calc(50% - 250px);
+    margin-left: -webkit-calc(50% - 250px);
+    margin-left: -o-calc(50% - 250px);
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    top: 50px;
+    position: relative;*/
+}
+
+@media (max-width: 680px) {
+    .registration-container[b-jvvq70dr17] {
+  /*      position: absolute;
+        border-radius: 0px;
+        width: 100%;
+        margin-left: 0%;
+        top: 0;
+        height: 100%;
+        overflow: auto;*/
+    }
+    .registration-logo[b-jvvq70dr17] {
+        display: none;
+    }
+    .registration-data-container[b-jvvq70dr17] {
+        max-height: unset !important;
+        overflow: unset !important;
+        height: auto;
+    }
+    .registration-footer[b-jvvq70dr17]{
+        position: unset !important;
+        bottom: unset !important;
+        left: unset !important;
+        border-top: 0px !important;
+    }
+    .registration-header[b-jvvq70dr17] {
+        position: unset !important;
+        border-bottom: 0px !important;
+    }
+    .registration-title[b-jvvq70dr17] {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+
+.registration-title[b-jvvq70dr17] {
+    margin-top: 20px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.registration-header[b-jvvq70dr17] {
+    position: sticky;
+    top: 0;
+    left: 0;
+ /*   padding-bottom: 5px;
+    border-bottom: 1px solid #d9d9d9;*/
+}
+
+.registration-footer[b-jvvq70dr17] {
+    /*border-top: 1px solid #d9d9d9;*/
+}
+
+
+.password-quality-bar[b-jvvq70dr17] {
+    
+}
+
+.password-quality-bar-background[b-jvvq70dr17] {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.Blank[b-jvvq70dr17] {
+    background: white !important;
+    color: white;
+}
+
+.VeryWeak[b-jvvq70dr17] {
+    background: #c41a0e !important;
+    color: white !important;
+    flex: 0.25;
+}
+
+
+
+.Weak[b-jvvq70dr17] {
+    background: #f2ac16 !important;
+    color: white !important;
+    flex: 0.5;
+}
+
+
+
+.Medium[b-jvvq70dr17] {
+    background: #f2ac16 !important;
+    flex: 0.5;
+}
+
+
+
+.Strong[b-jvvq70dr17] {
+    color: white !important;
+    background: #0F7173 !important;
+    flex: 0.75;
+}
+
+
+
+.VeryStrong[b-jvvq70dr17] {
+    color: white !important;
+    background: #0c5152 !important;
+    flex: 1;
+}
+
+.address-not-found-container[b-jvvq70dr17]{
+    cursor: pointer;
+}
+
+.address-not-found-container:hover[b-jvvq70dr17] {
+    color: #25CCDB !important;
+    text-decoration: underline !important;
+}
+
+
+
+
+.iti__flag-container[b-jvvq70dr17] {
+    height: 38px !important;
+    width: 100%;
+}
+
+.iti[b-jvvq70dr17] {
+    height: 38px !important;
+    border-radius: 0px;
+    color: #707070 !important;
+    width:100%;
+}
+
+    .iti input[b-jvvq70dr17], .iti input[type=text][b-jvvq70dr17], .iti input[type=tel][b-jvvq70dr17] {
+        height: 38px;
+        width: 100%;
+    }
+.iti--allow-dropdown input[b-jvvq70dr17], .iti--allow-dropdown input[type=text][b-jvvq70dr17], .iti--allow-dropdown input[type=tel][b-jvvq70dr17], .iti--separate-dial-code input[b-jvvq70dr17], .iti--separate-dial-code input[type=text][b-jvvq70dr17], .iti--separate-dial-code input[type=tel][b-jvvq70dr17] {
+    height: 38px !important;
+    width: 100%;
+}

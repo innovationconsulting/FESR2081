@@ -1,0 +1,42 @@
+.k-grid-header .k-header[b-w3vua0vdd5] {
+    text-align: center !important;
+}
+
+.k-grid .k-header .k-link[b-w3vua0vdd5], /* for sortable grid */
+.k-grid .k-header[b-w3vua0vdd5] {
+    text-align: center;
+}
+
+.k-grid .k-grid-header th .k-cell-inner[b-w3vua0vdd5],
+.k-grid .k-grid-header th .k-cell-inner > .k-link[b-w3vua0vdd5] {
+    display: block;
+    text-align: center !important;
+    white-space: normal;
+}
+
+.k-column-title[b-w3vua0vdd5] {
+    white-space: normal;
+}
+
+.th.k-header.k-touch-action-none[b-w3vua0vdd5] {
+    align-items: center;
+    text-align: center;
+}
+
+.centered-header-grid .k-cell-inner > .k-link[b-w3vua0vdd5] {
+    justify-content: center !important;
+}
+
+.k-column-title[b-w3vua0vdd5] {
+    align-items: center;
+    text-align: center;
+    width: 100% !important;
+}
+
+.k-grid[b-w3vua0vdd5] {
+    min-height: 250px !important;
+}
+
+h5[b-w3vua0vdd5], .h5[b-w3vua0vdd5] {
+    color: #0f7173;
+}

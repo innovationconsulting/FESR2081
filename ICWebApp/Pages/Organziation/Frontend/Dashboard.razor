@@ -1,0 +1,72 @@
+﻿@page "/Organization/Dashboard"
+
+@layout FrontendLayout
+
+
+<AuthorizeView>
+    <Authorized>
+         <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-lg-3 mb-4 border-col hide-max-576">
+                    <AnchorList></AnchorList>
+                </div>
+                <div class="col-lg-8 offset-lg-1">
+                    <div class="it-page-sections-container">
+                        <Anchor Title="@TextProvider.Get("ORG_REQUEST_MY_SUBSTITUTIONS")" ID="@TextProvider.Get("ORG_REQUEST_MY_SUBSTITUTIONS")" Order="1">
+                            <div>
+                                <button class="btn btn-secondary" @onclick="CreateNewRequest">@TextProvider.Get("ORG_REQUEST_NEW_ORGANISATION")</button>
+                            </div>
+                            <div class="element-separator"></div>
+                            <div class="substitutions-container">
+                                @if (Organizations != null && Organizations.Count() > 0)
+                                {
+                                    <div class="substitutions-data-container">
+                                        @foreach (var org in Organizations)
+                                        {
+                                            <div class="segment-element" @onclick="@(() => GoToOrgManagement(org))">
+                                                <div class="segment-header custom-color-primary">
+                                                    <div class="segment-header-icon">
+                                                        <TelerikIcon Icon="@("fa-regular fa-user-group")"></TelerikIcon>
+                                                    </div>
+                                                    <a @onclick="@(() => GoToOrgManagement(org))" @onclick:stopPropagation="true" class="text-decoration-none" data-element="service-category-link">
+                                                        <h5 class="custom-color-primary">@org.ORG_Fullname</h5>
+                                                    </a>
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="segment-detail-container">
+                                                    <div class="font-normal">
+                                                        @org.CompanyType
+                                                    </div>
+                                                    @if (!string.IsNullOrEmpty(org.LegalForm))
+                                                    {
+                                                        <div class="font-normal">
+                                                            @org.LegalForm
+                                                        </div>
+                                                    }
+                                                </div>
+                                                @if (org.ConfirmedAt == null)
+                                                {
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="org-not-confirmed">
+                                                        @TextProvider.Get("ORG_NOT_CONFIRMED_YET")
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    @TextProvider.Get("ORG_REQUEST_NO_SUBSTITUTIONS")
+                                }
+                            </div>
+                        </Anchor>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

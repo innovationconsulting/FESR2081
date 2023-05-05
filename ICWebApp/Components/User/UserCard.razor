@@ -1,0 +1,66 @@
+﻿@if(User != null)
+{
+    string? base64 = null;
+
+    if(UserLogo != null)
+    {
+        base64 = Convert.ToBase64String(UserLogo.FileImage);
+    }
+    string AdditionalCSS = "";
+
+    if (SmallStyle)
+    {
+        AdditionalCSS = "small-style";
+    }
+
+
+    <div class="user-card-container @AdditionalCSS">
+        <div class="card-container-small">
+            @if(!SmallStyle)
+            {
+                <div class="card-icon">
+                    @if(UserLogo != null)
+                    {
+                        <img src="data:image/png;base64,@base64" class="card-icon-image">
+                    }
+                    else
+                    {
+                        string shortName = User.Firstname.Substring(0, 1);
+
+                        if (!string.IsNullOrEmpty(User.Lastname)) 
+                        {
+                            shortName += User.Lastname.Substring(0, 1);
+                        }
+
+                        <div class="card-user-icon-default">@shortName</div>
+                    }
+                </div>
+                <div class="card-data">
+                    <div class="card-data-first-row">
+                        @User.Firstname @User.Lastname
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card-icon card-icon-small" title="@(User.Firstname + " " + User.Lastname)">
+                    @if(UserLogo != null)
+                    {
+                        <img src="data:image/png;base64,@base64" class="card-icon-image">
+                    }
+                    else
+                    {
+                        string shortName = User.Firstname.Substring(0, 1);
+
+                        if (!string.IsNullOrEmpty(User.Lastname)) 
+                        {
+                            shortName += User.Lastname.Substring(0, 1);
+                        }
+
+                        <div class="card-user-icon-default">@shortName</div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}

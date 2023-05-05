@@ -1,0 +1,54 @@
+﻿<div class="menu-logo" @onclick="LogoClicked">
+    @if (Municipality != null && Municipality.Logo != null)
+    {
+        <div class="menu-logo-image">
+            @{
+                var base64String = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(Municipality.Logo));
+            }
+            <img src="/Images/Backend/Logo_512x512.png" />
+        </div>
+    }
+</div>
+
+
+<div class="menu-left-bar">
+    <div class="menu-left-bar-main-item-list">
+        @if (MainMenuList != null)
+        {
+            @foreach (var f in MainMenuList.Where(p => p.ParentID == null).OrderBy(p => p.SortOrder).ToList())
+            {
+                <ICWebApp.Components.MainMenu.Backend.Desktop.NavLinkComponent MenuItem="@f">
+                </ICWebApp.Components.MainMenu.Backend.Desktop.NavLinkComponent>
+            }
+
+        }
+    </div>
+    <div class="menu-left-bar-footer-item-list">
+        <div class="menu-left-bar-item">
+            @{
+                var item = new CONF_MainMenu();
+
+                item.Url = "/";
+                item.TEXT_SystemTextsCode = "MAINMENU_CITIZEN_PAGE";
+                item.Icon = "tell-a-friend";
+                item.SortOrder = 99;
+                item.Enabled = true;
+                item.InDevelopment = false;
+                item.ShowInNavMenu = true;
+            }
+            <ICWebApp.Components.MainMenu.Backend.Desktop.NavLinkComponent MenuItem="@item"></ICWebApp.Components.MainMenu.Backend.Desktop.NavLinkComponent>
+        </div>
+        <div class="menu-left-bar-item">
+            <ICWebApp.Components.Messaging.Backend.SystemNotificationComponent />
+        </div>
+        <div class="menu-left-bar-item">
+            <ICWebApp.Components.User.Backend.UserSupportComponent></ICWebApp.Components.User.Backend.UserSupportComponent>
+        </div>
+        <div class="menu-left-bar-item">
+            <ICWebApp.Components.User.Backend.UserNotificationComponent></ICWebApp.Components.User.Backend.UserNotificationComponent>
+        </div>
+        <div class="menu-left-bar-item">
+            <ICWebApp.Components.User.Backend.UserProfileComponent></ICWebApp.Components.User.Backend.UserProfileComponent>
+        </div>
+    </div>
+</div>

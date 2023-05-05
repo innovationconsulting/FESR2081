@@ -1,0 +1,173 @@
+﻿  @if (Municipality != null)
+{
+    <div class="it-header-wrapper">
+        <div class="it-header-slim-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="it-header-slim-wrapper-content">
+                            @if (System.Globalization.CultureInfo.CurrentCulture.Name.Contains("de-DE"))
+                            {
+                                <a class="d-lg-block navbar-brand" target="_blank" href="https://home.provinz.bz.it/de/home" aria-label="Zum Portal @TextProvider.Get(Municipality.Province_Text_SystemTexts_Code) - link esterno - apertura nuova scheda" title="Vai al portale @TextProvider.Get(Municipality.Province_Text_SystemTexts_Code)">@TextProvider.Get(Municipality.Province_Text_SystemTexts_Code)</a>
+                            }
+                            else
+                            {
+                                <a class="d-lg-block navbar-brand" target="_blank" href="https://home.provincia.bz.it/it/home" aria-label="Vai al portale @TextProvider.Get(Municipality.Province_Text_SystemTexts_Code) - link esterno - apertura nuova scheda" title="Vai al portale @TextProvider.Get(Municipality.Province_Text_SystemTexts_Code)">@TextProvider.Get(Municipality.Province_Text_SystemTexts_Code)</a>
+                            }
+                            <div class="it-header-slim-right-zone">
+                                <ICWebApp.Components.Localization.Frontend.LanguageComponent></ICWebApp.Components.Localization.Frontend.LanguageComponent>
+                                <ICWebApp.Components.Messaging.Frontend.SystemNotificationComponent />
+                                @if (ShowUserData)
+                                {
+                                    <ICWebApp.Components.User.Frontend.UserProfileComponent></ICWebApp.Components.User.Frontend.UserProfileComponent>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="it-nav-wrapper">
+            <div class="it-header-center-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="it-header-center-content-wrapper">
+                                <div class="it-brand-wrapper">
+                                    <a @onclick="ReturnToStart">
+                                        @if (Municipality.Logo != null)
+                                        {
+                                            var base64String = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(Municipality.Logo));
+
+                                            <div class="icon">
+                                                <img class="icon-img" aria-hidden="true" src="@base64String" />
+                                            </div>
+                                        }
+                                        <div class="it-brand-text">
+                                            <div class="it-brand-title">@TextProvider.Get("FRONTEND_HEADER_BRANDING_DESCRIPTION") @Municipality.Name</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="it-right-zone">
+                                    @if (!string.IsNullOrEmpty(Municipality.Soc_Twitter) || !string.IsNullOrEmpty(Municipality.Soc_Facebook) || !string.IsNullOrEmpty(Municipality.Soc_Youtube) || !string.IsNullOrEmpty(Municipality.Soc_Telegramm) || !string.IsNullOrEmpty(Municipality.Soc_Whatsapp) || !string.IsNullOrEmpty(Municipality.Soc_RSS))
+                                    {
+                                        <div class="it-socials d-none d-lg-flex">
+                                            <span>@TextProvider.Get("AGID_FRONTEND_FOLLOW_US")</span>
+                                            <ul>
+                                                @if (!string.IsNullOrEmpty(Municipality.Soc_Twitter))
+                                                {
+                                                    <li>
+                                                        <a href="@Municipality.Soc_Twitter" target="_blank">
+                                                            <svg class="icon icon-sm icon-white align-top">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-twitter"></use>
+                                                            </svg>
+                                                            <span class="visually-hidden">Twitter</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                                @if (!string.IsNullOrEmpty(Municipality.Soc_Facebook))
+                                                {
+                                                    <li>
+                                                        <a href="@Municipality.Soc_Facebook" target="_blank">
+                                                            <svg class="icon icon-sm icon-white align-top">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-facebook"></use>
+                                                            </svg>
+                                                            <span class="visually-hidden">Facebook</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                                @if (!string.IsNullOrEmpty(Municipality.Soc_Youtube))
+                                                {
+                                                    <li>
+                                                        <a href="@Municipality.Soc_Youtube" target="_blank">
+                                                            <svg class="icon icon-sm icon-white align-top">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-youtube"></use>
+                                                            </svg>
+                                                            <span class="visually-hidden">YouTube</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                                @if (!string.IsNullOrEmpty(Municipality.Soc_Telegramm))
+                                                {
+                                                    <li>
+                                                        <a href="@Municipality.Soc_Telegramm" target="_blank">
+                                                            <svg class="icon icon-sm icon-white align-top">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-telegram"></use>
+                                                            </svg>
+                                                            <span class="visually-hidden">Telegram</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                                @if (!string.IsNullOrEmpty(Municipality.Soc_Instagram))
+                                                {
+                                                    <li>
+                                                        <a href="@Municipality.Soc_Instagram" target="_blank">
+                                                            <svg class="icon icon-sm icon-white align-top">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-instagram"></use>
+                                                            </svg>
+                                                            <span class="visually-hidden">Instagram</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                                @if (!string.IsNullOrEmpty(Municipality.Soc_Whatsapp))
+                                                {
+                                                    <li>
+                                                        <a href="@Municipality.Soc_Whatsapp" target="_blank">
+                                                            <svg class="icon icon-sm icon-white align-top">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-whatsapp"></use>
+                                                            </svg>
+                                                            <span class="visually-hidden">Whatsapp</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                                @if (!string.IsNullOrEmpty(Municipality.Soc_RSS))
+                                                {
+                                                    <li>
+                                                        <a href="@Municipality.Soc_RSS" target="_blank">
+                                                            <svg class="icon icon-sm icon-white align-top">
+                                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-rss"></use>
+                                                            </svg>
+                                                            <span class="visually-hidden">RSS</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+                                    @if (ShowSearchButton)
+                                    {
+                                        <div class="it-search-wrapper">
+                                            <span class="d-none d-md-block">@TextProvider.Get("AGID_FRONTEND_SEARCH")</span>
+                                            <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" id="searchmodal" data-bs-target="#search-modal" aria-label="Cerca nel sito">
+                                                <svg class="icon">
+                                                    <use href="css/bootstrap-italia/svg/sprites.svg#it-search"></use>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="it-header-navbar-wrapper" id="header-nav-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            @if (ShowMenu == true)
+                            {
+                                <ICWebApp.Components.MainMenu.Frontend.NavMenu></ICWebApp.Components.MainMenu.Frontend.NavMenu>
+                            }
+                            else
+                            {
+                                <div class="menu-spacer">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,103 @@
+.nav-link-text[b-f78lg945t0] {
+    margin-left: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.not-selectable .nav-link-text[b-f78lg945t0] {
+    text-decoration: none !important;
+    font-weight: normal !important;
+}
+
+.nav-item-collapsed .nav-link-text[b-f78lg945t0] {
+    display: none;
+}
+
+.nav-item-tooltip[b-f78lg945t0] {
+    visibility: hidden;
+    position: absolute;
+    /*bottom: 100%;*/
+    left: 50%;
+    margin-left: 28px;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    background-color: #27426D;
+    box-shadow: rgb(0 0 0 / 35%) 0px 2px 5px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    white-space: nowrap;
+}
+
+    .nav-item-tooltip[b-f78lg945t0]::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        margin-top: -5px;
+        margin-left: -10px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent #27426D transparent transparent;
+    }
+
+@media(max-width: 679.98px) {
+    .nav-item-tooltip[b-f78lg945t0] {
+        display: none !important;
+    }
+
+    .nav-item-collapsed .nav-link-text[b-f78lg945t0] {
+        display: block !important;
+    }
+}
+
+.user-support-menu[b-f78lg945t0] {
+    z-index: 998;
+    position: absolute;
+    border-radius: 3px;
+    padding: 1rem;
+    background-color: rgb(246, 245, 244);
+    width: 400px;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 5px;
+    bottom: 5px;
+    left: 65px;
+    padding-top: 25px;
+}
+
+    .user-support-menu[b-f78lg945t0]::after {
+        content: "";
+        position: absolute;
+        bottom: 20px;
+        left: 0%;
+        margin-top: -10px;
+        margin-left: -10px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent gray transparent transparent;
+    }
+
+.ticket-success[b-f78lg945t0]{
+    color: green !important;
+}
+.ticket-error[b-f78lg945t0]{
+    color: red !important;
+}
+.ticket-button-group[b-f78lg945t0]{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.phone-number-container[b-f78lg945t0]{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.privacy-link .btn[b-f78lg945t0]{
+    border: none !important;
+    text-align: left;
+    line-height: 30px;
+}
+.privacy-link .btn:hover[b-f78lg945t0]{
+    text-decoration: underline;
+}

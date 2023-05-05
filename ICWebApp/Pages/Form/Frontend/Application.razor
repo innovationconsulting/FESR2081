@@ -1,0 +1,157 @@
+﻿@page "/Form/Application/{DefinitionID}/{ID}"
+@page "/Form/Application/{DefinitionID}/{ID}/{Credit}"
+
+@layout FrontendLayout
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-lg-3 mb-4 border-col hide-max-576">
+                    <AnchorList></AnchorList>
+                </div>
+                <div class="col-lg-8 offset-lg-1">
+                    <div class="form-application-container it-page-sections-container">
+                        @if (Data != null && Definition.HasTemplate != true)
+                        {
+                            <Anchor Title="@Definition.FORM_Name" IsCard="true" ID="@Definition.FORM_Name" Order="0">
+                                <EditForm Model="@Data" Context="FormContext">
+                                    <ICWebApp.Components.FormRenderer.Container @ref="@FormContainer" Application="@Data" Definition="@Definition"
+                                                                            OnContainerInitialized="@OnContainerInitialized">
+                                    </ICWebApp.Components.FormRenderer.Container>
+                                </EditForm>
+                            </Anchor>
+                        }
+                        else
+                        {
+                            @if (Template != null && Data != null)
+                            {
+                                <ICWebApp.Components.FormTemplateEditor.Editor @ref="@TemplateEditor" Template="@Template" Data="@Data.TemplateJsonData">
+                                </ICWebApp.Components.FormTemplateEditor.Editor>
+
+                                @if (!string.IsNullOrEmpty(FormEditorValidationMessage))
+                                {
+                                    var markup = (MarkupString)FormEditorValidationMessage;
+
+                                    <div class="element-separator"></div>
+                                    <div class="container-error">
+                                        @markup
+                                    </div>
+                                }
+                            }
+                        }
+                        @if (!IsInitializing)
+                        {
+                            @if (Data != null && Definition != null && Definition.HasIBAN)
+                            {
+                                <EditForm Model="@Data" Context="IbanContext">
+                                    <Anchor Title="@(TextProvider.Get("FORM_APPLICATION_BANKDATA"))" IsCard="true" ID="@(TextProvider.Get("FORM_APPLICATION_BANKDATA"))" Order="96">
+                                        <div class="form-application-creadit-input">
+                                            <label class="form-label">@TextProvider.Get("ORG_KONTOINHABER")</label>
+                                            <InputText @bind-Value="Data.KontoInhaber" class="form-control"></InputText>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="form-application-creadit-input">
+                                            <label class="form-label">@TextProvider.Get("ORG_BANKNAME")</label>
+                                            <InputText @bind-Value="Data.Bankname" class="form-control"></InputText>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="form-application-input">
+                                            <label class="form-label">@TextProvider.Get("ORG_IBAN")</label>
+                                            <InputText @bind-Value="Data.IBAN" class="form-control"></InputText>
+                                        </div>
+                                    </Anchor>
+                                </EditForm>
+                            }
+
+                            @if (Data != null && Definition != null && Definition.HasCredit)
+                            {
+                                <Anchor Title="@(TextProvider.Get("FORM_APPLICATION_CREDIT"))" IsCard="true" ID="@(TextProvider.Get("FORM_APPLICATION_CREDIT"))" Order="97">
+                                    <div class="form-application-creadit-input">
+                                        <TelerikNumericTextBox @bind-Value="Data.Credit" class="form-control" Format="C"></TelerikNumericTextBox>
+                                    </div>
+                                </Anchor>
+                            }
+                            @if (UploadElements != null && UploadFilesDefinitions != null && UploadFilesDefinitions.Count() > 0)
+                            {
+                                <Anchor Title="@(TextProvider.Get("FORM_APPLICATION_UPLOADS"))" IsCard="true" ID="@(TextProvider.Get("FORM_APPLICATION_UPLOADS"))" Order="98">
+                                    <div class="form-application-document-upload-container">
+                                        @foreach (var ele in UploadElements)
+                                        {
+                                            var def = UploadFilesDefinitions.FirstOrDefault(p => p.ID == ele.FORM_Definition_Upload_ID);
+
+                                            if (def != null)
+                                            {
+                                                string ErrorCSS = "";
+
+                                                @if (!string.IsNullOrEmpty(ele.ERROR_CODE))
+                                                {
+                                                    ErrorCSS = "application-upload-container-error-style";
+                                                }
+
+                                                <div class="form-application-document-element">
+                                                    <div class="application-upload-container @ErrorCSS">
+                                                        <div class="font-normal">
+                                                            @def.Description
+                                                        </div>
+                                                        <div class="font-extra-small">
+                                                            @def.AlloweTypesParsed
+                                                        </div>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <UploadComponent FileInfoList="ele.CACH_UploadFiles" Multiple="@def.Multiupload" OnRemove="OnRemove" ID="@(ele.ID.ToString())"></UploadComponent>
+                                                    </div>
+                                                    <div class="application-upload-container-error font-normal">
+                                                        @if (!string.IsNullOrEmpty(def.Description) && ele.ERROR_CODE != null)
+                                                        {
+                                                            @TextProvider.Get(ele.ERROR_CODE).Replace("{0}", def.Description)
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </Anchor>
+                            }
+
+                            @if (Definition != null && Data != null && Privacy != null)
+                            {
+                                <Anchor Title="@Privacy.Title" IsCard="true" SubTitle="@Privacy.Description" ID="@Privacy.Title" Order="99">
+                                    @TextProvider.Get("PRIVACY_RED_AND_UNDERSTOOD")
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="privacy-switch">
+                                        <TelerikSwitch @bind-Value="@Data.PrivacyBool" OnLabel=" " OffLabel=" " Width="65px"
+                                               Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                        </TelerikSwitch>
+                                    </div>
+                                    @if (Data.PrivacyErrorCSS != null)
+                                    {
+                                        <div class="element-separator"></div>
+                                        <div class="container-error">
+                                            @TextProvider.Get("PRIVACY_BOOL_ERROR")
+                                        </div>
+                                    }
+                                </Anchor>
+                            }
+
+                            @if (!IsValid)
+                            {
+                                <div class="element-separator"></div>
+                                <div class="container-error">
+                                    @TextProvider.Get("FORM_APPLICATION_ERROR")
+                                </div>
+                                <div class="element-separator"></div>
+                            }
+                            <div class="form-application-footer">
+                                <div class="btn btn-secondary" @onclick="Save">@TextProvider.Get("FORM_APPLICATION_SAVE_BUTTON")</div>
+                                <div class="btn btn-primary" @onclick="Commit">@TextProvider.Get("FORM_APPLICATION_COMMIT_BUTTON")</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

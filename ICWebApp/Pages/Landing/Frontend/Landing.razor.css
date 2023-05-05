@@ -1,0 +1,207 @@
+﻿.municipal-background {
+    height: 100%;
+    width: 100%;
+    background-position: center center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+}
+
+@media(max-width: 992px) {
+    .municipal-background {
+        display: none !important;
+    }
+    #news-section {
+        display: none;
+    }
+}
+#news-section {
+    background-color: #f2f7fc;
+    padding-bottom: 20px;
+}
+.landing-first-row {
+    position: relative;
+}
+
+.landing-second-row {
+}
+
+.landing-page-spacer{
+    height: 100px;
+}
+
+.landing-page-top-spacer {
+    height: 50px;
+}
+
+.landing-news-container {
+    display: flex;
+    background-color: #F2F2F2;
+    padding: 30px;
+    gap: 50px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.show-previous, .show-next {
+    font-size: 60px;
+    color: white;
+    margin: auto;
+    cursor: pointer;
+    color: #808080;
+}
+    .show-previous:hover, .show-next:hover {
+        color: #0F7173;
+    }
+
+.news-left-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.news-preview{
+    flex: 1;
+    overflow: hidden;
+}
+.news-right-column {
+    flex: 1;
+}
+
+.news-image{
+    width: 100%;
+}
+
+.news-image img {
+    max-width: 100%;
+    max-height: 100%;
+}
+.news-buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media(max-width: 800px){
+    .landing-first-row-color-container {
+        margin-left: -10px !important;
+    }
+    .news-right-column {
+        display: none !important;
+    }
+    .landing-news-container{
+        gap: 10px;
+    }
+    .landing-services-container, .landing-service-container-row {
+        gap: 10px !important;
+    }
+    .landing-page-spacer {
+        height: 30px;
+    }
+    .landing-service-button {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        width: 47% !important;
+    }
+    .landing-service-button-content {
+        gap: 10px !important;
+    }
+    .landing-page-top-spacer {
+        height: 0px;
+    }
+    .landing-service-icon {
+        font-size: 22px !important;
+    }
+    .landing-service-chevron{
+        display: none !important;
+    }
+}
+
+.landing-service-title{
+    color: #0F7173;
+}
+.landing-services-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.landing-service-container-row {
+    flex: 1;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.landing-service-button {
+    flex: 1;
+    background-color: #0F7173;
+    color: white !important;
+    display: flex;
+    gap: 20px;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    max-width: 400px;
+    cursor: pointer;
+}
+    .landing-service-button:hover {
+        background-color: #1DA2AF;
+    }
+    .landing-service-icon, .landing-service-chevron {
+        font-size: 30px;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+.landing-service-button-content {
+    display: flex;
+    gap: 15px;
+    flex: 1;
+}
+    .landing-service-button-content .font-title{
+        color: white !important;
+    }
+    .landing-service-description {
+        /*line-height: 50px;*/
+        margin-top: auto;
+        margin-bottom: auto;
+        text-transform: uppercase;
+    }
+
+
+.u-layout-wide {
+    background-color: #f2f2f2;
+    width: 100vw;
+    position: relative;
+    margin-left: -50vw;
+    left: 50%;
+    padding: 30px;
+    overflow: hidden;
+    background: rgb(255,255,255);
+    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 3%, rgba(242,242,242,1) 100%);
+}
+
+
+.Separator--up {
+    margin-top:50px;
+    -webkit-transform: skewX(0) skewY(-2deg);
+    transform: skewX(0) skewY(-2deg);
+    background-color: white !important;
+    position: relative !important;
+    height: 10rem !important;
+    left: 0;
+    margin-bottom: -10rem !important;
+    margin-left: -1em;
+    top: -4rem;
+    width: 100vw;
+    margin-left: 0vw;
+    left: 0%;
+    padding: 20px;
+    opacity: 1;
+}
+
+.landing-container-head {
+    width:85vw;
+    max-width: 1920px;
+    margin: auto !important;
+}

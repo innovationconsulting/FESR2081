@@ -1,0 +1,83 @@
+﻿<div class="scheduler-legend-container">
+    <div class="scheduler-legend-item">
+        <div class="scheduler-legend-dash" style="background-color: #0F7173"></div>
+        <div class="scheduler-legend-description">@TextProvider.Get("SCHEDULER_USER_INPUT")</div>
+    </div>
+    <div class="scheduler-legend-item">
+        <div class="scheduler-legend-dash" style="background-color: #a1a1a1"></div>
+        <div class="scheduler-legend-description">@TextProvider.Get("SCHEDULER_ALREADY_BOOKED")</div>
+    </div>
+    <div class="scheduler-legend-item">
+        <div class="scheduler-legend-dash" style="background-color: #E16F3F"></div>
+        <div class="scheduler-legend-description">@TextProvider.Get("SCHEDULER_ALREADY_RESERVATION")</div>
+    </div>
+</div>
+<div class="element-separator"></div>
+<div class="schedule-container">
+    <SfSchedule @ref="ScheduleRef" TValue="AppointmentData" @bind-SelectedDate="@CurrentDate" MinDate="@MinDate" MaxDate="@MaxDate"
+                Height="100%" ShowQuickInfo="false" FirstDayOfWeek="1" WorkDays="@WorkingDays" EnableAutoRowHeight="true">
+        <ScheduleEventSettings DataSource="@ExistingAppointments" AllowEditing="false" AllowDeleting="false">
+            <ScheduleField>
+                <FieldStartTime Name="StartTime" Title="@TextProvider.Get("ROOM_SCHEDULER_STARTTIME")" Validation="@RequiredRules"></FieldStartTime>
+                <FieldEndTime Name="EndTime" Title="@TextProvider.Get("ROOM_SCHEDULER_ENDTIME")" Validation="@RequiredRules"></FieldEndTime>
+                <FieldSubject Name="Subject" Title="@TextProvider.Get("ROOM_SCHEDULER_DEFAULT_APPOINTMENT_TITLE")"></FieldSubject>
+            </ScheduleField>
+        </ScheduleEventSettings>
+        <ScheduleEvents TValue="AppointmentData"
+                        OnCellClick="OnCellClick" 
+                        OnCellDoubleClick="OnCellClick"
+                        OnEventClick="OnEventClick"
+                        OnEventDoubleClick="OnEventClick">
+        </ScheduleEvents>
+        <ScheduleTemplates>
+            <EditorTemplate>
+                @{
+                    var data = context as AppointmentData;
+                }
+                <EditForm @ref="editform" Model="@data" Context="editContext">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>                    
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_MEETING_FROM")</label>
+                        <SfDateTimePicker @bind-Value="data.StartTime" TValue="DateTime" Min="@MinDate" Max="@MaxDate"></SfDateTimePicker>
+                        <CustomValidationMessage For="@(() => data.StartTime)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_MEETING_TO")</label>
+                        <SfDateTimePicker @bind-Value="data.EndTime" TValue="DateTime" Min="@MinDate" Max="@MaxDate"></SfDateTimePicker>
+                        <CustomValidationMessage For="@(() => data.EndTime)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="scheduler-appointment-editor-footer">
+                        <div class="btn btn-secondary" @onclick="@HideAppointmentEditor">@TextProvider.Get("BUTTON_CANCEL")</div>
+                        <div class="btn btn-primary" @onclick="@(() => OnActionCompleted(data))">@TextProvider.Get("BUTTON_SAVE")</div>
+                    </div>
+                </EditForm>
+            </EditorTemplate>
+        </ScheduleTemplates>
+        <ScheduleViews>
+            <ScheduleView Option="View.Month">
+                <EventTemplate>
+                    @{
+                        var data = context as AppointmentData;
+                    }
+                    <div class="cell-item">
+                        @if (data.AppointmentString != null)
+                        {
+                            <div class="cell-time">@data.AppointmentString</div>
+                        }
+                        else
+                        {
+                            <div class="cell-time-start">@data.StartTime.ToString("dd.MM.yyyy HH:mm")</div>
+                        }
+                        <div class="cell-description">@data.Subject</div>
+                        @if (data.AppointmentString == null)
+                        {
+                            <div class="cell-time-start">@data.EndTime.ToString("dd.MM.yyyy HH:mm")</div>
+                        }
+                    </div>
+                </EventTemplate>
+            </ScheduleView>
+        </ScheduleViews>
+    </SfSchedule>
+</div>

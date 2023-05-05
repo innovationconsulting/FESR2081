@@ -1,0 +1,217 @@
+﻿.small-task-container{
+    width: 100%;
+    padding: 5px;
+    position: relative;
+    cursor: pointer;
+}
+.small-task-container:hover {
+    background-color: #eaeaea;
+}
+.small-task-wrapper .small-task-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.check-element {
+    min-width: 18px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #808080;
+    border-radius: 9px;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+}
+
+    .check-element:hover {
+        border-color: #0F7173;
+        background-color: #0F717388;
+    }
+
+.check-element-aktive {
+    border-color: #0F7173;
+    background-color: #0F7173CC;
+}
+
+    .check-element-aktive:hover {
+        border-color: #0F7173;
+        background-color: #0F717388;
+    }
+
+.title-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-left: 5px;
+}
+
+.title-element {
+    text-align: left;
+}
+
+.title-container .check-element{
+    margin-top: 2px;
+}
+
+.tag-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tag-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-radius: 10px;
+    border: 1px solid;
+    cursor: pointer;
+}
+.tag-description-light {
+    /*--switch: calc((80 - 60) * -100%);
+    color: hsl(0, 0%, var(--switch));*/
+    color: rgba(255,255,255,0.7);
+}
+.tag-description-dark {
+    /*--switch: calc((80 - 60) * -100%);
+    color: hsl(0, 0%, var(--switch));*/
+    color: rgba(0,0,0,0.7);
+}
+
+    .tag-item:hover {
+        opacity: 0.8;
+    }
+.checkitems-container{
+    padding-left: 28px;
+}
+.responsible-window-container {
+    min-width: 400px;
+    min-height: 300px;
+}
+.responsible-container{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1px;
+    padding: 5px;
+}
+    .responsible-container:hover{
+        background-color: #d9d9d9;
+    }
+    .footer-container {
+        padding-top: 5px;
+        padding-left: 5px;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+.deadline-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    margin-top: auto;
+    margin-bottom: 0px;
+    padding: 3px;
+}
+.window-close-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+.deadline-container:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.properties-container{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-left: 5px;
+    position: relative;
+}
+.small-task-remove-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 3px;
+    display: none;
+    background-color: #eaeaea;
+}
+
+.small-task-remove-container:hover{
+    color: #0F7173;
+    background-color: #d9d9d9;
+}
+.small-task-container:hover .small-task-remove-container{
+    display: block !important;
+}
+.responsible-quickadd-container{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: white;
+}
+.tag-quickadd-container {
+    position: absolute;
+    top: -10px;
+    left: 0px;
+    width: 100%;
+    background-color: white;
+}
+
+.priority-dropdown {
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    width: 170px;
+    max-height: 200px;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    overflow: auto;
+    padding: 5px;
+    z-index: 999;
+}
+.priority-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 10px;
+}
+.priority-item{
+    padding: 3px;
+}
+.priority-item:hover {
+    background-color: #F2F2F2;
+}
+.properties-icon:hover{
+    color: #0F7173 !important;
+}
+.overlay-container{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 996;
+}
+.context-display {
+    
+}
+.calendar-window-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.calendar-window-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.calendar-window-buttons button {
+    max-width: 110px;
+}

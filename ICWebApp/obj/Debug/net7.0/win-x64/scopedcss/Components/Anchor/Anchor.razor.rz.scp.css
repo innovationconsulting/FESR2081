@@ -1,0 +1,17 @@
+.card[b-vq9nc698oh]{
+    background-color: white;
+
+}
+.subtitle-small[b-vq9nc698oh]{
+    padding-bottom: 10px;
+}
+.anchor-title-container[b-vq9nc698oh] {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    word-break: break-word;
+}
+    .anchor-title-container a[b-vq9nc698oh] {
+        line-height: 50px;
+    }

@@ -1,0 +1,60 @@
+.row-tool-box[b-f306e2gskk] {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.row-value-dropdown[b-f306e2gskk]{
+    width: 99%;
+    max-width: 370px;
+}
+
+.row-value-switch[b-f306e2gskk] {
+    min-width: 80px;
+}
+
+.row-text-start[b-f306e2gskk] {
+    min-width: 150px;
+    text-align: right;
+}
+
+.row-text-ende[b-f306e2gskk]{
+    min-width: 120px;
+}
+
+.row-value-dropdown[b-f306e2gskk], .row-value-switch[b-f306e2gskk], .row-text-start[b-f306e2gskk], .row-text-ende[b-f306e2gskk] {
+    padding-top: 5px;
+}
+
+.field-container[b-f306e2gskk] {
+    color: #0F7173;
+}
+
+.row-actions[b-f306e2gskk] {
+    min-width: 120px !important;
+    margin: auto;
+}
+.element-sorter[b-f306e2gskk], .element-edit[b-f306e2gskk] {
+    margin: auto;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+.row-value-dropdown[b-f306e2gskk]{
+    max-width: 200px;
+    min-width: 150px;
+}
+
+.row-value-dropdown-container[b-f306e2gskk] {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 5px !important;
+}
+.sign-reference-container[b-f306e2gskk] {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.sign-name-reference-field[b-f306e2gskk], .sign-mail-reference-field[b-f306e2gskk] {
+    flex: 1;
+}

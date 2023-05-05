@@ -1,0 +1,234 @@
+﻿@if (Transactions != null)
+{
+    <TelerikWindow Modal="true" @bind-Visible="@WindowVisible" Width="900px">
+        <WindowTitle>
+            @TextProvider.Get("PAY_TRANSCATION_WINDOW_TITLE")
+        </WindowTitle>
+        <WindowContent>
+            <div class="payment-item-container">
+                @if (CurrentTransaction != null)
+                {
+                    @if (UserSelectionEnabled)
+                    {
+                        <div class="font-normal custom-color-primary">
+                            <UserSelectionComponent AUTH_Users_ID="@CurrentTransaction.AUTH_Users_ID" OnSelection="UserSelected"></UserSelectionComponent>
+                        </div>
+                        <div class="small-element-separator"></div>
+                    }
+
+                    <div class="font-normal custom-color-primary">
+                        @TextProvider.Get("PAY_TRANSACTION_TYPE")
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="payment-type-selection">
+                        @if (Types != null)
+                        {
+                            <TelerikDropDownList Data="@Types.OrderBy(p => p.Name)" @bind-Value="@CurrentTransaction.PAY_Type_ID"
+                                                 ValueField="ID" TextField="Name">
+                            </TelerikDropDownList>
+                        }
+                    </div>
+                    <div class="small-element-separator"></div>
+                    @if (IsApplicationPaymentList)
+                    {
+                        <div class="font-normal custom-color-primary">
+                            @TextProvider.Get("BACKEND_FORM_DEFINITION_PAYMENT_IDENTIFIER")
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="payment-type-selection">
+                            <TelerikDropDownList Data="PagoPaIdentifiers" @bind-Value="SelectedPagoPaIdentifier" ValueField="@nameof(PAY_PagoPa_Identifier.ID)">
+                                <ValueTemplate Context="ident">
+                                    @TextProvider.Get(ident.TEXT_SystemText_Code)
+                                </ValueTemplate>
+                                <ItemTemplate Context="ident">
+                                    @TextProvider.Get(ident.TEXT_SystemText_Code)
+                                </ItemTemplate>
+                            </TelerikDropDownList>
+                        </div>
+                        <div class="small-element-separator"></div>
+                    }
+                    <div class="font-normal custom-color-primary">
+                        @TextProvider.Get("PAY_TRANSACTION_PAY_DATE")
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="payment-type-selection">
+                        @if (Types != null)
+                        {
+                            <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="CurrentTransaction.PaymentDate" class="form-control"></TelerikDatePicker>
+                        }
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="font-normal custom-color-primary">
+                        @TextProvider.Get("PAY_TRANSACTION_DESCRIPTION")
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="payment-description-input">
+                        <TelerikEditor @bind-Value="CurrentTransaction.Description"
+                                       Tools="@Tools"
+                                       EditMode="@EditorEditMode.Div"
+                                       Class="font-normal"
+                                       Height="150px">
+                            <EditorSettings>
+                                <EditorPasteSettings ConvertMsLists="true"
+                                                     RemoveMsClasses="true"
+                                                     RemoveMsStyles="true"
+                                                     RemoveHtmlComments="true"
+                                                     RemoveAllAttributes="true"
+                                                     StripTags="@StripTags"
+                                                     RemoveAttributes="@RemoveAttributes">
+                                </EditorPasteSettings>
+                            </EditorSettings>
+                        </TelerikEditor>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="font-normal custom-color-primary">
+                        @TextProvider.Get("PAY_TRANSACTION_POSITIONS")
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="payment-detail-grid">
+                        @if (CurrentTransactionPositions != null)
+                        {
+                            <TelerikGrid Data="@CurrentTransactionPositions.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false"
+                                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" EditMode="GridEditMode.Inline"
+                                         OnDelete="@DeletePositionHandler" OnCreate="@CreatePositionHandler" OnUpdate="UpdatePositionHandler">
+                                <GridToolBarTemplate>
+                                    <GridCommandButton Command="Add" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                </GridToolBarTemplate>
+                                <GridColumns>
+                                    <GridColumn Field="@nameof(PAY_Transaction_Position.AmountFormatted)" Title="@TextProvider.Get("PAY_POSITION_TABLE_AMOUNT")" Width="250px"></GridColumn>
+                                    <GridColumn Field="@nameof(PAY_Transaction_Position.Description)" Title="@TextProvider.Get("PAY_POSITION_TABLE_DESCRIPTION")" Width="300px"></GridColumn>
+                                    @if (CurrentTransaction.PaymentDate == null || _newTransaction)
+                                    {
+                                        <GridCommandColumn Context="taskContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                                            @{
+                                                PAY_Transaction_Position item = taskContext as PAY_Transaction_Position;
+
+                                                @if (item != null)
+                                                {
+                                                    <div class="table-toolbar">
+                                                        <div class="table-sorter-buttons">
+                                                            @if (item.SortOrder != CurrentTransactionPositions.Min(p => p.SortOrder))
+                                                            {
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpPosition(item))" Icon="SvgIcon.ChevronUp" ShowInEdit="false"></GridCommandButton>
+                                                            }
+                                                            @if (item.SortOrder != CurrentTransactionPositions.Max(p => p.SortOrder))
+                                                            {
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownPosition(item))" Icon="SvgIcon.ChevronDown" ShowInEdit="false"></GridCommandButton>
+                                                            }
+                                                        </div>
+                                                        <GridCommandButton Class="btn btn-secondary" Command="Cancel" Icon="SvgIcon.Cancel" ShowInEdit="true"></GridCommandButton>
+                                                        <GridCommandButton ThemeColor="primary" Class="btn btn-primary" Command="Save" Icon="SvgIcon.Save" ShowInEdit="true"></GridCommandButton>
+                                                        <GridCommandButton Class="btn btn-secondary" Command="Delete" Icon="SvgIcon.Trash" ShowInEdit="false"></GridCommandButton>
+                                                        <GridCommandButton ThemeColor="primary" Class="btn btn-primary" Command="Edit" Icon="SvgIcon.Pencil" ShowInEdit="false"></GridCommandButton>
+                                                    </div>
+                                                }
+                                            }
+                                        </GridCommandColumn>
+                                    }
+                                </GridColumns>
+                            </TelerikGrid>
+                        }
+                    </div>
+                    @if (!string.IsNullOrEmpty(PaymentInvalidError))
+                    {
+                        <div class="small-element-separator"></div>
+                        <div style="color:red;">
+                            @PaymentInvalidError
+                        </div>
+                    }
+                    <div class="small-element-separator"></div>
+                    <div class="payment-buttons">
+                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                       OnClick="@WindowClose">
+                            @TextProvider.Get("BUTTON_CANCEL")
+                        </TelerikButton>
+                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                       OnClick="@SaveTransaction">
+                            @TextProvider.Get("BUTTON_SAVE")
+                        </TelerikButton>
+                    </div>
+                }
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="WindowClose"/>
+        </WindowActions>
+    </TelerikWindow>
+    <CustomLoader Visible="@(IsBusy)"
+                  Text="@null" Class="initial-data-loader">
+    </CustomLoader>
+    @if (ShowBollo)
+    {
+        <h5 class="custom-color-primary">
+            @TextProvider.Get("PAYMENT_USER_BOLLO_LIST")
+        </h5>
+        <div class="extra-small-element-separator"></div>
+        <div class="bollo-container">
+            <TelerikGrid Data="@TransactionBolloList" Pageable="false" Sortable="false" Resizable="false"
+                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                <GridColumns>
+                    <GridColumn Field="@nameof(PAY_Transaction_Position.BolloCreationDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("PAY_TABLE_BOLLO_CREATION_DATE")"></GridColumn>
+                    <GridColumn Field="@nameof(PAY_Transaction_Position.BolloNumber)" Title="@TextProvider.Get("PAY_TABLE_BOLLO_NUMBER")"></GridColumn>
+                    <GridColumn Field="@nameof(PAY_Transaction_Position.Amount)" DisplayFormat="{0:C}" Title="@TextProvider.Get("PAY_TABLE_BOLLO_AMOUNT")"></GridColumn>
+                </GridColumns>
+            </TelerikGrid>
+        </div>
+        <div class="small-element-separator"></div>
+        <h5 class="custom-color-primary">
+            @TextProvider.Get("PAYMENT_USER_TRANSACTION_LIST")
+        </h5>
+        <div class="extra-small-element-separator"></div>
+    }
+    <div class="payment-container">
+        <TelerikGrid Data="@Transactions.OrderBy(p => p.PaymentDate).ThenBy(p => p.CreationDate)" Pageable="false" Sortable="false" Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton OnClick="@AddTransaction" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+            <GridColumns>
+                @if (UserSelectionEnabled)
+                {
+                    <GridColumn Field="@nameof(PAY_Transaction.User)" Title="@TextProvider.Get("PAY_TABLE_USER")"></GridColumn>
+                }
+                <GridColumn Field="@nameof(PAY_Transaction.CreationDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("PAY_TABLE_CREATION_DATE")"></GridColumn>
+                <GridColumn Field="@nameof(PAY_Transaction.TotalAmount)" DisplayFormat="{0:C}" Title="@TextProvider.Get("PAY_TABLE_TOTAL_AMOUNT")"></GridColumn>
+                <GridColumn Field="@nameof(PAY_Transaction.Type)" Title="@TextProvider.Get("PAY_TABLE_PAYMENT_TYPE")"></GridColumn>
+                <GridColumn Field="@nameof(PAY_Transaction.PaymentDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("PAY_TABLE_PAYMENT_DATE")"></GridColumn>
+                <GridColumn Field="@nameof(PAY_Transaction.Description)" Title="@TextProvider.Get("PAY_TABLE_DESCRIPTION")" Width="300px">
+                    <Template Context="DescContext">
+                        @{
+                            PAY_Transaction item = DescContext as PAY_Transaction;
+                        }
+                        @if (item != null && item.Description != null)
+                        {
+                            var desc = (MarkupString)item.Description.Replace("<p>", "").Replace("</p>", "");
+
+                            <span>@desc</span>
+                        }
+                        else
+                        {
+                            <span></span>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridCommandColumn Context="taskContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        PAY_Transaction item = taskContext as PAY_Transaction;
+
+                        if (item != null)
+                        {
+                            if (item.TotalAmount > 152 || item.PaymentDate == null)
+                            {
+                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditTransaction(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                            }
+                            if (item.PaymentDate == null && item.ComunixSource != "FORMS_FILES")
+                            {
+                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteTransaction(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                            }
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+}

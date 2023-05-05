@@ -1,0 +1,124 @@
+﻿@using File = System.IO.File
+@if(!EnviromentService.IsMobile || DisplayPreviewAnySize)
+{
+    @if (FileInfo != null && FileStorage != null && FileStorage.FileImage != null)
+    {
+        var base64 = Convert.ToBase64String(FileStorage.FileImage);
+
+        <div class="telerik-report-container">
+            
+            @if (FileInfo.FileExtension.ToLower() == ".pdf")
+            {
+                <div class="telerik-report-toolbar">
+                    <TelerikButtonGroup>
+                        <ButtonGroupButton ThemeColor="secondary" Icon="SvgIcon.Fullscreen" OnClick="ShowFullScreen"></ButtonGroupButton>
+                    </TelerikButtonGroup>
+                </div>
+                <div class="telerik-report-viewer">
+                    @if(RerenderViewer)
+                    {
+                        <TelerikPdfViewer Data="@FileStorage.FileImage" Width="100%" Height="100%" Zoom="@CalcZoom()">
+                            <PdfViewerToolBar>
+                                @if (EnviromentService.IsMobile)
+                                {
+                                    <PdfViewerToolBarDownloadTool />
+                                    <PdfViewerToolBarZoomTool/>
+                                }
+                                else
+                                {
+                                    <PdfViewerToolBarPagerTool/>
+                                    <PdfViewerToolBarSpacer/>
+                                    <PdfViewerToolBarZoomTool/>
+                                    <PdfViewerToolBarSelectionTool/>
+                                    <PdfViewerToolBarSearchTool/>
+                                }
+                            
+                            </PdfViewerToolBar>
+                        </TelerikPdfViewer>
+                    }
+                </div>
+            }
+            else if(AllowedImageExtensions.Contains(FileInfo.FileExtension.ToLower()))
+            {
+                <div class="telerik-report-toolbar">
+                    <TelerikButtonGroup>
+                        <ButtonGroupButton ThemeColor="secondary" Icon="SvgIcon.Fullscreen" OnClick="ShowFullScreen"></ButtonGroupButton>
+                    </TelerikButtonGroup>
+                </div>
+                <div class="telerik-image-viewer">
+                    <img src="data:image/png;base64,@base64" class="internal viewerobject" />
+                </div>
+            }
+            else
+            {
+                <div class="form-detail-download" @onclick="@(() => DownloadFile(FileInfo.ID,true))">
+                    <div class="form-detail-download-icon">
+                        <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                    </div>
+                    <div class="form-detail-download-description font-normal">
+                        @(FileInfo.FileName + FileInfo.FileExtension)
+                    </div>
+                </div>
+            }
+        </div>
+    
+    <TelerikWindow @bind-Visible="@WindowVisible" Centered="true" Modal="true" Draggable="false" Class="telerik-preview-window">
+        <WindowTitle>
+            @TextProvider.Get("TELERIK_PREVIEW_TITLE")
+        </WindowTitle>
+        <WindowContent>
+        <div class="telerik-report-container">
+            @if (FileInfo.FileExtension == ".pdf")
+            {
+                <div class="telerik-report-viewer">
+                    <TelerikPdfViewer Data="@FileStorage.FileImage" Width="100%" Height="100%" Zoom="@CalcZoom()">
+                        <PdfViewerToolBar>
+                            @if (EnviromentService.IsMobile)
+                            {
+                                <PdfViewerToolBarDownloadTool />
+                                <PdfViewerToolBarZoomTool/>
+                            }
+                            else
+                            {
+                                <PdfViewerToolBarPagerTool/>
+                                <PdfViewerToolBarSpacer/>
+                                <PdfViewerToolBarZoomTool/>
+                                <PdfViewerToolBarSelectionTool/>
+                                <PdfViewerToolBarSearchTool/>
+                            }
+                            
+                        </PdfViewerToolBar>
+                    </TelerikPdfViewer>
+                </div>
+            }
+            else
+            {
+                <div class="telerik-image-viewer">
+                    <img src="data:image/png;base64,@base64" class="internal viewerobject" />
+                </div>
+            }
+        </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideFullScreen" />
+        </WindowActions>
+    </TelerikWindow>
+    }
+}
+else
+{     
+    @if (FileInfo != null)
+    {
+        var fileSize = FileProvider.GetFileSize(FileInfo.ID);
+
+        <div class="form-detail-download" @onclick="@(() => DownloadFile(FileInfo.ID))">
+            <div class="form-detail-download-icon">
+                <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+            </div>
+            <div class="form-detail-download-description font-normal">
+                @TextProvider.Get("MOBILE_PDF_PREVIEW") (@(fileSize/1024) kb)
+            </div>
+        </div>
+        <div class="extra-small-element-separator"></div>
+    }
+}

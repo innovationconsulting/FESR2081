@@ -1,0 +1,13 @@
+﻿.detail-button-container .btn, .cancel-button-container .btn{
+    margin-bottom: 0px !important;
+}
+.btn{
+    width: auto;
+    min-width: 200px;
+    box-shadow: none !important;
+}
+.service-item-button-container {
+    display: flex;
+    gap: 0 25px;
+    flex-wrap: wrap;
+}

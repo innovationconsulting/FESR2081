@@ -1,0 +1,17 @@
+﻿<TelerikRootComponent>
+    <div class="email-container font-normal">
+        <div class="verify-text-container">            
+            @{
+                MarkupString htmlString = new MarkupString(TextProvider.Get("VERIFYVERIFF_TEXT"));
+            }
+            @htmlString
+        </div>
+        <div class="email-footer">
+            <div class="small-element-separator"></div>
+            <div class="form-group-container">
+                <button class="btn btn-secondary" @onclick="@HandleLogout">@TextProvider.Get("LOGOUT_BUTTON")</button>
+                <div id="veriff-root"></div>
+            </div>
+        </div>
+    </div>
+</TelerikRootComponent>

@@ -1,0 +1,46 @@
+﻿@if (ContactsToAdd != null)
+{
+    <div class="contact-selection-container">
+        <div class="form-group">
+            <SfDropDownList DataSource="@ContactsToAdd" @bind-Value="@SelectedContact" TValue="Guid?" TItem="@V_CONT_Contact"
+                            Placeholder="@TextProvider.Get("CONT_CONTACT_PLACEHOLDER")">
+                <DropDownListTemplates TItem="V_CONT_Contact">
+                    <ItemTemplate>
+                        <span>
+                            <span class='name'>@((context as V_CONT_Contact).Fullname)</span>
+                            <span class='right-field'>
+                                <span>@((context as V_CONT_Contact).EMail)</span>
+                                <span class="edit-icon" @onclick="@(() => QuickEdit(context.ID))" @onclick:stopPropagation="true"><i class="fa-light fa-pen"></i></span>
+                            </span>
+                        </span>
+                    </ItemTemplate>
+                </DropDownListTemplates>
+                <DropDownListFieldSettings Text="Fullname" Value="ID"></DropDownListFieldSettings>
+            </SfDropDownList>
+        </div>
+        <div class="small-element-separator"></div>
+        <div class="segment-button-toolbar">
+            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Class="k-standalone-button" OnClick="@OnQuickAdd">@TextProvider.GetOrCreate("BUTTON_ADD")</TelerikButton>
+            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Class="k-standalone-button" OnClick="@OnSelect">@TextProvider.GetOrCreate("BUTTON_SAVE")</TelerikButton>
+        </div>
+    </div>
+    <style nonce="comunix123">
+        .right-field {
+            right: 15px;
+            position: absolute;
+        }
+    </style>
+    <TelerikWindow Modal="true" @bind-Visible="@OnShowQuickAdd" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("CONTACT_TITLE_ADD")
+        </WindowTitle>
+        <WindowContent>
+            <div class="contact-container">
+                <ICWebApp.Components.Contacts.EditComponent Data="@NewContact" OnSave="OnSaveQuickAdd" OnCancel="HideQuickAdd"></ICWebApp.Components.Contacts.EditComponent>
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideQuickAdd" />
+        </WindowActions>
+    </TelerikWindow>
+}

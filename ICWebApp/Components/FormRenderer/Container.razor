@@ -1,0 +1,59 @@
+﻿@if (Application != null && FormRendererHelper.GetApplicationFields() != null && DefinitionFields != null)
+{
+    var definitionFields = FormRendererHelper.GetDefinitionFields().Where(p => p.FORM_Definition_Field_Parent_ID == null).ToList();
+    var fields = FormRendererHelper.GetApplicationFields().Where(p => p.FORM_Definition_Field_ID != null && definitionFields.Select(p => p.ID).Contains(p.FORM_Definition_Field_ID.Value)).ToList();
+
+    <div class="form-renderer-container">
+        @foreach (var f in fields.Where(p => p.RepetitionParentID == Application.ID && p.RepetitionCount == 1).OrderBy(p => p.SortOrder))
+        {
+            var defintionField = DefinitionFields.FirstOrDefault(x => x.ID == f.FORM_Definition_Field_ID);
+
+            if (defintionField != null && defintionField.FORM_Definition_Fields_Type_ID != null)
+            {
+                var type = FormDefinitionProvider.GetDefinitionFieldType(defintionField.FORM_Definition_Fields_Type_ID.Value);
+
+                @if (type != null && type.IsContainer)
+                {
+                    var repetitions = FormRendererHelper.GetApplicationFields().Where(p => p.FORM_Definition_Field_ID == f.FORM_Definition_Field_ID && p.RepetitionParentID == Application.ID).ToList();
+                    int repCount = 1;
+
+                    foreach (var rep in repetitions.OrderBy(p => p.RepetitionCount).OrderBy(p => p.SortOrder))
+                    {
+                        if (rep.RepetitionCount > 1)
+                        {
+                            <div class="container-row-header">
+                                <div class="remove-button">
+                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.Trash" Class="k-square-button" Title="@TextProvider.Get("FORM_RENDERER_REMOVE_CONTAINER")"
+                                                   OnClick="@(() => RemoveContainer(new RepetitionField(Application.ID, defintionField, rep.RepetitionCount)))"></TelerikButton>
+                                </div>
+                            </div>
+                        }
+                        <ICWebApp.Components.FormRenderer.ElementContainer ApplicationField="@rep" DefinitionField="@defintionField" OnAddContainer="AddContainer" OnRemoveContainer="RemoveContainer"
+                                                       ReferenceList="@DefinitionReferences" Definition="@Definition" RepetitionItem="@rep.RepetitionCount">
+                        </ICWebApp.Components.FormRenderer.ElementContainer>
+
+                        repCount++;
+                    }
+
+                    @if (defintionField.CanBeRepeated == true)
+                    {
+                        <div class="element-container-add custom-color-primary" @onclick="@(() => AddContainer(new RepetitionField(Application.ID, defintionField, repCount)))">
+                            @TextProvider.Get("FORM_RENDERER_ADD_CONTAINER")
+                        </div>
+                    }
+                }
+                else
+                {
+                    <ICWebApp.Components.FormRenderer.Element ApplicationField="@f" DefinitionField="@defintionField" ReferenceList="@DefinitionReferences" Definition="@Definition"></ICWebApp.Components.FormRenderer.Element>
+                    <div class="default-space"></div>
+                }
+            }
+        }
+    </div>
+}
+else
+{
+    <div class="form-renderer-loader-container">
+        <CustomLoader Text="@TextProvider.Get("FORM_RENDERER_PREPARING")"></CustomLoader>
+    </div>
+}

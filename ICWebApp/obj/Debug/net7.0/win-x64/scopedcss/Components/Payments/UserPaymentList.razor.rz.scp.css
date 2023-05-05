@@ -1,0 +1,111 @@
+.payment-transaction-card[b-svr7n2plgg] {
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-left: 4px solid #0F7173;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+    .payment-transaction-card:last-of-type[b-svr7n2plgg] {
+        border-bottom: 1px solid #d9d9d9 !important;
+    }
+
+.transaction-card-to-pay[b-svr7n2plgg] {
+    border-left-color: #ed2c13 !important;
+}
+
+.payment-transaction-container[b-svr7n2plgg], .position-container[b-svr7n2plgg] {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.payment-detail-container[b-svr7n2plgg] {
+    flex: 1;
+}
+
+.payment-first-row[b-svr7n2plgg] {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.payment-second-row[b-svr7n2plgg] {
+    display: flex;
+    gap: 20px;
+    color: #808080;
+}
+.payment-third-row[b-svr7n2plgg]{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 45px;
+    margin-bottom: 5px;
+}
+
+.payment-transaction-description[b-svr7n2plgg], .position-description[b-svr7n2plgg] {
+    flex: 1;
+    color: #808080;
+}
+
+.payment-transaction-amount[b-svr7n2plgg] {
+    justify-self: flex-end;
+    color: black;
+}
+
+.payment-transaction-positions[b-svr7n2plgg] {
+    margin-left: 170px;
+    padding-top: 10px;
+}
+
+.payment-transaction-container:hover[b-svr7n2plgg] {
+    color: #0F7173;
+    cursor: pointer;
+}
+
+.payment-detail-button[b-svr7n2plgg] {
+    width: 25px;
+}
+
+.payment-detail-button-spacer[b-svr7n2plgg] {
+    width: 25px;
+}
+
+.payment-summary-button-spacer[b-svr7n2plgg] {
+    width: 15px;
+}
+
+.payment-transaction-status[b-svr7n2plgg] {
+    display: flex;
+    gap: 10px;
+    width: 150px;
+}
+.payment-transaction-date[b-svr7n2plgg]{
+    width: 150px;
+    padding-left:30px;
+}
+
+.transaction-status-icon[b-svr7n2plgg] {
+    text-align: center;
+    width: 20px !important;
+}
+
+.payment-transaction-creation-date[b-svr7n2plgg]{
+    text-align: end;
+    flex: 1;
+    color: #808080;
+}
+
+@media(max-width: 800px){
+    .payment-transaction-date[b-svr7n2plgg], .payment-transaction-status[b-svr7n2plgg]{
+        width: 120px !important;
+    }
+    .payment-first-row[b-svr7n2plgg], .payment-second-row[b-svr7n2plgg]{
+        gap: 5px !important;
+    }
+    .payment-transaction-positions[b-svr7n2plgg]{
+        margin-left: 125px !important;
+    }
+}

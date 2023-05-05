@@ -1,0 +1,46 @@
+﻿@if (Application != null && FormRendererHelper.GetApplicationFields() != null && DefinitionFields != null)
+{
+    var definitionFields = FormRendererHelper.GetDefinitionFields().Where(p => p.FORM_Definition_Field_Parent_ID == null).ToList();
+    var fields = FormRendererHelper.GetApplicationFields().Where(p => p.FORM_Definition_Field_ID != null && definitionFields.Select(p => p.ID).Contains(p.FORM_Definition_Field_ID.Value)).ToList();
+
+    <div class="form-renderer-container">
+        @foreach (var f in fields.Where(p => p.RepetitionParentID == Application.ID && p.RepetitionCount == 1).OrderBy(p => p.SortOrder))
+        {
+            var defintionField = DefinitionFields.FirstOrDefault(x => x.ID == f.FORM_Definition_Field_ID);
+
+            if (defintionField != null && defintionField.FORM_Definition_Fields_Type_ID != null)
+            {
+                var type = FormDefinitionProvider.GetDefinitionFieldType(defintionField.FORM_Definition_Fields_Type_ID.Value);
+
+                @if (type != null && type.IsContainer)
+                {
+                    var repetitions = FormRendererHelper.GetApplicationFields().Where(p => p.FORM_Definition_Field_ID == f.FORM_Definition_Field_ID && p.RepetitionParentID == Application.ID).ToList();
+                    int repCount = 1;
+
+                    foreach (var rep in repetitions.OrderBy(p => p.RepetitionCount).OrderBy(p => p.SortOrder))
+                    {
+                        <ICWebApp.Components.FormRendererMunicipal.ElementContainer ApplicationField="@rep" DefinitionField="@defintionField"
+                                                       ReferenceList="@DefinitionReferences" Definition="@Definition" RepetitionItem="@rep.RepetitionCount">
+                        </ICWebApp.Components.FormRendererMunicipal.ElementContainer>
+
+                        repCount++;
+                    }
+                }
+                else
+                {
+                    if(defintionField.ShowOnMunicipalSite)
+                    {
+                        <ICWebApp.Components.FormRendererMunicipal.Element ApplicationField="@f" DefinitionField="@defintionField" ReferenceList="@DefinitionReferences" Definition="@Definition"></ICWebApp.Components.FormRendererMunicipal.Element>
+                        <div class="default-space"></div>
+                    }
+                }
+            }
+        }
+    </div>
+}
+else
+{
+    <div class="form-renderer-loader-container">
+        <CustomLoader Text="@TextProvider.Get("FORM_RENDERER_PREPARING")"></CustomLoader>
+    </div>
+}

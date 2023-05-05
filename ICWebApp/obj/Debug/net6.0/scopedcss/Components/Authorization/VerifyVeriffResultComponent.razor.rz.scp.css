@@ -1,0 +1,73 @@
+
+@media (max-width: 680px) {
+
+    .email-data-container[b-jmeeac2agz] {
+        max-height: unset !important;
+        overflow: unset !important;
+        height: auto;
+    }
+
+    .email-footer[b-jmeeac2agz] {
+        position: unset !important;
+        bottom: unset !important;
+        left: unset !important;
+        border-top: 0px !important;
+    }
+
+    .email-header[b-jmeeac2agz] {
+        position: unset !important;
+        border-bottom: 0px !important;
+    }
+
+    .email-title[b-jmeeac2agz] {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+
+.email-row[b-jmeeac2agz] {
+    display: flex;
+}
+
+.email-row-left[b-jmeeac2agz] {
+    justify-content: left;
+}
+
+.email-row-right[b-jmeeac2agz] {
+    justify-content: right;
+    margin-left: 15px;
+}
+
+.email-edit-container[b-jmeeac2agz]{
+    display: flex;
+    gap: 10px;
+}
+.email-edit-icon[b-jmeeac2agz] {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 18px !important;
+    padding: 3px;
+}
+.email-edit-text[b-jmeeac2agz] {
+    line-height: 30px;
+}
+
+.loader-gif-container[b-jmeeac2agz]{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.veriff-response-container[b-jmeeac2agz] {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.veriff-success[b-jmeeac2agz] {
+    color: green;
+}
+
+.veriff-error[b-jmeeac2agz]{
+    color: red;
+}

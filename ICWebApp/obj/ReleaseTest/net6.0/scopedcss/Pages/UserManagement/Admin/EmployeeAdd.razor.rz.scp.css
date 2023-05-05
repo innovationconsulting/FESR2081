@@ -1,0 +1,32 @@
+.edit-rights-container[b-kp5sb411g9]
+{
+    padding: 20px;
+    border: 1px solid #F2F2F2;
+}
+
+.right-item-container-header[b-kp5sb411g9], .right-item-container[b-kp5sb411g9] {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.right-item-container-header[b-kp5sb411g9]{
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #F2F2F2;
+    padding-bottom: 10px;
+}
+
+.right-description-header[b-kp5sb411g9], .right-description[b-kp5sb411g9] {
+    flex: 1;
+}
+
+.right-enabled-container-header[b-kp5sb411g9], .right-enabled-container[b-kp5sb411g9]{
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+}
+.right-notif-enabled-container-header[b-kp5sb411g9], .right-notif-enabled-container[b-kp5sb411g9] {
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+}

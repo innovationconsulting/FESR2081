@@ -1,0 +1,100 @@
+﻿@using System.Linq.Expressions
+@using ICWebApp.Application.Interface.Provider
+@using System.ComponentModel.DataAnnotations;
+
+@typeparam TValue
+
+@{
+    @foreach (string message in EditContext.GetValidationMessages(_fieldIdentifier))
+    {       
+        string fieldName = _fieldIdentifier.FieldName;
+        string secondFieldName = null;
+        string validationCode = null;
+        var typeOfElement = _fieldIdentifier.Model.GetType();
+
+        if (message.Contains("required"))
+        {
+            validationCode = "VALIDATION_REQUIRED";
+        }
+        else if(message.Contains("NO_MAIL"))
+        {
+            validationCode = "VALIDATION_EMAIL";
+        }
+        else if(message.Contains("NO_MATCH"))
+        {
+            validationCode = "VALIDATION_NOMATCH";
+
+            var messages = message.Split(";");
+
+            if(messages != null && message.Count() > 1 && messages[1] != null)
+            {
+                secondFieldName = TextProvider.Get(messages[1]);
+            }
+        }
+        else if (message.Contains("NOT_RIGHT"))
+        {
+            validationCode = "VALIDATION_NOT_RIGHT";
+        }
+        else if (message.Contains("OUT_OF_RANGE"))
+        {
+            validationCode = "VALIDATION_OUT_OF_RANGE";
+        }
+        else if (message.Contains("VALIDATION_ALREADY_EXISTS"))
+        {
+            validationCode = "VALIDATION_ALREADY_EXISTS";
+        }
+        else if (message.Contains("VALIDATION_REGEX"))
+        {
+            validationCode = "VALIDATION_REGEX";
+        }
+        else
+        {
+            validationCode = "VALIDATION_INVALID";
+        }
+        
+        if (TextCode != null)
+        {
+            fieldName = TextProvider.Get(TextCode);
+        }
+
+        if (validationCode != null)
+        {
+            string errorMessage = MSGProvider.GetValidationMessage(validationCode);
+
+            if(fieldName != null)
+            {
+                errorMessage = errorMessage.Replace("{0}", "'" + fieldName + "'");
+            }
+
+            if(secondFieldName != null)
+            {
+                errorMessage = errorMessage.Replace("{1}", "'" + secondFieldName + "'");
+            }
+
+            <div style="color: red;">@(errorMessage)</div>
+        }
+    }
+}
+
+@code {
+    [Inject] IMSGProvider MSGProvider { get; set; }
+    [Inject] ITEXTProvider TextProvider { get; set; }
+    [CascadingParameter] private EditContext EditContext { get; set; }
+    [Parameter] public Expression<Func<TValue>> For { get; set; }
+    [Parameter] public string TextCode { get; set; }
+
+    private FieldIdentifier _fieldIdentifier;
+
+    protected override void OnInitialized()
+    {
+        _fieldIdentifier = FieldIdentifier.Create(For);
+        EditContext.OnValidationStateChanged += EditContext_OnValidationStateChanged;
+
+        base.OnInitialized();
+    }
+
+    private void EditContext_OnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+}

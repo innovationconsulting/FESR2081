@@ -1,0 +1,129 @@
+﻿@page "/Backend/Form/Administration"
+
+@layout MainLayout
+
+<div class="segment-container custom-background-default">
+
+    <div class="filter-container">
+        <ICWebApp.Components.Form.Filter.FilterComponent Filter="@Filter" OnSearch="FilterSearch"></ICWebApp.Components.Form.Filter.FilterComponent>
+    </div>
+
+    <div class="element-separator"></div>
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                      Text="@null" Class="initial-data-loader">
+        </CustomLoader>   
+        <div class="administration-grid">
+            <TelerikGrid Data="@Data.OrderByDescending(p => p.SubmitAt)" Pageable="true" PageSize="15" Sortable="false" Resizable="true" OnStateChanged="@((GridStateEventArgs<V_FORM_Application> args) => OnStateChangedHandler(args))" OnStateInit="@((GridStateEventArgs<V_FORM_Application> args) => OnStateInitHandler(args))"
+                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="true" ShowColumnMenu="true" OnRowClick="@OnRowClick">
+                <GridSettings>
+                    <GridColumnMenuSettings Sortable="false" Lockable="false" FilterMode="ColumnMenuFilterMode.None">
+                        <GridColumnMenuChooser ></GridColumnMenuChooser>
+                    </GridColumnMenuSettings>
+                </GridSettings>
+                <GridToolBarTemplate>
+                    <div class="custom-grid-toolbar">
+                        <div class="custom-grid-toolbar-left">
+                            @if (MunicipalityHasMantainances)
+                            {
+                                <TelerikButton OnClick="@AddManteinance" ButtonType="ButtonType.Button" ThemeColor="Primary" Class="button-flex-start" Icon="SvgIcon.Plus">@TextProvider.Get("ADD_MANTEINANCE")</TelerikButton>
+                            }
+                        </div>
+                        <div class="custom-grid-toolbar-right">
+                            <GridCommandButton Command="ExcelExport" Icon="@SvgIcon.FileExcel">@TextProvider.Get("BUTTON_EXPORT")</GridCommandButton>
+                        </div>
+                    </div>
+                </GridToolBarTemplate>
+                <GridColumns>
+                    <GridColumn ShowColumnMenu="false" Field="@nameof(V_FORM_Application.ProgressivNumber)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("PROGRESSIV_NUMBER")"></GridColumn>
+                    <GridColumn ShowColumnMenu="false" Field="@nameof(V_FORM_Application.SubmitAt)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_SUBMITTED")"></GridColumn>
+                    <GridColumn ShowColumnMenu="false" Field="@nameof(V_FORM_Application.Authority)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_AUTHORITY")"></GridColumn>
+                    <GridColumn ShowColumnMenu="false" Field="@nameof(V_FORM_Application.FormName)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_FORMNAME")"></GridColumn>
+                    <GridColumn ShowColumnMenu="false" Field="@nameof(V_FORM_Application.Name)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_USER")"></GridColumn>
+                    <GridColumn ShowColumnMenu="false" Field="@nameof(V_FORM_Application.Status)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_STATUS")">
+                        <Template Context="statusContext">
+                            @{
+                                V_FORM_Application item = statusContext as V_FORM_Application;
+
+                                if (item != null)
+                                {
+                                    <span class="icon-element">
+                                        <TelerikIcon Icon="@item.StatusIcon"></TelerikIcon>
+                                        <span style="margin-left: 5px;">
+                                            @item.Status
+                                        </span>
+                                    </span>
+                                }
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn ShowColumnMenu="false" Field="@nameof(V_FORM_Application.Mantainance_Title)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_MANTEINANCE_TITLE")"></GridColumn>
+                    <GridColumn ShowColumnMenu="false" Field="@nameof(V_FORM_Application.Responsible)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_RESPONSIBLE")"></GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.PriorityStatus)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_PRIORITY")">
+                        <Template Context="statusContext">
+                            @{
+                                V_FORM_Application item = statusContext as V_FORM_Application;
+
+                                if (item != null && item.PriorityStatus != null && item.PriorityIcon != null)
+                                {
+                                    <span class="icon-element">
+                                        <TelerikIcon Icon="@item.PriorityIcon"></TelerikIcon>
+                                        <span style="margin-left: 5px;">
+                                            @item.PriorityStatus
+                                        </span>
+                                    </span>
+                                }
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.LegalDeadline)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_DEADLINE")"></GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.EstimatedDeadline)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_ESTIMATED")"></GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.PayedAt)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_PAYEDDATE")"></GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.Credit)" DisplayFormat="{0:C}" Title="@TextProvider.Get("APPLICANT_CREDIT")"></GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.IsMunicipal)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_ONLY_MUNICIPALITY")" Width="180px">
+                        <Template>
+                            @{
+                                V_FORM_Application item = context as V_FORM_Application;
+                                <TelerikSwitch @bind-Value="@item.IsMunicipal" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.IsMunicipalCommittee)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_MUNICIPALITY_COMMITTEE")" Width="180px">
+                        <Template>
+                            @{
+                                V_FORM_Application item = context as V_FORM_Application;
+                                <TelerikSwitch @bind-Value="@item.IsMunicipalCommittee" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.MunicipalDeadline)" DisplayFormat="{0:dd.MM.yyyy}" Title="@TextProvider.Get("FORM_MANTAINANCE_INPUT_MUNICIPAL_DEADLINE")"></GridColumn>
+                    <GridColumn Visible="false" ShowColumnMenu="false" Field="@nameof(V_FORM_Application.ArchivedBool)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_ARCHIVED")" Width="120px">
+                        <Template>
+                            @{
+                                V_FORM_Application item = context as V_FORM_Application;
+                                <TelerikSwitch @bind-Value="@item.ArchivedBool" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridCommandColumn ShowColumnMenu="true" VisibleInColumnChooser="false" Width="120px" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_ACTIONS")">
+                        @{
+                            V_FORM_Application item = context as V_FORM_Application;
+
+                            if (item != null)
+                            {
+                                @if (item.IsManualInput == true && item.FORM_Application_Status_ID == FORMStatus.ToSign && item.ID != null && item.FORM_Definition_Category_ID == Guid.Parse("93efca6b-c191-473d-b49a-4d6e4d2117e5")) //TO SIGN
+                                {
+                                    <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditManualInput(item.ID))" Icon="@("fa-duotone fa-pen-fancy")" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                                }
+                                else if (item.ID != null) //COMITTED
+                                {
+                                    <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => ShowDetailPage(item.ID))" Icon="@("fa-duotone fa-memo-circle-info")" title="@TextProvider.Get("TOOLTIP_DETAIL")"></GridCommandButton>
+                                }
+                            }
+                        }
+                    </GridCommandColumn>
+                </GridColumns>
+            </TelerikGrid>
+        </div>
+    </div>
+</div>    

@@ -1,0 +1,8 @@
+.detail-button-container .btn[b-qqhn7yaxdl], .cancel-button-container .btn[b-qqhn7yaxdl]{
+    margin-bottom: 0px !important;
+}
+.btn[b-qqhn7yaxdl]{
+    width: auto;
+    min-width: 200px;
+    box-shadow: none !important;
+}

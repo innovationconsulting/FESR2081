@@ -1,0 +1,12 @@
+﻿.form-renderer-loader
+{
+    height: 50px;
+    width: 100px;
+    margin: auto;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.container-error {
+    color: red;
+}

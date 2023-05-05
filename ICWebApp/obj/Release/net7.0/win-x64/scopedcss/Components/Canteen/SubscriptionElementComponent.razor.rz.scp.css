@@ -1,0 +1,63 @@
+h5[b-8gh1dwec23], .h5[b-8gh1dwec23] {
+    color: #0f7173;
+}
+
+.preview-container[b-8gh1dwec23] {
+    height: 500px;
+}
+
+.preview-url-container[b-8gh1dwec23] {
+    height: 100%;
+}
+
+.viewerobject[b-8gh1dwec23] {
+    min-height: 500px;
+}
+
+.mensa-change-container[b-8gh1dwec23] {
+    display: flex;
+    gap: 10px;
+}
+
+.element-group-container[b-8gh1dwec23] {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+    text-align: start;
+}
+
+.demand-status-container[b-8gh1dwec23] {
+    margin: 0 5px;
+}
+
+.element-group[b-8gh1dwec23] {
+    width: 48%;
+    border: 1px solid #d9d9d9;
+    padding: 10px;
+    border-radius: 3px;
+    line-height: 38px;
+}
+.element-group-row[b-8gh1dwec23]{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.element-group-row-description[b-8gh1dwec23]{
+    width: 200px;
+}
+.element-editable[b-8gh1dwec23]{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+    .element-editable .btn[b-8gh1dwec23] {
+        width: 38px;
+        height: 38px;
+    }
+.editable-row[b-8gh1dwec23]{
+    line-height: 38px;
+}
+.different-value[b-8gh1dwec23]{
+    color: red !important;
+}

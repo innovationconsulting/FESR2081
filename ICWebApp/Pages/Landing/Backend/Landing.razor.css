@@ -1,0 +1,132 @@
+﻿.unread-chat
+{
+    font-weight: bold;
+}
+.chat-popup-container{
+    height: 600px;
+}
+.dashboard-container {
+    display: inline-block;
+    width: calc(100vw - 160px);
+    width: -moz-calc(100vw - 160px);
+    width: -webkit-calc(100vw - 160px);
+    width: -o-calc(100vw - 160px);
+}
+.dashboard-filter-container {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+    .dashboard-filter-container .filter-element {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+.authority-tag {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+
+.tile-header-template {
+    display: flex;
+    gap: 10px;
+}
+.tile-header-content {
+}
+
+.tile-header-icon {
+    width: 25px;
+    font-size: 20px;
+}
+.chart-page {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+.chart-title{
+    text-align: center;
+}
+.dashboard-card {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    padding: 20px;
+    width: 100%;
+}
+
+.dashboard-wizard-page {
+    height: 100%;
+    padding: 10px;
+ 
+}
+.dashboard-no-data{
+    height: 150px;
+    text-align: center;
+}
+
+.tasks-overview-page {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    padding: 20px;
+}
+
+.row-title{
+    cursor: pointer;
+}
+
+.tasks-overview-quick-action{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tasks-redirect {
+    color: #0F7173;
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+    align-items: center;
+    cursor: pointer;
+}
+.tasks-redirect i{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+    .tasks-redirect:hover {
+        text-decoration: underline;
+        color: #1DA2AF;
+    }
+table{
+    width: 100%;
+}
+.task-table-third-level-container{
+    margin-left: 25px;
+}
+.third-level-spacer {
+    height: 5px;
+}
+.task-context-container{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.authority-tag {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}

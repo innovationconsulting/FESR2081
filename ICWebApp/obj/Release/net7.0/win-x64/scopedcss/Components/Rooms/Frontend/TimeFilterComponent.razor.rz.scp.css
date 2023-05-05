@@ -1,0 +1,149 @@
+.room-filter-component[b-fbzc8xnwuz] {
+    padding: 15px;
+    width: 100%;
+}
+    .meeting-datetime-picker-from[b-fbzc8xnwuz],
+    .meeting-datetime-picker-to[b-fbzc8xnwuz] {
+        max-width: 250px;
+        width: 100%;
+    }
+
+.meeting-filter-container[b-fbzc8xnwuz] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.meeting-date[b-fbzc8xnwuz] {
+    width: 60%;
+}
+.meeting-time[b-fbzc8xnwuz]{
+    width: 40%;
+    min-width: 100px;
+}
+/*.meeting-duration {
+    width: 120px;
+}*/
+.meeting-value[b-fbzc8xnwuz]{
+    display: flex;
+    gap: 10px;
+}
+.meeting-label[b-fbzc8xnwuz]{
+    height: 30px;
+}
+.meeting-toolbar[b-fbzc8xnwuz] {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+.meeting-toolbar-content[b-fbzc8xnwuz]{
+}
+.create-series-button[b-fbzc8xnwuz] {
+    color: #0F7173;
+    cursor: pointer;
+    height: 30px;
+}
+    .create-series-button:hover[b-fbzc8xnwuz] {
+        text-decoration: underline;
+        color: #1DA2AF
+    }
+.create-series-button i[b-fbzc8xnwuz]{
+    margin-left: 5px;
+    margin-right: 10px;
+}
+.series-top-bar[b-fbzc8xnwuz]{
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+}
+.series-meeting-container[b-fbzc8xnwuz] {
+    border: 1px solid #f2f2f2;
+    padding: 10px;
+}
+.series-meeting-container-second-row[b-fbzc8xnwuz] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+.container-title[b-fbzc8xnwuz] {
+    background-color: white;
+    margin-top: -22px;
+    padding-right: 10px;
+    width: fit-content;
+}
+.meeting-series-from[b-fbzc8xnwuz], .meeting-series-to[b-fbzc8xnwuz] {
+    width: 100%;
+    max-width: 150px;
+}
+.series-time[b-fbzc8xnwuz]{
+    width: 100%;
+}
+.series-type-container-second-row[b-fbzc8xnwuz]{
+    display: flex;
+    justify-content: space-between;
+}
+.type-container-left .element-radio-button[b-fbzc8xnwuz] {
+    height: 40px;
+}
+.type-container-left[b-fbzc8xnwuz] {
+    padding-right: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.type-container-right[b-fbzc8xnwuz] {
+    margin-left: 15px;
+    padding-left: 15px;
+    border-left: 1px solid #f2f2f2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.advanced-radio-button[b-fbzc8xnwuz]{
+    display: flex; 
+    justify-content: flex-start;
+    gap: 10px;
+    line-height: 34px;
+    flex-wrap: wrap;
+}
+.daily-day-input[b-fbzc8xnwuz]{
+    display: flex;
+    justify-content: flex-start;
+}
+.radio-label[b-fbzc8xnwuz]{
+    margin-left: -6px;
+}
+.weekly-input[b-fbzc8xnwuz] {
+    display: flex;
+    gap: 10px;
+    height: 38px;
+    line-height: 34px;
+}
+.week-day-container[b-fbzc8xnwuz]{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.monthly-input[b-fbzc8xnwuz] {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.meeting-duration-input[b-fbzc8xnwuz] {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+.meeting-series-duration-from[b-fbzc8xnwuz] {
+    display: flex;
+    gap: 10px;
+    line-height: 34px;
+    height: 38px;
+}
+.series-search-container[b-fbzc8xnwuz]{
+    display: flex;
+    justify-content: flex-start;
+}

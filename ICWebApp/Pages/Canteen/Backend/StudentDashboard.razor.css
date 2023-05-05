@@ -1,0 +1,59 @@
+﻿.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.dashboard-card {
+    width: 49%;
+    text-align: center;
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    padding: 20px;
+}
+.dashboard-card-large{
+    width: 100%;
+}
+.numbers-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+.number-item {
+    padding: 20px;
+    width: 23%;
+}
+    .number-item .value-container {
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+.number-total .value-container {
+    color: #808080;
+}
+.number-default .value-container {
+    color: #808080;
+}
+.dashboard-card-toolbar{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.list-container-item {
+    border: 1px solid #d9d9d9;
+}
+    .list-container-item td{
+        padding: 5px;
+    }
+.list-buttons-toolbar{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.list-header-toolbar, .list-toolbar{
+    width: 350px;
+}
+.list-header-number, .list-number{
+    width: 200px;
+}
+.list-container td{
+    text-transform: unset !important;
+}

@@ -1,0 +1,19 @@
+
+.application-label[b-m3asxoguy9] {
+    width: 250px;
+}
+
+.application-value[b-m3asxoguy9] {
+    font-weight: 600;
+    word-break: break-all;
+}
+.phone-container[b-m3asxoguy9] {
+    justify-content: flex-start;
+    gap: 5px;
+}
+    .phone-container .btn[b-m3asxoguy9] {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0px;
+        line-height: 36px;
+    }

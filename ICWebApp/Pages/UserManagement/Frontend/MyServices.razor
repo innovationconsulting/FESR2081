@@ -1,0 +1,165 @@
+﻿@page "/User/Services"
+@layout FrontendLayout
+
+
+<AuthorizeView>
+    <Authorized Context="authorizedContext">
+        <div class="container personal-area">
+            <div class="col-12 p-0">
+                <div class="cmp-nav-tab mb-4 mb-lg-5 mt-lg-4">
+                    <ul class="nav nav-tabs nav-tabs-icon-text w-100 flex-nowrap" id="myTab" role="tablist">
+                        <li class="nav-item w-100 me-2 p-1" role="tab">
+                            <a @onclick="@(() => ClearAnchors("services"))" class="nav-link justify-content-start pr-10 pb-2 ps-1 pe-lg-none pb-lg-15 ps-lg-3 me-lg-5 text-tab active" href="#services-tab" aria-current="page" aria-controls="tab1" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false">
+                                <svg class="icon me-1 mr-lg-10" aria-hidden="true">
+                                    <use href="css/bootstrap-italia/svg/sprites.svg#it-files"></use>
+                                </svg>
+                                @TextProvider.Get("PERSONAL_AREA_MY_SERVICES")
+                            </a>
+                        </li>
+                        <li class="nav-item w-100 me-2 p-1" role="tab">
+                            <a @onclick="@(() => ClearAnchors("messages"))" class="nav-link justify-content-start pr-10 pb-2 ps-1 pe-lg-none pb-lg-15 ps-lg-3 me-lg-5 text-tab" href="#message-tab" aria-current="page" aria-controls="tab2" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false">
+                                @{
+                                    var css = "";
+                                    if (UnreadMessages.Count != 0)
+                                        css += "unread-messages t1r2";
+                                }
+                                <span class="@css">
+                                    <svg class="icon me-1 mr-lg-10" aria-hidden="true">
+                                        <use href="css/bootstrap-italia/svg/sprites.svg#it-mail"></use>
+                                    </svg>
+                                </span>
+
+                                @TextProvider.Get("PERSONAL_AREA_MESSAGES")
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="it-page-sections-container">
+            <div class="tab-content">
+                <div class="tab-pane active show" id="services-tab" role="tabpanel">
+                    <div class="container">
+                        <div class="row mt-lg-80 mt-3 mb-4">
+                            @if ((ApplicationList != null && ApplicationList.Count() > 0) ||
+                                 (ManteinanceList != null && ManteinanceList.Count() > 0) ||
+                                 (BookingList != null && BookingList.Count() > 0) ||
+                                 (OrganisationList != null && OrganisationList.Count() > 0)
+                                )
+                            {
+                                <div class="col-lg-3 mb-4 border-col hide-max-576">
+                                    <AnchorList></AnchorList>
+                                </div>
+                                <div class="col-lg-8 offset-lg-1">
+                                    <div class="user-service-container it-page-sections-container">
+                                        @if (ApplicationList != null && ApplicationList.Count() > 0)
+                                        {
+                                            <Anchor AddAnchor="false" Title="@TextProvider.Get("FRONTEND_SERVICES_APPLICATIONS")" ID="@TextProvider.Get("FRONTEND_SERVICES_APPLICATIONS")" Order="1">
+                                                <ICWebApp.Components.User.Frontend.ServicesContainer Data="ApplicationList"></ICWebApp.Components.User.Frontend.ServicesContainer>
+                                            </Anchor>
+                                        }
+                                        @if (ManteinanceList != null && ManteinanceList.Count() > 0)
+                                        {
+                                            <Anchor AddAnchor="false" Title="@TextProvider.Get("FRONTEND_SERVICES_MANTEINANCE")" ID="@TextProvider.Get("FRONTEND_SERVICES_MANTEINANCE")" Order="2">
+                                                <ICWebApp.Components.User.Frontend.ServicesContainer Data="ManteinanceList"></ICWebApp.Components.User.Frontend.ServicesContainer>
+                                            </Anchor>
+                                        }
+                                        @if (BookingList != null && BookingList.Count() > 0)
+                                        {
+                                            <Anchor AddAnchor="false" Title="@TextProvider.Get("FRONTEND_SERVICES_BOOKINGS")" ID="@TextProvider.Get("FRONTEND_SERVICES_BOOKINGS")" Order="3">
+                                                <ICWebApp.Components.User.Frontend.ServicesContainer Data="BookingList"></ICWebApp.Components.User.Frontend.ServicesContainer>
+                                            </Anchor>
+                                        }
+                                        @if (OrganisationList != null && OrganisationList.Count() > 0)
+                                        {
+                                            <Anchor AddAnchor="false" Title="@TextProvider.Get("FRONTEND_SERVICES_ORGANISATIONS")" ID="@TextProvider.Get("FRONTEND_SERVICES_ORGANISATIONS")" Order="4">
+                                                <ICWebApp.Components.User.Frontend.ServicesContainer Data="OrganisationList"></ICWebApp.Components.User.Frontend.ServicesContainer>
+                                            </Anchor>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-12">
+                                    @TextProvider.Get("FRONTEND_USER_SERVICE_NO_SERVICE")
+                                </div>
+                            }
+                        </div>
+                        <TelerikWindow Modal="true" @bind-Visible="@ShowBankDataWindow" Width="800px">
+                            <WindowTitle>
+                                @TextProvider.Get("CANCEL_BOOKING_WINDOW_TITLE")
+                            </WindowTitle>
+                            <WindowContent>
+                                <EditForm Model="@CurrentBooking" OnValidSubmit="SaveCancelBooking" Context="cancelContext">
+                                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                                    <div class="user-creation-container">
+                                        <div class="form-group">
+                                            <label class="form-label">@TextProvider.Get("ORG_KONTOINHABER")</label>
+                                            <InputText @bind-Value="CurrentBooking.Cancellation_OwnerReq" class="form-control"></InputText>
+                                            <CustomValidationMessage For="@(() => CurrentBooking.Cancellation_OwnerReq)" TextCode="ORG_KONTOINHABER"/>
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">@TextProvider.Get("ORG_BANKNAME")</label>
+                                            <InputText @bind-Value="CurrentBooking.Cancellation_BancReq" class="form-control"></InputText>
+                                            <CustomValidationMessage For="@(() => CurrentBooking.Cancellation_BancReq)" TextCode="ORG_BANKNAME"/>
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">@TextProvider.Get("ORG_IBAN")</label>
+                                            <InputText @bind-Value="CurrentBooking.Cancellation_IBANReq" class="form-control"></InputText>
+                                            <CustomValidationMessage For="@(() => CurrentBooking.Cancellation_IBANReq)" TextCode="ORG_IBAN"/>
+                                        </div>
+                                        <div class="element-separator"></div>
+                                        <div class="form-button-container">
+                                            <button class="btn btn-secondary" type="button" @onclick="HideCancelBooking">@(TextProvider.Get("BUTTON_CANCEL"))</button>
+                                            <button class="btn btn-primary" type="submit">@(TextProvider.Get("BUTTON_BOOKING_CANCEL"))</button>
+                                        </div>
+                                    </div>
+                                </EditForm>
+                            </WindowContent>
+                            <WindowActions>
+                                <WindowAction Name="Close" OnClick="@HideCancelBooking"/>
+                            </WindowActions>
+                        </TelerikWindow>
+                    </div>
+                </div>
+                <div class="tab-pane" id="message-tab" role="tabpanel">
+                    <div class="container">
+                        <div class="row mt-lg-80 mt-3 mb-4">
+                            @if (MessageList != null && MessageList.Count() > 0)
+                            {
+                                <div class="col-lg-3 mb-4 border-col hide-max-576">
+                                    <AnchorList></AnchorList>
+                                </div>
+                                <div class="col-lg-8 offset-lg-1">
+                                    <div class="user-service-container it-page-sections-container">
+                                        @if (MessageList != null && MessageList.Count() > 0)
+                                        {
+                                            <Anchor AddAnchor="false" Title="@TextProvider.Get("FRONTEND_SERVICES_MESSAGES")" ID="@TextProvider.Get("FRONTEND_SERVICES_MESSAGES")" Order="1">
+                                                <button type="button" class="service-item-text-button" @onclick="MarkMessagesRead">@TextProvider.GetOrCreate("MARK_MESSAGES_READ")</button>
+                                                <div class="small-element-separator"></div>
+                                                <ICWebApp.Components.User.Frontend.ServicesContainer Data="MessageList"></ICWebApp.Components.User.Frontend.ServicesContainer>
+                                            </Anchor>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-12">
+                                    @TextProvider.Get("FRONTEND_SERVICES_NO_MESSAGES")
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

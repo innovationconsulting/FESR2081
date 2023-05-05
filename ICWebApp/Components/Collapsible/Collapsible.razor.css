@@ -1,0 +1,17 @@
+﻿.collapsible-container-title-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    cursor: pointer;
+    color: black;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+    .collapsible-container-title-row:hover {
+        color: #0F7173 !important;
+        border-color: #0F7173;
+    }
+
+.collapsible-container-content{
+    margin-top: 20px;
+}

@@ -1,0 +1,85 @@
+﻿@if (IsUser == true)
+{
+    <div class="user-selection-container">
+        @if (ShowTitle)
+        {
+            <div class="user-selection-title font-normal custom-color-primary">
+                @TextProvider.Get("USER_SELECTION_TITLE")
+            </div>
+            <div class="extra-small-element-separator"></div>
+        }
+        <div class="user-selection-content">
+            <div class="user-selection-dropdown">
+                <TelerikComboBox ScrollMode="@DropDownScrollMode.Virtual"
+                            Data="@UserList"
+                            ValueField="@(nameof(AUTH_Users.ID))"
+                            TextField="@(nameof(AUTH_Users.SearchName))"
+                            @bind-Value="@AUTH_Users_ID"
+                            Width="100%"
+                            Filterable="true"
+                            PageSize="10"
+                            ItemHeight="30"
+                            OnChange="OnUserSelected"
+                            Placeholder="@TextProvider.Get("USER_SELECTION_PLACEHOLDER")"
+                            FilterOperator="@StringFilterOperator.Contains">
+                    <ItemTemplate>
+                        <span>@(
+                          $"{context.SearchName}"
+                          )</span>
+                    </ItemTemplate>
+                </TelerikComboBox>
+            </div>
+            <div class="user-selection-actions">
+                <button class="btn btn-secondary user-add-button" type="button" @onclick="ShowNewUserPopUp">
+                    <TelerikIcon Icon="@("fa-duotone fa-user-plus")"></TelerikIcon>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="user-selection-container">
+        @if (ShowTitle)
+        {
+            <div class="user-selection-title font-normal custom-color-primary">
+                @TextProvider.Get("ORG_SELECTION_TITLE")
+            </div>
+            <div class="extra-small-element-separator"></div>
+        }
+        <div class="user-selection-content">
+            <div class="user-selection-dropdown">
+                <TelerikComboBox ScrollMode="@DropDownScrollMode.Virtual"
+                             Data="@UserList"
+                             ValueField="@(nameof(AUTH_Users.ID))"
+                             TextField="@(nameof(AUTH_Users.SearchName))"
+                             @bind-Value="@AUTH_Users_ID"
+                             Width="100%"
+                             Filterable="true"
+                             PageSize="10"
+                             ItemHeight="30"
+                             OnChange="OnUserSelected"
+                             Placeholder="@TextProvider.Get("ORG_SELECTION_PLACEHOLDER")"
+                             FilterOperator="@StringFilterOperator.Contains">
+                    <ItemTemplate>
+                        <span>
+                            @(
+                            $"{context.SearchName}"
+                            )
+                        </span>
+                    </ItemTemplate>
+                </TelerikComboBox>
+            </div>
+        </div>
+    </div>
+}
+<TelerikWindow Modal="true" @bind-Visible="@ShowNewWindow" Width="800px">
+    <WindowTitle>
+        @TextProvider.Get("USER_SELECTION_POPUP_TITLE")
+    </WindowTitle>
+    <WindowContent>
+        <div class="user-creation-container">
+            <RegistrationComponent Embeedded="true" ShowPrivacy="false" EventCallback="OnCallBack"></RegistrationComponent>                    
+        </div>
+    </WindowContent>
+</TelerikWindow>

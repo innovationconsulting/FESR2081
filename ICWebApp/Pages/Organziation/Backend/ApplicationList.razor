@@ -1,0 +1,62 @@
+﻿@page "/Organization/Backend/Application/List"
+
+@layout MainLayout
+
+
+<div class="segment-container custom-background-default">
+    <div class="filter-container">
+        <ICWebApp.Components.Organization.Filter.FilterComponent Filter="@Filter" OnSearch="FilterSearch"></ICWebApp.Components.Organization.Filter.FilterComponent>
+    </div>
+    <div class="small-element-separator"></div>
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikGrid Data="@Data" 
+                     Pageable="true"
+                     PageSize="20"
+                     Sortable="false" 
+                     Resizable="false" 
+                     Groupable="false" 
+                     Reorderable="false"
+                     ScrollMode="@GridScrollMode.Scrollable"
+                     OnRowClick="@OnRowClick">
+            <GridColumns>
+                <GridColumn Field="@nameof(V_ORG_Requests.User_Fullname)" Title="@TextProvider.GetOrCreate("ORG_BACKEND_APPLICATION_TABLE_USER")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_ORG_Requests.ProgressivNumber)" Title="@TextProvider.GetOrCreate("PROGRESSIV_NUMBER")" Width="200px"></GridColumn>
+                <GridColumn Field="@nameof(V_ORG_Requests.Status)" Title="@TextProvider.GetOrCreate("ORG_BACKEND_APPLICATION_TABLE_STATUS")" Width="auto">
+                    <Template Context="statusContext"> 
+                        @{
+                            V_ORG_Requests item = statusContext as V_ORG_Requests;
+
+                            if (item != null)
+                            {
+                                <span class="icon-element">
+                                    <TelerikIcon Icon="@item.StatusIcon"></TelerikIcon>
+                                    <span style="margin-left: 5px;">
+                                        @item.Status
+                                    </span>
+                                </span>
+                            }
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="@nameof(V_ORG_Requests.Fullname)" Title="@TextProvider.GetOrCreate("ORG_BACKEND_APPLICATION_TABLE_DENOMINATION")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_ORG_Requests.GV_Fullname)" Title="@TextProvider.GetOrCreate("ORG_BACKEND_APPLICATION_TABLE_GV")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_ORG_Requests.CompanyType)" Title="@TextProvider.GetOrCreate("ORG_BACKEND_APPLICATION_TABLE_COMPANY_TYPE")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_ORG_Requests.LegalForm)" Title="@TextProvider.GetOrCreate("ORG_BACKEND_APPLICATION_TABLE_LEGAL_FORM")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_ORG_Requests.Archived)" Title="@TextProvider.GetOrCreate("ORG_BACKEND_APPLICATION_TABLE_ARCHIVED")" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Width="auto"></GridColumn>
+                <GridCommandColumn Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        V_ORG_Requests item = context as V_ORG_Requests;
+
+                        if (item != null)
+                        {
+                            <GridCommandButton Command="MyDetailCommand" Class="btn btn-secondary" OnClick="@(() => ShowDetails(item))" Icon="SvgIcon.Pencil" title="@TextProvider.GetOrCreate("TOOLTIP_EDIT")"></GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>

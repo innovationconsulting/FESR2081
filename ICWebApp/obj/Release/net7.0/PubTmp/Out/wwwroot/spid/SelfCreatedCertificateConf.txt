@@ -1,0 +1,9 @@
+set OPENSSL_CONF=C:\Programme\OpenSSL-Win64\bin\openssl.cfg
+ 
+openssl req -newkey rsa:2048 -nodes -keyout myspidprivatekey.pem -x509 -days 365 -out myspidcertificate.pem
+ 
+openssl pkcs12 -export -in myspidcertificate.pem -inkey myspidprivatekey.pem  -out myspidcertificate.pfx
+
+cd C:/Programme/Openssl-win64/bin
+
+pw@1

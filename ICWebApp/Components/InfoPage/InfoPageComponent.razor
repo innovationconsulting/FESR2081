@@ -1,0 +1,21 @@
+﻿
+@foreach (var pagedata in pagelist)
+{
+    
+    <div class="InfoPageSection font-normal">
+        @{
+            MarkupString htmlString = new MarkupString(pagedata.PageText);
+        }
+        @htmlString
+    </div>
+
+    @if (isAdmin)
+    { 
+        <div class="admin-actions">
+            <TelerikButton ButtonType="ButtonType.Button" Icon="SvgIcon.Pencil"
+                           OnClick="@(() => EditText(pagedata))"></TelerikButton>
+        </div>
+    }
+
+}
+

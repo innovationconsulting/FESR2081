@@ -1,0 +1,42 @@
+﻿.k-grid-header .k-header {
+    text-align: center !important;
+}
+
+.k-grid .k-header .k-link, /* for sortable grid */
+.k-grid .k-header {
+    text-align: center;
+}
+
+.k-grid .k-grid-header th .k-cell-inner,
+.k-grid .k-grid-header th .k-cell-inner > .k-link {
+    display: block;
+    text-align: center !important;
+    white-space: normal;
+}
+
+.k-column-title {
+    white-space: normal;
+}
+
+.th.k-header.k-touch-action-none {
+    align-items: center;
+    text-align: center;
+}
+
+.centered-header-grid .k-cell-inner > .k-link {
+    justify-content: center !important;
+}
+
+.k-column-title {
+    align-items: center;
+    text-align: center;
+    width: 100% !important;
+}
+
+.k-grid {
+    min-height: 250px !important;
+}
+
+h5, .h5 {
+    color: #0f7173;
+}

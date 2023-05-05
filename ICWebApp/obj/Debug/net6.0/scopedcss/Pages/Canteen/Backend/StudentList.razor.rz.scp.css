@@ -1,0 +1,97 @@
+.send-list-button-container[b-ui58lgh2wq] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.filter-authorities[b-ui58lgh2wq] {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.authority-tag[b-ui58lgh2wq] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+}
+
+.list-container[b-ui58lgh2wq] {
+    position: relative;
+}
+
+.dashboard-card[b-ui58lgh2wq] {
+    width: 100%;
+    text-align: center;
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    padding: 20px;
+}
+
+.numbers-container[b-ui58lgh2wq] {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.number-item[b-ui58lgh2wq] {
+    padding: 20px;
+    width: 23%;
+}
+
+    .number-item .value-container[b-ui58lgh2wq] {
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+.number-total .value-container[b-ui58lgh2wq] {
+    color: #808080;
+}
+
+.number-default .value-container[b-ui58lgh2wq] {
+    color: #808080;
+}
+
+.school-filter-container[b-ui58lgh2wq], .canteen-filter-container[b-ui58lgh2wq] {
+    width: auto;
+}
+
+.dashboard-card-toolbar[b-ui58lgh2wq] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.weekday-table span[b-ui58lgh2wq] {
+    margin: 0px;
+    width: 30px;
+}
+
+.weekday-table-cell-aktive[b-ui58lgh2wq] {
+    background-color: #066C7B !important;
+    color: white !important;
+}
+.weekday-table[b-ui58lgh2wq] {
+    padding: 0;
+    border-right: 1px solid #066C7B;
+}
+
+    .weekday-table td[b-ui58lgh2wq] {
+        padding: 3px;
+        width: 40px;
+        border: 1px solid #066C7B !important;
+        border-right: 0px !important;
+    }
+.filter-group-container[b-ui58lgh2wq] {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 100px;
+    row-gap: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}   

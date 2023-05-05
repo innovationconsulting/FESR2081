@@ -1,0 +1,203 @@
+﻿@if (Room != null)
+{
+    string AdditionalCSS = "";
+
+    @if (Room.BookableErrors != null && Room.BookableErrors.Count() > 0 ||
+        RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == Room.ID && p.BookableErrors != null && p.BookableErrors.Count() > 0).Any())
+    {
+        AdditionalCSS = "room-already-booked";
+    }
+    <div class="room-card-container selected-@Room.IsSelected disabled-@Room.Disabled @AdditionalCSS" @onclick="SelectRoom" @onclick:stopPropagation="true">
+        <div class="room-card-first-row">
+            <div class="room-card-left">
+                <div class="room-card-image">
+                    @if (Room != null && Room.FirstImagePath != null)
+                    {
+                        <CardImage Src="@Room.FirstImagePath"></CardImage>
+                    }
+                    else
+                    {
+                        <div class="room-default-image">
+                            <i class="fa-sharp fa-house-building"></i>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="room-card-right">
+                <div class="h4 custom-color-primary">@Room.Name</div>
+                <div class="extra-small-element-separator"></div>
+                @if (!string.IsNullOrEmpty(Room.Address))
+                {
+                    <div class="font-normal">@Room.Address, @Room.Location </div>
+                    <div class="extra-small-element-separator"></div>
+                }
+                @if (Room.QuantityOfSubRooms > 0)
+                {
+                    <div class="property-container">
+                        <div class="property-value">@Room.QuantityOfSubRooms</div>
+                        <i class="fa-duotone fa-layer-group"></i>
+                        <div class="property-text">@TextProvider.Get("ROOMS_QUANTITY_OF_SUBROOMS")</div>
+                    </div>
+                }
+                <div class="property-container">
+                    <div class="property-value">@Room.SurfaceM2</div>
+                    <i class="fa-solid fa-ruler-combined"></i>
+                    <div class="property-text">@TextProvider.Get("ROOMS_SURFACE")</div>
+                </div>
+                <div class="property-container">
+                    <div class="property-value">@Room.MaxCapacity</div>
+                    <i class="fa-solid fa-people-roof"></i>
+                    <div class="property-text">@TextProvider.Get("ROOMS_CAPACITY")</div>
+                </div>
+                @if (Room.IsSelected == true)
+                {
+                    <div class="property-container property-selected custom-color-primary">
+                        <div class="property-value"></div>
+                        <i class="fa-regular fa-circle-check"></i>
+                        <div class="property-text"><b>@TextProvider.Get("ROOMS_SELECTED")</b></div>
+                    </div>
+                }
+            </div>
+            <div class="room-card-end">
+                @if (Room.BookableErrors != null && Room.BookableErrors.Count() > 0 || 
+                     RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == Room.ID && p.BookableErrors != null && p.BookableErrors.Count() > 0).Any())
+                {
+                    <div class="room-warning-element">
+                        <i class="fa-solid fa-exclamation"></i>
+                    </div>
+                }
+                @if (Room.HasRooms == false)
+                {
+                    <button class="btn btn-primary room-detail-button" type="button" @onclick:stopPropagation="true" @onclick="ShowDetails">
+                        <i class="fa-regular fa-circle-info"></i>
+                    </button>
+                }
+                @if (Room.HasRooms == false)
+                {
+                    <button class="btn btn-primary room-detail-button" type="button" @onclick:stopPropagation="true" @onclick="ShowCalendar">
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                    </button>
+                }
+                @if (Room.RoomGroupFamilyID == null && Room.Lat != null && Room.Lng != null)
+                {
+                    <button class="btn btn-primary room-detail-button" type="button" @onclick:stopPropagation="true" @onclick="ShowMap">
+                        <i class="fa-regular fa-map-location-dot"></i>
+                    </button>
+                }
+            </div>
+        </div>
+        @if(Room.HasSeating == true)
+        {
+            <div class="extra-small-element-separator"></div>
+            <div class="room-card-seating-row">
+                <div class="font-normal custom-color-primary">@TextProvider.Get("ROOMS_SEATING")</div>
+                <div class="seating-container">
+                    <div class="seating-item">
+                        <label for="@Room.MaxCapacity" class="font-small">@TextProvider.Get("BACKEND_ROOM_SEATING_THEATRE")</label>
+                        <div class="extra-small-element-separator"></div>
+                        <img src="/Images/Rooms/Seatings/Seating_Theatre.png">
+                        <div class="extra-small-element-separator"></div>
+                        <div class="seating-value">@Room.Seating_Theatre</div>
+                    </div>
+                    <div class="seating-item">
+                        <label for="@Room.MaxCapacity" class="font-small">@TextProvider.Get("BACKEND_ROOM_SEATING_CONCERT")</label>
+                        <div class="extra-small-element-separator"></div>
+                        <img src="/Images/Rooms/Seatings/Seating_Concert.png">
+                        <div class="extra-small-element-separator"></div>
+                        <div class="seating-value">@Room.Seating_Concert</div>
+                    </div>
+                    <div class="seating-item">
+                        <label for="@Room.MaxCapacity"  class="font-small">@TextProvider.Get("BACKEND_ROOM_SEATING_BANQUET_ROUND")</label>
+                        <div class="extra-small-element-separator"></div>
+                        <img src="/Images/Rooms/Seatings/Seating_Banquet_round.png">
+                        <div class="extra-small-element-separator"></div>
+                        <div class="seating-value">@Room.Seating_Banquet_Round</div>
+                    </div>
+                    <div class="seating-item">
+                        <label for="@Room.MaxCapacity" class="font-small">@TextProvider.Get("BACKEND_ROOM_SEATING_BANQUET_SQUARE")</label>
+                        <div class="extra-small-element-separator"></div>
+                        <img src="/Images/Rooms/Seatings/Seating_Banquet_sqaure.png">
+                        <div class="extra-small-element-separator"></div>
+                        <div class="seating-value">@Room.Seating_Banquet_Square</div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Room.BookableErrors != null)
+        {
+            @if(Room.BookableErrors.Count() > 0)
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="room-card-booking-error-row">
+                    @foreach(var error in Room.BookableErrors)
+                    {
+                        <div class="room-card-booking-error">@((MarkupString)error)</div>
+                    }
+                </div>
+            }
+            else if(Room.HasRooms == false)
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="room-card-booking-error-row">
+                    <div class="room-card-booking-ok">@TextProvider.Get("ROOM_AVAILABLE")</div>
+                </div>
+            }
+        }
+    </div>
+
+    if(RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == Room.ID).Any())
+    {
+        var startStyle = "";
+
+        <div class="room-card-subcontainer" id="@Room.ID" style="@startStyle">
+            @foreach (var subRoom in RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == Room.ID).OrderBy(p => p.Name))
+            {
+                <RoomCardComponent Room="@subRoom" TimeSelectionChanged="@PassTroughEvent"></RoomCardComponent>
+            }
+        </div>
+    }
+
+    <TelerikWindow @bind-Visible="@DetailsVisible" Centered="true" Modal="true" Draggable="false" Width="95vw" Height="95vh" Class="room-detail-window" Resizable="false">
+        <WindowTitle>
+            @TextProvider.Get("ROOMS_DETAIL")
+        </WindowTitle>
+        <WindowContent>
+            <RoomDetailComponent Room="@Room"></RoomDetailComponent>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideDetails" />
+        </WindowActions>
+    </TelerikWindow>
+    <TelerikWindow @bind-Visible="@MapVisible" Centered="true" Modal="true" Draggable="false" Width="95vw" Height="95vh" Resizable="false">
+        <WindowTitle>
+            @TextProvider.Get("ROOMS_MAP")
+        </WindowTitle>
+        <WindowContent>
+            @if (Room.Lat != null && Room.Lng != null)
+            {
+                <TelerikMap Class="RoomBookingOverviewMap" Center="@(new double[]{ Room.Lat.Value, Room.Lng.Value })" MinZoom="9" Zoom="15">
+                    <MapLayers>
+                        <MapLayer Type="@MapLayersType.Tile" Subdomains="@Subdomains" UrlTemplate="@UrlTemplate"></MapLayer>
+                        <MapLayer Type="@MapLayersType.Marker" Data="@(new List<V_ROOM_Rooms>(){ Room })" LocationField="@nameof(V_ROOM_Rooms.LatLng)" TitleField="@nameof(V_ROOM_Rooms.Name)"></MapLayer>
+                    </MapLayers>
+                </TelerikMap>
+            }
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideMap" />
+        </WindowActions>
+    </TelerikWindow>
+    <TelerikWindow @bind-Visible="@CalendarVisible" Centered="true" Modal="true" Draggable="false" Width="95vw" Height="95vh" Resizable="false">
+        <WindowTitle>
+            @TextProvider.Get("ROOMS_CALENDAR")
+        </WindowTitle>
+        <WindowContent>
+            <CalendarComponent Room="@Room" OnTimeSelected="@OnTimeSelected"></CalendarComponent>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideCalendar" />
+        </WindowActions>
+    </TelerikWindow>
+
+}

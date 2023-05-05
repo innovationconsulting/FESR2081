@@ -1,0 +1,6 @@
+﻿@if(BreadCrumbService.GetBreadCrumb() != null && BreadCrumbService.ShowBreadCrumb)
+{
+    <div class="breadcrumb-container">
+        <TelerikBreadcrumb Data="@BreadCrumbService.GetBreadCrumb()" Class="font-normal"></TelerikBreadcrumb>
+    </div>
+}

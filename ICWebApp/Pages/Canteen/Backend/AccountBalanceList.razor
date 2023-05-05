@@ -1,0 +1,174 @@
+﻿@page "/Backend/Canteen/Account"
+@using ICWebApp.Components.Canteen
+@layout MainLayout
+
+
+<div class="element-separator"></div>
+<div class="segment-container custom-background-default application-detail-container">
+    <div class="application-detail-left">
+        <div class="filter-element filter-authorities">
+            @if (Configuration != null && (Configuration.BalanceLowWarning != null || Configuration.BalanceLowServiceStop != null))
+            {
+                @if (LowBalanceSelected != false || ServiceStopSelected != false || DisabledSelected != false)
+                {
+                    <div class="btn btn-secondary authority-tag" @onclick="@(() => ClearTagFilter())" @onclick:stopPropagation="true">
+                        <span>
+                            <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                            @TextProvider.Get("CANTEEN_BALANCE_FILTER_ALL")
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn btn-primary authority-tag" @onclick:stopPropagation="true">
+                        <span>
+                            <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                            @TextProvider.Get("CANTEEN_BALANCE_FILTER_ALL")
+                        </span>
+                    </div>
+                }
+
+                @if (Configuration.BalanceLowWarning != null)
+                {
+                    string buttonCSS = "btn-secondary";
+
+                    if (LowBalanceSelected == true)
+                    {
+                        buttonCSS = "btn-primary";
+                    }
+
+                    <div class="btn @buttonCSS authority-tag" @onclick="@(() => SetBalanceLowFilter())" @onclick:stopPropagation="true">
+                        <span>
+                            @(TextProvider.Get("CANTEEN_FILTER_LOW_BALANCE") + " < " + @Configuration.BalanceLowWarning.Value.ToString("C2")) 
+                        </span>
+                    </div>
+                }
+
+                @if (Configuration.BalanceLowServiceStop != null && Configuration.ServiceStopEnabled)
+                {
+                    string buttonCSS = "btn-secondary";
+
+                    if (ServiceStopSelected == true)
+                    {
+                        buttonCSS = "btn-primary";
+                    }
+
+                    <div class="btn @buttonCSS authority-tag" @onclick="@(() => SetBalanceServiceStopFilter())" @onclick:stopPropagation="true">
+                        <span>
+                            @(TextProvider.Get("CANTEEN_FILTER_SERVICE_STOP") + " < " + @Configuration.BalanceLowServiceStop.Value.ToString("C2"))
+                        </span>
+                    </div>
+                }
+                @if(showDisabled){
+                    string buttonCSS = "btn-secondary";
+
+                    if (DisabledSelected == true)
+                    {
+                        buttonCSS = "btn-primary";
+                    }
+
+                    <div class="btn @buttonCSS authority-tag" @onclick="@(() => SetDisabledFilter())" @onclick:stopPropagation="true">
+                        <span>
+                            @(TextProvider.GetOrCreate("CANTEEN_FILTER_DISABLED"))
+                        </span>
+                    </div>
+                }
+                
+            }            
+        </div>
+        <div class="small-element-separator"></div>
+        <div class="toolbar-container">
+            @if (Configuration != null && (SelectedUserList.Where(p => p.Balance < Configuration.BalanceLowWarning || p.Balance < Configuration.BalanceLowServiceStop).Any()))
+            {
+                <div class="btn btn-primary" @onclick="SendMassiveReminder">
+                    <i class="fa-regular fa-alarm-exclamation"></i>
+                    @TextProvider.Get("CANTEEN_PAYMENT_REMEMBER_ALL")
+                </div>
+            }
+            else
+            {
+                <div class="btn btn-primary btn-disabled">
+                    <i class="fa-regular fa-alarm-exclamation"></i>
+                    @TextProvider.Get("CANTEEN_PAYMENT_REMEMBER_ALL")
+                </div>
+            }
+        </div>
+        <div class="element-separator"></div>
+        <div class="grid-data-container segment-loader-container">
+            <CustomLoader Visible="@(IsDataBusy)"
+                                    Text="@null" Class="initial-data-loader">
+            </CustomLoader>
+            <TelerikGrid Data="@SelectedUserList" Pageable="true" Sortable="true" Resizable="false" PageSize="20" Navigable="true"
+                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="true">
+                <GridToolBarTemplate>
+                    <GridSearchBox DebounceDelay="200"></GridSearchBox>
+                    <TelerikCheckBox id="disabledCheckbox" @bind-Value="showDisabled" OnChange="Reload"></TelerikCheckBox>
+                    <label for="disabledCheckbox">@TextProvider.Get("CANTEEN_PARENT_LIST_SHOW_DISABLED")</label>
+                </GridToolBarTemplate>
+                <DetailTemplate Context="contextDetail">
+                    @{
+                        var item = contextDetail as V_CANTEEN_User;
+                        var subscriptions = CanteenProvider.GetSubscribersByUserIDSync(item.AUTH_User_ID ?? Guid.Empty);
+                                <div class="detailArea">
+                                    <SubscriptionDetailComponent SubscriberDetailList="@subscriptions.Select(p => p.ID).ToList()"></SubscriptionDetailComponent>
+                                </div>
+                    }
+                </DetailTemplate>
+                <GridColumns>
+                    <GridColumn Field="@nameof(V_CANTEEN_User.FullName)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_NAME")"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_User.TaxNumber)" Title="@TextProvider.Get("CANTEEN_TAXNUMBER")"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_User.SubscriberCount)" Title="@TextProvider.Get("CANTEEN_ACCOUNT_SUBSCRIPTIONS")"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_User.LastNotificationDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("CANTEEN_ACCOUNT_LAST_REMINDER_DATE")"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_User.ServiceDisabledDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("CANTEEN_ACCOUNT_LAST_DISABLED_DATE")"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_User.Balance)" DisplayFormat="{0:C}" Title="@TextProvider.Get("CANTEEN_ACCOUNT_BALANCE")">
+                        <Template>
+                            @{
+                                V_CANTEEN_User item = context as V_CANTEEN_User;
+
+                                @if (item != null && Configuration != null && Configuration.BalanceLowServiceStop != null && item.Balance != null && item.Balance < Configuration.BalanceLowServiceStop)
+                                {
+                                            <span class="balance-danger">@item.Balance.Value.ToString("C")</span>
+                                }
+                                else if(item != null && Configuration != null && Configuration.BalanceLowWarning != null && item.Balance != null && item.Balance < Configuration.BalanceLowWarning)
+                                {
+                                            <span  class="balance-warning">@item.Balance.Value.ToString("C")</span>
+                                }
+                                else
+                                {
+                                            <span>@item.Balance.Value.ToString("C")</span>
+                                } 
+                            }
+                        </Template>    
+                    </GridColumn>
+                    <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                        @{
+                            V_CANTEEN_User item = context as V_CANTEEN_User;
+
+                            if (item != null)
+                            {
+                                        <div class="button-group">
+                                            <GridCommandButton Command="MyRechargeCommand" Class="btn btn-secondary" OnClick="@(() => ShowDetails(item))" Icon="@("fa-regular fa-circle-info")" title="@TextProvider.Get("CANTEEN_DETAILS")"></GridCommandButton>
+                                            @if (Configuration != null && (item.Balance < Configuration.BalanceLowWarning || item.Balance < Configuration.BalanceLowServiceStop))  
+                                    {
+                                                <GridCommandButton Command="MyReminderCommand" Class="btn btn-secondary" OnClick="@(() => SendReminder(item))" Icon="@("fa-regular fa-alarm-exclamation")" title="@TextProvider.Get("CANTEEN_PAYMENT_REMINDER")"></GridCommandButton>
+                                    }
+                                    else{
+                                                <GridCommandButton Command="MyReminderCommand" Class="btn btn-secondary" Enabled="false" Icon="@("fa-regular fa-alarm-exclamation")" title="@TextProvider.Get("CANTEEN_PAYMENT_REMINDER")"></GridCommandButton>
+                                    }
+                                            @if (item.ServiceDisabledDate == null)
+                                    {
+                                                <GridCommandButton Command="MyRechargeCommand" Class="btn btn-secondary" OnClick="@(() => DisableUser(item))" Icon="@("fa-regular fa-user-xmark")" title="@TextProvider.Get("CANTEEN_DISABLE_USER")"></GridCommandButton>
+                                    }
+                                    else
+                                    {
+                                                <GridCommandButton Command="MyRechargeCommand" Class="btn btn-secondary" Enabled="false" Icon="@("fa-regular fa-user-xmark")" title="@TextProvider.Get("CANTEEN_DISABLE_USER")"></GridCommandButton>
+                                    }
+                                        </div>
+                            }
+                        }
+                    </GridCommandColumn>
+                </GridColumns>
+            </TelerikGrid>
+        </div>
+    </div>
+</div>

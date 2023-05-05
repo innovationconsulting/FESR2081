@@ -1,0 +1,62 @@
+﻿@if(MenuVisibility)
+{
+    <div class="floating-menu-container">
+        <div class="floating-menu-button" onclick="$('#floating-menu').toggle(100);" title="@TextProvider.Get("FLOATING_MENU_TOOLTIP")">
+            <lord-icon src="https://cdn.lordicon.com/ucvsemjq.json" trigger="hover" colors="primary:#FFFFFF" class="lord-icon">
+            </lord-icon>
+            @if (AllTasksCount != 0)
+            {
+                <span class="all-tasks-count font-detail" title="@TextProvider.Get("TASKS_ALL_OPEN_COUNT_TOOTLIP")">
+                    @AllTasksCount
+                </span>
+            }
+            @if (MyTasksCount != 0)
+            {
+                <span class="my-tasks-count font-detail" title="@TextProvider.Get("TASKS_MY_OPEN_COUNT_TOOTLIP")">
+                    @MyTasksCount
+                </span>
+            }
+        </div>
+        <div class="floating-sub-menu-container" id="floating-menu" style="display: none">
+            <div class="floating-sub-menu-button" title="@TextProvider.Get("FLOATING_MENU_TASK_ADD")" @onclick="ShowFastAdd">
+                <i class="fa-regular fa-plus"></i>
+            </div>
+            <div class="floating-sub-menu-button" title="@TextProvider.Get("FLOATING_MENU_TASK_LIST")" @onclick="ShowBucketWindow">
+                <i class="fa-regular fa-table-columns"></i>
+            </div>
+            <div class="floating-sub-menu-button" title="@TextProvider.Get("TASK_BACKEND_DASHBOARD")" @onclick="GoToDashboard">
+                <i class="fa-regular fa-list-check"></i>
+            </div>
+            @if (AUTHProvider.HasUserRole(AuthRoles.Administrator) || AUTHProvider.HasUserRole(AuthRoles.Developer))
+            {
+                <div class="floating-sub-menu-button" title="@TextProvider.Get("FLOATING_MENU_TASK_SETTINGS")" @onclick="ShowSettings">
+                    <i class="fa-regular fa-gears"></i>
+                </div>
+            }
+        </div>        
+    </div>
+
+    <TelerikWindow Modal="true" @bind-Visible="@FastAddVisibility" Width="1600px" Class="task-quickadd-window" Draggable="false">
+        <WindowTitle>
+            @TextProvider.Get("TASK_QUICK_ADD_TITLE")
+        </WindowTitle>
+        <WindowContent>
+            <ICWebApp.Components.Tasks.Edit Cancelled="HideFastAdd" Saved="FastAddSaved"></ICWebApp.Components.Tasks.Edit>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideFastAdd" />
+        </WindowActions>
+    </TelerikWindow>
+
+    <TelerikWindow Modal="true" @bind-Visible="@BucketWindowVisibility" Width="90vw" Height="90vh" Class="task-bucket-window" Draggable="false">
+        <WindowTitle>
+            @TextProvider.Get("TASK_BUCKET_WINDOW_TITLE")
+        </WindowTitle>
+        <WindowContent>
+            <ICWebApp.Components.Tasks.BucketView Cancelled="HideBucketWindow"></ICWebApp.Components.Tasks.BucketView>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideBucketWindow" />
+        </WindowActions>
+    </TelerikWindow>
+}

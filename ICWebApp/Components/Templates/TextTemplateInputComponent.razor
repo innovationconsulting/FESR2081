@@ -1,0 +1,134 @@
+﻿<div class="text-template-container">
+    <CustomLoader Visible="@(IsDataBusy)"
+                  Text="@null" Class="initial-data-loader">
+    </CustomLoader>
+    <TelerikGrid Data="@TextList.OrderBy(p => p.SortOrder).ToList()" Pageable="true" Sortable="false" Resizable="false" PageSize="500"
+                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+        <GridToolBarTemplate>
+            <GridCommandButton OnClick="@(() => AddTemplate(false))" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+            @if (ApplicationID == Applications.Forms || ApplicationID == Applications.Mantainences) 
+            {
+                <GridCommandButton OnClick="@(() => AddTemplate(true))" Icon="SvgIcon.Plus">@TextProvider.Get("ADD_DOCUMENT")</GridCommandButton>
+            }
+        </GridToolBarTemplate>
+        <GridColumns>
+            <GridColumn Field="@nameof(V_TEXT_Template.Name)" Title="@TextProvider.Get("TEXT_TEMPLATES_GRID_NAME")"></GridColumn>
+            @if (ApplicationID == Applications.Forms || ApplicationID == Applications.Mantainences) 
+            {
+                <GridColumn Field="@nameof(V_TEXT_Template.IsDocument)" Title="@TextProvider.Get("TEXT_TEMPLATES_GRID_DOKUMENTS")" Width="180px">
+                    <Template>
+                        @{
+                            V_TEXT_Template item = context as V_TEXT_Template;
+                            <TelerikSwitch @bind-Value="@item.IsDocument" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    </Template>
+                </GridColumn>
+            }
+            <GridCommandColumn Width="120px" Title="@TextProvider.Get("TEXT_TEMPLATES_GRID_ACTIONS")">
+                @{
+                    V_TEXT_Template item = context as V_TEXT_Template;
+
+                    if (item != null)
+                    {
+                        <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditTemplate(item.ID))" Icon="@("fa-duotone fa-pen")" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                        <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => DeleteTemplate(item.ID))" Icon="@("fa-duotone fa-trash")" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                    }
+                }
+            </GridCommandColumn>
+        </GridColumns>
+    </TelerikGrid>
+    <TelerikWindow Modal="true" @bind-Visible="@EditWindowVisiblity" Width="1200px">
+        <WindowTitle>
+            @if (IsNew)
+            {
+                @TextProvider.Get("TEXT_TEMPLATE_WINDOW_NEW")
+            }
+            else
+            {
+                @TextProvider.Get("TEXT_TEMPLATE_WINDOW_EDIT")
+            }
+        </WindowTitle>
+        <WindowContent>
+            @if (Template != null && TemplateExtended != null)
+            {
+                <EditForm Model="@Template">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    <div class="small-element-separator"></div>
+                    <div class="formbuilder-language-picker form-group-small">
+                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                        <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                            <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                            <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                        </TelerikButtonGroup>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group form-group-small">
+                        <label class="form-label custom-color-primary">@TextProvider.Get("TEXT_TEMPLATE_EDIT_NAME")</label>
+                        @if (TemplateExtended.Count() > 0 && CurrentLanguage != null)
+                        {
+                            <label class="font-detail">@TemplateExtended.FirstOrDefault(p => p.LANG_Languages_ID != CurrentLanguage).Name</label>
+                            <InputText @bind-Value="TemplateExtended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" class="form-control"></InputText>
+                        }
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group form-group-small">
+                        <label class="form-label custom-color-primary">@TextProvider.Get("TEXT_TEMPLATE_EDIT_CONTENT")</label>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <div class="template-input-container">
+                            <div class="editor-container">
+                                @if (TemplateExtended.Count() > 0 && CurrentLanguage != null)
+                                {
+                                    @if (string.IsNullOrEmpty(TemplateExtended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Content))
+                                    {
+                                        TemplateExtended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Content = TemplateExtended.FirstOrDefault(p => p.LANG_Languages_ID != CurrentLanguage).Content;
+                                    }
+
+                                    <TelerikEditor @bind-Value="TemplateExtended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Content"
+                                           Tools="@Tools"
+                                           @ref="TemplateEditor"
+                                           EditMode="@EditorEditMode.Div"
+                                           Class="font-normal"
+                                           Id="template-input"
+                                           Height="550px">
+                                        <EditorSettings>
+                                            <EditorPasteSettings ConvertMsLists="true"
+                                                         RemoveMsClasses="true"
+                                                         RemoveMsStyles="true"
+                                                         RemoveHtmlComments="true"
+                                                         RemoveAllAttributes="true"
+                                                         StripTags="@StripTags"
+                                                         RemoveAttributes="@RemoveAttributes">
+                                            </EditorPasteSettings>
+                                        </EditorSettings>
+                                    </TelerikEditor>
+                                }
+                            </div>
+                            <div class="keyword-container">
+                                @foreach (var keyword in KeywordList.Where(p => p.LANG_Languages_ID == CurrentLanguage).OrderBy(p => p.SortOrder).ToList())
+                                {
+                                    <div class="keyword-item" onclick="@(() => SetKeyWordValue(keyword.Keyword))">
+                                        @(keyword.Keyword.Replace("{", "").Replace("}", ""))
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group form-group-small">
+                        <label class="form-label custom-color-primary">@TextProvider.Get("TEXT_TEMPLATE_EDIT_SORTORDER")</label>
+                        <InputNumber @bind-Value="Template.SortOrder" class="form-control" />
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="segment-button-toolbar">
+                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.Cancel" Class="k-standalone-button"
+                                   OnClick="@CloseTemplate">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                        <TelerikButton ButtonType="ButtonType.Submit" ThemeColor="Primary" Icon="SvgIcon.Save"
+                                   OnClick="@SaveTemplate" Class="k-standalone-button">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+                    </div>
+                </EditForm>
+            }
+        </WindowContent>
+    </TelerikWindow>
+</div>

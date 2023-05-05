@@ -1,0 +1,58 @@
+﻿@page "/RoomManagementAdmin"
+@using ICWebApp.Components.Rooms.Admin
+@layout MainLayout
+
+<div class="segment-container custom-background-default">
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikGrid Data="@Data" 
+                     Pageable="true"
+                     PageSize="10"
+                     Sortable="false" 
+                     Resizable="false" 
+                     Groupable="false" 
+                     Reorderable="false"
+                     ScrollMode="@GridScrollMode.Scrollable">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@Add" Icon="SvgIcon.Plus">@TextProvider.GetOrCreate("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+            <DetailTemplate Context="contextDetail">
+                                        @{
+                                            var parentRoom = contextDetail as V_ROOM_Rooms;
+                                            <AdditionalRoomsComponent RoomID="@parentRoom.ID"></AdditionalRoomsComponent>
+                                        }
+            </DetailTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(V_ROOM_Rooms.Enabled)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_ENABLED")" Width="120px">
+                    <Template>
+                        @{
+                            V_ROOM_Rooms item = context as V_ROOM_Rooms;
+
+                            if (item != null)
+                            {
+                            <TelerikSwitch @bind-Value="@item.Enabled" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                            }
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="@nameof(V_ROOM_Rooms.Name)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_BOOKING_ROOMNAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_ROOM_Rooms.MaxCapacity)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_CAPACITY")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_ROOM_Rooms.SurfaceM2)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_SURFACE")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_ROOM_Rooms.Address)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_ADRESS")" Width="auto"></GridColumn>
+                <GridCommandColumn Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        V_ROOM_Rooms item = context as V_ROOM_Rooms;
+
+                        if (item != null)
+                        {
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => Edit(item))" Icon="SvgIcon.Pencil" title="@TextProvider.GetOrCreate("TOOLTIP_EDIT")"></GridCommandButton>
+                            <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => Delete(item))" Icon="SvgIcon.Trash" title="@TextProvider.GetOrCreate("TOOLTIP_DELETE")"></GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>

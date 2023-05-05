@@ -1,0 +1,95 @@
+﻿@page "/Form/Application/Preview/{ID}"
+@page "/Form/Application/Preview/{ID}/{Payed}"
+
+@layout FrontendLayout
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-12">
+                    @if (ShowPaymentPage == false && 
+                         (NextStep == ICWebApp.Application.Interface.Services.IFormApplicationService.Step.ShowPreview ||
+                          NextStep == ICWebApp.Application.Interface.Services.IFormApplicationService.Step.ToPay)
+                        )
+                    {
+                        <div class="segment-container">
+                            @if (File_FileInfo != null)
+                            {
+                                <div class="preview-url-container">
+                                    <PDFViewer FILE_FileInfoID="@File_FileInfo.ID" DisplayPreviewAnySize="@true"></PDFViewer>
+                                </div>
+                            }
+                        </div>
+                        <div class="element-separator"></div>
+                        <div class="segment-button-container">
+                            @if (Data != null && Data.PaymentStarted == null)
+                            {
+                                <button class="btn btn-secondary" @onclick="BackToPrevious">@TextProvider.Get("BUTTON_RETURN")</button>
+                            }
+                            else
+                            {
+                                <div class="button-placeholder"></div>
+                            }
+                            @if (NextStep == ICWebApp.Application.Interface.Services.IFormApplicationService.Step.ToPay)
+                            {
+                                <button class="btn btn-primary" @onclick="GoToPayment">@TextProvider.Get("BUTTON_PAY")</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" @onclick="() => Comitted()">@TextProvider.Get("BUTTON_COMMIT")</button>
+                            }
+                        </div>
+                    }
+                    else if (ShowPaymentPage && FORM_Application_Transactions != null && FORM_Application_Transactions.Count() > 0)
+                    {
+                        <div class="segment-container">
+                            <PaymentPage Transactions="FORM_Application_Transactions.Where(p => p.PAY_Transaction_ID != null).Select(p => p.PAY_Transaction_ID).ToList()"
+                                         SourceCode="APPLICATION" OnPaymentClicked="PaymentStarted"
+                                         ShowBackButton="true" OnBackToPrevious="BackToPreviousPayment" 
+                                         OnPaymentComplete="@PaymentCompleted" ReturnUrl="@ReturnUrl">
+                            </PaymentPage>
+                        </div>
+                    }
+                    else if (NextStep == ICWebApp.Application.Interface.Services.IFormApplicationService.Step.PaymentProcessing)
+                    {
+                        <div class="segment-container">
+                            @TextProvider.Get("FORM_APP_PAY_PROCESSING")
+                        </div>
+                    }
+                    else if (NextStep == ICWebApp.Application.Interface.Services.IFormApplicationService.Step.ToSign)
+                    {
+                        <div class="segment-container">
+                            @if (Definition != null)
+                            {
+                                bool ShowBackButton = false;
+
+                                if (Data != null && Data.PayedAt == null)
+                                {
+                                    ShowBackButton = true;
+                                }
+
+                                <ICWebApp.Components.Signing.Signing File_FileInfoID="@File_FileInfoID" NeededSigns="Signings" MultiSign="@Definition.HasMultiSigning"
+                                                             OnDocumentSigned="DocumentSigned" OnBackToPrevious="BackToPrevious" ShowBackButton="@ShowBackButton">
+                                </ICWebApp.Components.Signing.Signing>
+                            }
+                        </div>
+                    }
+                    else if (NextStep == ICWebApp.Application.Interface.Services.IFormApplicationService.Step.InSigningMultiSign)
+                    {
+                        <div class="segment-container">
+                            @((MarkupString)TextProvider.Get("FORM_APP_SIGNING_PROCESSING"))
+                        </div>
+                        <div class="element-separator"></div>
+                        <div class="segment-button-container">
+                            <button class="btn btn-primary" @onclick="BackToData">@TextProvider.Get("BUTTON_BACK_TO_MY_APPLICATIONS")</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

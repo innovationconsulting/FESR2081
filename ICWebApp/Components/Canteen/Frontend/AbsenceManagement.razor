@@ -1,0 +1,119 @@
+﻿@using System.Globalization
+@if (Subscribers != null && LatestMovements != null)
+{
+    <AuthorizeView>
+        <Authorized Context="authorizedContext">
+            @if (Subscribers.Count() > 1)
+            {
+                <div class="container personal-area">
+                    <div class="col-12 p-0">
+                        <div class="cmp-nav-tab mb-4 mb-lg-5 mt-lg-4">
+                            <ul class="nav nav-tabs nav-tabs-icon-text w-100 flex-nowrap" id="myTab" role="tablist">
+                                @foreach (var sub in Subscribers)
+                                {
+                                    string active = "";
+
+                                         if (CurrentTab == sub.ID)
+                                    {
+                                        active = "active";
+                                    }
+                                    else if (Subscribers.Count() == 1)
+                                    {
+                                        active = "active show";
+                                    }
+
+                                    <li class="nav-item w-100 me-2 p-1" role="tab">
+                                        <a @onclick="@(() => ClearAnchors(sub.ID))" class="nav-link justify-content-start pr-10 pb-2 ps-1 pe-lg-none pb-lg-15 ps-lg-3 me-lg-5 text-tab @active" aria-current="page" aria-controls="tab1" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false">
+                                            @sub.FirstName @sub.LastName
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="it-page-sections-container">
+                <div class="tab-content">
+                    @foreach(var sub in Subscribers)
+                    {
+                        string active = "";
+
+                        if (CurrentTab == sub.ID)
+                        {
+                            active = "active show";
+                        }
+                        else if(Subscribers.Count() == 1)
+                        {
+                            active = "active show";
+                        }
+
+                        <div class="tab-pane @active">
+                            <div class="container">
+                                <div class="row mt-lg-80 mt-3 mb-4">                                
+                                    <div class="col-lg-3 mb-4 border-col hide-max-576">
+                                        <AnchorList></AnchorList>
+                                    </div>
+                                    <div class="col-lg-8 offset-lg-1">
+                                        <div class="user-service-container it-page-sections-container">
+                                            <h2 class="mb-3">@sub.FirstName @sub.LastName</h2>
+                                            @foreach(var month in LatestMovements.Where(p => p.CANTEEN_Subscriber_ID == sub.ID && p.Date != null).Select(p => p.Date.Value.Month).Distinct().OrderBy(p => p).ToList())
+                                            {
+                                                string monthName = GetMonthName(month);
+                                                monthName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(monthName);
+
+                                                <Anchor AddAnchor="false" Title="@monthName" ID="@monthName.ToLower()" Order="@month" IsSmallTitle="true">
+                                                    @foreach (var move in LatestMovements.Where(p => p.CANTEEN_Subscriber_ID == sub.ID && p.Date != null && p.Date.Value.Month == month).OrderBy(p => p.Date).ToList())
+                                                    {
+                                                        string canceledCSS = "";
+
+                                                        @if (move.CancelDate != null)
+                                                        {
+                                                            canceledCSS = "movement-canceled";
+                                                        }
+
+                                                        <div class="movement-item @canceledCSS" @onclick="@(() => DailyCancellation(move))">
+                                                            <div class="movement-first-row">
+                                                                <div class="day-wrapper">
+                                                                    @move.Date.Value.ToString("dd.MM.yyyy")
+                                                                </div>
+                                                                <div class="status-wrapper">
+                                                                    @if (move != null && move.CancelDate != null)
+                                                                    {
+                                                                        <span class="news-button-text">@TextProvider.Get("FRONTEND_DASHBOARD_SIGNUP_BUTTON")</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="news-button-text">@TextProvider.Get("FRONTEND_DASHBOARD_CANCEL_BUTTON")</span>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div class="movement-second-row">
+                                                                @if (move.CancelDate != null)
+                                                                {
+                                                                    <svg class="icon me-1 mr-lg-10" aria-hidden="true">
+                                                                        <use href="css/bootstrap-italia/svg/sprites.svg#it-warning-circle"></use>
+                                                                    </svg>                                                                
+                                                                }
+                                                                @move.Date.Value.ToString("dddd")
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </Anchor>
+                                            }
+                                            <button class="btn btn-secondary" @onclick="ReturnToPreviousPage">@TextProvider.Get("BUTTON_BACK")</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <br />
+                </div>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+        </NotAuthorized>
+    </AuthorizeView>
+}

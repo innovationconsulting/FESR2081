@@ -1,0 +1,77 @@
+﻿@using System.Globalization
+@using ICWebApp.Application.Settings
+@{
+    string NavLinkCSS = "nav-link nav-language k-icon-size-20 nav-item-content";
+
+    if (IsCollapsedCSS != null)
+    {
+        NavLinkCSS += " " + IsCollapsedCSS;
+    }
+}
+@if (CurrentLanguage != null && CurrentLanguage.ID == LanguageSettings.Italian)
+{
+    <NavLink class="@NavLinkCSS" @onclick="@(async () => await SetLanguage("de-DE"))">
+        <TelerikIcon Icon="SvgIcon.Globe"></TelerikIcon>
+        @*@if (CurrentLanguage != null)*@
+        @*{*@
+            <span class="nav-link-text">Tedesco</span>
+            @if (IsCollapsedCSS != null)
+            {
+                <span class="nav-item-tooltip">
+                    Tedesco
+                </span>
+            }
+        @*}*@
+    </NavLink>
+}
+else
+{
+    <NavLink class="@NavLinkCSS" @onclick="@(async () => await SetLanguage("it-IT"))">
+        <TelerikIcon Icon="SvgIcon.Globe"></TelerikIcon>
+      @*  @if (CurrentLanguage != null)
+        {*@
+            <span class="nav-link-text">Italienisch</span>
+            @if (IsCollapsedCSS != null)
+            {
+                <span class="nav-item-tooltip">
+                    Italienisch
+                </span>
+            }
+        @*}*@
+    </NavLink>
+}
+
+@*@if(ShowLanguageList)
+{
+    string AnimateCSS = "user-popup-menu-animation-container ";
+
+    if(IsCollapsedPopupCSS != null)
+    {
+        AnimateCSS += "user-popup-menu-animation-container-collapsed";
+    }
+
+     <Animate class="@AnimateCSS" Animation="Animations.ZoomInUp" Easing="Easings.EaseIn" Duration="TimeSpan.FromSeconds(0.05)" @onclick="ToggleMenu" >
+        <div class="language-popup-menu @IsCollapsedPopupCSS" style="background-color: @PopUpBackgroundColor" id="language-popup-menu">
+            <div class="language-popup-menu-title">
+                <label>@TextProvider.Get("LANGUAGE_AVIABLE")</label>
+            </div>
+            <div class="small-element-separator"></div>
+            @foreach(var l in LanguageList.OrderBy(p => p.Name))
+            {
+                <div class="small-element-separator"></div>
+                @if (l.Code == CultureInfo.CurrentCulture.Name)
+                {
+                    <div class="language-popup-menu-item">
+                        <label><u>@l.NameShort</u></label>
+                    </div>
+                }
+                else
+                {
+                    <div class="language-popup-menu-item" @onclick="async () => await SetLanguage(l.Code)">
+                        <label>@l.NameShort</label>
+                    </div>
+                }
+            }
+        </div>
+    </Animate>
+}*@

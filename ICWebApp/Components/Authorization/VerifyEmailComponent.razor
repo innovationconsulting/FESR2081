@@ -1,0 +1,133 @@
+﻿@if (User != null)
+{
+    <TelerikRootComponent>
+        <ModalWindow IsVisible="@WindowVisible" Parameters="@WindowParameters">
+            <Content>
+                <div class="edit-popup-container">
+                    @if (Anagrafic != null && !ConfirmChange)
+                    {
+                        <div class="font-normal">
+                            <EditForm Model="Anagrafic" OnValidSubmit="HandleSubmit">
+                                <DataAnnotationsValidator></DataAnnotationsValidator>
+                                <div class="form-group">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_EMAIL")</label>
+                                    <InputText @bind-Value="Anagrafic.DA_Email" type="email" class="form-control"></InputText>
+                                    <CustomValidationMessage For="@(() => Anagrafic.DA_Email)" TextCode="REGISTRATION_EMAIL" />
+                                </div>
+                                <div class="element-separator"></div>
+                                <div class="registration-footer">
+                                    <div class="small-element-separator"></div>
+                                    <div class="form-group-container">
+                                        <div class="form-group-container-left"></div>
+                                        <div class="form-group-container-right flex-container">
+                                            <button class="btn btn-secondary flex-left vertical-element-separator" type="button" @onclick="CloseWindow">@(TextProvider.Get("BUTTON_CANCEL"))</button>
+                                            <button class="btn btn-primary flex-right" type="button" @onclick="@GetConfirm">@(TextProvider.Get("SAVE"))</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </EditForm>
+                        </div>
+                    }
+                    else if (Anagrafic != null && ConfirmChange)
+                    {
+                        <div class="font-normal">
+                            <EditForm Model="Anagrafic">
+                                <DataAnnotationsValidator></DataAnnotationsValidator>
+                                <div class="input-container">
+                                    <div class="form-group">
+                                        <label class="form-label">@TextProvider.Get("CHANGE_EMAIL_NUMBER_ON_CONFIRMATION")</label>
+                                    </div>
+                                    <div class="small-element-separator"></div>
+                                    <div class="form-group">
+                                        <div class="font-bold">
+                                            @Anagrafic.DA_Email
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="element-separator"></div>
+                                <div class="registration-footer">
+                                    <div class="small-element-separator"></div>
+                                    <div class="form-group-container">
+                                        <div class="form-group-container-left"></div>
+                                        <div class="form-group-container-right flex-container">
+                                            <button class="btn btn-secondary flex-left vertical-element-separator" type="button" @onclick="CloseWindow">@(TextProvider.Get("BUTTON_CANCEL"))</button>
+                                            <button class="btn btn-primary flex-right" type="button" @onclick="@HandleSubmit">@(TextProvider.Get("SAVE"))</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </EditForm>
+                        </div>
+                    }
+                </div>
+            </Content>
+        </ModalWindow>
+
+        <div class="email-container font-normal">
+            <div class="element-separator"></div>
+            <div class="email-data-container">
+                <p>
+                    @{
+                        MarkupString htmlString = new MarkupString(TextProvider.Get("VERIFYEMAIL_TEXT"));
+                    }
+                    @htmlString
+                </p>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="email-edit-container">
+                <div class="email-edit-icon btn btn-secondary" @onclick="EditEmail">
+                    <TelerikIcon Icon="SvgIcon.Pencil"></TelerikIcon>
+                </div>
+                <div class="email-edit-text font-bold">
+                    @User.Email
+                </div>
+            </div>
+            <div class="element-separator"></div>
+            <div class="font-normal">
+                @TextProvider.Get("VERIFYPHONE_CODE")
+            </div>
+            <div class="small-element-separator"></div>
+            <CodeInputComponent @ref="@CodeInput"></CodeInputComponent>
+            @if (Message != null)
+            {
+                <div class="small-element-separator"></div>
+                <SystemMessageComponent Message="@Message"></SystemMessageComponent>
+                <div class="element-separator"></div>
+            }
+
+            <div class="element-separator"></div>
+            <div class="form-group">
+                @if (!SendMailBusyIndicator)
+                {
+                    <div class="email-row">
+                        @if (SendMailSuccessfullIndicator)
+                        {
+                            <div class="email-row-left" style="color: green;">
+                                <TelerikIcon Icon="SvgIcon.Check" />
+                            </div>
+                            <div class="email-row-right" style="color: green;">
+                                @TextProvider.Get("VERIFYEMAIL_SENDAGAIN_SUCCESSFULL")
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="email-row-left">
+                                <a @onclick="HandleSendAgain" class="login-link">@TextProvider.Get("VERIFYEMAIL_SEND_AGAIN")</a>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <CustomLoader></CustomLoader>
+                }
+            </div>
+            <div class="email-footer">
+                <div class="small-element-separator"></div>
+                <div class="form-group-container">
+                    <button class="btn btn-secondary" @onclick="@HandleLogout">@TextProvider.Get("LOGOUT_BUTTON")</button>
+                    <button class="btn btn-primary" type="button" @onclick="@HandleVerification">@TextProvider.Get("VERIFY_BUTTON")</button>
+                </div>
+            </div>
+        </div>
+    </TelerikRootComponent>
+}

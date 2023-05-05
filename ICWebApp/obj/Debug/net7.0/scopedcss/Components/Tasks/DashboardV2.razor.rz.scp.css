@@ -1,0 +1,115 @@
+.dashboard-container[b-1aek0z3p2x]{
+}
+
+.container-left[b-1aek0z3p2x] {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.container-right[b-1aek0z3p2x] {
+    flex: 1;}
+
+.context-container[b-1aek0z3p2x] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.context-item-container[b-1aek0z3p2x] {
+    border: 2px solid #0F7173;
+    color: #0F7173;
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.context-item-container:hover[b-1aek0z3p2x] {
+    background-color: #0F7173CC;
+    color: white;
+}
+
+.context-aktiv[b-1aek0z3p2x] {
+    background-color: #0F7173CC;
+    color: white;
+    cursor: default !important;
+}
+
+.row-item[b-1aek0z3p2x] {
+    border: 1px solid #d9d9d9;
+    border-left: 5px solid #d9d9d9;
+    line-height: 30px;
+    margin-bottom: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+.row-item:hover[b-1aek0z3p2x] {
+    background-color: #F2F2F2;
+}
+.second-level-container[b-1aek0z3p2x]{
+    margin-left: 40px;
+}
+
+.third-level-container[b-1aek0z3p2x]{
+    margin-left: 40px;
+}
+.first-level-item[b-1aek0z3p2x] {
+    text-align:center;
+}
+.second-level-item[b-1aek0z3p2x] {
+    text-align: center;
+}
+table[b-1aek0z3p2x]{
+    width: 100%;
+}
+
+.second-level-spacer[b-1aek0z3p2x] {
+    margin-left: 20px;
+}
+.second-level-spacer tr[b-1aek0z3p2x]{
+    margin-bottom: 5px;
+}
+.third-level-spacer[b-1aek0z3p2x]{
+    height: 5px;
+}
+.show-all-element[b-1aek0z3p2x] {
+    border: 1px dashed #d9d9d9;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+}
+.show-all-element:hover[b-1aek0z3p2x] {
+    border-color: #0F7173;
+    color: #0F7173;
+}
+.authority-tag[b-1aek0z3p2x] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    box-shadow: none !important;
+    border: 2px solid #0F7173 !important;
+}
+.task-context-container[b-1aek0z3p2x] {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.auth-selection-dropdown[b-1aek0z3p2x] {
+    max-width: 600px;
+    display: flex;
+}
+.dl-item[b-1aek0z3p2x] {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    height: 100%;
+}

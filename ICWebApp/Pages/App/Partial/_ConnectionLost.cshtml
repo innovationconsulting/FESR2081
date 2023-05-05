@@ -1,0 +1,42 @@
+﻿<link href="css/connectionLost.css" rel="stylesheet" />
+
+<div id="components-reconnect-modal" class="my-reconnect-modal components-reconnect-hide">      
+    <div class="show">
+        <div class="connection-lost-panel" onclick="window.location.reload();">
+            <div class="connection-lost-container">
+                <div class="connection-lost-icon mobile-icon">
+                    <img src="/Images/ConnectionLost/Icon_Inverted.png">
+                </div>
+                <div class="connection-lost-icon desktop-icon">
+                    <img src="/Images/ConnectionLost/Icon.png">
+                </div>
+                <div id="connection-lost-text" class="font-bold">
+                    Verbindung aufgrund von Inaktivität getrennt
+                </div>
+                <div class="reconnect-container">
+                    <div class="reconnect-icon">
+                        <i class="fas fa-redo"></i>
+                    </div>
+                    <div class="reconnect-text font-normal">
+                        Erneut verbinden
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="comunix123">
+            $(document).ready(function() {
+                var language = window.navigator.userLanguage || window.navigator.language;
+                console.log(language);
+
+                if(language.includes("it")){
+                    $("#connection-lost-text").text("Disconnesso per inattività");
+                    $("#reconnect-text").text("Riconnetti");
+                }
+                else{
+                    $("#connection-lost-text").text("Verbindung aufgrund von Inaktivität getrennt");
+                    $("#reconnect-text").text("Erneut verbinden");
+                }
+            });
+        </script>
+    </div>
+</div>

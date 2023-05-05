@@ -1,0 +1,30 @@
+﻿
+<div class="telerik-report-toolbar">
+    <TelerikButtonGroup>
+        <ButtonGroupButton ThemeColor="secondary" Icon="SvgIcon.Fullscreen" OnClick="ShowFullScreen"></ButtonGroupButton>
+    </TelerikButtonGroup>
+</div>
+<div class="small-element-separator"></div>
+<div class="pdf-editor-container">  
+    <SfPdfViewerServer @ref="Viewer" Height="100%" Width="100%" EnableFormFields="true" EnableToolbar="true" 
+                        EnableThumbnailPanel="false" ToolbarSettings="@ToolbarSettings" EnableTextSelection="false">
+        <Syncfusion.Blazor.PdfViewer.PdfViewerEvents DocumentLoaded="OnPdfSmallLoaded" Created="OnPdfViewerCreated"></Syncfusion.Blazor.PdfViewer.PdfViewerEvents>
+    </SfPdfViewerServer>
+</div>
+<div class="element-separator"></div>
+<TelerikWindow @bind-Visible="@WindowVisible" Centered="true" Modal="true" Draggable="false" Class="telerik-preview-window">
+    <WindowTitle>
+        @TextProvider.Get("TELERIK_PREVIEW_TITLE")
+    </WindowTitle>
+    <WindowContent>
+        <div class="pdf-editor-container-large">
+            <SfPdfViewerServer @ref="ViewerLarge" Height="100%" Width="100%" EnableFormFields="true" EnableToolbar="true"
+                                EnableThumbnailPanel="false" ToolbarSettings="@ToolbarSettings" EnableTextSelection="false">
+                <Syncfusion.Blazor.PdfViewer.PdfViewerEvents DocumentLoaded="PDFLargeLoaded" Created="OnPdfViewerLargeCreated"></Syncfusion.Blazor.PdfViewer.PdfViewerEvents>
+        </SfPdfViewerServer>
+        </div>
+    </WindowContent>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="HideFullScreen" />
+    </WindowActions>
+</TelerikWindow>

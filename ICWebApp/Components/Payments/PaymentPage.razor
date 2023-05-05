@@ -1,0 +1,161 @@
+﻿
+<div class="container">
+    <div class="row justify-content-center mt-3 mb-4">
+        <div class="col-8 payment-loader-container">
+            <div class="cmp-card">
+                <div class="card has-bkg-grey shadow-sm mb-0">
+                    <div class="card-header border-0 p-0 mb-lg-30">
+                        <div class="d-flex">
+                            <h3 class="subtitle-large">@TextProvider.Get("PAY_RECAP_TITLE")</h3>
+                        </div>
+                    </div>
+                    @if (PayTransactions != null && PayTransactions.Count() > 0)
+                    {
+                        <div class="card-body p-0">
+                            @if (Anagrafic != null)
+                            {
+                                <div class="cmp-info-summary bg-white p-4">
+                                    <div class="card">
+                                        <div class="card-header border-bottom border-light p-0 mb-0 d-flex justify-content-between d-flex justify-content-end">
+                                            <h4 class="title-large-semi-bold mb-3">@TextProvider.Get("PAY_RECAP_PAYER")</h4>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="single-line-info border-light">
+                                                <div class="text-paragraph-small">@TextProvider.Get("PAY_RECAP_NAME")</div>
+                                                <div class="border-light">
+                                                    <p class="data-text">
+                                                        @Anagrafic.FirstName
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="single-line-info border-light">
+                                                <div class="text-paragraph-small">@TextProvider.Get("PAY_RECAP_SURNAME")</div>
+                                                <div class="border-light">
+                                                    <p class="data-text">
+                                                        @Anagrafic.LastName
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="single-line-info border-light">
+                                                <div class="text-paragraph-small">@TextProvider.Get("PAY_RECAP_DATE_OF_BIRTH")</div>
+                                                <div class="border-light">
+                                                    <p class="data-text">
+                                                        @if (Anagrafic.DateOfBirth != null)
+                                                        {
+                                                            @Anagrafic.DateOfBirth.Value.ToString("dd/MM/yyyy")
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="single-line-info border-light">
+                                                <div class="text-paragraph-small">@TextProvider.Get("PAY_RECAP_ADRESS")</div>
+                                                <div class="border-light">
+                                                    <p class="data-text">
+                                                        @Anagrafic.DomicileStreetAddress, @Anagrafic.DomicilePostalCode @Anagrafic.DomicileMunicipality, @Anagrafic.DomicileNation
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer p-0">
+                                        </div>
+                                    </div>
+                                </div>
+                            }                            
+                            @foreach (var trans in PayTransactions.ToList())
+                            {
+                                @if (trans != null)
+                                {
+                                    <div class="cmp-info-summary bg-white mt-4 mb-30 p-4">
+                                        <div class="card">
+                                            <div class="card-header border-bottom border-light p-0 mb-0 d-flex justify-content-between d-flex justify-content-end">
+                                                <h4 class="title-large-semi-bold mb-3">
+                                                    @if (trans.Description != null)
+                                                    {
+                                                        var markupString = (MarkupString)trans.Description.Replace("<p>", "").Replace("</p>", "");
+
+                                                        @markupString
+                                                    }
+                                                </h4>
+                                            </div>
+                                            <div class="card-body p-0">    
+                                                <div class="single-line-info border-light">
+                                                    <div class="text-paragraph-small">@TextProvider.Get("PAY_RECAP_PAYMENT_DATE")</div>
+                                                    <div class="border-light">
+                                                        <p class="data-text">
+                                                            @if (trans.CreationDate != null)
+                                                            {
+                                                                @trans.CreationDate.Value.ToString("dd.MM.yyyy")
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="single-line-info border-light">
+                                                    <div class="text-paragraph-small">@TextProvider.Get("PAY_RECAP_PAYMENT_POSITIONS")</div>
+                                                    <div class="border-light">
+                                                        <p class="data-text">
+                                                            @foreach (var transPos in trans.PAY_Transaction_Position.OrderBy(p => p.Description))
+                                                            {
+                                                                @if (transPos.Description != null)
+                                                                {
+                                                                    <div class="position-item">
+                                                                        <div class="position-description">
+                                                                            @if (transPos.Description != null)
+                                                                            {
+                                                                                var markupPosString = (MarkupString)transPos.Description.Replace("<p>", "").Replace("</p>", "");
+
+                                                                                @markupPosString
+                                                                            }
+                                                                        </div>
+                                                                        <div class="position-value">
+                                                                            @if (transPos.Amount != null)
+                                                                            {
+                                                                                @transPos.Amount.Value.ToString("C")
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="single-line-info border-light">
+                                                    <div class="text-paragraph-small">@TextProvider.Get("PAY_RECAP_PAYMENT_SUM")</div>
+                                                    <div class="border-light">
+                                                        <p class="data-text">
+                                                            @if (trans.TotalAmount != null)
+                                                            {
+                                                                @trans.TotalAmount.Value.ToString("C")
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer p-0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        @if (PayTransactions.Sum(p => p.TotalAmount) != null)
+                        {
+                            <div>
+                                <p class="title-large-semi-bold card-white bg-white">@TextProvider.Get("PAY_RECAP_PAYMENT_TOTAL_SUM") @PayTransactions.Sum(p => p.TotalAmount).Value.ToString("C")</p>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="cmp-nav-steps">
+                    <div class="segment-button-container">
+                        @if (ShowBackButton)
+                        {
+                            <button class="btn btn-secondary" @onclick="BackToPrevious">@TextProvider.Get("BUTTON_RETURN")</button>
+                        }
+                        <button class="btn btn-primary" @onclick="OnPayClicked">@TextProvider.Get("BUTTON_COMMIT_PAY")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

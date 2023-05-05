@@ -1,0 +1,43 @@
+.dl-btn[b-ytxhsr5hm3] {
+    margin-left: 10px;
+    width: 35px;
+    padding: 0px;
+}
+
+.context-container[b-ytxhsr5hm3] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.context-item-container[b-ytxhsr5hm3] {
+    border: 2px solid #0F7173;
+    color: #0F7173;
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.context-item-container:hover[b-ytxhsr5hm3] {
+    background-color: #0F7173CC;
+    color: white;
+}
+
+.context-aktiv[b-ytxhsr5hm3] {
+    background-color: #0F7173CC;
+    color: white;
+    cursor: default !important;
+}
+.authority-tag[b-ytxhsr5hm3] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}

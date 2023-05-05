@@ -1,0 +1,136 @@
+﻿@if (Transactions != null && Transactions.Count() > 0)
+{
+    <div class="payment-loader-container">
+        <CustomLoader Visible="@(IsBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <div class="payment-container">
+            @foreach (var trans in Transactions.OrderBy(p => p.PaymentDate).ThenBy(p => p.CreationDate))
+            {
+                @if (trans != null)
+                {
+                    string HideStyle = "display: none;";
+
+                    string ToPayCSS = "";
+
+                    if(trans.PaymentDate == null)
+                    {
+                        ToPayCSS = "transaction-card-to-pay";
+                    }
+
+                    <div class="payment-transaction-card @ToPayCSS">
+                        <div class="payment-transaction-container" onclick="$('#payment-transaction-positions_@trans.ID').toggle(100); $('#payment-detail-button_down_@trans.ID').toggle(0); $('#payment-detail-button_up_@trans.ID').toggle(0);">
+                            <div class="payment-detail-container">
+                                <div class="payment-first-row">
+                                    @if(trans.PaymentDate != null)
+                                    {
+                                        <div class="payment-transaction-status">
+                                            <div class="transaction-status-icon">
+                                                <TelerikIcon Icon="@("fa-regular fa-receipt")"></TelerikIcon>
+                                            </div>
+                                            <div class="transaction-status-description">
+                                                @TextProvider.Get("PAY_USERPAGE_PAYED_STATUS")
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="payment-transaction-status">
+                                            <div class="transaction-status-icon">
+                                                <TelerikIcon Icon="@("fa-regular fa-money-bill-1-wave")"></TelerikIcon>
+                                            </div>
+                                            <div class="transaction-status-description">
+                                                @TextProvider.Get("PAY_USERPAGE_TOPAY_STATUS")
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="payment-transaction-type">
+                                        @trans.Type
+                                    </div>
+                                    <div class="payment-transaction-creation-date font-small">
+                                        @if (trans.CreationDate != null)
+                                        {
+                                            @trans.CreationDate.Value.ToString("dd.MM.yyyy")
+                                        }
+                                    </div>
+                                </div>
+                                <div class="payment-second-row">
+                                    <div class="payment-transaction-date">
+                                        @if (trans.PaymentDate != null)
+                                        {
+                                            @trans.PaymentDate.Value.ToString("dd.MM.yyyy")
+                                        }
+                                    </div>
+                                    <div class="payment-transaction-description">
+                                        @if(trans.Description != null)
+                                        {                                        
+                                            var markupString = (MarkupString)trans.Description.Replace("<p>", "").Replace("</p>", "");
+                                        
+                                            @markupString
+                                        }
+                                    </div>
+                                    <div class="payment-transaction-amount">
+                                        @if (trans.TotalAmount != null)
+                                        {
+                                            @trans.TotalAmount.Value.ToString("C")
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="payment-detail-button">
+                                <div id="payment-detail-button_up_@trans.ID" style="@HideStyle">
+                                    <TelerikIcon Icon="@("fas fa-chevron-up")"></TelerikIcon>
+                                </div>
+                                <div id="payment-detail-button_down_@trans.ID">
+                                    <TelerikIcon Icon="@("fas fa-chevron-down")"></TelerikIcon>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-transaction-positions" id="payment-transaction-positions_@trans.ID" style="@HideStyle">
+                            @foreach (var transPos in trans.PAY_Transaction_Position)
+                            {
+                                <div class="position-container font-small">
+                                    <div class="position-description">
+                                        @if(transPos.Description != null)
+                                        {  
+                                            var markupPosString = (MarkupString)transPos.Description.Replace("<p>", "").Replace("</p>", "");
+
+                                            @markupPosString
+                                        }
+                                    </div>
+                                    <div class="position-value">
+                                        @if (transPos.Amount != null)
+                                        {
+                                            @transPos.Amount.Value.ToString("C")
+                                        }
+                                    </div>
+                                    <div class="payment-detail-button-spacer">
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                                
+                        @if(trans.PaymentDate == null)
+                        {   
+                            <div class="extra-small-element-separator"></div>
+                            <div class="payment-third-row font-small">    
+                                <div class="transaction-pay-button btn btn-secondary" @onclick="@(() => GoToPaymentPage(trans))" @onclick:stopPropagation="true">
+                                    @TextProvider.Get("BUTTON_PAY_NOW")
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+
+        
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="payment-container">
+        @TextProvider.Get("PAYMENTS_NO_PAYMENTS_FOUND")
+    </div>
+}

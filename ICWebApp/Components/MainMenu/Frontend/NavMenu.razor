@@ -1,0 +1,174 @@
+﻿@if(Municipality != null)
+{
+    <div class="navbar navbar-expand-lg has-megamenu">
+        <button class="custom-navbar-toggler" type="button" aria-controls="nav4" aria-expanded="false" aria-label="Mostra/Nascondi la navigazione" data-bs-target="#nav4" data-bs-toggle="navbarcollapsible">
+            <svg class="icon">
+                <use href="css/bootstrap-italia/svg/sprites.svg#it-burger"></use>
+            </svg>
+        </button>
+        <div class="navbar-collapsable" id="nav4">
+            <div class="overlay" style="display: none;"></div>
+            <div class="close-div">
+                <button class="btn close-menu" type="button">
+                    <span class="visually-hidden">@TextProvider.Get("AGID_FRONTEND_HIDE_NAVIGATION")</span>
+                    <svg class="icon">
+                        <use href="css/bootstrap-italia/svg/sprites.svg#it-close-big"></use>
+                    </svg>
+                </button>
+            </div>
+            <div class="menu-wrapper">
+                <a href="#" class="logo-hamburger" @onclick="CloseNavMenu">
+                    @if (Municipality.Logo != null)
+                    {
+                        var base64String = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(Municipality.Logo));
+
+                        <div class="icon">
+                            <img class="icon-img" aria-hidden="true" src="@base64String" />
+                        </div>
+                    }
+                    <div class="it-brand-text">
+                        <div class="it-brand-title">@TextProvider.Get("FRONTEND_HEADER_BRANDING_DESCRIPTION") @Municipality.Name</div>
+                    </div>
+                </a>
+                <nav aria-label="Principale">
+                    @if (MainMenuList != null)
+                    {
+                        <ul class="navbar-nav" data-element="main-navigation">
+                            <li class="nav-item dropdown">
+                                @foreach (var mi in MainMenuList.OrderBy(p => p.SortOrder))
+                                {
+                                    <ICWebApp.Components.MainMenu.Frontend.NavLinkComponent MenuItem="@mi"></ICWebApp.Components.MainMenu.Frontend.NavLinkComponent>
+                                }
+                            </li>
+                        </ul>
+                    }
+                </nav>
+                <nav aria-label="Secondaria">
+                    <ul class="navbar-nav navbar-secondary">
+                        @if (AUTHProvider.HasUserRole(AuthRoles.Employee) ||  //EMPLOYEE
+                            AUTHProvider.HasUserRole(AuthRoles.Citizen) ||  //ADMIN
+                            AUTHProvider.HasUserRole(AuthRoles.Administrator) ||  //ADMIN
+                            AUTHProvider.HasUserRole(AuthRoles.Developer))    //DEVELOPER
+                        {
+                            var item = new CONF_MainMenu();
+
+                            item.Url = "/User/Services";
+                            item.TEXT_SystemTextsCode = "MAINMENU_MY_SERVICES";
+                            item.SortOrder = 98;
+                            item.Enabled = true;
+                            item.InDevelopment = false;
+                            item.ShowInNavMenu = true;
+
+                            <li class="nav-item">
+                                <ICWebApp.Components.MainMenu.Frontend.NavLinkComponent MenuItem="@item"></ICWebApp.Components.MainMenu.Frontend.NavLinkComponent>
+                            </li>
+                        }
+                        @if (AUTHProvider.HasUserRole(AuthRoles.Employee) ||  //EMPLOYEE
+                       AUTHProvider.HasUserRole(AuthRoles.Administrator) ||  //ADMIN
+                       AUTHProvider.HasUserRole(AuthRoles.Developer))    //DEVELOPER
+                        {
+                            var item = new CONF_MainMenu();
+
+                            item.Url = "/Backend/Landing";
+                            item.TEXT_SystemTextsCode = "MAINMENU_MUNICIPAL_PAGE";
+                            item.SortOrder = 99;
+                            item.Enabled = true;
+                            item.InDevelopment = false;
+                            item.ShowInNavMenu = true;
+
+                            <li class="nav-item menu-padding-right">
+                                <ICWebApp.Components.MainMenu.Frontend.NavLinkComponent Class="fw-bold" MenuItem="@item"></ICWebApp.Components.MainMenu.Frontend.NavLinkComponent>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+                @if (!string.IsNullOrEmpty(Municipality.Soc_Twitter) || !string.IsNullOrEmpty(Municipality.Soc_Facebook) || !string.IsNullOrEmpty(Municipality.Soc_Youtube) || !string.IsNullOrEmpty(Municipality.Soc_Telegramm) || !string.IsNullOrEmpty(Municipality.Soc_Whatsapp) || !string.IsNullOrEmpty(Municipality.Soc_RSS))
+                {
+                    <div class="it-socials">
+                        <span>@TextProvider.Get("AGID_FRONTEND_FOLLOW_US")</span>
+                        <ul>
+                            @if (!string.IsNullOrEmpty(Municipality.Soc_Twitter))
+                            {
+                                <li>
+                                    <a href="@Municipality.Soc_Twitter" target="_blank">
+                                        <svg class="icon icon-sm icon-white align-top">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-twitter"></use>
+                                        </svg>
+                                        <span class="visually-hidden">Twitter</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (!string.IsNullOrEmpty(Municipality.Soc_Facebook))
+                            {
+                                <li>
+                                    <a href="@Municipality.Soc_Facebook" target="_blank">
+                                        <svg class="icon icon-sm icon-white align-top">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-facebook"></use>
+                                        </svg>
+                                        <span class="visually-hidden">Facebook</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (!string.IsNullOrEmpty(Municipality.Soc_Youtube))
+                            {
+                                <li>
+                                    <a href="@Municipality.Soc_Youtube" target="_blank">
+                                        <svg class="icon icon-sm icon-white align-top">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-youtube"></use>
+                                        </svg>
+                                        <span class="visually-hidden">YouTube</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (!string.IsNullOrEmpty(Municipality.Soc_Telegramm))
+                            {
+                                <li>
+                                    <a href="@Municipality.Soc_Telegramm" target="_blank">
+                                        <svg class="icon icon-sm icon-white align-top">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-telegram"></use>
+                                        </svg>
+                                        <span class="visually-hidden">Telegram</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (!string.IsNullOrEmpty(Municipality.Soc_Instagram))
+                            {
+                                <li>
+                                    <a href="@Municipality.Soc_Instagram" target="_blank">
+                                        <svg class="icon icon-sm icon-white align-top">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-instagram"></use>
+                                        </svg>
+                                        <span class="visually-hidden">Instagram</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (!string.IsNullOrEmpty(Municipality.Soc_Whatsapp))
+                            {
+                                <li>
+                                    <a href="@Municipality.Soc_Whatsapp" target="_blank">
+                                        <svg class="icon icon-sm icon-white align-top">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-whatsapp"></use>
+                                        </svg>
+                                        <span class="visually-hidden">Whatsapp</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (!string.IsNullOrEmpty(Municipality.Soc_RSS))
+                            {
+                                <li>
+                                    <a href="@Municipality.Soc_RSS" target="_blank">
+                                        <svg class="icon icon-sm icon-white align-top">
+                                            <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-rss"></use>
+                                        </svg>
+                                        <span class="visually-hidden">RSS</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+}

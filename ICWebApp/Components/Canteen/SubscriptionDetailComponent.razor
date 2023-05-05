@@ -1,0 +1,49 @@
+﻿<div class="canteen-subscription-container">
+    @if (SubscribersList != null && SubscribersList.Count() > 1)
+    {
+        <div class="small-element-separator"></div>
+        <div class="canteen-subscription-selection-container">        
+            @foreach (var sub in SubscribersList.OrderBy(p => p.FirstName).ThenBy(p => p.LastName).ToList())
+            {
+                string buttonCSS = "btn-secondary";
+
+                if (sub != null && subscriberDetail != null && sub.ID == subscriberDetail.ID)
+                {
+                    buttonCSS = "btn-primary";
+                }
+
+                <div class="btn @buttonCSS authority-tag" @onclick="@(() => SelectSub(sub.ID))" @onclick:stopPropagation="true">
+                    <span>
+                        <TelerikIcon Icon="@("far fa-user-graduate")"></TelerikIcon>
+                        @sub.SchoolyearDescription | @sub.FirstName @sub.LastName
+                    </span>
+                </div>
+            }
+        </div>
+    }
+    @if (subscriberDetail != null)
+    {
+        int elementCount = 0;
+        var currentPrevious = subscriberDetailOldVersions.OrderByDescending(p => p.CreationDate).FirstOrDefault();
+        
+        <div class="small-element-separator"></div>
+        <TelerikTabStrip>
+            <TabStripTab Title="@TextProvider.Get("CANTEEN_SUBSCRIPTION_CURRENT_VERSION")">
+                <SubscriptionElementComponent SubscriberDetail="@subscriberDetail" PreviousDetail="@currentPrevious"></SubscriptionElementComponent>
+            </TabStripTab>
+            @foreach (var oldVersion in subscriberDetailOldVersions.OrderByDescending(p => p.CreationDate))
+            {
+                var previousVersion = subscriberDetailOldVersions.ElementAtOrDefault(elementCount + 1);
+
+                if (oldVersion.CreationDate != null)
+                {
+                    <TabStripTab Title="@oldVersion.CreationDate.Value.ToString("dd.MM.yyyy")">
+                        <SubscriptionElementComponent SubscriberDetail="@oldVersion" PreviousDetail="@previousVersion"></SubscriptionElementComponent>
+                    </TabStripTab>
+                }
+
+                elementCount++;
+            }
+        </TelerikTabStrip>
+    }
+</div>

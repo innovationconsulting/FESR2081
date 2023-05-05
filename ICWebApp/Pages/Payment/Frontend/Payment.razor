@@ -1,0 +1,19 @@
+﻿@page "/Payment/{ID}/{ReturnUrl}"
+
+@layout FrontendLayout
+
+<AuthorizeView>
+    <Authorized>
+        @if (TransactionID != null)
+        {
+            <div class="segment-container">
+                <PaymentPage Transactions="new List<Guid?>(){ TransactionID }" ReturnUrl="@ReturnUrl" SourceCode="DEFAULT"
+                             ShowBackButton="true" OnBackToPrevious="BackToPreviousPayment" OnPaymentComplete="@BackToPreviousPayment">
+                </PaymentPage>
+            </div>       
+        }
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

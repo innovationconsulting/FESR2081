@@ -1,0 +1,619 @@
+﻿@page "/Organization/Detail/{ID}"
+
+@layout FrontendLayout
+
+
+<AuthorizeView>
+    <Authorized>
+        @if (CurrentApplication != null)
+        {
+            <div class="container">
+                <div class="row mt-lg-80 mt-3 mb-4">
+                    <div class="col-lg-3 mb-4 border-col hide-max-576">
+                        <AnchorList></AnchorList>
+                    </div>
+                    <div class="col-lg-8 offset-lg-1">
+                        <div class="user-application-container it-page-sections-container">
+                            <CustomLoader Visible="@(IsDataBusy)"
+                                      Text="@null" Class="initial-data-loader">
+                            </CustomLoader>
+                            <Anchor Title="@(TextProvider.Get("FRONTEND_APPLICATION_STATUS"))" ID="@(TextProvider.Get("FRONTEND_APPLICATION_STATUS"))" Order="1">  
+                                <div class="calendar-vertical mb-3">
+                                    @if (CurrentStatusLogList != null && CurrentStatusLogList.Count() > 0 && CurrentApplication != null && CurrentApplication.SubmitAt != null)
+                                    {
+                                        @foreach (var e in CurrentStatusLogList.Where(p => (p.ChangeDate > CurrentApplication.SubmitAt)).OrderByDescending(p => p.ChangeDate))
+                                        {
+                                            <div class="calendar-date">
+                                                <div class="calendar-date-day">
+                                                    <h3 class="calendar-date-day-content">
+                                                        @if (e.ChangeDate != null)
+                                                        {
+                                                            <small class="calendar-date-day__year">@e.ChangeDate.Value.ToString("yyyy")</small>
+                                                            <span class="title-xxlarge-regular d-flex justify-content-center">@e.ChangeDate.Value.ToString("dd")</span>
+                                                            <small class="calendar-date-day__month">@e.ChangeDate.Value.ToString("MMM")</small>
+                                                        }
+                                                    </h3>
+                                                </div>
+                                                <div class="calendar-date-description rounded">
+                                                    <div class="calendar-date-description-content">
+                                                        @if (!string.IsNullOrEmpty(e.Status))
+                                                        {
+                                                            <div class="calendar-status-container">
+                                                                <i class="@e.StatusIcon"></i>
+                                                                <div class="calendar-status-container-right">
+                                                                    @if (e.ChangeDate != null)
+                                                                    {
+                                                                        <div class="font-small">@(e.ChangeDate.Value.ToString("HH:mm"))</div>
+                                                                    }
+                                                                    <h4 class="h5 mb-0 ">@e.Status</h4>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    @if (CurrentApplication.SubmitAt != null)
+                                    {
+                                        var CommittedStatus = StatusList.FirstOrDefault(p => p.ID == FORMStatus.Comitted);
+
+                                        @if (CommittedStatus != null)
+                                        {
+                                            <div class="calendar-date">
+                                                <div class="calendar-date-day">
+                                                    <h3 class="calendar-date-day-content">
+                                                        @if (CurrentApplication.SubmitAt != null)
+                                                        {
+                                                            <small class="calendar-date-day__year">@CurrentApplication.SubmitAt.Value.ToString("yyyy")</small>
+                                                            <span class="title-xxlarge-regular d-flex justify-content-center">@CurrentApplication.SubmitAt.Value.ToString("dd")</span>
+                                                            <small class="calendar-date-day__month">@CurrentApplication.SubmitAt.Value.ToString("MMM")</small>
+                                                        }
+                                                    </h3>
+                                                </div>
+                                                <div class="calendar-date-description rounded">
+                                                    <div class="calendar-date-description-content">
+                                                        @if (!string.IsNullOrEmpty(CommittedStatus.Description))
+                                                        {
+                                                            <div class="calendar-status-container">
+                                                                <i class="@CommittedStatus.Icon"></i>
+                                                                <div class="calendar-status-container-right">
+                                                                    @if (CurrentApplication.SubmitAt != null)
+                                                                    {
+                                                                        <div class="font-small">@(CurrentApplication.SubmitAt.Value.ToString("HH:mm"))</div>
+                                                                    }
+                                                                    <h4 class="h5 mb-0 ">@CommittedStatus.Description</h4>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    @if (CurrentStatusLogList != null && CurrentStatusLogList.Count() > 0 && CurrentApplication != null)
+                                    {
+                                        @foreach (var e in CurrentStatusLogList.Where(p => (CurrentApplication.SubmitAt == null || p.ChangeDate < CurrentApplication.SubmitAt)).OrderByDescending(p => p.ChangeDate))
+                                        {
+                                            <div class="calendar-date">
+                                                <div class="calendar-date-day">
+                                                    <h3 class="calendar-date-day-content">
+                                                        @if (e.ChangeDate != null)
+                                                        {
+                                                            <small class="calendar-date-day__year">@e.ChangeDate.Value.ToString("yyyy")</small>
+                                                            <span class="title-xxlarge-regular d-flex justify-content-center">@e.ChangeDate.Value.ToString("dd")</span>
+                                                            <small class="calendar-date-day__month">@e.ChangeDate.Value.ToString("MMM")</small>
+                                                        }
+                                                    </h3>
+                                                </div>
+                                                <div class="calendar-date-description rounded">
+                                                    <div class="calendar-date-description-content">
+                                                        <div class="calendar-status-container">
+                                                            <i class="@e.StatusIcon"></i>
+                                                            <div class="calendar-status-container-right">
+                                                                @if (e.ChangeDate != null)
+                                                                {
+                                                                    <div class="font-small">@(e.ChangeDate.Value.ToString("HH:mm"))</div>
+                                                                }
+                                                                <h4 class="h5 mb-0 ">@e.Status</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    @if (CurrentApplication.CreationDate != null)
+                                    {
+                                        <div class="calendar-date">
+                                            <div class="calendar-date-day">
+                                                <h3 class="calendar-date-day-content">
+                                                    @if (CurrentApplication.CreationDate != null)
+                                                    {
+                                                        <small class="calendar-date-day__year">@CurrentApplication.CreationDate.Value.ToString("yyyy")</small>
+                                                        <span class="title-xxlarge-regular d-flex justify-content-center">@CurrentApplication.CreationDate.Value.ToString("dd")</span>
+                                                        <small class="calendar-date-day__month">@CurrentApplication.CreationDate.Value.ToString("MMM")</small>
+                                                    }
+                                                </h3>
+                                            </div>
+                                            <div class="calendar-date-description rounded">
+                                                <div class="calendar-date-description-content">
+                                                    <div class="calendar-status-container">
+                                                        <i class="fa-regular fa-file-plus"></i>
+                                                        <div class="calendar-status-container-right">
+                                                            @if (CurrentApplication.CreationDate != null)
+                                                            {
+                                                                <div class="font-small">@(CurrentApplication.CreationDate.Value.ToString("HH:mm"))</div>
+                                                            }
+                                                            <h4 class="h5 mb-0 ">@TextProvider.Get("FORM_USER_DETAIL_CREATED_STATUS")</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }                            
+                                </div>    
+                            </Anchor>
+
+                            @if (CurrentApplicationRessource != null && CurrentApplicationRessource.Count() > 0)
+                            {
+                                <Anchor Title="@(TextProvider.Get("FRONTEND_APPLICATION_RESSOURCES"))" ID="@(TextProvider.Get("FRONTEND_APPLICATION_RESSOURCES"))" Order="2">
+                                    <div class="ressource-container">
+                                        @foreach (var r in CurrentApplicationRessource)
+                                        {
+                                            @if (r.FILE_FileInfo_ID != null)
+                                            {
+                                                var dbfile = FileProvider.GetFileInfo(r.FILE_FileInfo_ID.Value);
+
+                                                @if (dbfile != null)
+                                                {
+                                                    <div class="application-row">
+                                                        <div class="document-detail-download" @onclick="@(() => DownloadRessource(r.FILE_FileInfo_ID.Value, dbfile.FileName))">
+                                                            <div class="document-detail-download-icon">
+                                                                <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                                                            </div>
+                                                            <div class="document-detail-download-description">
+                                                                @dbfile.FileName (@(
+                                            dbfile.Size / 1024
+                                            ) kb)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="extra-small-element-separator"></div>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </Anchor>
+                            }
+
+                            <Anchor Title="@(TextProvider.Get("FRONTEND_APPLICATION_APP"))" ID="@(TextProvider.Get("FRONTEND_APPLICATION_APP"))" IsCard="true" Order="3">
+                                @if (CurrentApplication != null)
+                                {
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_ANAGRAFIC_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                                        <label class="application-value">@CurrentApplication.User_Firstname @CurrentApplication.User_Lastname</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                                        <label class="application-value">@CurrentApplication.User_FiscalNumber</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_GENDER")</label>
+                                        <label class="application-value">
+                                            @if (CurrentApplication.User_Gender == "M")
+                                            {
+                                                @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                                            }
+                                            else if (CurrentApplication.User_Gender == "W")
+                                            {
+                                                @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                                            }
+                                        </label>
+                                    </div>
+                                    <div class="element-separator"></div>
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_BIRTH_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_COUNTY_OF_BIRTH")</label>
+                                        <label class="application-value">@CurrentApplication.User_CountyOfBirth</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_PLACE_OF_BIRTH")</label>
+                                        <label class="application-value">@CurrentApplication.User_PlaceOfBirth</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_DATE_OF_BIRTH")</label>
+                                        <label class="application-value">
+                                            @if (CurrentApplication.User_DateOfBirth != null)
+                                            {
+                                                @CurrentApplication.User_DateOfBirth.Value.ToString("dd.MM.yyyy")
+                                            }
+                                        </label>
+                                    </div>
+                                    <div class="element-separator"></div>
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_DOMICILE_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                                        <label class="application-value">@CurrentApplication.User_DomicileStreetAddress</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                                        <label class="application-value">@CurrentApplication.User_DomicilePostalCode</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                                        <label class="application-value">@CurrentApplication.User_DomicileMunicipality</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                                        <label class="application-value">@CurrentApplication.User_DomicileProvince</label>
+                                    </div>
+                                    <div class="element-separator"></div>
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                                        <label class="application-value">@CurrentApplication.User_Email</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                                        <label class="application-value">
+                                            @if (!string.IsNullOrEmpty(CurrentApplication.User_Phone))
+                                            {
+                                                var IntPhoneNumber = long.Parse(CurrentApplication.User_Phone.Replace("+", ""));
+
+                                                @IntPhoneNumber.ToString("+## ### ### ####")
+                                            }
+                                        </label>
+                                    </div>
+                                }
+                            </Anchor>
+                            <Anchor Title="@(TextProvider.Get("ORG_REQUEST_TO_REPRESENT_TITLE"))" IsCard="true" ID="@(TextProvider.Get("ORG_REQUEST_TO_REPRESENT_TITLE"))" Order="4">
+                                @if (CurrentApplication != null)
+                                {
+                                    <h4>
+                                        @TextProvider.Get("ORG_REQUEST_TYPE_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("ORG_REQUEST_DENOMINATION")</label>
+                                        <label class="application-value">@CurrentApplication.Firstname @CurrentApplication.Lastname</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                                        <label class="application-value">@CurrentApplication.FiscalNumber</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                                        <label class="application-value">@CurrentApplication.VatNumber</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("ORG_REQUEST_COMPANY_TYPE")</label>
+                                        <label class="application-value">@CurrentApplication.CompanyType</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("ORG_REQUEST_ORG_LEGAL_FORM")</label>
+                                        <label class="application-value">@CurrentApplication.LegalForm</label>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(CurrentApplication.HandelskammerEintragung))
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_HANDELSKAMMER")</label>
+                                            <label class="application-value">
+                                                @CurrentApplication.HandelskammerEintragung
+                                            </label>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(CurrentApplication.CodiceDestinatario))
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("ORG_REQUEST_CODICE_DESTINATARIO")</label>
+                                            <label class="application-value">
+                                                @CurrentApplication.CodiceDestinatario
+                                            </label>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(CurrentApplication.HandelskammerEintragung))
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_HANDELSKAMMER")</label>
+                                            <label class="application-value">@CurrentApplication.HandelskammerEintragung</label>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(CurrentApplication.EintragungNr))
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_NR")</label>
+                                            <label class="application-value">
+                                                @CurrentApplication.EintragungNr
+                                            </label>
+                                        </div>
+                                    }
+                                    @if (CurrentApplication.EintragungDatum != null)
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_DATUM")</label>
+                                            <label class="application-value">
+                                                @CurrentApplication.EintragungDatum.Value.ToString("dd.MM.yyyy")
+                                            </label>
+                                        </div>
+                                    }
+                                    @if (CurrentApplication.KontoInhaber != null || CurrentApplication.Bankname != null || CurrentApplication.IBAN != null)
+                                    {
+                                        <div class="element-separator"></div>
+                                        <h4>
+                                            @TextProvider.Get("FORM_APPLICATION_BANKDATA")
+                                        </h4>
+                                        @if (CurrentApplication.KontoInhaber != null)
+                                        {
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="application-row">
+                                                <label class="application-label">@TextProvider.Get("ORG_KONTOINHABER")</label>
+                                                <label class="application-value">
+                                                    @CurrentApplication.KontoInhaber
+                                                </label>
+                                            </div>
+                                        }
+                                        @if (CurrentApplication.Bankname != null)
+                                        {
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="application-row">
+                                                <label class="application-label">@TextProvider.Get("ORG_BANKNAME")</label>
+                                                <label class="application-value">
+                                                    @CurrentApplication.Bankname
+                                                </label>
+                                            </div>
+                                        }
+                                        @if (CurrentApplication.IBAN != null)
+                                        {
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="application-row">
+                                                <label class="application-label">@TextProvider.Get("ORG_IBAN")</label>
+                                                <label class="application-value">
+                                                    @CurrentApplication.IBAN
+                                                </label>
+                                            </div>
+                                        }
+                                    }
+                                    <div class="element-separator"></div>
+                                    <h4>
+                                        @TextProvider.Get("ORG_REQUEST_DOMICILE_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                                        <label class="application-value">@CurrentApplication.DomicileStreetAddress</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                                        <label class="application-value">@CurrentApplication.DomicilePostalCode</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                                        <label class="application-value">@CurrentApplication.DomicileMunicipality</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                                        <label class="application-value">@CurrentApplication.DomicileProvince</label>
+                                    </div>
+                                    <div class="element-separator"></div>
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                                        <label class="application-value">@CurrentApplication.Email</label>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(CurrentApplication.PECEmail))
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("ORG_REQUEST_PEC_EMAIL")</label>
+                                            <label class="application-value">
+                                                @CurrentApplication.PECEmail
+                                            </label>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(CurrentApplication.MobilePhone))
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                                            <label class="application-value">
+                                                @if (!string.IsNullOrEmpty(CurrentApplication.Phone))
+                                                {
+                                                    var IntPhoneNumber = long.Parse(CurrentApplication.Phone.Replace("+", ""));
+
+                                                    @IntPhoneNumber.ToString("+## #### ### ###")
+                                                }
+                                            </label>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(CurrentApplication.MobilePhone))
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_PHONE_MOBILE")</label>
+                                            <label class="application-value">
+                                                @if (!string.IsNullOrEmpty(CurrentApplication.MobilePhone))
+                                                {
+                                                    var IntPhoneNumber = long.Parse(CurrentApplication.MobilePhone.Replace("+", ""));
+
+                                                    @IntPhoneNumber.ToString("+## ### ### ####")
+                                                }
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                            </Anchor>
+                            @if (CurrentApplication != null && CurrentApplication.HasGV == 1)
+                            {
+                                <Anchor Title="@(TextProvider.Get("ORG_REQUEST_GV_TITLE"))" ID="@(TextProvider.Get("ORG_REQUEST_GV_TITLE"))" IsCard="true" Order="5">
+                                    @if (CurrentApplication != null)
+                                    {
+                                        <h4>
+                                            @TextProvider.Get("APPLICANT_ANAGRAFIC_DATA")
+                                        </h4>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                                            <label class="application-value">@CurrentApplication.GV_Firstname @CurrentApplication.GV_Lastname</label>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                                            <label class="application-value">@CurrentApplication.GV_FiscalNumber</label>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_GENDER")</label>
+                                            <label class="application-value">
+                                                @if (CurrentApplication.GV_Gender == "M")
+                                                {
+                                                    @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                                                }
+                                                else if (CurrentApplication.GV_Gender == "F")
+                                                {
+                                                    @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                                                }
+                                            </label>
+                                        </div>
+                                        <div class="element-separator"></div>
+                                        <h4>
+                                            @TextProvider.Get("APPLICANT_BIRTH_DATA")
+                                        </h4>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_COUNTY_OF_BIRTH")</label>
+                                            <label class="application-value">@CurrentApplication.GV_CountyOfBirth</label>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_PLACE_OF_BIRTH")</label>
+                                            <label class="application-value">@CurrentApplication.GV_PlaceOfBirth</label>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_DATE_OF_BIRTH")</label>
+                                            <label class="application-value">
+                                                @if (CurrentApplication.GV_DateOfBirth != null)
+                                                {
+                                                    @CurrentApplication.GV_DateOfBirth.Value.ToString("dd.MM.yyyy")
+                                                }
+                                            </label>
+                                        </div>
+                                        <div class="element-separator"></div>
+                                        <h4>
+                                            @TextProvider.Get("APPLICANT_DOMICILE_DATA")
+                                        </h4>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                                            <label class="application-value">@CurrentApplication.GV_DomicileStreetAddress</label>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                                            <label class="application-value">@CurrentApplication.GV_DomicilePostalCode</label>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                                            <label class="application-value">@CurrentApplication.GV_DomicileMunicipality</label>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                                            <label class="application-value">@CurrentApplication.GV_DomicileProvince</label>
+                                        </div>                                        
+                                        <div class="element-separator"></div>
+                                        <h4>
+                                            @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                                        </h4>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                                            <label class="application-value">@CurrentApplication.GV_Email</label>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="application-row">
+                                            <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                                            <label class="application-value">
+                                                @if (!string.IsNullOrEmpty(CurrentApplication.GV_Phone))
+                                                {
+                                                    var IntPhoneNumber = long.Parse(CurrentApplication.GV_Phone.Replace("+", ""));
+
+                                                    @IntPhoneNumber.ToString("+## ### ### ####")
+                                                }
+                                            </label>
+                                        </div>
+                                        }
+                                </Anchor>
+                            }
+
+                            <Anchor Title="@(TextProvider.Get("FRONTEND_APPLICATION_DOCUMENTS"))" ID="@(TextProvider.Get("FRONTEND_APPLICATION_DOCUMENTS"))" Order="6">
+                                <div class="applicant-container">
+                                    <div class="applicant-group">
+                                        <div class="application-row">
+                                            @if (CurrentApplication != null && CurrentApplication.FILE_Fileinfo_ID != null)
+                                            {
+                                                <div class="document-detail-download" @onclick="@(() => DownloadRessource(CurrentApplication.FILE_Fileinfo_ID.Value, TextProvider.Get("ORG_REQUEST_DOCUMENT_TITLE")))">
+                                                    <div class="document-detail-download-icon">
+                                                        <svg class="icon icon-primary icon-sm me-1" aria-hidden="true">
+                                                            <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="document-detail-download-description font-normal">
+                                                        @TextProvider.Get("ORG_REQUEST_DOCUMENT_TITLE")
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                </div>
+                            </div>
+                        </Anchor>
+                        <div class="element-separator"></div>
+                        <button class="btn btn-secondary" @onclick="BackToPrevious">@TextProvider.Get("BUTTON_BACK")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

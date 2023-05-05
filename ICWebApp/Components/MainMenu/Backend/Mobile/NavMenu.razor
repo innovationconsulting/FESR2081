@@ -1,0 +1,21 @@
+﻿<div class="navbar-container-frontend">
+    @if (MainMenuList != null)
+    {
+        @foreach (var mi in MainMenuList.Where(p => p.ParentID == null).OrderBy(p => p.SortOrder).ToList())
+        {
+            <ICWebApp.Components.MainMenu.Backend.Mobile.NavLinkComponent MenuItem="@mi"></ICWebApp.Components.MainMenu.Backend.Mobile.NavLinkComponent>
+        }
+
+        var item = new CONF_MainMenu();
+
+        item.Url = "/";
+        item.TEXT_SystemTextsCode = "MAINMENU_CITIZEN_PAGE";
+        item.Icon = "tell-a-friend";
+        item.SortOrder = 99;
+        item.Enabled = true;
+        item.InDevelopment = false;
+        item.ShowInNavMenu = true;
+
+        <ICWebApp.Components.MainMenu.Backend.Mobile.NavLinkComponent MenuItem="@item"></ICWebApp.Components.MainMenu.Backend.Mobile.NavLinkComponent>
+    }
+</div>

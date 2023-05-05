@@ -1,0 +1,53 @@
+
+@media (max-width: 680px) {
+
+    .email-data-container[b-dzeduakxbl] {
+        max-height: unset !important;
+        overflow: unset !important;
+        height: auto;
+    }
+
+    .email-footer[b-dzeduakxbl] {
+        position: unset !important;
+        bottom: unset !important;
+        left: unset !important;
+        border-top: 0px !important;
+    }
+
+    .email-header[b-dzeduakxbl] {
+        position: unset !important;
+        border-bottom: 0px !important;
+    }
+
+    .email-title[b-dzeduakxbl] {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+
+.email-row[b-dzeduakxbl] {
+    display: flex;
+}
+
+.email-row-left[b-dzeduakxbl] {
+    justify-content: left;
+}
+
+.email-row-right[b-dzeduakxbl] {
+    justify-content: right;
+    margin-left: 15px;
+}
+
+.email-edit-container[b-dzeduakxbl]{
+    display: flex;
+    gap: 10px;
+}
+.email-edit-icon[b-dzeduakxbl] {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 18px !important;
+    padding: 3px;
+}
+.email-edit-text[b-dzeduakxbl] {
+    line-height: 30px;
+}

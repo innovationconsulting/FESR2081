@@ -1,0 +1,39 @@
+﻿@page "/Admin/Rooms/Settings"
+
+@layout MainLayout
+
+<div class="element-separator"></div>
+@if(Configuration != null)
+{
+    <div class="segment-container custom-background-default">
+        <EditForm Model="@Configuration">
+            <DataAnnotationsValidator />
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("ROOM_BACKEND_BOOKING_TIMES")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("ROOM_BACKEND_MIN_BOOKING_DAYS")</label>
+                <InputNumber @bind-Value="Configuration.MinRoomBookingDays" class="form-control"></InputNumber>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("ROOM_BACKEND_MAX_BOOKING_DAYS")</label>
+                <InputNumber @bind-Value="Configuration.MaxRoomBookingDays" class="form-control"></InputNumber>
+            </div>            
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group group-flex">
+                <div class="group-left">
+                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_HAS_TASKS")</label>
+                    <div class="extra-small-element-separator"></div>
+                    <TelerikSwitch @bind-Value="Configuration.HasTasks" OnLabel=" " OffLabel=" " Width="65px"
+                                Class="list-item-switch"></TelerikSwitch>
+                </div>
+            </div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                OnClick="@SaveConfig">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

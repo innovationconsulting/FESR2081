@@ -1,0 +1,185 @@
+﻿@if (DefinitionField != null && ApplicationField != null)
+{
+    string ErrorCSS = "";
+
+    @if (!string.IsNullOrEmpty(ApplicationField.ERROR_CODE))
+    {
+        ErrorCSS = "element-error-style";
+    }
+
+    <div class="element-description">
+        @if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Textbox)  
+        {
+            @if (!string.IsNullOrEmpty(DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name))
+            {
+                <div class="font-normal">@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+            }
+        }
+        @if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Textarea)    //TEXTAREA
+        {
+            @if (!string.IsNullOrEmpty(DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name))
+            {
+                <div class="font-normal">@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+            }
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Title) //TITLE
+        {
+            @if (DefinitionField.IsAnchor)
+            {
+                <Anchor Title="@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" CSS="h3 custom-color-primary"
+                ID="@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" Order="@FormRendererHelper.AnchorOrderID"></Anchor>
+            }
+            else
+            {
+                <h3 class="custom-color-primary">@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</h3>
+                <div class="extra-small-element-spacer"></div>
+            }
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.SubTitle) //SUBTITLE
+        {
+            @if (DefinitionField.IsAnchor)
+            {
+                <Anchor Title="@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" CSS="font-bold custom-color-primary"
+                        ID="@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" Order="@FormRendererHelper.AnchorOrderID"></Anchor>
+            }
+            else
+            {
+                <div class="custom-color-primary font-bold">@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+            }
+
+            FormRendererHelper.AnchorOrderID++;
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Spacer) //SPACER
+        {
+            <div class="segment-spacer"></div>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.SmallSpacer) //SMALL SPACER
+        {
+            <div class="small-segment-spacer"></div>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Checkbox)  //CHECKBOX HAS TITLE INSIDE ELEMENT
+        {
+
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Difference)  //DIFFERENCE HAS TITLE INSIDE ELEMENT
+        {
+
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Details) //DETAILS
+        {
+            <div class="font-extra-small">@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Bullet) //BULLET
+        {
+            <div class="font-normal element-bullet">
+                <div class="element-bullet-icon">
+                    <TelerikIcon Icon="SvgIcon.Circle"></TelerikIcon>
+                </div>
+                <div class="element-bullet-text font-normal">
+                    @DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name
+                </div>
+            </div>
+        }
+        else //ALL ROW TITLES
+        {
+            <div class="font-normal">@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+        }
+    </div>
+    <div class="element-value @ErrorCSS">
+        @if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Textbox)   
+        {
+            <InputText @bind-Value="ApplicationField.Value" disabled="true" class="form-control" />
+        }
+        @if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Textarea)    //TEXTBOX
+        {
+            <InputTextArea @bind-Value="ApplicationField.Value" disabled="true" class="form-control form-text-area" />
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Number)    //NUMBER
+        {
+            <InputNumber @bind-Value="ApplicationField.IntValue" disabled="true" class="form-control" />
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Money)    //MONEY
+        {
+            <TelerikNumericTextBox @bind-Value="ApplicationField.DecimalValue" Enabled="false" class="form-control" Format="C"></TelerikNumericTextBox>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Datepicker)    //DATEPICKER
+        {
+            <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="ApplicationField.DateValue" Enabled="false" class="form-control"></TelerikDatePicker>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Timepicker)    //TIMEPICKER
+        {
+            <TelerikTimePicker Format="HH:mm" @bind-Value="ApplicationField.DateValue" Enabled="false" class="form-control"></TelerikTimePicker>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Checkbox)    //CHECKBOX
+        {
+            <div class="element-checkbox">
+                <div class="element-checkbox-switch">
+                    <TelerikSwitch @bind-Value="@ApplicationField.BoolValue" Enabled="false" OnLabel=" " OffLabel=" " Width="65px"
+                           Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                    </TelerikSwitch>
+                </div>
+                <div class="element-checkbox-text font-normal">
+                    @DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name
+                </div>
+            </div>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Radiobutton)    //RADIO
+        {
+            var Data = FieldOptions;
+
+            @foreach (var d in Data.OrderBy(p => p.SortOrder))
+            {
+                @if (d.FORM_Definition_Field_Option_Extended != null && d.FORM_Definition_Field_Option_Extended.Count() > 0)
+                {
+                    d.Description = d.FORM_Definition_Field_Option_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Description;
+                }
+            }
+
+            <TelerikRadioGroup Data="@Data.OrderBy(p => p.SortOrder)" TextField="Description" ValueField="ID" Enabled="false" @bind-Value="@ApplicationField.GuidValue"></TelerikRadioGroup>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Dropdown)    //DROPDOWN
+        {
+            var Data = FieldOptions;
+
+            @foreach (var d in Data.OrderBy(p => p.SortOrder))
+            {
+                @if (d.FORM_Definition_Field_Option_Extended != null && d.FORM_Definition_Field_Option_Extended.Count() > 0)
+                {
+                    d.Description = d.FORM_Definition_Field_Option_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Description;
+                }
+            }
+
+            <TelerikDropDownList Data="@Data.OrderBy(p => p.SortOrder)" TextField="Description" ValueField="ID" Enabled="false" @bind-Value="ApplicationField.GuidValue"></TelerikDropDownList>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.List)     //LIST
+        {
+            <ListComponent Field="ApplicationField" ReadOnly="true"></ListComponent>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Difference)     //DIFFERENCE
+        {
+            if (DefinitionField.DecimalReferenceValueLimit != null)
+            {
+                <div class="element-difference font-normal">
+                    <div class="element-difference-text">
+                        @DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name
+                    </div>
+                    @if (ApplicationField.DecimalValue != null && DefinitionField.DecimalReferenceValueLimit != null)
+                    {
+                        <div class="element-difference-value">
+                            @(ApplicationField.DecimalValue.Value.ToString("C"))/@(DefinitionField.DecimalReferenceValueLimit.Value.ToString("C"))
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(ApplicationField.ERROR_CODE))
+    {
+        <div class="element-error font-normal">
+            @if (!string.IsNullOrEmpty(DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name))
+            {
+                @TextProvider.Get(ApplicationField.ERROR_CODE).Replace("{0}", DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name)
+            }
+        </div>
+    }
+}

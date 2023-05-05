@@ -1,0 +1,105 @@
+.filter-container[b-uyc75d1mxe] {
+    gap: 10px;
+    padding-top: 3px;
+}
+
+.filter-statitik-container[b-uyc75d1mxe] {
+    display: flex;
+    justify-content: space-evenly;
+}
+.filter-tool-container[b-uyc75d1mxe] {
+    margin-top: auto;
+    margin-bottom: 3px;
+}
+    .statistik-wizard-container[b-uyc75d1mxe] {
+        position: relative;
+    }
+.filter-card[b-uyc75d1mxe] {
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    padding: 15px;
+    width: 570px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.filter-card .h5[b-uyc75d1mxe]{
+    text-align: center;
+}
+.date-filter[b-uyc75d1mxe] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+}
+.date-statistik-filter[b-uyc75d1mxe]{
+    justify-content: space-between;
+}
+.filter-date-label[b-uyc75d1mxe] {
+    margin-bottom: 5px;
+}
+.table-container[b-uyc75d1mxe] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 3px;
+}
+
+.chart-container[b-uyc75d1mxe] {
+    width: 49%;
+    text-align: center;
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    padding: 20px;
+}
+
+.chart-toolbar[b-uyc75d1mxe] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.numbers-container[b-uyc75d1mxe]{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.number-item[b-uyc75d1mxe]{
+    padding: 20px;
+    width: 23%;
+}
+    .number-item .value-container[b-uyc75d1mxe] {
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+.number-total .value-container[b-uyc75d1mxe] {
+    color: #808080;
+}
+.number-completed .value-container[b-uyc75d1mxe] {
+    color: #0F7173;
+}
+.number-cancelled .value-container[b-uyc75d1mxe] {
+    color: #b31d1d;
+}
+.number-waitlist .value-container[b-uyc75d1mxe] {
+    color: #cc9923;
+}
+.number-incomplete .value-container[b-uyc75d1mxe] {
+    color: #cc9923;
+}
+
+.authority-tag[b-uyc75d1mxe] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+.filter-authorities[b-uyc75d1mxe] {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}

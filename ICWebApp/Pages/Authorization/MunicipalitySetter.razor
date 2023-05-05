@@ -1,0 +1,24 @@
+﻿@using Blazored.LocalStorage
+
+@page "/Municipality/{ID}"
+
+@code {
+    [Inject] ILocalStorageService LocalStorage {get;set;}
+    [Inject] NavigationManager NavManager { get; set; }
+
+    [Parameter] public string ID { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            try
+            {
+                await LocalStorage.SetItemAsStringAsync("Comunix.Municipality", ID);
+            }
+            catch{}
+        }
+     
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

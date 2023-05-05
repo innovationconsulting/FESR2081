@@ -1,0 +1,80 @@
+﻿@if (SessionWrapper != null && SessionWrapper.CurrentUser != null)
+{
+    <div class="nav-item-backend @ShowUserMenuCSS" @onclick="ToggleUserMenu">
+        <div class="top-row-menu-item-icon k-icon-size-large backend-user-support-icon nav-fa-item">
+            <TelerikIcon Icon="@("fa-regular fa-headset")" />
+        </div>
+    </div>
+    @if (ShowUserMenu)
+    {
+        <div class="user-support-menu" id="user-support-menu">
+            <EditForm Model="@Ticket" OnValidSubmit="SendTicket">
+                <div class="h5 custom-color-primary">@TextProvider.Get("TICKET_HELP_TITLE")</div>
+                @if (AuthProvider.HasUserRole(AuthRoles.Administrator))  //Admin Only
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="font-small">
+                        @TextProvider.Get("TICKET_CALL")
+                    </div>
+                    <div class="font-small phone-number-container">                   
+                        <div class=phone-number-icon>
+                            <TelerikIcon Icon="@("fa-regular fa-phone")"></TelerikIcon>
+                        </div>
+                        @TextProvider.Get("TICKET_CALL_NUMBER")
+                    </div>
+                    <div class="font-small">                    
+                        @{
+                            var markupString = (MarkupString)(TextProvider.Get("TICKET_OPENING_HOURS"));
+                        }
+
+                        @markupString
+                    </div>
+                }
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label class="login-label">@TextProvider.Get("TICKET_SUBJECT")</label>
+                    <InputText @bind-Value="Ticket.Subject" class="form-control"></InputText>
+                    <CustomValidationMessage For="@(() => Ticket.Subject)" TextCode="TICKET_SUBJECT" />
+                </div>
+                @if(FreshdeskPriority != null)
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label for="@Ticket.Priority" class="form-label">@TextProvider.Get("TICKET_PRIORITY")</label>
+                        <TelerikDropDownList Data="@FreshdeskPriority.OrderBy(p => p.SortOrder).ToList()" TextField="Text" ValueField="ID"
+                                            @bind-Value="@Ticket.Priority"></TelerikDropDownList>
+                        <CustomValidationMessage For="@(() => Ticket.Priority)" TextCode="TICKET_PRIORITY" />
+                    </div>
+                }
+                <div class="extra-small-element-separator"></div>                
+                <div class="form-group">
+                    <label class="login-label">@TextProvider.Get("TICKET_DESCRIPTION")</label>
+                    <InputTextArea @bind-Value="Ticket.Description" class="form-control form-textarea" resizable="false"></InputTextArea>
+                    <CustomValidationMessage For="@(() => Ticket.Description)" TextCode="TICKET_DESCRIPTION" />
+                </div>
+                @if (!string.IsNullOrEmpty(TicketMessageSuccess))
+                {
+                    <div class="small-element-separator"></div>   
+                    <div class="ticket-success">
+                        @TicketMessageSuccess
+                    </div>                
+                }
+                @if (!string.IsNullOrEmpty(TicketMessageError))
+                {
+                    <div class="small-element-separator"></div>   
+                    <div class="ticket-error">
+                        @TicketMessageError
+                    </div>                
+                }
+                <div class="small-element-separator"></div>   
+                <div class="ticket-button-group">           
+                    <div class="privacy-link">
+                        <div class="btn btn-tertiary" @onclick="ShowPrivacy">@TextProvider.Get("TICKET_BUTTON_PRIVACY")</div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">@(TextProvider.Get("TICKET_BUTTON_SEND"))</button>
+                </div>
+            </EditForm>            
+        </div>
+    }
+}
+

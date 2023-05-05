@@ -1,0 +1,13 @@
+.frontend-language-button[b-4onu4jrb5n] {
+    cursor: pointer;
+}
+    .frontend-language-button:hover[b-4onu4jrb5n] {
+        color: #0F7173;
+        text-decoration: underline;
+    }
+
+    .frontend-language-button-aktive[b-4onu4jrb5n] {
+        color: #0F7173;
+        font-weight: bold;
+        text-decoration: underline;
+    }

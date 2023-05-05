@@ -1,0 +1,82 @@
+﻿<div class="field-container">
+    <div class="list-container">
+        <table>
+            <tr class="list-header">
+                <th class="header-desc">
+                    @TextProvider.Get("LIST_COMPONENT_DESCRIPTION")
+                </th>
+                <th class="header-value">
+                    @TextProvider.Get("LIST_COMPONENT_VALUE")
+                </th>
+                <th class="header-actions">
+                    @TextProvider.Get("ACTIONS")
+                </th>
+            </tr>
+            @foreach (var subItem in Field.FORM_Application_Field_SubData)
+            {
+                <tr class="list-row">
+                    <td class="row-desc">
+                        @if (ReadOnly)
+                        {
+                            <input type="number" class="form-control" readonly disabled />
+                        }
+                        else
+                        {
+                            <InputText type="text" class="form-control" @bind-Value="@subItem.Description" />
+                        }
+                    </td>
+                    <td class="row-value">
+                        @if (ReadOnly)
+                        {
+                            <TelerikNumericTextBox @bind-Value="subItem.DecimalValue" class="form-control" Format="C" Enabled="false" OnChange="ValueChanged"></TelerikNumericTextBox>
+                        }
+                        else
+                        {
+                            <TelerikNumericTextBox @bind-Value="subItem.DecimalValue" class="form-control" Format="C" Enabled="true" OnChange="ValueChanged"></TelerikNumericTextBox>
+                        }
+                    </td>
+                    <td class="row-actions">
+                        @if (ReadOnly)
+                        {
+                            <TelerikButton Icon="SvgIcon.X" ButtonType="@ButtonType.Button" TabIndex="-1" Enabled="false"></TelerikButton>
+                        }
+                        else
+                        {
+                            <TelerikButton Icon="SvgIcon.X" ButtonType="@ButtonType.Button" OnClick="@(() => OnRemove(subItem))" TabIndex="-1"></TelerikButton>
+                        }
+                    </td>
+                </tr>
+            }
+            @if (!ReadOnly)
+            {
+                <tr class="list-add-item" @onclick="OnAdd">
+                    <td colspan="3">
+                        <div class="list-add-text">
+                            @TextProvider.Get("LIST_COMPONENT_ADD_BUTTON")
+                        </div>
+                    </td>
+                </tr>
+            }
+            <tr class="list-footer">
+                <td class="footer-desc">
+                    <label>@TextProvider.Get("LIST_COMPONENT_FOOTER_SUMME")</label>
+                </td>
+                <td class="footer-value">
+                    @if (!string.IsNullOrEmpty(Field.Value))
+                    {
+                        <label>
+                            @decimal.Parse(Field.Value).ToString("C2")
+                        </label>
+                    }
+                    else
+                    {
+                        <label>
+                            0,00 €
+                        </label>
+                    }
+                </td>
+                <td class="footer-actions"></td>
+            </tr>
+        </table>
+    </div>
+</div>

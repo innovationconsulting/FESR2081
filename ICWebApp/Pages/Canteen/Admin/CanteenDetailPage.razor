@@ -1,0 +1,88 @@
+﻿@page "/Admin/Canteen/DetailPage"
+@page "/Admin/Canteen/DetailPage/{AktiveIndex}"
+
+@layout MainLayout
+
+<div class="element-separator"></div>
+<div class="form-group form-relative">
+    <TelerikTabStrip @bind-ActiveTabIndex="AktiveTabIndex" PersistTabContent="true">
+        <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_DETAILS")">
+            <div class="form-group form-tab">
+                @if (Properties != null)
+                {
+                    <TelerikGrid Data="@Properties.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false"
+                             ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                        <GridToolBarTemplate>
+                            <GridCommandButton OnClick="@AddProperty" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                        </GridToolBarTemplate>
+                        <GridColumns>
+                        <GridColumn Field="@nameof(CANTEEN_Property.Title)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_PROPERTY_TABLE_TITLE")"></GridColumn>
+                        <GridCommandColumn Context="propertyContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                            @{
+                                    CANTEEN_Property item = propertyContext as CANTEEN_Property;
+
+                                    if (item != null)
+                                    {
+                                    <div class="table-toolbar">
+                                        <div class="table-sorter-buttons">
+                                            @if (item.SortOrder != Properties.Min(p => p.SortOrder))
+                                                {
+                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpProperty(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>
+                                                }
+                                            @if (item.SortOrder != Properties.Max(p => p.SortOrder))
+                                                {
+                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownProperty(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>
+                                                }
+                                        </div>
+                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditProperty(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteProperty(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                                    </div>
+                                    }
+                            }
+                        </GridCommandColumn>
+                    </GridColumns>
+                </TelerikGrid>
+                }
+            </div>
+        </TabStripTab>
+        <TabStripTab Title="@TextProvider.Get("BACKEND_CANTEEN_DETAIL_RESSOURCES")">
+            <div class="form-group form-tab">
+                @if (Ressources != null)
+                {
+                    <TelerikGrid Data="@Ressources.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false"
+                             ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                        <GridToolBarTemplate>
+                            <GridCommandButton OnClick="@AddRessource" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                        </GridToolBarTemplate>
+                        <GridColumns>
+                            <GridColumn Field="@nameof(CANTEEN_Ressources.Description)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_RESSOURCES_DESCRIPTION")"></GridColumn>
+                            <GridCommandColumn Context="ressourceContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                @{
+                                    CANTEEN_Ressources item = ressourceContext as CANTEEN_Ressources;
+
+                                    if (item != null)
+                                    {
+                                    <div class="table-toolbar">
+                                        <div class="table-sorter-buttons">
+                                            @if (item.SortOrder != Ressources.Min(p => p.SortOrder))
+                                                {
+                                                    <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpRessources(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>
+                                                }
+                                            @if (item.SortOrder != Ressources.Max(p => p.SortOrder))
+                                                {
+                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownRessources(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>
+                                                }
+                                        </div>
+                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditRessource(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteRessource(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                                    </div>
+                                    }
+                            }
+                        </GridCommandColumn>
+                    </GridColumns>
+                </TelerikGrid>
+                }
+            </div>
+        </TabStripTab>
+    </TelerikTabStrip>
+</div>    

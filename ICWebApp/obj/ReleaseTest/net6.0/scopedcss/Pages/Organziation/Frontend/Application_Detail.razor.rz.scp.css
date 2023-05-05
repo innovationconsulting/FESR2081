@@ -1,0 +1,109 @@
+
+.application-row[b-nv3jxq8g7s] {
+    display: flex;
+}
+
+.application-label[b-nv3jxq8g7s] {
+    width: 200px;
+}
+
+.application-value[b-nv3jxq8g7s] {
+    flex: 1;
+}
+
+.applicant-container[b-nv3jxq8g7s] {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.applicant-group[b-nv3jxq8g7s] {
+    flex: 1;
+}
+
+.document-detail-download[b-nv3jxq8g7s] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+    .document-detail-download:hover[b-nv3jxq8g7s] {
+        color: #0F7173;
+    }
+
+        .document-detail-download:hover .document-detail-download-icon[b-nv3jxq8g7s] {
+            color: #0F7173 !important;
+        }
+
+.document-detail-download-icon[b-nv3jxq8g7s] {
+    font-size: 20px;
+    color: #808080;
+}
+
+.document-detail-download-description[b-nv3jxq8g7s] {
+    line-height: 34px;
+}
+
+.status-template-container[b-nv3jxq8g7s] {
+    display: flex;
+    gap: 20px;
+    height: 80px;
+}
+
+.status-template-step[b-nv3jxq8g7s] {
+    width: 40px;
+    height: 40px;
+    background-clip: padding-box;
+    border-radius: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #808080;
+    background-color: white;
+    border: 1px solid #0F7173;
+}
+
+.status-template-status-solo[b-nv3jxq8g7s] {
+    padding-top: 10px;
+}
+
+.first-row-container[b-nv3jxq8g7s] {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.first-row-container-left[b-nv3jxq8g7s] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.first-row-container-right[b-nv3jxq8g7s] {
+    flex: 1;
+}
+
+.chat-container[b-nv3jxq8g7s] {
+    height: 400px;
+}
+
+.status-container[b-nv3jxq8g7s] {
+    max-height: 400px;
+    overflow: auto;
+}
+
+.map-container[b-nv3jxq8g7s] {
+    width: 100%;
+    height: 400px;
+    border: 3px solid #0F7173 !important;
+}
+
+.status-template-reason[b-nv3jxq8g7s] {
+    width: 500px;
+    word-break: break-word;
+    word-wrap: normal;
+    overflow: hidden;
+}

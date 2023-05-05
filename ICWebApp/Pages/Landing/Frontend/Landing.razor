@@ -1,0 +1,95 @@
+﻿@page "/"
+@page "/Home"
+@page "/News/{ID}"
+
+@layout FrontendLayout
+
+@if (Article != null)
+{
+    <section id="head-section" class="news-main-article">
+        <h2 class="visually-hidden">@TextProvider.Get("AGID_HIGHLIGHTED_CONTENT")</h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 order-2 order-lg-1">
+                    <div class="card mb-5">
+                        <div class="card-body pb-5">
+                            @if (Article.PublishingDate != null)
+                            {
+                                <div class="category-top">
+                                    <svg class="icon icon-sm" aria-hidden="true">
+                                        <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-calendar"></use>
+                                    </svg>
+                                    <span class="title-xsmall-semi-bold fw-semibold">@TextProvider.Get("AGID_LANDING_NOTIFICATION_TITLE")</span>
+                                    <span class="data fw-normal">@Article.PublishingDate.Value.ToString("dd MMM yyyy")</span>
+                                </div>
+                            }
+                            <a href="@Article.Link" target="_blank" class="text-decoration-none">
+                                <h3 class="h4 card-title title-xlarge">
+                                    @Article.Title
+                                </h3>
+                            </a>
+                            <p class="mb-4 subtitle-small pt-3">
+                                @((MarkupString)Article.Content)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-image col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                    @if (Article.Image != null)
+                    {
+                        var image = (MarkupString)(Article.Image);
+
+                        @image
+                    }
+                    else
+                    {
+                        bool ShowDefault = true;
+
+                        @if (Article.FamilyID != null)
+                        {
+                            var ress = NEWSProvider.GetArticleImageSync(Article.FamilyID.Value);
+
+                            @if (ress != null && ress.FILE_Fileinfo_ID != null)
+                            {
+                                var file = FileProvider.GetFileStorage(ress.FILE_Fileinfo_ID.Value);
+
+                                @if (file != null && file.FileImage != null)
+                                {
+                                    ShowDefault = false;
+                                    var base64 = Convert.ToBase64String(file.FileImage);
+
+                                    <img src="data:image/png;base64,@base64" alt="@Article.Title" title="@Article.Title" />
+                                }
+                            }
+                        }
+
+                        @if (ShowDefault == true)
+                        {
+                            <img src="/Images/Backend/Logo_512x512.png" alt="Comunix Default Image" title="Comunix Default Image" />
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<section id="news-section">
+    @if (AktiveApps != null && AktiveApps.Select(p => p.APP_Application_ID).ToList().Contains(Applications.News)) //NEWS
+    {
+        <div class="py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        @if (Article != null)
+                        {
+                            <ICWebApp.Components.News.Desktop.LatestNewsComponent CurrentArticleId="@Article.ID"></ICWebApp.Components.News.Desktop.LatestNewsComponent>
+                        }
+                        else{
+                            <ICWebApp.Components.News.Desktop.LatestNewsComponent></ICWebApp.Components.News.Desktop.LatestNewsComponent>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>

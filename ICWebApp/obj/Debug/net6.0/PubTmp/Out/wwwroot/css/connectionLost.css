@@ -1,0 +1,113 @@
+﻿.components-reconnect-hide > div {
+    display: none;
+}
+
+.components-reconnect-show > div {
+    display: none;
+}
+
+.components-reconnect-show > .show {
+    display: block;
+}
+
+.components-reconnect-failed > div {
+    display: none;
+}
+
+.components-reconnect-failed > .failed {
+    display: block;
+}
+
+.components-reconnect-refused > div {
+    display: none;
+}
+
+.components-reconnect-refused > .refused {
+    display: block;
+}
+
+.connection-lost-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #ffffffEE;
+    z-index: 9998;
+}
+@media(max-width: 800px){
+    .connection-lost-panel {
+        background-color: #0F7173 !important;
+    }
+    .connection-lost-container{
+        color: white !important;
+    }
+    .connection-lost-icon{
+        color: white !important;
+    }
+    .mobile-icon{
+        display: block !important;
+    }
+    .desktop-icon{
+        display: none !important;
+    }
+    .connection-lost-container {
+        top: calc(30vh - 75px) !important;
+        top: -moz-calc(30vh - 75px) !important;
+        top: -webkit-calc(30vh - 75px) !important;
+        top: -o-calc(30vh - 75px) !important;
+    }
+    .connection-lost-icon img {
+        height: 120px !important;
+        width: 120px !important;
+    }
+}
+.connection-lost-container {
+    position: fixed;
+    width: 300px;
+    height: 100px;
+    background-color: transparent;
+    z-index: 9999;
+    top: calc(30vh - 250px);
+    top: -moz-calc(30vh - 250px);
+    top: -webkit-calc(30vh - 250px);
+    top: -o-calc(30vh - 250px);
+    left: calc(50% - 150px) !important;
+    left: -moz-calc(50% - 150px) !important;
+    left: -webkit-calc(50% - 150px) !important;
+    left: -o-calc(50% - 150px) !important;
+    border-radius: 5px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    color: #0F7173;
+}
+.connection-lost-icon {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 100px;
+    color: #0F7173;
+    text-align: center;
+}
+    .connection-lost-icon img {
+        height: 200px;
+        width: 200px;
+    }
+#connection-lost-text{
+    text-align: center;
+}
+.reconnect-container{
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.reconnect-icon{
+    justify-self: flex-end;
+}
+.mobile-icon{
+    display: none;
+}

@@ -1,0 +1,99 @@
+@using ICWebApp.Domain.Models.User
+<div class="container">
+    <div class="row mt-lg-80 mt-3 mb-4 justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="tax-report-downloads-container">
+                <div class="tax-report-filter-container">
+                    <div class="context-container">
+                        @foreach (var item in years)
+                        {
+                            string buttonCSS = "btn-secondary";
+
+                            if (SelectedYear == item)
+                            {
+                                buttonCSS = "btn-primary";
+                            }
+
+                            <div class="btn @buttonCSS authority-tag" @onclick="@(() => { SelectedYear = SelectedYear == item ? null : item;StateHasChanged();})" @onclick:stopPropagation="true">
+                                <span>
+                                    @item
+                                </span>
+                            </div>
+                        }
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="context-container">
+                        @foreach (var item in _distinctChildren)
+                        {
+                            string buttonCSS = "btn-secondary";
+
+                            if (SelectedChild == item.TaxNumber)
+                            {
+                                buttonCSS = "btn-primary";
+                            }
+
+                            <div class="btn @buttonCSS authority-tag" @onclick="@(() => { SelectedChild = SelectedChild == item.TaxNumber ? null : item.TaxNumber;StateHasChanged();})" @onclick:stopPropagation="true">
+                                <span>
+                                    @item.FullName
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="small-element-separator"></div>
+                <div class="reports-container service-container">
+                    <div class="cmp-accordion">
+                        <div class="accordion" id="accordion-@AccordionID">
+                            @foreach (var report in _reportsFiltered)
+                            {
+                                var germanRep = _reports.FirstOrDefault(e => e.SubsriberTaxNumber == report.SubsriberTaxNumber && e.Year == report.Year && e.LANG_Language_ID == LanguageSettings.German);
+                                var italian = _reports.FirstOrDefault(e => e.SubsriberTaxNumber == report.SubsriberTaxNumber && e.Year == report.Year && e.LANG_Language_ID == LanguageSettings.Italian);
+                                var item = new ServiceDataItem()
+                                {
+                                    Title =  @report.Year + " - " + (_distinctChildren.FirstOrDefault(e => e.TaxNumber == report.SubsriberTaxNumber)?.FullName ?? report.SubsriberTaxNumber),
+                                    CreationDate = report.CreationDate,
+                                    CanteenReportGerman = germanRep?.FILE_FileInfo_ID,
+                                    CanteenReportItalian = italian?.FILE_FileInfo_ID
+                                };
+                                <ICWebApp.Components.User.Frontend.ServiceItem Item="@item" ParentID="@AccordionID"></ICWebApp.Components.User.Frontend.ServiceItem>
+                                @*
+                                <div class="tax-report-download-container flex">
+                                    <div class="trdc-left">
+                                        <div class="report-created-at">@report.CreationDate.Value.ToShortDateString()</div>
+                                        <div class="report-data">
+                                            <div class="d">@report.Year</div>
+                                            <div class="d">@(_distinctChildren.FirstOrDefault(e => e.TaxNumber == report.SubsriberTaxNumber)?.FullName ?? report.SubsriberTaxNumber)</div>
+                                        </div>
+                                    </div>
+                                    <div class="trdc-right">
+                                        @foreach (var rep in _reports.Where(e => e.Year == report.Year && e.SubsriberTaxNumber == report.SubsriberTaxNumber).OrderBy(e => e.LANG_Language_ID))
+                                        {
+                                            var text = rep.LANG_Language_ID == LanguageSettings.German ? "DE" : "IT";
+                                            var style = "";
+                                            @if (MyCivisService.Enabled)
+                                            {
+                                                style = "padding: 6px;";
+                                            }
+                                            <button @onclick="@(() => DownloadItem(rep.ID))">
+                                                <span>
+                                                    <i class="fa fa-download tax-report-download-icon" aria-hidden="true"></i>
+                                                </span>@text
+                                            </button>
+                                        }
+
+                                    </div>
+                                </div>
+                                *@
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="segment-button-toolbar">
+                    <div class="btn btn-secondary" @onclick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_RETURN")</div>
+                    <div class="btn-placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

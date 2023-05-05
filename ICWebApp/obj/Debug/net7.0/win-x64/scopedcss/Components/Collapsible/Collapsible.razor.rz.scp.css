@@ -1,0 +1,17 @@
+.collapsible-container-title-row[b-f97xenp16z] {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    cursor: pointer;
+    color: black;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+    .collapsible-container-title-row:hover[b-f97xenp16z] {
+        color: #0F7173 !important;
+        border-color: #0F7173;
+    }
+
+.collapsible-container-content[b-f97xenp16z]{
+    margin-top: 20px;
+}

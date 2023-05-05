@@ -1,0 +1,177 @@
+﻿@if (Definition != null && Application != null && FormApplicationChatMessages != null && SessionWrapper.CurrentUser != null)
+{
+    <div class="chat-main-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <div class="chat-pannel" @onclick="HideDocuments">
+            <div class="scroll-container">
+                @if (FormApplicationChatMessages.Count() > 0)
+                {
+                    @foreach (var message in FormApplicationChatMessages.OrderBy(p => p.SendDate))
+                    {
+                        string SideCSS = "chat-message-container-left";
+
+                        @if (message.AUTH_Users_ID == SessionWrapper.CurrentUser.ID)
+                        {
+                            SideCSS = "chat-message-container-right";
+                        }
+
+                        <div class="chat-message-container">
+                            <div class="chat-message-element @SideCSS">
+                                <div class="chat-message-first-row font-detail">
+                                    <div class="chat-message-user">
+                                        @message.Firstname @message.Lastname
+                                    </div>
+                                    <div class="chat-message-date">
+                                        @if (message.SendDate != null)
+                                        {
+                                            @message.SendDate.Value.ToString("dd.MM.yyyy HH:mm");
+                                        }
+                                    </div>
+                                </div>
+                                <div class="chat-message-second-row font-normal">
+                                    @if (!string.IsNullOrEmpty(message.Message))
+                                    {
+                                        <div class="chat-message-text">
+                                            @{
+                                                var text = (MarkupString)message.Message;
+                                            }
+                                            @text
+                                        </div>
+                                    }
+                                    @if (FormApplicationChatDokuments != null)
+                                    {
+                                        var documents = FormApplicationChatDokuments.Where(p => p.FORM_Application_Chat_ID == message.ID).ToList();
+
+                                        @if (documents.Count > 0)
+                                        {
+                                            @if (!string.IsNullOrEmpty(message.Message))
+                                            {
+                                                <div class="small-element-separator"></div>
+                                            }
+
+                                            @foreach (var doc in documents)
+                                            {
+                                                @if (doc.FILE_FileInfo_ID != null)
+                                                {
+                                                    <div class="chat-message-document">
+                                                        <div class="document-detail-download" @onclick="@(() => DownloadRessource(doc.FILE_FileInfo_ID.Value, doc.FileName))">
+                                                            <div class="document-detail-download-icon">
+                                                                <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                                                            </div>
+                                                            <div class="document-detail-download-description">
+                                                                @doc.FileName (@(doc.Size/1024) kb)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    }
+                                    @if(message.HyperlinkLinkName != null && message.HyperlinkLinkName != null)
+                                    {
+                                        @if (!string.IsNullOrEmpty(message.Message))
+                                        {
+                                            <div class="small-element-separator"></div>
+                                        }
+                                        <div class="message-hyperlink-container" onclick="window.open('@message.HyperlinkPastedUrl', '_blank')">
+                                            <div class="message-hyperlink-image-container">
+                                                @if (message.HyperlinkFaviconUrl != null)
+                                                {
+                                                    <img src="@message.HyperlinkFaviconUrl">
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-regular fa-link"></i>
+                                                }
+                                            </div>
+                                            <div class="message-hyperlink-data-container">
+                                                <label class="message-hyperlink-root-url font-detail">@message.HyperlinkPastedUrl</label>
+                                                <label class="message-hyperlink-root-input font-normal">@message.HyperlinkLinkName</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="chat-no-messages-container">
+                        @TextProvider.Get("FORM_APPLICATION_CHAT_NO_MESSAGES")
+                    </div>
+                }
+                <div id="chat-bottom-element">
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="chat-input-bar">
+            @if (ChatToSend != null)
+            {
+                @if (ShowFileUploadContainer)
+                {
+                    <div class="chat-input-document-uplaod-container">
+                        @if (FileInfoUploadList != null)
+                        {
+                            <UploadComponent Multiple="true" FileInfoList="@FileInfoUploadList" OnRemove="@RemoveFile" SmallStyle="true"></UploadComponent>
+                        }
+                    </div>
+                }
+                <div class="chat-input-message-container">
+                    @if (ForceChatButton || Application.EstimatedDeadline <= DateTime.Now || FormApplicationChatMessages.Count() > 0)
+                    {
+                        <div class="chat-input-message">
+                            <EditForm Model="@ChatToSend" OnValidSubmit="SendMessage">
+                                @if (HyperlinkItem != null)
+                                {
+                                    <div class="hyperlink-container">
+                                        <div class="hyperlink-image-container">
+                                            @if(HyperlinkItem.FaviconUrl != null)
+                                            {
+                                                <img src="@HyperlinkItem.FaviconUrl">
+                                            }
+                                            else{
+                                                <i class="fa-regular fa-link"></i>
+                                            }
+                                        </div>
+                                        <div class="hyperlink-data-container">
+                                            <label class="hyperlink-root-url font-detail">@HyperlinkItem.PastedUrl</label>
+                                            <input class="hyperlink-root-input font-normal" @bind-value="@HyperlinkItem.HyperlinkName"/>
+                                        </div>
+                                        <div class="hyperlink-remove-button" @onclick="RemoveHyperlink">
+                                            <i class="fa-regular fa-x"></i>
+                                        </div>
+                                    </div>
+                                }
+                                <input @bind-value="@ChatToSend.Message" class="message-input" @ref="_inputRef" placeholder="@TextProvider.Get("FORM_APPLICATION_CHAT_PLACEHOLDER")" tpye="text" />
+                            </EditForm>
+                        </div>
+                        <div class="chat-input-document-button">
+                            <button @onclick="ToggleDocuments" @onclick:stopPropagation="true" class="btn btn-secondary">
+                                <TelerikIcon Icon="@("fa-regular fa-paperclip")"></TelerikIcon>
+                            </button>
+                        </div>
+                        <div class="chat-input-send-button">
+                            <button @onclick="SendMessage" @onclick:stopPropagation="true" class="btn btn-primary" style="height: 100%">@TextProvider.Get("FORM_APPLICATION_CHAT_SEND_BUTTON")</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="chat-no-messages-container">
+                            @TextProvider.Get("FORM_APPLICATION_CHAT_NOT_ENABLED_YET")
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="no-chat-existing-container">
+        @TextProvider.Get("FORM_APPLICATION_CHAT_NOT_EXISTANT")
+    </div>
+}

@@ -1,0 +1,176 @@
+﻿@inherits LayoutComponentBase
+
+<link href="css/bootstrap-italia/css/bootstrap-italia.min.css" rel="stylesheet" />
+<link href="css/agid/custom.css" rel="stylesheet" />
+<link href="css/Layout/Frontend/MyCivisLayout.css" rel="stylesheet" />
+<base href="~/" />
+<PageTitle>Comunix</PageTitle>
+
+<TelerikRootComponent>
+    <div class="main-page">
+        @if (BusyIndicatorService.IsBusy == true)
+        {
+            <div class="loader-overlay"></div>
+            <div class="loader-container">
+                <div class="logo-icon">
+                    <i class="fa fa-spin fa-spinner"></i>
+                </div>
+            </div>
+        }
+        <PreviewWindow></PreviewWindow>
+        <div class="my-civis-header">
+            <div class="header-content">
+                <div class="my-civis-content">
+                    <div class="my-civis-logo">
+                        <a href="https://my.civis.bz.it/">
+                            <img src="/Images/MyCivis/myCivis.svg" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-bar">
+                <div class="my-civis-content">
+                    @if (System.Globalization.CultureInfo.CurrentCulture.Name.Contains("de"))
+                    {
+                        <div class="menu-container">
+                            <ul id="primary_nav">
+                                <li class="active">
+                                    <a href="https://my.civis.bz.it/public/de/default.htm">
+                                        <i class="fa fa-home hidden-xs hidden-md"></i> 
+                                        <span class="hidden-sm">Home</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul id="service_nav">
+                                @if (SessionWrapper.CurrentUser != null)
+                                {
+                                    <li id="myPortalAccount">
+                                        <a href="https://iam.civis.bz.it/fo/Default.aspx#pagepersonaldata/detail" id="js-userwidget" lang="de" rel="nofollow">
+                                            <i class="fa fa-lock"></i>
+                                            <span>
+                                                @SessionWrapper.CurrentUser.Firstname @SessionWrapper.CurrentUser.Lastname
+                                            </span>
+                                        </a>
+                                        <ul class="js-userwidget-container userwidget-container"></ul>
+                                    </li>
+                                }
+                                <li class="hidden-xs"><a href="https://my.civis.bz.it/public/de/hilfe.htm"><span>Hilfe</span></a></li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="bkfc_collapsible_navbar">
+                            <ul id="primary_nav">
+                                <li class="active">
+                                    <a href="https://my.civis.bz.it/public/it/default.htm">
+                                        <i class="fa fa-home hidden-xs hidden-md"></i>
+                                        <span class="hidden-sm">Home</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul id="service_nav">
+                                <li class="visible-xs-block"><a href="https://civis.bz.it/it/index.html">CIVIS.bz.it<span aria-hidden="true"> ›</span></a></li>
+                                @if (SessionWrapper.CurrentUser != null)
+                                {
+                                    <li id="myPortalAccount">
+                                        <a href="https://iam.civis.bz.it/fo/Default.aspx#pagepersonaldata/detail" id="js-userwidget" lang="it" rel="nofollow">
+                                            <i class="fa fa-lock"></i>
+                                            <span>
+                                                @SessionWrapper.CurrentUser.Firstname @SessionWrapper.CurrentUser.Lastname
+                                            </span>
+                                        </a>
+                                        <ul class="js-userwidget-container userwidget-container"></ul>
+                                    </li>
+                                }
+                                <li class="hidden-xs"><a href="https://my.civis.bz.it/public/it/hilfe.htm"><span>Aiuto</span></a></li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <main class="my-civis-container">
+            <article class="my-civis-content" id="topelement">
+                <div class="main-page-body-container">
+                    <div class="main-page-body-content">
+                        @if (SessionWrapper != null && SessionWrapper.PageTitle != null)
+                        {
+                            @if (!EnviromentService.IsMobile)
+                            {
+                                <div class="element-separator"></div>
+                                <div class="element-separator"></div>
+                                <h1 class="main-page-title custom-color-primary">@SessionWrapper.PageTitle</h1>
+                                <div class="element-separator"></div>
+                            }
+                        }
+                        @if (EnviromentService.IsMobile)
+                        {
+                            <div class="small-element-separator"></div>
+                        }
+                        else
+                        {
+                            <div class="extra-small-element-separator"></div>
+                        }
+                        @if (SessionWrapper != null && !SessionWrapper.Initializing)
+                        {
+                            @Body
+                        }
+                    </div>
+                </div>
+                <div class="element-separator"></div>
+                <div class="element-separator"></div>
+            </article>
+        </main>
+        <div class="main_footer">
+            <div class="my-civis-content">
+                @if (System.Globalization.CultureInfo.CurrentCulture.Name.Contains("de"))
+                {
+                    <div class="row">
+                        <div class="col-sm-4 hidden-xs">
+                            <div class="fesr_logo"><img src="https://my.civis.bz.it/public/images/efre-fesr_logo_xs_rgb.jpg" alt="efre-fesr Südtirol Alto Adige" class="img-responsive"></div>
+                        </div>
+                        <div class="col-sm-8">
+                            <p>© 2022 Autonome Provinz Bozen - Südtiroler Informatik AG <br>Steuernummer: 00390090215</p>
+                            <ul class="list-inline">
+                                <li><a href="https://my.civis.bz.it/public/de/impressum.htm">Impressum</a></li>
+                                <li><a href="https://my.civis.bz.it/public/de/privacy.htm">Privacy</a></li>
+                                <li><a href="https://my.civis.bz.it/public/de/cookies.htm">Cookies</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-sm-4 hidden-xs">
+                            <div class="fesr_logo">
+                                <img src="https://my.civis.bz.it/public/images/efre-fesr_logo_xs_rgb.jpg" alt="efre-fesr Südtirol Alto Adige" class="img-responsive" />
+                            </div>
+                            <div class="col-sm-8">
+                                <p>© 2022 Provincia autonoma di Bolzano - Informatica Alto Adige SPA <br>Cod. Fisc.: 00390090215</p>
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="https://my.civis.bz.it/public/it/note-legali.htm">Note legali</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://my.civis.bz.it/public/it/privacy.htm">Privacy</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://my.civis.bz.it/public/it/cookies.htm">Cookies</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @if (SessionWrapper != null && SessionWrapper.CurrentUser != null)
+    {
+        <div style="display: none !important" id="UserID">
+            @SessionWrapper.CurrentUser.ID
+        </div>
+    }
+</TelerikRootComponent>

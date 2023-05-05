@@ -1,0 +1,56 @@
+﻿.user-card-container
+{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    position: relative;
+    width: 100%;
+    padding-right: 10px;
+}
+.card-icon {
+    height: 36px;
+    width: 36px;
+    border: 2px solid #0F7173;
+    border-radius: 28px;
+    overflow: hidden;
+}
+    .card-icon img {
+        height: 36px;
+        width: 36px;
+        margin-left: -2px;
+        margin-top: -4px;
+    }
+
+.card-user-icon-default {
+    height: 32px;
+    width: 32px;
+    font-size: 18px;
+    text-align: center;
+    line-height: 28px;
+}
+.card-container-small{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.card-data {
+    line-height: 32px;
+}
+.small-style{
+    width: auto !important;
+    gap: 1px !important;
+    padding-right: 2px;
+}
+.small-style .card-icon{
+    height: 28px;
+    width: 28px;
+}
+.small-style .card-icon img {
+    height: 28px;
+    width: 28px;
+}
+    .small-style .card-user-icon-default{
+        font-size: 14px !important;
+        margin-left: -4px;
+        margin-top: -2px;
+    }

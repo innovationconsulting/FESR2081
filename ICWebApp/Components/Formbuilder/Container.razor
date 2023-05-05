@@ -1,0 +1,173 @@
+﻿@if (Definition != null)
+{
+    var placeholder = TextProvider.Get("FORMBUILDER_LOADING_DATA");
+
+    <div class="formbuilder">
+        <CustomLoader Visible="@(IsBusy)"
+                  Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <div class="formbuilder-container">
+            <div class="formbuilder-layer-container">
+                <div class="toolbar-title">
+                    @TextProvider.Get("FORMBUILDER_LAYER_TITLE")
+                </div>
+                <LayerContainer Definition="@Definition" Data="@Definition.FORM_Definition_Field.Where(p => p.ToRemove == false).ToList()" OnEdit="@((f) => OnEdit(f))" OnDelete="@((f) => OnRemoveField(f))"
+                            OnMoveUp="@((f) => MoveUp(f))" OnMoveDown="@((f) => MoveDown(f))" OnChange="Refresh"></LayerContainer>
+            </div>
+            <div class="formbuilder-elementcontainer" @ondrop="@(() => DropHandler(new Formbuilder_DragAndDropItem(){Count = null, ColumnPos = null }))" ondragover="event.preventDefault();">
+                @foreach (var f in Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false && p.FORM_Definition_Field_Parent_ID == null).OrderBy(p => p.SortOrder).ToList())
+                {
+                    @if (f.FORM_Definition_Fields_Type_ID != null)
+                    {
+                        var type = FormBuilderHelper.GetDefintionFieldType(f.FORM_Definition_Fields_Type_ID.Value);
+                        if (type != null && type.IsContainer)
+                        {
+                            long maxPos = 0;
+                            long minPos = 0;
+
+                            @if (Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false).Select(p => p.SortOrder).Max() != null)
+                                maxPos = Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false).Select(p => p.SortOrder).Max().Value;
+
+                            @if (Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false).Select(p => p.SortOrder).Min() != null)
+                                minPos = Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false).Select(p => p.SortOrder).Min().Value;
+
+                            <div class="form-element-container" @ondrop:stopPropagation="true" draggable="true" @ondragstart="@(() => DragFieldStartHandler(f))" @ondragend="@(() => DragFieldEndHandler(f))"
+                                    ondragenter="formBuilder_setDraggableClass(this)" ondragleave="formBuilder_removeDraggableClass(this)" 
+                                    onmouseover="BuilderElementHover('@(f.ID)')" onmouseout="BuilderElementStopHover('@(f.ID)')" 
+                                    @ondrop="@(() => DropHandler(new Formbuilder_DragAndDropItem() { Count = f.SortOrder, ColumnPos = f.ColumnPos, ParentID = f.FORM_Definition_Field_Parent_ID }))" ondragover="event.preventDefault();">
+                                <div class="form-element" id="@f.ID">
+                                    <ICWebApp.Components.Formbuilder.ElementContainer Model="f"
+                                                                    OnMoveUp="@((f) => MoveUp(f))" OnDragEndHandler="DragFieldEndHandler" OnDragStartHandler="DragFieldStartHandler"
+                                                                    OnMoveDown="@((f) => MoveDown(f))" OnRemoveClicked="OnRemoveFieldWithSubFields"
+                                                                    OnFieldWithSubFieldsRemovedClicked="OnRemoveFieldWithSubFields" OnEditClicked="OnEdit"
+                                                                    OnDropHandler="DropHandler" OnFieldRemoveClicked="OnRemoveField"
+                                                                    MaxSort="maxPos"
+                                                                    MinSort="minPos">
+                                    </ICWebApp.Components.Formbuilder.ElementContainer>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            long maxPos = 0;
+                            long minPos = 0;
+
+                            @if (Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false).Select(p => p.SortOrder).Max() != null)
+                                maxPos = Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false).Select(p => p.SortOrder).Max().Value;
+
+                            @if (Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false).Select(p => p.SortOrder).Min() != null)
+                                minPos = Definition.FORM_Definition_Field.Where(p => p.ColumnPos == null && p.ToRemove == false).Select(p => p.SortOrder).Min().Value;
+
+                            <div class="form-element-container" @ondrop:stopPropagation="true" draggable="true" @ondragstart="@(() => DragFieldStartHandler(f))" @ondragend="@(() => DragFieldEndHandler(f))"
+                                 ondragenter="formBuilder_setDraggableClass(this)" ondragleave="formBuilder_removeDraggableClass(this)" ondragover="event.preventDefault();"
+                                 onmouseover="BuilderElementHover('@(f.ID)')" onmouseout="BuilderElementStopHover('@(f.ID)')"
+                                 @ondrop="@(() => DropHandler(new Formbuilder_DragAndDropItem() { Count = f.SortOrder, ColumnPos = f.ColumnPos, ParentID = f.FORM_Definition_Field_Parent_ID }))">
+                                <div class="form-element" id="@f.ID">
+                                    <ICWebApp.Components.Formbuilder.Element Model="f" OnMoveUp="@((f) => MoveUp(f))" OnMoveDown="@((f) => MoveDown(f))" OnRemoveClicked="OnRemoveField" OnEditClicked="OnEdit"
+                                                                             MaxSort="maxPos" MinSort="minPos">
+                                    </ICWebApp.Components.Formbuilder.Element>
+                                </div>
+                            </div>
+                        }                        
+                    }
+                }
+
+                <div class="form-element-container" @ondrop:stopPropagation="true" draggable="true" ondragenter="formBuilder_setDraggableClass(this)" ondragleave="formBuilder_removeDraggableClass(this)"
+                 @ondrop="@(() => DropHandler(new Formbuilder_DragAndDropItem(){  Count = Definition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == null && p.ToRemove == false).Select(p => p.SortOrder).Max() + 1, ColumnPos = null, ParentID = null }))" ondragover="event.preventDefault();">
+                    <div class="form-element-empty">
+                    </div>
+                </div>
+            </div>
+            <div class="formbuilder-toolbar">
+                <div class="toolbar-title">
+                    @TextProvider.Get("FORMBUILDER_PREVIEW_TITLE")
+                </div>
+                @{
+                    var previewUrl = NavManager.BaseUri;
+
+                    previewUrl += "/Form/Application/" + Definition.ID + "/New";
+                }
+
+                <div class="toolbar-element" draggable="false" onclick="window.open('@previewUrl', '_blank')">
+                    <div class="toolbar-icon">
+                        <TelerikIcon Icon="SvgIcon.Eye" />
+                    </div>
+                    <div class="toolbar-label">
+                        @TextProvider.Get("FORMBUILDER_PREVIEW")
+                    </div>
+                </div>
+
+                @if(HasChanges == true)
+                {
+                    <div class="toolbar-element toolbar-main-element" draggable="false" @onclick="SaveForm">
+                        <div class="toolbar-icon">
+                            <TelerikIcon Icon="SvgIcon.Save" />
+                        </div>
+                        <div class="toolbar-label">
+                            @TextProvider.Get("FORMBUILDER_SAVE")
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="toolbar-element toolbar-main-element toolbar-element-disabled" draggable="false">
+                        <div class="toolbar-icon">
+                            <TelerikIcon Icon="SvgIcon.Save" />
+                        </div>
+                        <div class="toolbar-label">
+                            @TextProvider.Get("FORMBUILDER_SAVE")
+                        </div>
+                    </div>
+                }
+
+                <div class="small-element-separator"></div>
+                <div class="toolbar-title">
+                    @TextProvider.Get("FORMBUILDER_TOOLBAR_TITLE")
+                </div>
+                @if (FieldTypes != null)
+                {
+                    @foreach (var f in FieldTypes.OrderBy(p => p.SortOrder))
+                    {
+                        <div class="toolbar-element" draggable="true" @onclick="@(() => AddElement(f))"
+                             @ondragstart="@(() => DragStartHandler(f))" @ondragend=@(() => DragStopHandler())>
+                             <div class="toolbar-icon-container">
+                                @if (!f.IsFavicon)
+                                {
+                                    <div class="toolbar-icon">
+                                        <TelerikIcon Icon="@f.Image" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="toolbar-fa-icon">
+                                        <TelerikIcon Icon="@f.Image" />
+                                    </div>
+                                }
+                            </div>
+                            <div class="toolbar-label">
+                                @if (f.TEXT_SystemText_Code != null)
+                                {
+                                    @TextProvider.Get(f.TEXT_SystemText_Code)
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (EditModel != null)
+    {
+        <ElementWindow Model="EditModel" Visibile="true" OnClose="OnEditClose"></ElementWindow>
+    }
+}
+else
+{
+
+    <div class="formbuilder">
+        <CustomLoader Visible="true"
+                  Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+    </div>
+}

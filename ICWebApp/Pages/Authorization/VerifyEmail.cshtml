@@ -1,0 +1,69 @@
+﻿@page "/VerifyEmail/{ID}"
+@using Microsoft.AspNetCore.Components.Web
+@namespace ICWebApp.Pages.Authorization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="_content/Telerik.UI.for.Blazor/css/kendo-theme-default/all.css" />
+    <link href="css/spid.css" rel="stylesheet" />
+    <link href="css/colors.css" rel="stylesheet" />
+    <link href="css/responsive/site-800px.css" rel="stylesheet" />
+    <link href="css/telerik/custom.css" rel="stylesheet" />
+    <link href="ICWebApp.styles.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="css/Layout/Frontend/FrontendLayout.css" rel="stylesheet" />
+    <link href="css/bootstrap-italia/css/bootstrap-italia.min.css" rel="stylesheet" />
+    <link href="css/agid/custom.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/telerik/ComunixTheme.css" />
+
+    <script nonce="comunix123" src="_content/Telerik.UI.for.Blazor/js/telerik-blazor.js" defer></script>
+    <script nonce="comunix123" src="/js/localizationHelper.js"></script>
+    <script nonce="comunix123" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script nonce="comunix123" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script nonce="comunix123" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script nonce="comunix123" src="/js/spid/spid.js"></script>
+    <script nonce="comunix123" src="/js/Services/spidHelper.js"></script>
+    <script nonce="comunix123" src="/js/Mobile/mobileHelper.js"></script>
+    <script nonce="comunix123" src="/js/Services/enviromentHelper.js"></script>
+    <script nonce="comunix123" src="/js/CodeInputComponent/CodeInputComponent.js"></script>
+    <script nonce="comunix123" src="/js/bootstrap-italia/bootstrap-italia.bundle.min.js"></script>
+
+    <title>Comunix</title>
+
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+<body>
+    
+    <partial name="../App/Partial/_ConnectionLost.cshtml" />
+
+    <component type="typeof(ICWebApp.Components.Layout.Frontend.TopRow)" render-mode="ServerPrerendered" param-ShowSearchButton="@false"/>
+    <main id="topelement">
+        <div class="container">
+            <div class="row justify-content-center pb-3 pt-5">
+                <div class="col-12 col-lg-10">
+                    <div class="col-lg-8">
+                        <component type="typeof(ICWebApp.Components.Layout.Frontend.Title)" param-TitleValue="@(RouteData.Values["TitleValue"] = "VERIFYEMAIL_TITLE")" render-mode="ServerPrerendered" />
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-12">
+                    <component type="typeof(ICWebApp.Components.Authorization.VerifyEmailComponent)" param-ID="@RouteData.Values["ID"]" render-mode="ServerPrerendered" />
+                </div>
+            </div>
+        </div>
+    </main>
+    <component type="typeof(ICWebApp.Components.Layout.Frontend.Footer)" render-mode="ServerPrerendered" />
+    <script nonce="comunix123"  src="_framework/blazor.server.js"></script>
+</body>
+</html>

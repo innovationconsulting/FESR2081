@@ -1,0 +1,40 @@
+﻿@page "/Form/Definition/Additional/Add/{DefinitionID}/{ID}/{WizardIndex}/{ActiveIndex}"
+
+@layout MainLayout
+
+@if (Data != null)
+{
+
+    <div class="segment-container custom-background-default">
+        <EditForm Model="Data">
+            <DataAnnotationsValidator />
+            <div class="segment-title custom-color-primary">
+                @if (ID == "New")
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_ADDITIONAL_FORM_TITLE_ADD")</h3>
+                }
+                else
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_ADDITIONAL_FORM_TITLE_EDIT")</h3>
+                }
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="segment-separator custom-border-primary"></div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_ADDITIONAL_FORM_TITLE_GENERAL")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>   
+            <div class="formbuilder-language-picker form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_ADDITIONAL_FORM_DEFINTIONS")</label>
+                <TelerikDropDownList Data="@FormList" TextField="FORM_Name" ValueField="ID" @bind-Value="@Data.FORM_Definition_Additional_ID"></TelerikDropDownList>   
+            </div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                OnClick="@SaveForm">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

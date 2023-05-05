@@ -1,0 +1,14 @@
+﻿@if (Data != null)
+{
+    <div class="layer-container">
+        @foreach (var d in Data.Where(p => p.FORM_Definition_Field_Parent_ID == null && p.ToRemove == false).OrderBy(p => p.SortOrder).ToList())
+        {
+            <LayerElement Item="d" Data="@Data.ToList()" MaxSort="Data.Where(p => p.FORM_Definition_Field_Parent_ID == null && p.ToRemove == false).Select(p => p.SortOrder).Max().Value"
+                      MinSort="Data.Where(p => p.FORM_Definition_Field_Parent_ID == null && p.ToRemove == false).Select(p => p.SortOrder).Min().Value"
+                      OnMoveUp="MoveUp" OnMoveDown="MoveDown" OnEdit="Edit" OnDelete="Delete" OnDragStart="DragStart" OnDragEnd="DragEnd" OnDrop="Drop"></LayerElement>
+        }
+        <div class="layout-element-placeholder" ondragenter="Layer_setDraggableClass(this)" ondragleave="Layer_removeDraggableClass(this)" ondragover="event.preventDefault();"
+         @ondrop="@(() => Drop(new LayerDropItem() { SortOrder = Data.Where(p => p.FORM_Definition_Field_Parent_ID == null && p.ToRemove == false).Select(p => p.SortOrder).Max() + 1, ColumnPos = null, ParentID=null }))" @ondrop:stopPropagation="true">
+        </div>
+    </div>
+}

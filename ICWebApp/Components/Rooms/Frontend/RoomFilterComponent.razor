@@ -1,0 +1,18 @@
+﻿@if (RoomBookingHelper.RoomList != null && RoomBookingHelper.RoomList.Count() > 0)
+{
+    <div class="room-container">
+        @foreach (var Room in RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == null && p.Name != null).OrderBy(p => p.Name))
+        {
+            <RoomCardComponent Room="@Room" TimeSelectionChanged="@OnTimeSelectionChanged"></RoomCardComponent>
+            <div class="element-separator"></div>
+        }
+    </div>
+}
+else
+{
+    <div class="room-empty-container">
+        <div class="room-empty-text">
+            @TextProvider.Get("FRONTEND_BOOKING_ROOMS_EMPTY")
+        </div>
+    </div>
+}

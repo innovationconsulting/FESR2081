@@ -1,0 +1,84 @@
+﻿@if(List != null)
+{
+    string additionalCSS = "";
+
+    @if(SmallStyle)
+    {
+        additionalCSS = "small-style";
+    }
+
+    <div class="checkitem-control-container @additionalCSS">
+        <div class="checkitem-list-container">
+            @{
+                var data = List.OrderBy(p => p.SortOrder).ToList();
+
+                if (SmallStyle)
+                {
+                    data = data.Where(p => p.CompletedAt == null).ToList();
+                }
+            }
+            @foreach(var item in data)
+            {
+                <div class="checkitem-item-container">
+                    @if (item.CompletedAt == null)
+                    {
+                        <div class="check-element" @onclick="@(() => CheckCheckItem(item))" @onclick:stopPropagation="true">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="check-element check-element-aktive" @onclick="@(() => UnCheckCheckItem(item))" @onclick:stopPropagation="true">
+                        </div>
+                    }
+                    <div class="check-description">
+                        @if (item.InEdit)
+                        {
+                            <div class="check-description-input font-normal">
+                                <EditForm Model="@item" OnValidSubmit="@(() => SaveCheckItem(item))">
+                                    <InputText @bind-Value="@item.Description" class="form-control" placeholder="@TextProvider.Get("TASK_CHECKITEMS_PLACEHOLDER")"></InputText>
+                                </EditForm>
+                                <div class="check-description-buttons">
+                                    <div class="check-button" @onclick="@(() => RemoveCheckItem(item))" @onclick:stopPropagation="true">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="check-description-label font-normal" @onclick="@(() => EditCheckItem(item))" @onclick:stopPropagation="true">
+                                @if(SmallStyle)
+                                {
+                                    <div class="check-description-data font-small">
+                                        @item.Description
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="check-description-data">
+                                        @item.Description
+                                    </div>
+                                }
+                                @if (!ReadOnly)
+                                {
+                                    <div class="check-description-buttons">
+                                        <div class="check-button" @onclick="@(() => RemoveCheckItem(item))" @onclick:stopPropagation="true">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            
+            @if (!ReadOnly)
+            {
+                <div class="check-item-add-container" @onclick="@AddCheckItem" @onclick:stopPropagation="true">
+                    @TextProvider.Get("TASK_CHECKITEM_ADD")
+                </div>
+            }
+        </div>
+    </div>
+}

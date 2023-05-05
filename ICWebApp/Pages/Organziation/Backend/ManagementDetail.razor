@@ -1,0 +1,485 @@
+﻿@page "/Organization/Backend/Management/Detail/{ID}"
+
+@layout MainLayout
+
+<AuthorizeView>
+<Authorized>
+<TelerikWindow Modal="true" @bind-Visible="@ShowEditAnagrafic" Width="800px">
+    <WindowTitle>
+        @TextProvider.Get("WINDOW_EDIT_ORGANIZATION")
+    </WindowTitle>
+    <WindowContent>
+        <div class="user-creation-container">
+            <ICWebApp.Components.Organization.EditOrganization Anagrafic="@CurrentOrganizationAnagrafic" OnCancel="@OnEditAnagraficCancel" OnSave="@OnEditAnagraficSave" IsBackend="true"></ICWebApp.Components.Organization.EditOrganization>
+        </div>
+    </WindowContent>
+</TelerikWindow>
+<TelerikWindow Modal="true" @bind-Visible="@ShowEditRole" Width="800px">
+    <WindowTitle>
+        @TextProvider.Get("WINDOW_EDIT_USER_ROLE")
+    </WindowTitle>
+    <WindowContent>
+        <div class="user-creation-container">
+            @if (SelectedOrgUser != null)
+            {
+                <TelerikDropDownList Data="@RoleList" TextField="Role" ValueField="ID" @bind-Value="@SelectedOrgUser.AUTH_ORG_Role_ID">
+                </TelerikDropDownList>
+
+                <div class="element-separator"></div>
+                <div class="button-container">
+                    <button class="btn btn-secondary" @onclick="CancelRole">@TextProvider.Get("BUTTON_CANCEL")</button>
+                    <button class="btn btn-primary" @onclick="SaveRole">@TextProvider.Get("BUTTON_SAVE")</button>
+                </div>
+            }
+        </div>
+    </WindowContent>
+</TelerikWindow>
+<TelerikWindow Modal="true" @bind-Visible="@ShowAddNewSubstitute" Width="800px">
+    <WindowTitle>
+        @TextProvider.Get("WINDOW_ADD_USER")
+    </WindowTitle>
+    <WindowContent>
+        <div class="user-creation-container">
+            @if (NewSubstitute != null)
+            {
+                <EditForm Model="@NewSubstitute" OnValidSubmit="@SaveNewSubstitute" Context="substituteContext">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+                    <div class="form-group flex-full">
+                        <label for="@NewSubstitute.FiscalNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                        <InputText @bind-Value="NewSubstitute.FiscalNumber" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => NewSubstitute.FiscalNumber)" TextCode="ORG_REQUEST_FISCAL_NUMBER"/>
+                        <div class="extra-small-element-separator"></div>
+                        <div style="color: red;">
+                            @NewSubstitute.Error
+                        </div>
+                    </div>
+
+                    <div class="element-separator"></div>
+                    <div class="button-container">
+                        <button class="btn btn-secondary" @onclick="CancelNewSubstitute">@TextProvider.Get("BUTTON_CANCEL")</button>
+                        <button class="btn btn-primary" type="submit">@TextProvider.Get("BUTTON_SAVE")</button>
+                    </div>
+                </EditForm>
+            }
+        </div>
+    </WindowContent>
+</TelerikWindow>
+
+<div class="user-application-container">
+<CustomLoader Visible="@(IsDataBusy)"
+              Text="@null" Class="initial-data-loader">
+</CustomLoader>
+
+<h3 class="custom-color-primary">@TextProvider.Get("AUTH_ORG_USERLIST")</h3>
+<div class="small-element-separator"></div>
+
+<div class="button-toolbar-container">
+    <button class="btn btn-secondary" @onclick="AddNewSubstitute">@TextProvider.Get("BUTTON_ADD_SUBSTITUTE")</button>
+</div>
+<div class="small-element-separator"></div>
+<div class="userlist-container">
+    <TelerikGrid Data="@CurrentOrgUsers" Pageable="false" Sortable="false" Resizable="false"
+                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+        <GridColumns>
+            <GridColumn Field="@nameof(V_AUTH_Users_Organizations.User_Fullname)" Title="@TextProvider.Get("AUTH_ORG_USERNAME")"></GridColumn>
+            <GridColumn Field="@nameof(V_AUTH_Users_Organizations.User_FiscalNumber)" Title="@TextProvider.Get("AUTH_ORG_FISCALNUMBER")"></GridColumn>
+            <GridColumn Field="@nameof(V_AUTH_Users_Organizations.Role)" Title="@TextProvider.Get("AUTH_ORG_ROLE")"></GridColumn>
+            <GridColumn Field="@nameof(V_AUTH_Users_Organizations.DeaktivatedAt)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("AUTH_ORG_DEAKTIVATED_AT")"></GridColumn>
+            <GridColumn Field="@nameof(V_AUTH_Users_Organizations.ConfirmedAt)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("AUTH_ORG_CONFIRMED_AT")"></GridColumn>
+            <GridCommandColumn Context="Orgcontext" Width="190px" Title="@TextProvider.Get("ACTIONS")">
+                @{
+                    V_AUTH_Users_Organizations item = Orgcontext as V_AUTH_Users_Organizations;
+
+                    if (item != null)
+                    {
+                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditRole(item))" Icon="@("fa-regular fa-user-tag")" title="@TextProvider.Get("TOOLTIP_EDIT_ROLE")"></GridCommandButton>
+                        @if (item.ConfirmedAt != null)
+                        {
+                            @if (item.DeaktivatedAt == null)
+                            {
+                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => Deaktivate(item))" Icon="@("fa-regular fa-user-xmark")" title="@TextProvider.Get("TOOLTIP_DEAKTIVATE")"></GridCommandButton>
+                            }
+                            else
+                            {
+                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => Deaktivate(item))" Icon="@("fa-regular fa-user-check")" title="@TextProvider.Get("TOOLTIP_AKTIVATE")"></GridCommandButton>
+                            }
+                        }
+                        else
+                        {
+                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => Confirm(item))" Icon="@("fa-regular fa-user-check")" title="@TextProvider.Get("TOOLTIP_CONFIRM")"></GridCommandButton>
+                        }
+                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => Remove(item))" Icon="@("fa-regular fa-user-slash")" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                    }
+                }
+            </GridCommandColumn>
+        </GridColumns>
+    </TelerikGrid>
+</div>
+@if (CurrentOrganizationAnagrafic != null)
+{
+    <div class="element-separator"></div>
+    <h3 class="custom-color-primary">@TextProvider.Get("ORG_SUBSTITUTION_DATA")</h3>
+    <div class="small-element-separator"></div>
+    <button class="btn btn-secondary" @onclick="EditAnagrafic">@TextProvider.Get("BUTTON_EDIT_ANAGRAFIC")</button>
+    <div class="small-element-separator"></div>
+    <div class="applicant-container">
+        <div class="applicant-group">
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("ORG_REQUEST_DENOMINATION")</label>
+                <label class="application-value">@CurrentOrganizationAnagrafic.FirstName @CurrentOrganizationAnagrafic.LastName</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                <label class="application-value">@CurrentOrganizationAnagrafic.FiscalNumber</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                <label class="application-value">@CurrentOrganizationAnagrafic.VatNumber</label>
+            </div>
+        </div>
+        <div class="applicant-group">
+            @if (SelectedCompanyType != null)
+            {
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("ORG_REQUEST_COMPANY_TYPE")</label>
+                    <label class="application-value">@SelectedCompanyType.Text</label>
+                </div>
+            }
+            @if (SelectedCompanyLegalForm != null)
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("ORG_REQUEST_ORG_LEGAL_FORM")</label>
+                    <label class="application-value">@SelectedCompanyLegalForm.Text</label>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(CurrentOrganizationAnagrafic.HandelskammerEintragung))
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_HANDELSKAMMER")</label>
+                    <label class="application-value">
+                        @CurrentOrganizationAnagrafic.HandelskammerEintragung
+                    </label>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(CurrentOrganizationAnagrafic.CodiceDestinatario))
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("ORG_REQUEST_CODICE_DESTINATARIO")</label>
+                    <label class="application-value">
+                        @CurrentOrganizationAnagrafic.CodiceDestinatario
+                    </label>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(CurrentOrganizationAnagrafic.EintragungNr))
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_NR")</label>
+                    <label class="application-value">
+                        @CurrentOrganizationAnagrafic.EintragungNr
+                    </label>
+                </div>
+            }
+            @if (CurrentOrganizationAnagrafic.EintragungDatum != null)
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_DATUM")</label>
+                    <label class="application-value">
+                        @CurrentOrganizationAnagrafic.EintragungDatum.Value.ToString("dd.MM.yyyy")
+                    </label>
+                </div>
+            }
+            @if (CurrentOrganizationAnagrafic.BolloFree != null)
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("ORG_IS_BOLLO_FREE")</label>
+                    <TelerikSwitch Value="CurrentOrganizationAnagrafic.BolloFree" Enabled="false" OffLabel=" " OnLabel=" "></TelerikSwitch>
+                </div>
+                @if (CurrentOrganizationAnagrafic.BolloFree.Value && BolloFreeReason != null)
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("ORG_BOLLO_REASON")</label>
+                        <label class="application-value">
+                            @TextProvider.Get(BolloFreeReason.TEXT_SystemTexts_Code)
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="element-separator"></div>
+    <div class="applicant-container">
+        <div class="applicant-group">
+            @if (CurrentOrganizationAnagrafic.KontoInhaber != null || CurrentOrganizationAnagrafic.Bankname != null || CurrentOrganizationAnagrafic.IBAN != null)
+            {
+                <div class="custom-color-primary">
+                    @TextProvider.Get("FORM_APPLICATION_BANKDATA")
+                </div>
+                @if (CurrentOrganizationAnagrafic.KontoInhaber != null)
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("ORG_KONTOINHABER")</label>
+                        <label class="application-value">
+                            @CurrentOrganizationAnagrafic.KontoInhaber
+                        </label>
+                    </div>
+                }
+                @if (CurrentOrganizationAnagrafic.Bankname != null)
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("ORG_BANKNAME")</label>
+                        <label class="application-value">
+                            @CurrentOrganizationAnagrafic.Bankname
+                        </label>
+                    </div>
+                }
+                @if (CurrentOrganizationAnagrafic.IBAN != null)
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("ORG_IBAN")</label>
+                        <label class="application-value">
+                            @CurrentOrganizationAnagrafic.IBAN
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="element-separator"></div>
+    <div class="applicant-container">
+        <div class="applicant-group">
+            <div class="custom-color-primary">
+                @TextProvider.Get("ORG_REQUEST_DOMICILE_DATA")
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                <label class="application-value">@CurrentOrganizationAnagrafic.DomicileStreetAddress</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                <label class="application-value">@CurrentOrganizationAnagrafic.DomicilePostalCode</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                <label class="application-value">@CurrentOrganizationAnagrafic.DomicileMunicipality</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                <label class="application-value">@CurrentOrganizationAnagrafic.DomicileProvince</label>
+            </div>
+        </div>
+
+        <div class="applicant-group">
+            <div class="custom-color-primary">
+                @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                <label class="application-value">@CurrentOrganizationAnagrafic.Email</label>
+            </div>
+            @if (!string.IsNullOrEmpty(CurrentOrganizationAnagrafic.PECEmail))
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("ORG_REQUEST_PEC_EMAIL")</label>
+                    <label class="application-value">
+                        @CurrentOrganizationAnagrafic.PECEmail
+                    </label>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(CurrentOrganizationAnagrafic.Phone))
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                    <label class="application-value">
+                        @if (!string.IsNullOrEmpty(CurrentOrganizationAnagrafic.Phone))
+                        {
+                            var IntPhoneNumber = long.Parse(CurrentOrganizationAnagrafic.Phone.Replace("+", ""));
+
+                            @IntPhoneNumber.ToString("+## #### ### ###")
+                        }
+                    </label>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(CurrentOrganizationAnagrafic.MobilePhone))
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PHONE_MOBILE")</label>
+                    <label class="application-value">
+                        @if (!string.IsNullOrEmpty(CurrentOrganizationAnagrafic.MobilePhone))
+                        {
+                            var IntPhoneNumber = long.Parse(CurrentOrganizationAnagrafic.MobilePhone.Replace("+", ""));
+
+                            @IntPhoneNumber.ToString("+## ### ### ####")
+                        }
+                    </label>
+                </div>
+            }
+        </div>
+    </div>
+}
+@if (GesetzlicherVertreter != null)
+{
+    <div class="element-separator"></div>
+    <h3 class="custom-color-primary">@(TextProvider.Get("ORG_REQUEST_GV_TITLE"))</h3>
+    <div class="extra-small-element-separator"></div>
+    <div class="form-group application-detail-tab font-normal">
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <div class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_ANAGRAFIC_DATA")
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                    <label class="application-value">@GesetzlicherVertreter.FirstName @GesetzlicherVertreter.LastName</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                    <label class="application-value">@GesetzlicherVertreter.FiscalNumber</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_GENDER")</label>
+                    <label class="application-value">
+                        @if (GesetzlicherVertreter.Gender == "M")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                        }
+                        else if (GesetzlicherVertreter.Gender == "W")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                        }
+                    </label>
+                </div>
+            </div>
+            <div class="applicant-group">
+                <div class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_BIRTH_DATA")
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_COUNTY_OF_BIRTH")</label>
+                    <label class="application-value">@GesetzlicherVertreter.CountyOfBirth</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PLACE_OF_BIRTH")</label>
+                    <label class="application-value">@GesetzlicherVertreter.PlaceOfBirth</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_DATE_OF_BIRTH")</label>
+                    <label class="application-value">
+                        @if (GesetzlicherVertreter.DateOfBirth != null)
+                        {
+                            @GesetzlicherVertreter.DateOfBirth.Value.ToString("dd.MM.yyyy")
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="element-separator"></div>
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <div class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_DOMICILE_DATA")
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                    <label class="application-value">@GesetzlicherVertreter.DomicileStreetAddress</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                    <label class="application-value">@GesetzlicherVertreter.DomicilePostalCode</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                    <label class="application-value">@GesetzlicherVertreter.DomicileMunicipality</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                    <label class="application-value">@GesetzlicherVertreter.DomicileProvince</label>
+                </div>
+            </div>
+
+            <div class="applicant-group">
+                <div class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                    <label class="application-value">@GesetzlicherVertreter.Email</label>
+                </div>
+
+                @if (!string.IsNullOrEmpty(GesetzlicherVertreter.Phone))
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                        <label class="application-value">
+                            @if (!string.IsNullOrEmpty(GesetzlicherVertreter.Phone))
+                            {
+                                var IntPhoneNumber = long.Parse(GesetzlicherVertreter.Phone.Replace("+", ""));
+
+                                @IntPhoneNumber.ToString("+## #### ### ###")
+                            }
+                        </label>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(GesetzlicherVertreter.MobilePhone))
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("APPLICANT_PHONE_MOBILE")</label>
+                        <label class="application-value">
+                            @if (!string.IsNullOrEmpty(GesetzlicherVertreter.MobilePhone))
+                            {
+                                var IntPhoneNumber = long.Parse(GesetzlicherVertreter.MobilePhone.Replace("+", ""));
+
+                                @IntPhoneNumber.ToString("+## ### ### ####")
+                            }
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+<div class="element-separator"></div>
+<div class="element-separator"></div>
+<div class="button-container">
+    <button class="btn btn-secondary" @onclick="BackToPrevious">@TextProvider.Get("BUTTON_BACK")</button>
+</div>
+<div class="element-separator"></div>
+</div>
+</Authorized>
+<NotAuthorized>
+    <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+</NotAuthorized>
+</AuthorizeView>

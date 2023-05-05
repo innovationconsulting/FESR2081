@@ -1,0 +1,143 @@
+.hide[b-zg82xuft9w] {
+    display: none !important;
+}
+
+.btn[b-zg82xuft9w] {
+    width: 250px;
+}
+
+.application-detail-left[b-zg82xuft9w] {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-right: 20px;
+    border-right: 1px solid #d9d9d9;
+}
+
+
+.application-detail-right[b-zg82xuft9w] {
+    width: 350px;
+}
+
+
+.application-detail-container[b-zg82xuft9w] {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.segment-container[b-zg82xuft9w] {
+    border: 0px solid #dfdfdf;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.img.subscriber-status-icon[b-zg82xuft9w] {
+    width: 16px;
+    margin-right: 5px;
+}
+
+.k-toolbar .k-input[b-zg82xuft9w], .k-toolbar .k-picker[b-zg82xuft9w] {
+    width: unset;
+    width: 100% !important;
+}
+
+.k-grid-header .k-header[b-zg82xuft9w] {
+    text-align: center;
+    border-left: 0px;
+}
+
+.k-grid-header .k-header[b-zg82xuft9w] {
+    text-align: center !important;
+}
+
+.k-grid .k-header .k-link[b-zg82xuft9w],
+.k-grid .k-header[b-zg82xuft9w] {
+    text-align: center;
+}
+
+.k-grid .k-grid-header th .k-cell-inner[b-zg82xuft9w],
+.k-grid .k-grid-header th .k-cell-inner > .k-link[b-zg82xuft9w] {
+    display: block;
+    text-align: center !important;
+    white-space: normal;
+}
+
+.k-column-title[b-zg82xuft9w] {
+    white-space: normal;
+}
+
+.th.k-header.k-touch-action-none[b-zg82xuft9w] {
+    align-items: center;
+    text-align: center;
+}
+
+.centered-header-grid .k-cell-inner > .k-link[b-zg82xuft9w] {
+    justify-content: center !important;
+}
+
+.k-column-title[b-zg82xuft9w] {
+    align-items: center;
+    text-align: center;
+    width: 100% !important;
+}
+
+.k-grid .k-state-selected[b-zg82xuft9w] {
+    color: black !important;
+}
+
+form-group-no-margin[b-zg82xuft9w] {
+    float: left;
+    margin: 0px;
+}
+
+form-group-no-margin[b-zg82xuft9w] {
+    text-align: left;
+}
+
+h5[b-zg82xuft9w], .h5[b-zg82xuft9w] {
+    color: #0f7173;
+}
+
+.toolbar-container[b-zg82xuft9w] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.toolbar-button[b-zg82xuft9w] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+    .toolbar-button i[b-zg82xuft9w] {
+        line-height: 21px;
+    }
+
+.btn[b-zg82xuft9w] {
+    width: auto !important;
+}
+
+.toolbar-button-disabled[b-zg82xuft9w] {
+    opacity: 0.8;
+    background-color: #0f7173 !important;
+    cursor: default !important;
+}
+.progress-detail[b-zg82xuft9w]{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+.font-detail[b-zg82xuft9w]{
+    font-size: 13px;
+}
+.progress-detail-total[b-zg82xuft9w]{
+    margin-right: 10px;
+}
+.progress-info-title[b-zg82xuft9w]{
+    font-size: 18px;
+    font-weight: bold;
+}

@@ -1,0 +1,23 @@
+﻿.document-detail-download {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+    .document-detail-download:hover {
+        color: #0F7173;
+    }
+
+        .document-detail-download:hover .document-detail-download-icon {
+            color: #0F7173 !important;
+        }
+
+.document-detail-download-icon {
+    font-size: 24px;
+    color: #808080;
+}
+
+.document-detail-download-description {
+    line-height: 34px;
+}

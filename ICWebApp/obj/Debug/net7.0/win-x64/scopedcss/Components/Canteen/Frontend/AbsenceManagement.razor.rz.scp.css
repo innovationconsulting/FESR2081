@@ -1,0 +1,41 @@
+.movement-item[b-qbt3yg9oo3] {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-left: 3px solid #0F7173AA;
+    cursor: pointer;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 5px;
+}
+.movement-first-row[b-qbt3yg9oo3] {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 1rem;
+    padding: 0 0 0 .889rem;
+    font-weight: 600;
+
+    color: #0F7173;
+}
+.movement-second-row[b-qbt3yg9oo3] {
+    font-size: 1rem;
+    color: rgba(25,25,25,.7);
+    padding: 0 0 0 .889rem;
+}
+.movement-item:hover .movement-first-row[b-qbt3yg9oo3] {
+    text-decoration: underline;
+    color: #25CCDB;
+}
+.movement-canceled[b-qbt3yg9oo3] {
+    border-left-color: #a91919AA !important;
+}
+    .movement-canceled .movement-first-row[b-qbt3yg9oo3] {
+        color: #a91919 !important;
+    }
+    .movement-canceled:hover movement-first-row[b-qbt3yg9oo3] {
+        color: #ff0000 !important;
+    }
+    .movement-canceled svg[b-qbt3yg9oo3] {
+        fill: #a91919;
+        margin-left: -5px;
+        height: 28px;
+    }

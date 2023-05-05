@@ -1,0 +1,300 @@
+﻿@if (Room != null)
+{
+    <div class="room-detail-container">
+        <div class="small-element-separator"></div>
+        <h2>
+            @if (!string.IsNullOrEmpty(Room.BuildingName))
+            {
+                @(Room.BuildingName + " - " + Room.Name)
+            }
+            else
+            {
+                @(Room.Name)
+            }
+        </h2>
+        <div class="element-separator"></div>
+        <div class="room-data-container font-normal">
+            <div class="galerie-container">
+                <SfCarousel ButtonsVisibility="CarouselButtonVisibility.VisibleOnHover" ShowIndicators="true" Loop="true">
+                    @foreach(var image in RoomGalerie)
+                    {
+                        <CarouselItem>
+                            <figure>
+                                <img src="@image.ServerPath" alt="@image.Copyright" style="height:100%;width:100%;" />
+                                <figcaption class="img-caption">@image.Copyright</figcaption>
+                            </figure>
+                        </CarouselItem>
+                    }
+                </SfCarousel>
+            </div>
+            @if (!string.IsNullOrEmpty(Room.Description) || Room.QuantityOfSubRooms > 0 || Room.SurfaceM2 != "-" || Room.MaxCapacity != "-" || Room.HasSeating == true)
+            {
+                <div class="small-element-separator"></div>
+                <div class="room-data">
+                    <div class="room-description">
+                        @((MarkupString)Room.Description)
+                    </div>
+                    <div class="small-element-separator"></div>
+                    @if (!string.IsNullOrEmpty(Room.Address))
+                    {
+                        <div class="font-normal">@Room.Address, @Room.Location </div>
+                        <div class="extra-small-element-separator"></div>
+                    }
+                    @if (Room.QuantityOfSubRooms > 0)
+                    {
+                        <div class="property-container">
+                            <div class="property-value">@Room.QuantityOfSubRooms</div>
+                            <i class="fa-duotone fa-layer-group"></i>
+                            <div class="property-text">@TextProvider.Get("ROOMS_QUANTITY_OF_SUBROOMS")</div>
+                        </div>
+                    }
+                    @if(Room.SurfaceM2 != "-")
+                    {
+                        <div class="property-container">
+                            <div class="property-value">@Room.SurfaceM2</div>
+                            <i class="fa-solid fa-ruler-combined"></i>
+                            <div class="property-text">@TextProvider.Get("ROOMS_SURFACE")</div>
+                        </div>
+                    }
+                    @if(Room.MaxCapacity != "-")
+                    {
+                        <div class="property-container">
+                            <div class="property-value">@Room.MaxCapacity</div>
+                            <i class="fa-solid fa-people-roof"></i>
+                            <div class="property-text">@TextProvider.Get("ROOMS_CAPACITY")</div>
+                        </div>
+                    }
+                    @if (Room.HasSeating == true)
+                    {
+                        <div class="element-separator"></div>
+                        <div class="room-card-seating-row">
+                            <h3>@TextProvider.Get("ROOMS_SEATING")</h3>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="seating-container">
+                            <div class="seating-item">
+                                <label for="@Room.MaxCapacity" class="font-normal">@TextProvider.Get("BACKEND_ROOM_SEATING_THEATRE")</label>
+                                <div class="extra-small-element-separator"></div>
+                                <img src="/Images/Rooms/Seatings/Seating_Theatre.png">
+                                <div class="extra-small-element-separator"></div>
+                                <div class="seating-value">@Room.Seating_Theatre</div>
+                            </div>
+                            <div class="seating-item">
+                                    <label for="@Room.MaxCapacity" class="font-normal">@TextProvider.Get("BACKEND_ROOM_SEATING_CONCERT")</label>
+                                <div class="extra-small-element-separator"></div>
+                                <img src="/Images/Rooms/Seatings/Seating_Concert.png">
+                                <div class="extra-small-element-separator"></div>
+                                <div class="seating-value">@Room.Seating_Concert</div>
+                            </div>
+                            <div class="seating-item">
+                                    <label for="@Room.MaxCapacity" class="font-normal">@TextProvider.Get("BACKEND_ROOM_SEATING_BANQUET_ROUND")</label>
+                                <div class="extra-small-element-separator"></div>
+                                <img src="/Images/Rooms/Seatings/Seating_Banquet_round.png">
+                                <div class="extra-small-element-separator"></div>
+                                <div class="seating-value">@Room.Seating_Banquet_Round</div>
+                            </div>
+                            <div class="seating-item">
+                                    <label for="@Room.MaxCapacity" class="font-normal">@TextProvider.Get("BACKEND_ROOM_SEATING_BANQUET_SQUARE")</label>
+                                <div class="extra-small-element-separator"></div>
+                                <img src="/Images/Rooms/Seatings/Seating_Banquet_sqaure.png">
+                                <div class="extra-small-element-separator"></div>
+                                <div class="seating-value">@Room.Seating_Banquet_Square</div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="element-separator"></div>
+        <div class="room-options font-normal">
+        @if (RoomInventoryList != null && RoomInventoryList.Where(p => p.ROOM_RoomOptions_Category_ID == ROOMOptionCategory.Property).Count() > 0)
+        {
+            <div class="room-options-item">
+                <h3>@TextProvider.Get("ROOM_OPTIONS_CATEGORY_PROPERTIES")</h3>
+                <div class="extra-small-element-separator"></div>
+                <div class="room-properties">
+                    <ul>
+                        @foreach (var inv in RoomInventoryList.Where(p => p.ROOM_RoomOptions_Category_ID == ROOMOptionCategory.Property).OrderBy(p => p.Pos).ToList())
+                        {
+                            <li class="room-property-item">
+                                <div class="item-name">
+                                    @inv.Name
+                                </div>
+                                @if (!string.IsNullOrEmpty(inv.Description))
+                                {
+                                    <div class="font-detail">@((MarkupString)inv.Description)</div>
+                                }
+                            </li>
+                        }
+                        @foreach (var inv in RoomInventoryList.Where(p => p.ROOM_RoomOptions_Category_ID == ROOMOptionCategory.Inventory).OrderBy(p => p.Pos).ToList())
+                        {
+                            <li class="room-property-item">
+                                <div class="item-name">
+                                    @inv.Name
+                                </div>
+                                @if (inv.Quantity > 0)
+                                {
+                                        <div class="item-quantity font-normal">@TextProvider.Get("ROOM_OPTIONS_ITEM_COUNT"): @(inv.Quantity)</div>
+                                }
+                                @if (!string.IsNullOrEmpty(inv.Description))
+                                {
+                                    <div class="font-detail">@((MarkupString)inv.Description)</div>
+                                }
+                            </li>
+                        }
+                    </ul>
+                    </div>
+                    <div class="element-separator"></div>
+                    @if (RoomContacts != null && RoomContacts.Any())
+                    {
+                        <div class="small-element-separator"></div>
+                        <h3>@TextProvider.Get("ROOM_CONTACTS")</h3>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="contact-container">
+                        @foreach(var cont in RoomContacts.OrderBy(p => p.FirstName).ThenBy(p => p.LastName))
+                        {
+                                <div class="contact-item">
+                                    <div class="contact-name">
+                                        @cont.FirstName @cont.LastName
+                                    </div>
+                                    <div class="contact-type font-normal">
+                                    @cont.ContactType
+                                </div>
+                                <div class="contact-email font-normal">
+                                    @cont.EMail
+                                </div>
+                                    @if (!string.IsNullOrEmpty(cont.Phone))
+                                    {
+                                        cont.Phone = cont.Phone.Replace(" ", "").Replace("+", "");
+
+                                        <div class="contact-phone font-normal">
+                                            @String.Format("{0:(+##) ###-###-####}", long.Parse(cont.Phone))
+                                        </div>
+                                    }
+                                </div>
+                        }
+                        </div>
+                        <div class="element-separator"></div>
+                    }
+            </div>
+            }
+            @if (RoomInventoryList != null && RoomInventoryList.Where(p => p.ROOM_RoomOptions_Category_ID == ROOMOptionCategory.Chargable).Count() > 0)
+            {
+                <h3>@TextProvider.Get("ROOM_OPTIONS_CATEGORY_CHARGABLES")</h3>
+                <div class="extra-small-element-separator"></div>
+                <div class="room-properties">
+                    <ul>
+                        @foreach (var inv in RoomInventoryList.Where(p => p.ROOM_RoomOptions_Category_ID == ROOMOptionCategory.Chargable).OrderBy(p => p.Pos).ToList())
+                        {
+                            <li class="room-property-item">
+                                <div class="item-name">
+                                    @if (inv.BasePrice != null && inv.BasePrice > 0)
+                                    {
+                                        <b> + @(inv.BasePrice.Value.ToString("C"))</b>
+                                    }
+                                    @inv.Name
+                                </div>
+                                @if (!string.IsNullOrEmpty(inv.Description))
+                                {
+                                    <div class="font-detail">@((MarkupString)inv.Description)</div>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="element-separator"></div>
+            }
+            <div class="room-options-item">
+                    <div class="price-container">
+                        <h3>
+                            @TextProvider.Get("DETAIL_PAGE_PRICING_DESCRIPTION")
+                        </h3>
+                        <div class="extra-small-element-separator"></div>
+                        <table class="price-table">
+                            <tr classs="price-row">
+                                <th class="price-header"><label class="header-desc-label">@TextProvider.Get("BACKEND_PRICING_COMPANYTYPE")</label></th>
+                                @if (Room.PricingType != null && Room.PricingType.Value == Guid.Parse("2561759a-083c-4281-a401-650223cf6470"))
+                                {
+                                    <th class="price-header"><label>@TextProvider.Get("BACKEND_PRICING_HOURPRICE")</label></th>
+                                    <th class="price-header"><label>@TextProvider.Get("BACKEND_PRICING_MINPRICE")</label></th>
+                                    <th class="price-header"><label>@TextProvider.Get("BACKEND_PRICING_MAXPRICE")</label></th>
+                                }
+                                else if (Room.PricingType != null && Room.PricingType.Value == Guid.Parse("cc78621e-c084-469f-ba73-594eca519f94"))
+                                {
+                                    <th class="price-header"><label>@TextProvider.Get("BACKEND_PRICING_HALFDAY")</label></th>
+                                    <th class="price-header"><label>@TextProvider.Get("BACKEND_PRICING_FULLDAY")</label></th>
+                                }
+                            </tr>
+                            @foreach (var price in RoomPricing.OrderBy(p => p.AUTH_Company_Type_ID))
+                            {
+                                var company = CompanyTypeList.FirstOrDefault(p => p.ID == price.AUTH_Company_Type_ID);
+
+                                @if (company != null)
+                                {
+                                    <tr class="price-row">
+                                        <td class="price-row-header"><label class="desc-label">@company.Text</label></td>
+                                        @if (Room.PricingType != null && Room.PricingType.Value == Guid.Parse("2561759a-083c-4281-a401-650223cf6470"))
+                                        {
+                                            <td class="price-cell">
+                                                @if (price.HourPrice != null)
+                                                {
+                                                    <label class="price-label">@price.HourPrice.Value.ToString("C")</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="price-label">0,00 €</label>
+                                                }
+                                            </td>
+                                            <td class="price-cell">
+                                                @if (price.MinPrice != null)
+                                                {
+                                                    <label class="price-label">@price.MinPrice.Value.ToString("C")</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="price-label">0,00 €</label>
+                                                }
+                                            </td>
+                                            <td class="price-cell">
+                                                @if (price.MaxPrice != null)
+                                                {
+                                                    <label class="price-label">@price.MaxPrice.Value.ToString("C")</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="price-label">0,00 €</label>
+                                                }
+                                            </td>
+                                        }
+                                        else if (Room.PricingType != null && Room.PricingType.Value == Guid.Parse("cc78621e-c084-469f-ba73-594eca519f94"))
+                                        {
+                                            <td class="price-cell">
+                                                @if (price.HalfDayPrice != null)
+                                                {
+                                                    <label class="price-label">@price.HalfDayPrice.Value.ToString("C")</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="price-label">0,00 €</label>
+                                                }
+                                            </td>
+                                            <td class="price-cell">
+                                                @if (price.FullDayPrice != null)
+                                                {
+                                                    <label class="price-label">@price.FullDayPrice.Value.ToString("C")</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="price-label">0,00 €</label>
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </table>
+                </div>                
+            </div>
+        </div>
+    </div>
+}

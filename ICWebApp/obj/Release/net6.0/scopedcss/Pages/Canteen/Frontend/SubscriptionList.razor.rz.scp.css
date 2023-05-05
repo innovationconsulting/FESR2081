@@ -1,0 +1,69 @@
+.k-grid-header .k-header[b-y7iv4aclfd] {
+    text-align: center;
+    border-left: 0px;
+}
+
+.k-grid-header .k-header[b-y7iv4aclfd] {
+    text-align: center !important;
+}
+
+.k-grid .k-header .k-link[b-y7iv4aclfd], /* for sortable grid */
+.k-grid .k-header[b-y7iv4aclfd] {
+    text-align: center;
+}
+
+.k-grid .k-grid-header th .k-cell-inner[b-y7iv4aclfd],
+.k-grid .k-grid-header th .k-cell-inner > .k-link[b-y7iv4aclfd] {
+    display: block;
+    text-align: center !important;
+    white-space: normal;
+}
+
+.k-column-title[b-y7iv4aclfd] {
+    white-space: normal;
+}
+
+.th.k-header.k-touch-action-none[b-y7iv4aclfd] {
+    align-items: center;
+    text-align: center;
+}
+
+.centered-header-grid .k-cell-inner > .k-link[b-y7iv4aclfd] {
+    justify-content: center !important;
+}
+
+.k-column-title[b-y7iv4aclfd] {
+    align-items: center;
+    text-align: center;
+    width: 100% !important;
+}
+
+.k-grid-button[b-y7iv4aclfd] {
+    margin-bottom: 10px!important;
+    background: red;
+    color: blue;
+}
+
+.left[b-y7iv4aclfd] {
+    float: left;
+    color: #0C5152;
+}
+
+.right[b-y7iv4aclfd] {
+    float: right;
+    display: inline-flex;
+}
+
+.clear[b-y7iv4aclfd] {
+    clear: both
+}
+
+
+.mobile-button-wrapper[b-y7iv4aclfd] {
+    padding:3px;
+    width:100%;
+}
+
+.segment-line-right[b-y7iv4aclfd]{
+    gap: 5px;
+}

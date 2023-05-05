@@ -1,0 +1,28 @@
+﻿.anchor-container {
+    position: sticky;
+    overflow: auto;
+}
+
+.anchor-page-title {
+    cursor: pointer;
+}
+    .anchor-page-title:hover {
+        color: #1DA2AF;
+    }
+
+.anchor-element-container {
+    cursor: pointer;
+}
+    .anchor-element-container:hover {
+        color: #0F7173;
+        border-right: 3px solid #0F7173;
+    }
+
+.anchor-element {
+    padding-right: 35px;
+    word-break: break-word;
+}
+.anchor-title {
+    cursor: pointer;
+    word-break: break-word;
+}

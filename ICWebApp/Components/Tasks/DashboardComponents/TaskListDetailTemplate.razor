@@ -1,0 +1,70 @@
+﻿@if (Tasks != null)
+{
+    <div class="tasklist-detail-container">
+        @foreach (var item in Tasks.Where(e => e.CompletedAt == null))
+        {
+            <div class="small-task-wrapper">
+                <ICWebApp.Components.Tasks.SmallTask Task="item" Edit="EditTask" Saved="TaskSaved" Removed="TaskDeleted" RefreshElement="@true" DisplayContext="DisplayContextInSmallTasks"></ICWebApp.Components.Tasks.SmallTask>
+            </div>
+        }
+    </div>
+    var numberCompletedTasks = Tasks.Where(e => e.CompletedAt != null).ToList().Count;
+    if (numberCompletedTasks > 0)
+    {
+        <div class="small-element-separator"></div>
+        <div class="show-finished-menu" @onclick="@(() => _showCompleted = !_showCompleted)" @onclick:stopPropagation="true">
+            <div class="show-finished-menu-description">
+                @TextProvider.Get("BUCKET_VIEW_SHOW_DONE_TASKS")
+            </div>
+            <div class="show-finished-menu-count">
+                @numberCompletedTasks
+            </div>
+            <div class="show-finished-menu-icon">
+                @if (_showCompleted)
+                {
+                    <span>
+                        <i class="fa-regular fa-angle-up"></i>
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        <i class="fa-regular fa-angle-down"></i>
+                    </span>
+                }
+            </div>
+        </div>
+        if (_showCompleted)
+        {
+            <div class="small-element-separator"></div>
+            <div class="tasklist-detail-container">
+                @foreach (var item in Tasks.Where(e => e.CompletedAt != null))
+                {
+                    <div class="small-task-wrapper">
+                        <ICWebApp.Components.Tasks.SmallTask Task="item" Edit="EditTask" Saved="TaskSaved" Removed="TaskDeleted" RefreshElement="@true" DisplayContext="DisplayContextInSmallTasks"></ICWebApp.Components.Tasks.SmallTask>
+                    </div>
+                }
+            </div>
+        }
+    }
+}
+
+
+<TelerikWindow Modal="true" @bind-Visible="@_editWindowVisible" Width="1600px" Class="task-quickadd-window" Draggable="false">
+    <WindowTitle>
+        @if (string.IsNullOrEmpty(_itemToEditId))
+        {
+            @TextProvider.Get("TASK_QUICK_ADD_TITLE")
+        }
+        else
+        {
+            @TextProvider.Get("TASK_EDIT_TITLE")
+        }
+    </WindowTitle>
+    <WindowContent>
+        <ICWebApp.Components.Tasks.Edit ID="@_itemToEditId" BucketID="@null" Cancelled="EditCanceled" Saved="TaskSaved"></ICWebApp.Components.Tasks.Edit>
+    </WindowContent>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="EditCanceled"/>
+    </WindowActions>
+</TelerikWindow>

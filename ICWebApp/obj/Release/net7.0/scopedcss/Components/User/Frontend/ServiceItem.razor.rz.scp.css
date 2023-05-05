@@ -1,0 +1,13 @@
+.detail-button-container .btn[b-qqhn7yaxdl], .cancel-button-container .btn[b-qqhn7yaxdl]{
+    margin-bottom: 0px !important;
+}
+.btn[b-qqhn7yaxdl]{
+    width: auto;
+    min-width: 200px;
+    box-shadow: none !important;
+}
+.service-item-button-container[b-qqhn7yaxdl] {
+    display: flex;
+    gap: 0 25px;
+    flex-wrap: wrap;
+}

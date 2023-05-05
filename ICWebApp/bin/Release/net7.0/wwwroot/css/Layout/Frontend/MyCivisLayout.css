@@ -1,0 +1,369 @@
+@font-face {
+    font-family: 'Fira Sans';
+    src: url('../../../fonts/firasans-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Fira Sans';
+    src: url('../../../fonts/firasans-bold.ttf') format('truetype');
+    font-weight: bold;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Fira Sans';
+    src: url('../../../fonts/firasans-light.ttf') format('truetype');
+    font-weight: lighter;
+    font-display: swap;
+}
+
+html, body {
+    font-family: "Fira Sans",sans-serif !important;
+}
+
+html, body, .frontend-touch-container, .backend-touch-container {
+    font-family: "Fira Sans",sans-serif !important;
+    height: 100%;
+}
+
+.e-control, .e-css, .e-input-group, .e-input, .e-label {
+    font-family: "Fira Sans",sans-serif !important;
+}
+
+.custom-color-primary {
+    color: #454544 !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #b4c420;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #c8d73b;
+    }
+
+h1, .h1 {
+    color: #454544 !important;
+    font-size: 46px !important;
+}
+h2, .h2 {
+    color: #454544 !important;
+    font-size: 38px !important;
+}
+h3, .h3 {
+    color: #454544 !important;
+    font-size: 31px !important;
+}
+h4, .h4 {
+    color: #454544 !important;
+    font-size: 23px !important;
+}
+h5, .h5 {
+    color: #454544 !important;
+    font-size: 18px !important;
+}
+
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 18px;
+    line-height: 1.428571429;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: auto !important;
+}
+.btn-secondary {
+    color: #454544;
+    background-color: white;
+    border-color: #a4a5a5;
+}
+    .btn-secondary:hover {
+        color: #454544;
+        background-color: #e6e6e6;
+        border-color: #858787 !important;
+    }
+    .btn-secondary:active {
+        color: #454544;
+        background-color: #e6e6e6;
+        border-color: #858787 !important;
+    }
+.btn-primary {
+    color: black;
+    background-color: #b4c420 !important;
+    border-color: #b4c420 !important;
+}
+
+    .btn-primary:hover {
+        color: black;
+        background-color: #8c9819;
+        border-color: #848f17 !important;
+    }
+
+    .btn-primary:active {
+        color: black;
+        background-color: #8c9819;
+        border-color: #848f17 !important;
+    }
+.k-button.k-button-solid-secondary {
+    color: #454544 !important;
+    background-color: white !important;
+    border-color: #a4a5a5 !important;
+}
+.k-button-solid-secondary:hover {
+    color: #454544 !important;
+    background-color: #e6e6e6 !important;
+    border-color: #858787 !important;
+}
+.k-button-solid-secondary:active {
+    color: #454544;
+    background-color: #e6e6e6;
+    border-color: #858787 !important;
+}
+.k-wizard .k-step-current .k-step-indicator {
+    background-color: #8c9819 !important;
+    border-color: #8c9819 !important;
+    color: white !important;
+}
+
+.k-wizard .k-step-done .k-step-indicator {
+    background-color: white !important;
+    border-color: #cccccc !important;
+    color: #808080 !important;
+}
+
+.k-wizard .k-stepper .k-step-indicator {
+    height: 40px;
+    width: 40px;
+    color: #808080;
+}
+
+.k-linkbutton:hover {
+    color: #454544 !important;
+    text-decoration: underline !important;
+}
+
+.balance-value-container {
+    color: #454544 !important;
+}
+
+.phone-button{
+    padding: 0px !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    width: 32px !important;
+}
+
+.sidebar_box {
+    width: 250px !important;
+}
+.title-row-container, .title-row-container-left {
+    gap: 15px !important;
+}
+
+.k-linkbutton{
+    font-size: 18px !important;
+}
+.font-normal {
+    font-size: 18px !important;
+}
+.main_footer {
+    border-top: 2px solid #454544;
+    background-color: #a4a5a5;
+    color: #2b2b2b;
+    bottom: 0;
+    width: 100%;
+    height: 270px;
+}
+    .main_footer .my-civis-content {
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+    .main_footer a {
+        color: #000 !important;
+    }
+.fesr_logo img {
+    height: 184px !important;
+}
+.list-inline {
+    padding-left: 0;
+    list-style: none;
+    margin-left: -5px;
+}
+    .list-inline > li {
+        display: inline-block;
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+.segment-header-icon{
+    margin-top: unset !important;
+}
+.subscriber-container-title {
+    background-color: #b4c420 !important;
+    
+}
+.segment-title {
+    color: black !important;
+}
+.k-button.k-button-solid-Primary {
+    background-color: #b4c420 !important;
+    border-color: #b4c420 !important;
+}
+.k-button.k-button-solid-Primary:hover {
+    background-color: #7d8a0f !important;
+}
+.k-calendar-td.k-selected {
+    border-color: #b4c420 !important;
+}
+
+.k-calendar-td.k-selected .k-link {
+    background-color: #b4c420 !important;
+}
+.k-calendar-nav-today {
+    color: #b4c420 !important;
+}
+    .k-calendar-nav-today:hover {
+        color: #7d8a0f !important;
+    }
+.form-control:focus {
+    border-color: #b4c420 !important;
+}
+.k-input.k-focus {
+    border-color: #b4c420 !important;
+}
+.k-switch-on .k-switch-track {
+    background-color: #b4c420 !important;
+    border-color: #b4c420 !important;
+}
+
+.k-list-item.k-selected:hover, .k-selected.k-list-optionlabel:hover, .k-list-item.k-selected.k-hover, .k-selected.k-hover.k-list-optionlabel {
+    background-color: #b4c420 !important;
+    border-color: #b4c420 !important;
+}
+
+.k-selected {
+    background-color: #b4c420 !important;
+    border-color: #b4c420 !important;
+}
+.subscriber-container-add:hover {
+    border-color: #7d8a0f !important;
+}
+.k-window-titlebar {
+    background-color: #b4c420 !important;
+}
+.segment-listview-item-container:hover {
+    color: #b4c420 !important;
+    border-color: #b4c420 !important;
+}
+    .segment-listview-item-container:hover .listview-item-button {
+        background-color: #b4c420 !important;
+    }
+.address-not-found-container:hover {
+    color: #7d8a0f !important;
+}
+.drop-zone {
+    border-color: #b4c420 !important;
+}
+.upload-file-empty {
+    color: #b4c420 !important;
+}
+.upload-file-actions {
+    background-color: #b4c420 !important;
+}
+.upload-file-actions .btn{
+    color: white !important;
+}
+.upload-file-container:hover {
+    border-color: #b4c420 !important;
+}
+    .upload-file-container:hover .upload-file-footer-actions {
+        background-color: #b4c420 !important;
+    }
+
+.k-button-solid-primary {
+    background-color: #b4c420 !important;
+    border-color: #b4c420 !important;
+}
+    .k-button-solid-primary:hover {
+        background-color: #7d8a0f !important;
+    }
+
+.k-pager-nav {
+    color: #7d8a0f !important;
+}
+.authority-tag {
+    border-color: #b4c420 !important;
+    box-shadow: none !important;
+}
+.canteen-movement-item:hover {
+    border-color: #b4c420 !important;
+}
+.news-button {
+    color: #b4c420 !important;
+}
+
+.payment-transaction-container:hover {
+    color: #b4c420 !important;
+}
+.k-grid th{
+    background-color: #b4c420 !important;
+    color: white !important;
+}
+.k-grid .k-column-title {
+    color: white !important;
+}
+.link-list-wrapper ul li a span {
+    color: #454544 !important;
+}
+    .link-list-wrapper ul li a span:hover{
+        color: #7d8a0f !important;
+    }
+    .accordion-header .accordion-button {
+        color: #454544 !important;
+    }
+.navbar.it-navscroll-wrapper .link-list-wrapper ul li a.active{
+    border-color: #b4c420 !important;
+}
+.sticky-top{
+    top: 160px !important;
+}
+.progress-bar{
+    background-color: #b4c420 !important;
+}
+.btn-outline-primary {
+    color: #b4c420 !important;
+    box-shadow: inset 0 0 0 2px #b4c420 !important;
+}
+    .btn-outline-primary:hover {
+        color: #7d8a0f !important;
+        box-shadow: inset 0 0 0 2px #7d8a0f !important;
+    }
+.subscriber-container-add {
+    box-shadow: inset 0 0 0 2px #7d8a0f !important;
+}
+.btn-secondary{
+    color: #454544 !important;
+}
+.tax-report-download-icon {
+    color: #7d8a0f !important;
+}

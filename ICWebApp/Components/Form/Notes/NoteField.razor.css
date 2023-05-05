@@ -1,0 +1,37 @@
+﻿.field-container
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border :1px solid #F2F2F2;
+    padding: 15px;
+}
+.field-description{
+    
+}
+.field-data-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.field-button-container{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+    .field-button-container .btn {
+        width: 38px !important;
+        height: 38px;
+    }
+.field-value{
+    height: 38px;
+    line-height: 38px;
+    width: 100%;
+}
+.field-value-container{
+    width: 100%;
+}
+.field-value div {
+    width: 100%;
+    flex: 1;
+}

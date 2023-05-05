@@ -1,0 +1,361 @@
+﻿@if (Model != null && Type != null)
+{
+    <TelerikWindow Modal="true" @bind-Visible="@Visibile" Class="formbuilder-edit-window">
+    <WindowTitle>
+        @TextProvider.Get("FORM_ELEMENT_WINDOW_TITLE")
+    </WindowTitle>
+    <WindowContent>
+    @if (Type != null && Type.IsContainer)
+    {
+        <EditForm Model="Model" OnValidSubmit="OnSave">
+            <div class="element-popup-container">
+                <h3>
+                    @TextProvider.Get("FORM_ELEMENT_PROPERTIES")
+                </h3>
+                <div class="small-element-separator"></div>
+                <div class="element-property-container">
+                    <div class="element-property-first-row">
+                        <div class="element-dbname">
+                            <label>@TextProvider.Get("FORM_ELEMENT_DATABASENAME")</label>
+                            <div class="extra-small-element-separator"></div>
+                            <InputText type="text" class="form-control" @bind-Value="@Model.DatabaseName"/>
+                        </div>
+                    </div>
+                    <div class="element-property-multicolumn">
+                        <div class="element-anchor">
+                            <label>@TextProvider.Get("FORM_ELEMENT_BORDER")</label>
+                            <TelerikSwitch @bind-Value="Model.HasBorder" OnLabel=" " OffLabel=" " Width="65px"
+                                           Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                            </TelerikSwitch>
+                        </div>
+                        <div class="element-anchor">
+                            <label>@TextProvider.Get("FORM_ELEMENT_CAN_BE_REPEATED")</label>
+                            <TelerikSwitch @bind-Value="Model.CanBeRepeated" OnLabel=" " OffLabel=" " Width="65px"
+                                           Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                            </TelerikSwitch>
+                        </div>
+                        <div class="element-anchor">
+                            <label>@TextProvider.Get("FORM_ELEMENT_COLUMNCOUNT")</label>
+                            <div class="element-subtypeselector">
+                                <TelerikDropDownList Data="@ColumnCountList" @bind-Value="@Model.ColumnCount"></TelerikDropDownList>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="element-separator"></div>
+                <h3>
+                    @TextProvider.Get("FORM_ELEMENT_REFERENCES")
+                </h3>
+                <div class="small-element-separator"></div>
+                <div class="element-reference-container">
+                    @if (Type != null && Type.HasReference)
+                    {
+                        <div class="element-fieldname">
+                            <label>@TextProvider.Get("FORM_ELEMENT_REFERENCE")</label>
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="element-dbname">
+                            <label>@TextProvider.Get("FORM_ELEMENT_REFERENCE_DETAIL")</label>
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="element-fieldname">
+                            <ElementReference Model="@Model"></ElementReference>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="element-separator"></div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.Save" Class="k-standalone-button"
+                               OnClick="@OnSave">
+                    @TextProvider.Get("BUTTON_SAVE")
+                </TelerikButton>
+            </div>
+        </EditForm>
+    }
+    else
+    {
+        <EditForm Model="Model" OnValidSubmit="OnSave">
+        <div class="element-popup-container">
+        @if (Type != null)
+        {
+            <h3>
+                @TextProvider.Get("FORM_ELEMENT_PROPERTIES")
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="formbuilder-language-picker">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                    <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                    <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                </TelerikButtonGroup>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="element-property-container">
+                <div class="element-property-first-row">
+                    <div class="element-dbname">
+                        <label>@TextProvider.Get("FORM_ELEMENT_DATABASENAME")</label>
+                        <div class="extra-small-element-separator"></div>
+                        <InputText type="text" class="form-control" @bind-Value="@Model.DatabaseName"/>
+                    </div>
+                    @if (Type != null && Type.IsChangeable && ChangeableFieldTypes != null && ChangeableFieldTypes.Count() > 0)
+                    {
+                        <div class="element-type">
+                            <label>@TextProvider.Get("FORM_ELEMENT_FIELD_TYPE")</label>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="element-subtypeselector">
+                                <TelerikDropDownList Data="@ChangeableFieldTypes" TextField="Name" ValueField="ID"
+                                                     @bind-Value="@Model.FORM_Definition_Fields_Type_ID" OnChange="TypeChanged">
+                                </TelerikDropDownList>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (Type.ID != FORMElements.Signature)
+                {
+                    <div class="element-property-multicolumn">
+                        @if (Type.ReadOnly != true)
+                        {
+                            <div class="element-required">
+                                <label>@TextProvider.Get("FORM_ELEMENT_REQUIRED")</label>
+                                <TelerikSwitch @bind-Value="Model.Required" OnLabel=" " OffLabel=" " Width="65px"
+                                               Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                </TelerikSwitch>
+                            </div>
+                        }
+                        @if (Type != null && Type.CanBeAnchor)
+                        {
+                            <div class="element-anchor">
+                                <label>@TextProvider.Get("FORM_ELEMENT_ANCHOR")</label>
+                                <TelerikSwitch @bind-Value="Model.IsAnchor" OnLabel=" " OffLabel=" " Width="65px"
+                                               Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                </TelerikSwitch>
+                            </div>
+                        }
+                        @if (Type != null && Type.CanBeShowenonMunicipalSite == true)
+                        {
+                            <div class="element-anchor">
+                                <label>@TextProvider.Get("FORM_ELEMENT_SHOW_ON_MUNICIPAL_SITE")</label>
+                                <TelerikSwitch @bind-Value="Model.ShowOnMunicipalSite" OnLabel=" " OffLabel=" " Width="65px"
+                                               Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                </TelerikSwitch>
+                            </div>
+                        }
+                        @if (Type.ID == FORMElements.Checkbox || Type.ID == FORMElements.Radiobutton || Type.ID == FORMElements.Dropdown)
+                        {
+                            <div class="element-anchor">
+                                <label>@TextProvider.Get("FORM_ELEMENT_ADDITIONAL_CHARGE")</label>
+                                <TelerikSwitch @bind-Value="Model.HasAdditionalCharge" OnLabel=" " OffLabel=" " Width="65px"
+                                               Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                </TelerikSwitch>
+                            </div>
+                        }
+                        @if (Type.ID == FORMElements.FileUpload)
+                        {
+                            <div class="element-anchor">
+                                <label>@TextProvider.Get("FORM_ELEMENT_UPLOAD_MULTIPLE")</label>
+                                <TelerikSwitch @bind-Value="Model.UploadMultiple" OnLabel=" " OffLabel=" " Width="65px"
+                                               Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                </TelerikSwitch>
+                            </div>
+                        }
+                        @if (Type.ID == FORMElements.Title || Type.ID == FORMElements.SubTitle ||
+                             Type.ID == FORMElements.Label || Type.ID == FORMElements.Details || 
+                             Type.ID == FORMElements.Bullet)
+                        {
+                            <div class="element-anchor">
+                                <label>@TextProvider.Get("FORM_ELEMENT_ONLY_SHOW_IN_FORMRENDERER")</label>
+                                <TelerikSwitch @bind-Value="Model.OnlyShowInFormRenderer" OnLabel=" " OffLabel=" " Width="65px"
+                                               Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                </TelerikSwitch>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="element-separator"></div>
+        }
+        <h3>
+            @TextProvider.Get("FORM_ELEMENT_VALUES")
+        </h3>
+        <div class="small-element-separator"></div>
+        <div class="element-value-container">
+            <div class="element-fieldname">
+                <div class="form-group">
+                    <label>@TextProvider.Get("FORM_ELEMENT_VALUE_TITLE")</label>
+                </div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="element-fieldname element-multicolumn">
+                <div class="form-group">
+                    @if (!string.IsNullOrEmpty(Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name))
+                    {
+                        <label class="font-detail">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name</label>
+                    }
+                    <InputTextArea type="text" class="form-control element-description-input" placeholder="@Model.Placeholder"
+                                   @bind-Value="@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name"/>
+                </div>
+                @if (Type != null && Type.FORM_Definition_Field_SubType != null && Type.FORM_Definition_Field_SubType.Count() > 0)
+                {
+                    <div class="element-subtypeselector">
+                        <TelerikDropDownList Data="@SubTypes" TextField="Name" ValueField="ID"
+                                             @bind-Value="@Model.FORM_Definition_Fields_SubType_ID">
+                        </TelerikDropDownList>
+                    </div>
+                }
+            </div>
+
+            @if (Type != null && Type.ID == FORMElements.Checkbox)
+            {
+                <div class="small-element-separator"></div>
+                <div class="element-fieldname">
+                    <label>@TextProvider.Get("FORM_ELEMENT_BOLLO_FREE")</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <TelerikSwitch @bind-Value="Model.BolloFree" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small"></TelerikSwitch>
+            }
+
+            @if (Type != null && Type.ID != FORMElements.Signature)
+            {
+                @if (Model.HasAdditionalCharge == true && Type.ID == FORMElements.Checkbox)
+                {
+                    <div class="small-element-separator"></div>
+                    <div class="element-fieldname">
+                        <label>@TextProvider.Get("FORM_ELEMENT_ADDITIONAL_CHARGE_VALUE")</label>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <TelerikNumericTextBox @bind-Value="Model.AdditionalCharge" class="form-control" Format="C"></TelerikNumericTextBox>
+                }
+
+                @if (Type.ID == FORMElements.Radiobutton || Type.ID == FORMElements.Dropdown)
+                {
+                    <div class="small-element-separator"></div>
+                    <div class="element-option-label">
+                        <label class="font-normal">@TextProvider.Get("FORM_ELEMENT_OPTIONS")</label>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="element-option-selection">
+                        @foreach (var opt in Model.FORM_Definition_Field_Option.Where(p => p.ToRemove == false).OrderBy(p => p.SortOrder))
+                        {
+                            <div class="element-option-selection-item">
+                                <div class="element-option-selection-value">
+                                    @if (opt.FORM_Definition_Field_Option_Extended != null && opt.FORM_Definition_Field_Option_Extended.Count() > 0)
+                                    {
+                                        @if (!string.IsNullOrEmpty(opt.FORM_Definition_Field_Option_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Description))
+                                        {
+                                            <label class="font-detail">@opt.FORM_Definition_Field_Option_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Description</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="font-detail">@TextProvider.Get("FORM_ELEMENT_DESCRIPTION")</label>
+                                        }
+                                        <InputText type="text" class="form-control" @bind-Value="@opt.FORM_Definition_Field_Option_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Description" placeholder="@TextProvider.Get("FORM_ELEMENT_OPTION_PLACEHOLDER")"/>
+                                    }
+                                </div>
+                                @if (Model.HasAdditionalCharge == true)
+                                {
+                                    <div class="element-option-additional-charge">
+                                        <label class="font-detail">@TextProvider.Get("FORM_ELEMENT_ADDITIONAL_CHARGE_VALUE")</label>
+                                        <TelerikNumericTextBox @bind-Value="opt.AdditionalCharge" class="form-control" Format="C"></TelerikNumericTextBox>
+                                    </div>
+                                }
+                                <div class="element-option-additional-charge">
+                                    <label class="font-detail">@TextProvider.Get("FORM_ELEMENT_BOLLO_FREE")</label>
+                                    <TelerikSwitch @bind-Value="opt.BolloFree" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small"></TelerikSwitch>
+                                </div>
+                                <div class="element-option-selection-remove">
+                                    <TelerikButton Icon="SvgIcon.X" ButtonType="@ButtonType.Button" OnClick="@(() => RemoveOption(opt))" TabIndex="-1"></TelerikButton>
+                                </div>
+                                <div class="element-sorter">
+                                    @if (Model.FORM_Definition_Field_Option.Where(p => p.ToRemove == false).Min(p => p.SortOrder) != opt.SortOrder)
+                                    {
+                                        <div class="sorter-button sorter-up">
+                                            <TelerikButton Icon="SvgIcon.ChevronUp" ButtonType="@ButtonType.Button" OnClick="@(() => MoveOptionUp(opt))" TabIndex="-1"></TelerikButton>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="sorter-button sorter-up">
+                                        </div>
+                                    }
+                                    @if (Model.FORM_Definition_Field_Option.Where(p => p.ToRemove == false).Max(p => p.SortOrder) != opt.SortOrder)
+                                    {
+                                        <div class="sorter-button sorter-down">
+                                            <TelerikButton Icon="SvgIcon.ChevronDown" ButtonType="@ButtonType.Button" OnClick="@(() => MoveOptionDown(opt))" TabIndex="-1"></TelerikButton>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="sorter-button sorter-down">
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        <div class="element-option-selection-add" @onclick="AddOption">
+                            @TextProvider.Get("FORM_ELEMENT_OPTIONS_ADD")
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        @if (Type.ID == FORMElements.Difference)
+        {
+            <div class="element-separator"></div>
+            <h3>
+                @TextProvider.Get("FORM_ELEMENT_REFERENCES")
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="element-reference-container">
+                <div class="element-fieldname">
+                    <label>@TextProvider.Get("FORM_ELEMENT_REFERENCE_LIMIT")</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <TelerikNumericTextBox @bind-Value="Model.DecimalReferenceValueLimit" class="form-control" Format="C"></TelerikNumericTextBox>
+                <div class="small-element-separator"></div>
+                <div class="element-fieldname">
+                    <label>@TextProvider.Get("FORM_ELEMENT_REFERENCE")</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="element-dbname">
+                    <label>@TextProvider.Get("FORM_ELEMENT_REFERENCE_DETAIL_DIFFERENCE")</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="element-fieldname">
+                    <ElementReference Model="@Model"></ElementReference>
+                </div>
+            </div>
+        }
+        else if (Type.ID == FORMElements.Signature)
+        {
+            <div class="small-element-separator"></div>
+            <h3>
+                @TextProvider.Get("FORM_ELEMENT_REFERENCES")
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="element-reference-container">
+                <div class="element-fieldname">
+                    <label>@TextProvider.Get("FORM_ELEMENT_REFERENCE")</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="element-fieldname">
+                    <ElementReference Model="@Model"></ElementReference>
+                </div>
+            </div>
+        }
+        </div>
+        <div class="element-separator"></div>
+        <div class="segment-button-toolbar">
+            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.Save" Class="k-standalone-button"
+                           OnClick="@OnSave">
+                @TextProvider.Get("BUTTON_SAVE")
+            </TelerikButton>
+        </div>
+        </EditForm>
+    }
+    </WindowContent>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="OnSave"/>
+    </WindowActions>
+    </TelerikWindow>
+}

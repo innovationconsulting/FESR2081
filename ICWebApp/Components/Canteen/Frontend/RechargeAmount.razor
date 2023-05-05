@@ -1,0 +1,83 @@
+﻿@if (ShowPayProvider == false)
+{
+    <div class="container">
+        <div class="row mt-lg-80 mt-3 mb-4">
+            <div class="col-lg-3 mb-4 border-col hide-max-576">
+                <AnchorList></AnchorList>
+            </div>
+            <div class="col-lg-8 offset-lg-1">
+                <div class="it-page-sections-container">
+                    <Anchor Title="@TextProvider.Get("CANTEEN_DASHBOARD_YOUR_BALANCE")" ID="@TextProvider.Get("CANTEEN_DASHBOARD_YOUR_BALANCE")" Order="1">
+                        <div class="balance-container">    
+                            @if(CurrentBalance >= 0)
+                            {
+                                <h3 class="fee-value-green">
+                                    @CurrentBalance.ToString("C2")
+                                </h3>
+                            }
+                            else
+                            {
+                                <h3 class="fee-value-red">
+                                    @CurrentBalance.ToString("C2")
+                                </h3>                                    
+                            }
+                        </div>
+                    </Anchor>
+                    <Anchor Title="@TextProvider.Get("CANTEEN_DASHBOARD_RECARGEBALANCE")" ID="@TextProvider.Get("CANTEEN_DASHBOARD_RECARGEBALANCE")" IsCard="true" Order="2">  
+                        <div class="segment-container">
+                            <div class="form-group form-relative">
+                                <div class="extra-small-element-separator"></div>
+                                <div class="font-normal">
+                                    @{
+                                        var markupString = (MarkupString)(TextProvider.GetOrCreate("CANTEEN_DASHBOARD_RECARGEBALANCE_DETAIL").Replace("{Min}", MinBalance.ToString("0.00")).Replace("{Max}", MaxBalance.ToString("0.00")) + " "
+                                        + TextProvider.GetOrCreate("CANTEEN_DASHBOARD_RECARGEBALANCE_INFOTEXT"));
+
+                                    }
+
+                                    @markupString
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <TelerikNumericTextBox @bind-Value="@NewBalance"
+                                                            Max="@MaxBalance"
+                                                            Min="@MinBalance"
+                                                            class="form-control" Format="C" Decimals="2"></TelerikNumericTextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="segment-button-toolbar">
+                                <div class="btn btn-secondary" @onclick="ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</div>
+                                <div class="btn btn-primary" @onclick="SaveForm">@TextProvider.Get("BUTTON_CHARGE")</div>
+                            </div>
+                        </div>
+                    </Anchor>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="row mt-3 mb-4">
+            <div class="col-12">
+                @if (MyCivisService.Enabled == true)
+                {
+                    <PaymentPage Transactions="PAY_Transaction_IDs" ReturnUrl="@("/Canteen/MyCivis/RechargeAmount/" + MovementID)" SourceCode="MENSA"
+                         ShowBackButton="true" OnBackToPrevious="BackToPreviousPayment" OnPaymentComplete="@PaymentCompleted">
+                    </PaymentPage>
+                }
+                else
+                {
+                    <PaymentPage Transactions="PAY_Transaction_IDs" ReturnUrl="@("/Canteen/RechargeAmount/" + MovementID)" SourceCode="MENSA"
+                         ShowBackButton="true" OnBackToPrevious="BackToPreviousPayment" OnPaymentComplete="@PaymentCompleted">
+                    </PaymentPage>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+

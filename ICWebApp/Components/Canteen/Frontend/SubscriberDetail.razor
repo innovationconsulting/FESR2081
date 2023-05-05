@@ -1,0 +1,324 @@
+﻿<AuthorizeView>
+    <Authorized>
+        @if (Subscriber != null)
+        {
+            string AdditionalCSS = "";
+
+            @if (MyCivisService.Enabled)
+            {
+                AdditionalCSS = "my-civis";
+            }
+
+            <div class="container @AdditionalCSS">
+                <div class="row mt-lg-80 mt-3 mb-4">
+                    <div class="col-lg-3 mb-4 border-col hide-max-576">
+                        <AnchorList></AnchorList>
+                    </div>
+                    <div class="col-lg-8 offset-lg-1">
+                        <div class="it-page-sections-container">
+                            <Anchor Title="@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_ANAGRAFIC_DATA")" ID="@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_ANAGRAFIC_DATA")" Order="1" IsCard="true">
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_FIRSTNAME")</label>
+                                    <label class="application-value">@Subscriber.FirstName</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div><div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_LASTNAME")</label>
+                                    <label class="application-value">@Subscriber.LastName</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("REGISTRATION_PLACE_OF_BIRTH")</label>
+                                    <label class="application-value">@Subscriber.Child_PlaceOfBirth</label>
+                                </div>
+                                @if (Subscriber.Child_DateOfBirth != null)
+                                {
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("REGISTRATION_DATE_OF_BIRHT")</label>
+                                        <label class="application-value">@Subscriber.Child_DateOfBirth.Value.ToString("dd.MM.yyyy")</label>
+                                    </div>
+                                }
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TAXNUMBER")</label>
+                                    <label class="application-value">@Subscriber.TaxNumber</label>
+                                </div>
+                            </Anchor>
+                            <Anchor Title="@TextProvider.Get("REGISTRATION_DOMICILE_DATA")" ID="@TextProvider.Get("REGISTRATION_DOMICILE_DATA")" Order="2" IsCard="true">
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                                    <label class="application-value">@Subscriber.Child_DomicileStreetAddress</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                                    <label class="application-value">@Subscriber.Child_DomicilePostalCode</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                                    <label class="application-value">@Subscriber.Child_DomicileMunicipality</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                                    <label class="application-value">@Subscriber.Child_DomicileProvince</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("REGISTRATION_NATION")</label>
+                                    <label class="application-value">@Subscriber.Child_DomicileNation</label>
+                                </div>
+                            </Anchor>
+                            <Anchor Title="@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_CRITERIA")" ID="@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_CRITERIA")" Order="3" IsCard="true">
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_DISTANCE_TO_SCHOOL")</label>
+                                    <label class="application-value">@Subscriber.DistanceFromSchool</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_WORKING_PARENTS")</label>
+                                    @if (Subscriber.IsBothParentEmployed)
+                                    {
+                                        <label class="application-value">
+                                            @TextProvider.Get("YES_TEXT")
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label class="application-value">
+                                            @TextProvider.Get("NO_TEXT")
+                                        </label>
+                                    }
+                                </div>
+                            </Anchor>
+                            <Anchor Title="@TextProvider.Get("CANTEEN_SUBSCRIPTION_SCHOOL_DATA")" ID="@TextProvider.Get("CANTEEN_SUBSCRIPTION_SCHOOL_DATA")" Order="4" IsCard="true">
+                                <div class="extra-small-element-separator"></div><div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_SUBSCRIPTION_SCHOOLYEAR")</label>
+                                    <label class="application-value">@Subscriber.SchoolyearDescription</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_SCHOOL")</label>
+                                    <label class="application-value">@Subscriber.SchoolNameText</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_SCHOOL_CLASS")</label>
+                                    <label class="application-value">@Subscriber.SchoolClass</label>
+                                </div>
+                            </Anchor>
+                            <Anchor Title="@TextProvider.Get("CANTEEN_SUBSCRIPTION_MENSA_DATA")" ID="@TextProvider.Get("CANTEEN_SUBSCRIPTION_MENSA_DATA")" Order="5" IsCard="true">
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_MENSA")</label>
+                                    <label class="application-value">@Subscriber.CanteenNameText</label>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_REGISTERED_DAYS")</label>
+                                    @{
+                                        string Days = "";
+
+                                        if (Subscriber.DayMo == true)
+                                        {
+                                            Days += @TextProvider.Get("MONDAY");
+                                        }
+
+                                        if (Subscriber.DayTue == true)
+                                        {
+                                            if (!string.IsNullOrEmpty(Days))
+                                            {
+                                                Days += " ";
+                                            }
+
+                                            Days += @TextProvider.Get("TUESDAY");
+                                        }
+                                        if (Subscriber.DayWed == true)
+                                        {
+                                            if (!string.IsNullOrEmpty(Days))
+                                            {
+                                                Days += " ";
+                                            }
+
+                                            Days += @TextProvider.Get("WEDNESDAY");
+                                        }
+                                        if (Subscriber.DayThu == true)
+                                        {
+                                            if (!string.IsNullOrEmpty(Days))
+                                            {
+                                                Days += " ";
+                                            }
+
+                                            Days += @TextProvider.Get("THURSDAY");
+                                        }
+                                        if (Subscriber.DayFri == true)
+                                        {
+                                            if (!string.IsNullOrEmpty(Days))
+                                            {
+                                                Days += " ";
+                                            }
+
+                                            Days += @TextProvider.Get("FRIDAY");
+                                        }
+                                    }
+                                    <label class="application-value">@Days.Replace(" ",", ")</label>
+                                </div>
+                                @if (Subscriber.IsGlutenIntolerance == true || Subscriber.IsLactoseIntolerance == true || !string.IsNullOrEmpty(Subscriber.AdditionalIntolerance))
+                                {
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_ALLERGIES")</label>
+                                        @{
+                                            string Allergies = "";
+
+                                            if (Subscriber.IsGlutenIntolerance == true)
+                                            {
+                                                Allergies += @TextProvider.Get("GLUTEN");
+                                            }
+                                            if (Subscriber.IsLactoseIntolerance == true)
+                                            {
+                                                if (!string.IsNullOrEmpty(Allergies))
+                                                {
+                                                    Allergies += ", ";
+                                                }
+
+                                                Allergies += @TextProvider.Get("LACTOSE");
+                                            }
+                                            if (!string.IsNullOrEmpty(Subscriber.AdditionalIntolerance))
+                                            {
+                                                if (!string.IsNullOrEmpty(Allergies))
+                                                {
+                                                    Allergies += ", ";
+                                                }
+
+                                                Allergies += Subscriber.AdditionalIntolerance;
+                                            }
+                                        }
+                                        <label class="application-value">@Allergies</label>
+                                    </div>
+                                }
+                                <div class="extra-small-element-separator"></div>
+                                <div class="application-row">
+                                    <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_MENUWISHES")</label>
+                                    <label class="application-value">@Subscriber.MenuName</label>
+                                </div>
+                            </Anchor>
+                            @if (Subscriber.CANTEEN_Subscriber_Status_ID == CanteenStatus.Accepted)
+                            {
+                                <Anchor Title="@TextProvider.Get("CANTEEN_SUBSCRIPTION_WIZARD_TITlE_PHONE_DATA")" ID="@TextProvider.Get("CANTEEN_SUBSCRIPTION_WIZARD_TITlE_PHONE_DATA")" Order="6" IsCard="true">
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_SERVICEPHONE")</label>
+                                        <label class="application-value">@Municipality.PhoneCanteenManagement</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div><div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_PARENTPIN")</label>
+                                        @if (CurrentCanteenUser != null && CurrentCanteenUser.TelPin != null && CurrentCanteenUser.TelPin.Length > 7)
+                                        {
+                                            <label class="application-value">@(
+                                                       CurrentCanteenUser.TelPin.Substring(0, 2) + " " + CurrentCanteenUser.TelPin.Substring(2, 2) + " " + CurrentCanteenUser.TelPin.Substring(4, 2) + " " + CurrentCanteenUser.TelPin.Substring(6, 2)
+                                                       )</label>
+                                        }
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("CANTEEN_DASHBOARD_STUDENTCODE")</label>
+                                        @if (Subscriber.TelCode != null && Subscriber.TelCode.Length > 3)
+                                        {
+                                            <label class="application-value">@(
+                                                       Subscriber.TelCode.Substring(0, 2) + " " + Subscriber.TelCode.Substring(2, 2)
+                                                       )</label>
+                                        }
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <div class="font-small">
+                                            @TextProvider.Get("CANTEEN_DASHBOARD_PHONE_DETAIL")
+                                            @TextProvider.Get("CANTEEN_SUBSCRIPTION_PHONE_DATA_DETAIL")
+                                        </div>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row phone-container">
+                                        <div class="btn btn-primary phone-button" title="@TextProvider.Get("CANTEEN_DASHBOARD_PHONE_EMAIL")" @onclick="SendMailWithData">
+                                            <i class="fa-solid fa-at"></i>
+                                        </div>
+                                        <div class="btn btn-primary phone-button" title="@TextProvider.Get("CANTEEN_DASHBOARD_PHONE_SMS")" @onclick="SendSmSWithData">
+                                            <i class="fa-solid fa-message-sms"></i>
+                                        </div>
+                                    </div>
+                                </Anchor>
+                            }
+                            <button class="btn btn-secondary" @onclick="BackToPrevious">@TextProvider.Get("BUTTON_BACK")</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <TelerikWindow Modal="true" @bind-Visible="@ShowEmailWindow" Width="500px">
+            <WindowTitle>
+                @TextProvider.Get("CANTEEN_DASHBOARD_PHONE_EMAIL")
+            </WindowTitle>
+            <WindowContent>
+                @if (_EMailInput != null)
+                {
+                    <EditForm Model="@_EMailInput" OnValidSubmit="@(() => OnSendEmail(Subscriber))" Context="mailContext">
+                        <DataAnnotationsValidator></DataAnnotationsValidator>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_EMAIL")</label>
+                            <InputText @bind-Value="_EMailInput.Email" type="email" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => _EMailInput.Email)" TextCode="REGISTRATION_EMAIL" />
+                        </div>
+                        <div class="element-separator"></div>
+                        <div class="registration-footer">
+                            <div class="small-element-separator"></div>
+                            <div class="form-group-container">
+                                <div class="form-group-container-left"></div>
+                                <div class="form-group-container-right flex-container">
+                                    <button class="btn btn-secondary flex-left vertical-element-separator" type="button" @onclick="@(() => { ShowEmailWindow = false; StateHasChanged(); })">@(TextProvider.Get("BUTTON_CANCEL"))</button>
+                                    <button class="btn btn-primary flex-right" type="submit">@(TextProvider.Get("BUTTON_SEND"))</button>
+                                </div>
+                            </div>
+                        </div>
+                    </EditForm>
+                }
+            </WindowContent>
+            <WindowActions>
+                <WindowAction Name="Close" OnClick="@(() => { ShowEmailWindow = false; StateHasChanged(); })" />
+            </WindowActions>
+        </TelerikWindow>
+        <TelerikWindow Modal="true" @bind-Visible="@ShowSMSWindow" Width="500px">
+            <WindowTitle>
+                @TextProvider.Get("CANTEEN_DASHBOARD_PHONE_SMS")
+            </WindowTitle>
+            <WindowContent>
+                @if (_PhoneInput != null)
+                {
+                    <EditForm Model="@_PhoneInput" @ref="EditformSMS" Context="phoneContext">
+                        <DataAnnotationsValidator></DataAnnotationsValidator>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_PHONE")</label>
+                            <CustomPhone @bind-Value="@_PhoneInput.Phone"></CustomPhone>
+                            <CustomValidationMessage For="@(() => _PhoneInput.Phone)" TextCode="REGISTRATION_PHONE" />
+                        </div>
+                        <div class="element-separator"></div>
+                        <div class="registration-footer">
+                            <div class="small-element-separator"></div>
+                            <div class="form-group-container">
+                                <div class="form-group-container-left"></div>
+                                <div class="form-group-container-right flex-container">
+                                    <button class="btn btn-secondary flex-left vertical-element-separator" type="button" @onclick="@(() => { ShowSMSWindow = false; StateHasChanged(); })">@(TextProvider.Get("BUTTON_CANCEL"))</button>
+                                    <button class="btn btn-primary flex-right" type="button" @onclick="@(() => OnSendSMS(Subscriber))">@(TextProvider.Get("BUTTON_SEND"))</button>
+                                </div>
+                            </div>
+                        </div>
+                    </EditForm>
+                }
+            </WindowContent>
+            <WindowActions>
+                <WindowAction Name="Close" OnClick="@(() => { ShowSMSWindow = false; StateHasChanged(); })" />
+            </WindowActions>
+        </TelerikWindow>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

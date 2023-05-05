@@ -1,0 +1,105 @@
+﻿.filter-container {
+    gap: 10px;
+    padding-top: 3px;
+}
+
+.filter-statitik-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+.filter-tool-container {
+    margin-top: auto;
+    margin-bottom: 3px;
+}
+    .statistik-wizard-container {
+        position: relative;
+    }
+.filter-card {
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    padding: 15px;
+    width: 570px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.filter-card .h5{
+    text-align: center;
+}
+.date-filter {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+}
+.date-statistik-filter{
+    justify-content: space-between;
+}
+.filter-date-label {
+    margin-bottom: 5px;
+}
+.table-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 3px;
+}
+
+.chart-container {
+    width: 49%;
+    text-align: center;
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    padding: 20px;
+}
+
+.chart-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.numbers-container{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.number-item{
+    padding: 20px;
+    width: 23%;
+}
+    .number-item .value-container {
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+.number-total .value-container {
+    color: #808080;
+}
+.number-completed .value-container {
+    color: #0F7173;
+}
+.number-cancelled .value-container {
+    color: #b31d1d;
+}
+.number-waitlist .value-container {
+    color: #cc9923;
+}
+.number-incomplete .value-container {
+    color: #cc9923;
+}
+
+.authority-tag {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+.filter-authorities {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}

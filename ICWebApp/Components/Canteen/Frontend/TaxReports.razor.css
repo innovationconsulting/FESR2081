@@ -1,0 +1,77 @@
+.dl-btn {
+    margin-left: 10px;
+    width: 35px;
+    padding: 0px;
+}
+
+.context-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.context-item-container {
+    border: 2px solid #0F7173;
+    color: #0F7173;
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.context-item-container:hover {
+    background-color: #0F7173CC;
+    color: white;
+}
+
+.context-aktiv {
+    background-color: #0F7173CC;
+    color: white;
+    cursor: default !important;
+}
+.authority-tag {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+.tax-report-download-container {
+    padding: 20px 10px;
+    border-bottom: 1px solid #bbb;
+    display: flex;
+    justify-content: space-between;
+    max-width: 600px;
+}
+.trdc-left {
+    display: flex;
+    flex-direction: column;
+}
+.trdc-right {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.trdc-right button:hover {
+    text-decoration: underline;
+}
+.report-created-at {
+    font-size: .85rem;
+}
+.report-data {
+    display: flex;
+    gap: 20px;
+}
+.tax-report-download-icon {
+    margin-right: 7px;
+    color: #0F7173;
+}
+.reports-container {
+    min-height: 250px;
+}

@@ -1,0 +1,30 @@
+﻿@if (BusyIndicatorService.IsBusy)
+{
+    <div class="loader-overlay"></div>
+    <div class="loader-container">
+        @if (BusyIndicatorService.TotalProgress == null)
+        {
+            <div class="loader-spinner">
+                <div class="logo-icon">
+                    <img src="/Images/BusyIndicator/Spinner.gif" alt="comunix-busy-indicator">
+                </div>
+            </div>
+            <div class="loader-logo">
+                <div class="logo-icon">
+                    <img src="/Images/BusyIndicator/Spinner_Inverted.gif" alt="comunix-busy-indicator">
+                </div>
+            </div>            
+        }
+        @if(BusyIndicatorService.Description != null)
+        {
+            <div class="small-element-separator"></div>
+            <div class="loader-text h5">@BusyIndicatorService.Description</div>
+        }
+        @if(BusyIndicatorService.TotalProgress != null && BusyIndicatorService.CurrentProgress != null)
+        {
+            <div class="loader-progress">
+                <TelerikProgressBar Max="@BusyIndicatorService.TotalProgress.Value" Value="@BusyIndicatorService.CurrentProgress.Value"></TelerikProgressBar>
+            </div>
+        }
+    </div>
+}

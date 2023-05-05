@@ -1,0 +1,159 @@
+
+.application-row[b-k0c0yzqxyh] {
+    display: flex;
+}
+
+.application-label[b-k0c0yzqxyh] {
+    width: 200px;
+}
+
+.application-value[b-k0c0yzqxyh] {
+    flex: 1;
+}
+
+.applicant-container[b-k0c0yzqxyh] {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.applicant-group[b-k0c0yzqxyh] {
+    flex: 1;
+}
+
+.applicant-title[b-k0c0yzqxyh] {
+    display: flex;
+    gap: 10px;
+    line-height: 30px;
+}
+
+.user-data-edit-btn[b-k0c0yzqxyh] {
+    width: 32px;
+    height: 32px;
+}
+
+.password-quality-bar-background[b-k0c0yzqxyh] {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.Blank[b-k0c0yzqxyh] {
+    background: white !important;
+    color: white;
+}
+
+.VeryWeak[b-k0c0yzqxyh] {
+    background: #c41a0e !important;
+    color: white !important;
+    flex: 0.25;
+}
+
+.Weak[b-k0c0yzqxyh] {
+    background: #f2ac16 !important;
+    color: white !important;
+    flex: 0.5;
+}
+
+.Medium[b-k0c0yzqxyh] {
+    background: #f2ac16 !important;
+    flex: 0.5;
+}
+
+.Strong[b-k0c0yzqxyh] {
+    color: white !important;
+    background: #0F7173 !important;
+    flex: 0.75;
+}
+.VeryStrong[b-k0c0yzqxyh] {
+    color: white !important;
+    background: #0c5152 !important;
+    flex: 1;
+}
+
+.application-message[b-k0c0yzqxyh]{
+    color: green;
+}
+.address-not-found-container[b-k0c0yzqxyh] {
+    cursor: pointer;
+}
+
+    .address-not-found-container:hover[b-k0c0yzqxyh] {
+        color: #25CCDB !important;
+        text-decoration: underline !important;
+    }
+.application-value-group[b-k0c0yzqxyh]{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex: 1;
+    
+}
+.waiting-container[b-k0c0yzqxyh] {
+    text-align: center;
+}
+@media (max-width: 680px) {
+
+    .email-data-container[b-k0c0yzqxyh] {
+        max-height: unset !important;
+        overflow: unset !important;
+        height: auto;
+    }
+
+    .email-footer[b-k0c0yzqxyh] {
+        position: unset !important;
+        bottom: unset !important;
+        left: unset !important;
+        border-top: 0px !important;
+    }
+
+    .email-header[b-k0c0yzqxyh] {
+        position: unset !important;
+        border-bottom: 0px !important;
+    }
+
+    .email-title[b-k0c0yzqxyh] {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+
+.email-row[b-k0c0yzqxyh] {
+    display: flex;
+}
+
+.email-row-left[b-k0c0yzqxyh] {
+    justify-content: left;
+}
+
+.email-row-right[b-k0c0yzqxyh] {
+    justify-content: right;
+    margin-left: 15px;
+}
+
+.email-edit-container[b-k0c0yzqxyh] {
+    display: flex;
+    gap: 10px;
+}
+
+.email-edit-icon[b-k0c0yzqxyh] {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 18px !important;
+    padding: 3px;
+}
+
+.email-edit-text[b-k0c0yzqxyh] {
+    line-height: 30px;
+}
+
+.edit-popup-container[b-k0c0yzqxyh] {
+    height: 220px;
+}
+
+.input-container[b-k0c0yzqxyh] {
+    height: 120px;
+}

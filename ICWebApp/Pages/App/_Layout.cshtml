@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace ICWebApp.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#0F7173" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+    <base href="~/" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" href="logo_512.png">
+    <link href="css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" async/>
+    <link rel="stylesheet" href="css/telerik/ComunixTheme.css" async />
+    <link href="css/Webext/external.css" rel="stylesheet" async/>
+    <link href="css/colors.css" rel="stylesheet" async />
+    <link href="css/responsive/site-800px.css" rel="stylesheet" async />
+    <link href="css/telerik/custom.css" rel="stylesheet" async />
+    <link href="ICWebApp.styles.css" rel="stylesheet" async />
+    <link rel="stylesheet" href="./_content/IntlTelInputBlazor/css/intlTelInput.css" />
+    <link href="css/syncfusion/bootstrap5.min.css" rel="stylesheet" async />
+
+    <script nonce="comunix123" src="js/fontawesome/fontawesome.min.js" async></script>
+    <script nonce="comunix123" src="js/fontawesome/sharp-solid.min.js" async></script>
+    <script nonce="comunix123" src="js/fontawesome/duotone.min.js" async></script>
+    <script nonce="comunix123" src="js/fontawesome/light.min.js" async></script>
+    <script nonce="comunix123" src="js/fontawesome/solid.min.js" async></script>
+    <script nonce="comunix123" src="js/fontawesome/regular.min.js" async></script>
+
+    <script nonce="comunix123" src="/js/jquery/jquery_3_3_1.js"></script>
+    <script nonce="comunix123" src="_content/Telerik.UI.for.Blazor/js/telerik-blazor.js"></script>
+    <script nonce="comunix123" src="/js/localizationHelper.js" defer></script>
+    <script nonce="comunix123" src="/js/Services/enviromentHelper.js" defer></script>
+    <script nonce="comunix123" src="/js/Services/anchorHelper.js" defer></script>
+    <script nonce="comunix123" src="/js/Formbuilder/formbuilder.js" defer></script>
+    <script nonce="comunix123" src="/js/NavMenu/NavMenu_Mobile.js" defer></script>
+    <script nonce="comunix123" src="/js/CodeInputComponent/CodeInputComponent.js" defer></script>
+    <script nonce="comunix123" src="/js/Mobile/mobileHelper.js" defer></script>
+    <script nonce="comunix123" src="https://reporting.comunix.bz.it/api/reports/resources/js/telerikReportViewer" defer></script>
+    <script nonce="comunix123" src="/js/Signing/Signing.js" defer></script>
+    <script nonce="comunix123" src="/js/Geo/Geo.js" defer></script>
+    <script nonce="comunix123" src="/js/telerik/calendar/tr_calendar_helper.js"></script>
+    <script nonce="comunix123" src="./_content/IntlTelInputBlazor/js/intlTelInput.js" defer></script>
+    <script nonce="comunix123" src="https://cdn.lordicon.com/xdjxvujz.js"></script>
+    <script nonce="comunix123" src="/js/bootstrap-italia/bootstrap-italia.bundle.min.js"></script>
+    
+
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+<body>
+    @RenderBody()
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script nonce="comunix123" src="_content/Telerik.ReportViewer.Blazor/interop.js" defer></script>
+    <script nonce="comunix123" src="_framework/blazor.server.js"></script>
+    <script nonce="comunix123">navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+</html>

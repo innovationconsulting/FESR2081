@@ -1,0 +1,321 @@
+﻿@{
+    var modalCSS = "";
+
+    if (Modal)
+    {
+        modalCSS = "filter-container-modal";
+    }
+}
+
+<div class="filter-container @modalCSS">
+    @if (Modal)
+    {
+        <div class="font-normal filter-label custom-color-primary">
+            @TextProvider.Get("FILTER_TEXTSEARCH_TITLE")
+        </div>
+        <div class="extra-small-element-separator"></div>
+    }
+    <div class="filter-search-first-row">
+        <div class="filter-search-input">
+            <EditForm Model="@Filter" OnValidSubmit="@(() => FilterSearch())">
+                <div class="filter-searchbar">
+                    <input type="text" @bind-value="@Filter.Text" onfocus="this.select();" placeholder="@TextProvider.Get("SEARCH_KEYWORD_PLACEHOLDER")"></input>
+                    @if (!Modal)
+                    {
+                        <button class="btn btn-primary searchbar-button" type="submit" @onclick:stopPropagation="true">
+                            <TelerikIcon Icon="@("fad fa-search")"></TelerikIcon>
+                        </button>
+                        <button class="btn btn-primary searchbar-button" type="button" @onclick="ToggleFilter" @onclick:stopPropagation="true">
+                            <TelerikIcon Icon="@("fad fa-sliders-h")"></TelerikIcon>
+                        </button>
+                    }
+                </div>
+            </EditForm>
+        </div>
+        @if (!Modal)
+        {
+            @if (Filter != null &&
+           (
+           !string.IsNullOrEmpty(Filter.Text) ||
+           (Filter.AUTH_Authority_ID != null && Filter.AUTH_Authority_ID.Count() > 0) ||
+           Filter.Auth_User_ID != null ||
+           Filter.DeadlineFrom != null ||
+           Filter.DeadlineTo != null ||
+           Filter.SubmittedFrom != null ||
+           Filter.SubmittedTo != null ||
+           (Filter.Subscription_Status_ID != null && Filter.Subscription_Status_ID.Exists(p => p != FORMStatus.Accepted &&
+           p != FORMStatus.Comitted &&
+           p != Guid.Parse("d500ea5e-5cc7-4284-bec7-3959a0564d39"))) ||
+           Filter.EskalatedTasks != null ||
+           Filter.ManualInput != null
+           )
+           )
+            {
+                <button class="btn btn-primary filter-clear-button" type="button" @onclick="ClearSearchBar" @onclick:stopPropagation="true">
+                    <TelerikIcon Icon="@("fa-regular fa-xmark")"></TelerikIcon>
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-secondary filter-clear-button" type="button" disabled="true" @onclick:stopPropagation="true">
+                    <TelerikIcon Icon="@("fa-regular fa-xmark")"></TelerikIcon>
+                </button>
+            }
+        }
+    </div>
+    <div class="small-element-separator"></div>
+    @if (Modal)
+    {
+        <div class="font-normal filter-label custom-color-primary">
+            @TextProvider.Get("FILTER_STATUS_TITLE")
+        </div>
+        <div class="extra-small-element-separator"></div>
+    }
+    @if (StatusList != null && StatusList.Count() > 1)
+    {
+        <div class="filter-element filter-authorities">
+            @if (Filter.Subscription_Status_ID != null && Filter.Subscription_Status_ID.Count() > 0)
+            {
+                <div class="btn btn-secondary authority-tag" @onclick="@(() => ClearTagFilter())" @onclick:stopPropagation="true">
+                    <span>
+                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                        @TextProvider.Get("STATUS_TAG_FILTER_ALL")
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="btn btn-primary authority-tag" @onclick:stopPropagation="true">
+                    <span>
+                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                        @TextProvider.Get("STATUS_TAG_FILTER_ALL")
+                    </span>
+                </div>
+            }
+
+            @foreach (var auth in StatusList.OrderBy(p => p.SortOrder))
+            {
+                string buttonCSS = "btn-secondary";
+
+                if (Filter.Subscription_Status_ID != null && Filter.Subscription_Status_ID.Contains(auth.ID))
+                {
+                    buttonCSS = "btn-primary";
+                }
+
+                <div class="btn @buttonCSS authority-tag" @onclick="@(() => AddFilter(auth.ID))" @onclick:stopPropagation="true">
+                    <span>
+                        <TelerikIcon Icon="@auth.IconString"></TelerikIcon>
+                        @TextProvider.Get(auth.TEXT_SystemTexts_Code)
+                    </span>
+                </div>
+            }
+        </div>
+    }
+    @if (FilterWindowVisible || Modal)
+    {
+        string popupCSS = "filter-popup";
+        string firstRowCSS = "filter-first-row";
+        string secondRowCSS = "filter-first-row";
+
+        if (Modal)
+        {
+            popupCSS = "no-popup";
+            firstRowCSS = "";
+            secondRowCSS = "";
+        }
+
+        <div class="@popupCSS" id="filter-popup">
+            @if (!Modal)
+            {
+                <div class="h5 custom-color-primary">
+                    @TextProvider.Get("FILTER_TITLE")
+                </div>
+                <div class="extra-small-element-separator"></div>
+            }
+            else
+            {
+                <div class="small-element-separator"></div>
+            }
+
+            <div class="@firstRowCSS">
+           
+                <div class="extra-small-element-separator"></div>             
+                <div class="font-normal">
+                    <div class="filter-label custom-color-primary">
+                        @TextProvider.Get("FILTER_USER_LABEL")
+                    </div>
+                    <div class="filter-element">
+                        <TelerikComboBox ScrollMode="@DropDownScrollMode.Virtual"
+                                         Data="@UserList"
+                                         ValueField="@(nameof(V_FORM_Application_Users.AUTH_User_ID))"
+                                         TextField="@(nameof(V_FORM_Application_Users.NameLong))"
+                                         @bind-Value="@Filter.Auth_User_ID"
+                                         Width="100%"
+                                         Filterable="true"
+                                         PageSize="10"
+                                         ItemHeight="30"
+                                         Placeholder="@TextProvider.Get("FILTER_USER_PLACEHOLDER")"
+                                         FilterOperator="@StringFilterOperator.Contains">
+                            <ItemTemplate>
+                                <span>@($"{context.Name} ({context.FiscalNumber})")</span>
+                            </ItemTemplate>
+                        </TelerikComboBox>
+                    </div>
+                </div>
+            </div>
+            <div class="small-element-separator"></div> 
+            <div class="font-normal">
+                <div class="filter-label custom-color-primary">
+                    @TextProvider.Get("FILTER_SCHOOLYEAR")
+                </div>
+                <div class="filter-element">
+                    <TelerikMultiSelect Data="@SchoolyearList"
+                                        @bind-Value="@Filter.SchoolYear_ID"
+                                        ValueField="@(nameof(CANTEEN_Schoolyear.ID))"
+                                        TextField="@(nameof(CANTEEN_Schoolyear.DisplayText))"
+                                        AutoClose="false"
+                                        Placeholder="@TextProvider.Get("FILTER_SCHOOLYEAR_PLACEHOLDER")"
+                                        Width="100%">
+                        <ItemTemplate>
+                            <span class="icon-element">
+                                <span style="margin-left: 0px;">
+                                    @context.DisplayText
+                                </span>
+                            </span>
+                        </ItemTemplate>
+                    </TelerikMultiSelect>
+                </div>
+            </div>
+            <div class="font-normal">
+                <div class="filter-label custom-color-primary">
+                    @TextProvider.Get("FILTER_SCHOOL")
+                </div>
+                <div class="filter-element">
+                    <TelerikMultiSelect Data="@SchoolList"
+                                        @bind-Value="@Filter.School_ID"
+                                        ValueField="@(nameof(CANTEEN_School.ID))"
+                                        TextField="@(nameof(CANTEEN_School.Name))"
+                                        AutoClose="false"
+                                        Placeholder="@TextProvider.Get("FILTER_SCHOOL_PLACEHOLDER")"
+                                        Width="100%">
+                        <ItemTemplate>
+                            <span class="icon-element">
+                                <span style="margin-left: 0px;">
+                                    @context.Name
+                                </span>
+                            </span>
+                        </ItemTemplate>
+                    </TelerikMultiSelect>
+                </div>
+            </div>
+            <div class="font-normal">
+                <div class="filter-label custom-color-primary">
+                    @TextProvider.Get("FILTER_CANTEEN")
+                </div>
+                <div class="filter-element">
+                    <TelerikMultiSelect Data="@CanteenList"
+                                        @bind-Value="@Filter.Canteen_ID"
+                                        ValueField="@(nameof(CANTEEN_Canteen.ID))"
+                                        TextField="@(nameof(CANTEEN_Canteen.Name))"
+                                        AutoClose="false"
+                                        Placeholder="@TextProvider.Get("FILTER_CANTEEN_PLACEHOLDER")"
+                                        Width="100%">
+                        <ItemTemplate>
+                            <span class="icon-element">
+                                <span style="margin-left: 0px;">
+                                    @context.Name
+                                </span>
+                            </span>
+                        </ItemTemplate>
+                    </TelerikMultiSelect>
+                </div>
+            </div>
+            <div class="small-element-separator"></div> 
+            <div class="font-normal">
+                <div class="filter-label custom-color-primary">
+                    @TextProvider.Get("FILTER_DISTANCE_LABEL")
+                </div>
+                <div class="filter-element">
+                    <TelerikRangeSlider @bind-StartValue="@StartDistanceValue"
+                                        @bind-EndValue="@EndDistanceValue"
+                                        Min="@MinDistance"
+                                        Max="@MaxDistance"
+                                        SmallStep="5"
+                                        LargeStep="5"
+                                        Width="100%">
+                    </TelerikRangeSlider>
+
+                </div>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="@secondRowCSS">
+                <div class="filter-element">
+                    <div class="filter-left">
+                        <div class="font-normal custom-color-primary">
+                            @TextProvider.Get("FILTER_SUBMITTED")
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="filter-submitted">
+                            <div class="filter-date-element">
+                                <div class="filter-date-label font-small">
+                                    @TextProvider.Get("FILTER_SUBMITTED_FROM")
+                                </div>
+                                <div class="filter-date-value">
+                                    <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="Filter.SubmittedFrom" class="form-control"></TelerikDatePicker>
+                                </div>
+                            </div>
+                            <div class="filter-date-element">
+                                <div class="filter-date-label font-small">
+                                    @TextProvider.Get("FILTER_SUBMITTED_TO")
+                                </div>
+                                <div class="filter-date-value">
+                                    <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="Filter.SubmittedTo" class="form-control"></TelerikDatePicker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            @if (!Modal)
+            {
+                <div class="small-element-separator">
+                </div>
+                <div class="filter-toolbar">
+                    <div class="filter-search-button">
+                        <button class="btn btn-primary" @onclick="@(() => FilterSearch())" type="button">@(TextProvider.Get("FITER_SEARCH"))</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (Modal)
+    {
+        <div class="element-separator"></div>
+        <div class="filter-button-bar">
+            @if (Filter != null &&
+           (
+           !string.IsNullOrEmpty(Filter.Text) ||
+           (Filter.AUTH_Authority_ID != null && Filter.AUTH_Authority_ID.Count() > 0) ||
+           Filter.Auth_User_ID != null ||
+           Filter.DeadlineFrom != null ||
+           Filter.DeadlineTo != null ||
+           Filter.SubmittedFrom != null ||
+           Filter.SubmittedTo != null ||
+           (Filter.Subscription_Status_ID != null && Filter.Subscription_Status_ID.Exists(p => p != CanteenStatus.Accepted)) ||
+           Filter.EskalatedTasks != null ||
+           Filter.ManualInput != null
+           )
+           )
+            {
+                <TelerikButton OnClick="@ClearSearchBar" ButtonType="ButtonType.Button"ThemeColor="Secondary" Class="form-filter-button btn btn-secondary" Icon="@("fa-regular fa-xmark")">@TextProvider.Get("FILTER_CLEAR")</TelerikButton>
+            }
+            else
+            {
+                <TelerikButton OnClick="@ClearSearchBar" ButtonType="ButtonType.Button" Enabled="false" ThemeColor="Secondary" Class="form-filter-button btn btn-secondary" Icon="@("fa-regular fa-xmark")">@TextProvider.Get("FILTER_CLEAR")</TelerikButton>
+            }
+
+            <TelerikButton OnClick="@FilterSearch" ButtonType="ButtonType.Button" ThemeColor="Primary" Class="form-filter-button btn btn-primary" Icon="@("fad fa-search")">@TextProvider.Get("FILTER_SEARCH")</TelerikButton>
+        </div>
+    }
+</div>

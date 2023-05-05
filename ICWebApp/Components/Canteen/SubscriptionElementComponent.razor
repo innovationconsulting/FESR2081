@@ -1,0 +1,553 @@
+﻿<div class="subscriber-wizard-container">
+    <TelerikWindow Modal="true" @bind-Visible="@ShowEditMensaWindow">
+        <WindowTitle>
+            @TextProvider.Get("CANTEEN_CHANGE_CANTEEN_TITLE")
+        </WindowTitle>
+        <WindowContent>
+            @if (SubscriberEditDetail != null)
+            {
+                <EditForm Model="@SubscriberEditDetail">
+                    <div class="element-popup-container">
+                        <div class="edit-element">
+                            <TelerikDropDownList Data="@Canteens" TextField="CanteenDisplaylName" ValueField="ID" @bind-Value="@SubscriberEditDetail.CANTEEN_Canteen_ID">
+                            </TelerikDropDownList>
+                        </div>
+                        <div class="segment-button-toolbar">
+                            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.Cancel" Class="k-standalone-button"
+                                       OnClick="@CancelEdit">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.Save" Class="k-standalone-button"
+                                       OnClick="@SaveCanteenChange">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+                        </div>
+                    </div>
+                </EditForm>
+            }
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="CancelEdit" />
+        </WindowActions>
+    </TelerikWindow>
+    <TelerikWizard @bind-Value="CurrentTab" StepperPosition="@WizardStepperPosition.Right" ShowPager="false">
+        <WizardSteps>
+            <WizardStep Label="@TextProvider.Get("CANTEEN_SUBSCRIPTION")" Icon="@("far fa-user-graduate")" OnChange="OnStepChanged">
+                <Content>
+                    <EditForm @ref="@SubscriberDetail.HTMLReference" Model="SubscriberDetail" class="subscriber-backend-container">
+                        <div class="element-group-container">
+                            <div class=element-group>
+                                <div class="segment-line">
+                                    <h5>@TextProvider.Get("CANTEEN_STUDENTDATA")</h5>
+                                </div>
+                                <div class="small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_STUDENT_FULLNAME")</div>
+                                    @if(PreviousDetail != null && (SubscriberDetail.FirstName != PreviousDetail.FirstName || SubscriberDetail.LastName != PreviousDetail.LastName))
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.FirstName @SubscriberDetail.LastName</div>                                        
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.FirstName @SubscriberDetail.LastName</div>
+                                    }
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_STUDENT_TAXNUMBER")</div>
+                                    @if (PreviousDetail != null && SubscriberDetail.TaxNumber != PreviousDetail.TaxNumber)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.TaxNumber</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value ">@SubscriberDetail.TaxNumber</div>
+                                    }
+                                </div>                                
+                                @if (SubscriberDetail.Child_DateOfBirth != null)
+                                {
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="element-group-row">
+                                        <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_DASHBOARD_DAYOFBIRTH")</div>
+                                        @if (PreviousDetail != null && SubscriberDetail.Child_DateOfBirth != PreviousDetail.Child_DateOfBirth)
+                                        {
+                                            <div class="element-group-row-value different-value">@SubscriberDetail.Child_DateOfBirth.Value.ToString("dd.MM.yyyy")</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="element-group-row-value">@SubscriberDetail.Child_DateOfBirth.Value.ToString("dd.MM.yyyy")</div>
+                                            
+                                        }
+                                    </div>
+                                }
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_DASHBOARD_PLACEOFBIRTH")</div>                                    
+                                    @if (PreviousDetail != null && SubscriberDetail.Child_PlaceOfBirth != PreviousDetail.Child_PlaceOfBirth)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.Child_PlaceOfBirth</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.Child_PlaceOfBirth</div>                                        
+                                    }
+                                </div>
+                            </div>
+                            <div class=element-group>
+                                <div class="segment-line">
+                                    <h5>@TextProvider.Get("CANTEEN_SUBSCRIPTION_DOMICILE_DATA")</h5>
+                                </div>
+                                <div class="small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_DASHBOARD_NATION")</div>                                                            
+                                    @if (PreviousDetail != null && SubscriberDetail.Child_DomicileNation != PreviousDetail.Child_DomicileNation)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.Child_DomicileNation</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.Child_DomicileNation</div>
+                                    }
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_DASHBOARD_PROVINCE")</div>                                                  
+                                    @if (PreviousDetail != null && SubscriberDetail.Child_DomicileProvince != PreviousDetail.Child_DomicileProvince)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.Child_DomicileProvince</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.Child_DomicileProvince</div>
+                                    }
+                                </div>                
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_DASHBOARD_MUNICIAPLITY")</div>                                                                           
+                                    @if (PreviousDetail != null && SubscriberDetail.Child_DomicileMunicipality != PreviousDetail.Child_DomicileMunicipality)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.Child_DomicileMunicipality</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.Child_DomicileMunicipality</div>
+                                    }
+                                </div>                                
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_DASHBOARD_CAP")</div>                                                            
+                                    @if (PreviousDetail != null && SubscriberDetail.Child_DomicilePostalCode != PreviousDetail.Child_DomicilePostalCode)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.Child_DomicilePostalCode</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.Child_DomicilePostalCode</div>
+                                    }
+                                </div>                             
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_DASHBOARD_ADDRESS")</div>                                     
+                                    @if (PreviousDetail != null && SubscriberDetail.Child_DomicileStreetAddress != PreviousDetail.Child_DomicileStreetAddress)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.Child_DomicileStreetAddress</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.Child_DomicileStreetAddress</div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="element-group">
+                                <div class="segment-line">
+                                    <h5>@TextProvider.Get("CANTEEN_GENERAL_DATA")</h5>
+                                </div>
+                                <div class="small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_SCHOOL")</div>   
+                                    @if (PreviousDetail != null && SubscriberDetail.SchoolName != PreviousDetail.SchoolName)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.SchoolName</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.SchoolName</div>
+                                    }
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_SCHOOLCLASS")</div>                                    
+                                    @if (PreviousDetail != null && SubscriberDetail.SchoolClass != PreviousDetail.SchoolClass)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.SchoolClass</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.SchoolClass</div>
+                                    }
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row editable-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_CANTEEN")</div>
+                                    <div class="element-editable">                                                                     
+                                        @if (PreviousDetail != null && SubscriberDetail.CANTEEN_Canteen.Name != PreviousDetail.CANTEEN_Canteen.Name)
+                                        {
+                                            <div class="element-group-row-value different-value">@SubscriberDetail.CANTEEN_Canteen.Name</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="element-group-row-value">@SubscriberDetail.CANTEEN_Canteen.Name</div>
+                                        }
+                                        <button class="btn btn-secondary canteen-edit-button" @onclick="EditCanteen">
+                                            <TelerikIcon Icon="SvgIcon.Pencil"></TelerikIcon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row editable-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_WHEN")</div>
+                                    <div class="element-group-row-value week-day-selector">
+                                        <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Multiple">                                                                                                    
+                                            @if (PreviousDetail != null && SubscriberDetail.DayMo != PreviousDetail.DayMo)
+                                            {
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayMo" Enabled="false" Class="telerik-different-value">@TextProvider.Get("MONDAY_SHORT")</ButtonGroupToggleButton>
+                                            }
+                                            else
+                                            {                                                
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayMo" Enabled="false">@TextProvider.Get("MONDAY_SHORT")</ButtonGroupToggleButton>
+                                            }                                                                                          
+                                            @if (PreviousDetail != null && SubscriberDetail.DayTue != PreviousDetail.DayTue)
+                                            {
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayTue" Enabled="false" Class="telerik-different-value">@TextProvider.Get("TUESDAY_SHORT")</ButtonGroupToggleButton>
+                                            }
+                                            else
+                                            {                                                
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayTue" Enabled="false">@TextProvider.Get("TUESDAY_SHORT")</ButtonGroupToggleButton>
+                                            }                                                                                      
+                                            @if (PreviousDetail != null && SubscriberDetail.DayWed != PreviousDetail.DayWed)
+                                            {
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayWed" Enabled="false" Class="telerik-different-value">@TextProvider.Get("WEDNESDAY_SHORT")</ButtonGroupToggleButton>
+                                            }
+                                            else
+                                            {                                                
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayWed" Enabled="false">@TextProvider.Get("WEDNESDAY_SHORT")</ButtonGroupToggleButton>
+                                            }                                                                                      
+                                            @if (PreviousDetail != null && SubscriberDetail.DayThu != PreviousDetail.DayThu)
+                                            {
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayThu" Enabled="false" Class="telerik-different-value">@TextProvider.Get("THURSDAY_SHORT")</ButtonGroupToggleButton>
+                                            }
+                                            else
+                                            {                                                
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayThu" Enabled="false">@TextProvider.Get("THURSDAY_SHORT")</ButtonGroupToggleButton>
+                                            }                                                                                      
+                                            @if (PreviousDetail != null && SubscriberDetail.DayFri != PreviousDetail.DayFri)
+                                            {
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayFri" Enabled="false" Class="telerik-different-value">@TextProvider.Get("FRIDAY_SHORT")</ButtonGroupToggleButton>
+                                            }
+                                            else
+                                            {                                                
+                                                <ButtonGroupToggleButton @bind-Selected="@SubscriberDetail.DayFri" Enabled="false">@TextProvider.Get("FRIDAY_SHORT")</ButtonGroupToggleButton>
+                                            }
+                                        </TelerikButtonGroup>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="element-group">
+                                <div class="segment-line">
+                                    <h5>@TextProvider.Get("CANTEEN_MEAL_WISHES")</h5>
+                                </div>
+                                <div class="small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_MEALTYPE")</div>                                    
+                                    @if (PreviousDetail != null && SubscriberDetail.MenuName != PreviousDetail.MenuName)
+                                    {
+                                        <div class="element-group-row-value different-value">@SubscriberDetail.MenuName</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="element-group-row-value">@SubscriberDetail.MenuName</div>
+                                    }
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_LACTOSE")</div>                                                                 
+                                    @if (PreviousDetail != null && SubscriberDetail.IsLactoseIntolerance != PreviousDetail.IsLactoseIntolerance)
+                                    {
+                                        @if (SubscriberDetail.IsLactoseIntolerance)
+                                        {
+                                            <div class="element-group-row-value different-value">@TextProvider.Get("LABEL_YES")</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="element-group-row-value different-value">@TextProvider.Get("LABEL_NO")</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @if (SubscriberDetail.IsLactoseIntolerance)
+                                        {
+                                            <div class="element-group-row-value">@TextProvider.Get("LABEL_YES")</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="element-group-row-value">@TextProvider.Get("LABEL_NO")</div>
+                                        }
+                                    }
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="element-group-row">
+                                    <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_GLUTEN")</div>
+                                    @if (PreviousDetail != null && SubscriberDetail.IsGlutenIntolerance != PreviousDetail.IsGlutenIntolerance)
+                                    {
+                                        @if (SubscriberDetail.IsGlutenIntolerance)
+                                        {
+                                            <div class="element-group-row-value different-value">@TextProvider.Get("LABEL_YES")</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="element-group-row-value different-value">@TextProvider.Get("LABEL_NO")</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @if (SubscriberDetail.IsGlutenIntolerance)
+                                        {
+                                            <div class="element-group-row-value">@TextProvider.Get("LABEL_YES")</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="element-group-row-value">@TextProvider.Get("LABEL_NO")</div>
+                                        }
+                                    }
+                                </div>
+                                @if (!string.IsNullOrEmpty(SubscriberDetail.AdditionalIntolerance))
+                                {
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="element-group-row">
+                                        <div class="element-group-row-description font-bold">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_ADDITIONAL")</div>                          
+                                        @if (PreviousDetail != null && SubscriberDetail.AdditionalIntolerance != PreviousDetail.AdditionalIntolerance)
+                                        {
+                                            <div class="element-group-row-value different-value">@SubscriberDetail.AdditionalIntolerance</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="element-group-row-value">@SubscriberDetail.AdditionalIntolerance</div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </EditForm>
+                </Content>
+            </WizardStep>
+            <WizardStep Label="@TextProvider.Get("CANTEEN_SUBSCRIPTION_INFO")" Icon="@("fa-regular fa-user-tie")" OnChange="OnStepChanged">
+                <Content>
+                    <EditForm @ref="@SubscriberDetail.HTMLReference" Model="SubscriberDetail" class="subscriber-backend-container">
+                        <div class="segment-line">
+                            <h5>@TextProvider.Get("CANTEEN_PARENTDATA")</h5>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="form-label-left">@TextProvider.Get("CANTEEN_PARENT_NAME")</label>
+                                <InputText @bind-Value="SubscriberDetail.UserLastName" class="form-control" readonly disabled></InputText>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="form-label-left">@TextProvider.Get("CANTEEN_PARENT_FIRSTNAME")</label>
+                                <InputText @bind-Value="SubscriberDetail.UserFirstName" class="form-control" readonly disabled></InputText>
+                            </div>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="form-label-left">@TextProvider.Get("CANTEEN_PARENT_TAXNUMBER")</label>
+                                <InputText @bind-Value="SubscriberDetail.UserTaxNumber" class="form-control" readonly disabled></InputText>
+                            </div>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="form-label-left">@TextProvider.Get("CANTEEN_USER_EMAIL")</label>
+                                <InputText @bind-Value="SubscriberDetail.UserEmail" class="form-control" readonly disabled></InputText>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="form-label-left">@TextProvider.Get("CANTEEN_USER_PHONE")</label>
+                                <InputText @bind-Value="SubscriberDetail.UserMobilePhone" class="form-control" readonly disabled></InputText>
+                            </div>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="segment-line">
+                            <h5>@TextProvider.Get("CANTEEN_CRITERIA")</h5>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="form-label-left">@TextProvider.Get("CANTEEN_DISTANCE_FROM_SCHOOL")</label>
+                                <InputNumber @bind-Value="SubscriberDetail.DistanceFromSchoolValidated" min="0" class="form-control" readonly disabled></InputNumber>
+                            </div>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="@SubscriberDetail.IsBothParentEmployed" class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_WORKING_PARENTS")</label>
+                                <div>
+                                    <TelerikSwitch @bind-Value="SubscriberDetail.IsBothParentEmployed" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                                   Class="list-item-switch" Enabled="false"></TelerikSwitch>
+                                </div>
+                            </div>
+                        </div>
+                    </EditForm>
+                </Content>
+            </WizardStep>
+            <WizardStep Label="@TextProvider.Get("CANTEEN_MOVEMENTLIST")" Icon="@("fas fa-stream")" OnChange="OnStepChanged">
+                <Content>
+                    <TelerikGrid Data="@LatestMovements" Pageable="true" Sortable="true" Resizable="false" PageSize="10"
+                                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                        <GridColumns>
+                            <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.Date)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_DATE")" Width="200px">
+                                <Template>
+                                    @{
+                                        var item = context as V_CANTEEN_Subscriber_Movements;
+                                    }
+                                    <span>@item!.Date!.Value.ToShortDateString()</span>
+                                </Template>
+                            </GridColumn>
+                            <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.Description)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_DESCRIPTION")" Width="150px"></GridColumn>
+                            <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.Fee)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_AMOUNT")" Width="200px">
+                                <Template>
+                                    @{
+                                        V_CANTEEN_Subscriber_Movements item = context as V_CANTEEN_Subscriber_Movements;
+
+                                        string fontColorCSS = "fee-value-red";
+
+                                        if (item != null && item.Fee != null && item.Fee > 0)
+                                        {
+                                            fontColorCSS = "fee-value-green";
+                                        }
+
+                                        if (item != null && item.Fee != null)
+                                        {
+                                            <span class="odemand-status-container @fontColorCSS">
+                                                @item.Fee.Value.ToString("C2")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="demand-status-container">
+                                                0,00 €
+                                            </span>
+                                        }
+                                    }
+                                </Template>
+                            </GridColumn>
+                        </GridColumns>
+                    </TelerikGrid>
+                </Content>
+            </WizardStep>
+            <WizardStep Label="@TextProvider.Get("CANTEEN_ABSENCE")" Icon="@("fa-regular fa-phone-missed")" OnChange="OnStepChanged">
+                <Content>
+                    <TelerikGrid Data="@NextMovements" Pageable="true" Sortable="true" Resizable="false" PageSize="10"
+                                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                        <GridColumns>
+                            <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.Date)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_DATE")" DisplayFormat="{0:ddd, dd.MM.yyyy}" Width="160px"></GridColumn>
+
+                            <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.CancelDate)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_STATUS")" Width="160px">
+                                <Template>
+                                    @{
+                                        V_CANTEEN_Subscriber_Movements item = context as V_CANTEEN_Subscriber_Movements;
+
+                                        <div class="segment-line-right segment-value custom-color-details flex-left">
+
+                                            @if (item != null && item.CancelDate != null)
+                                            {
+                                                string fontColorCSS = "fee-value-red";
+                                                <div class="icon-Container"><i class="fa-regular fa fa-user-clock"></i></div>
+
+                                                <span class="demand-status-container @fontColorCSS">@TextProvider.Get("CANTEEN_STATUS_AWAY")</span>
+
+                                            }
+
+                                            @if (item != null && item.CancelDate == null)
+                                            {
+                                                string fontColorCSS = "fee-value-green";
+                                                <div class="icon-Container"><i class="fa-regular fa fa-user-clock"></i></div>
+
+                                                <span class="demand-status-container @fontColorCSS">@TextProvider.Get("CANTEEN_STATUS_OK")</span>
+                                            }
+                                        </div>
+
+                                    }
+                                </Template>
+                            </GridColumn>
+                            <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.Description)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_DESCRIPTION")"></GridColumn>
+                            <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                @{
+                                    V_CANTEEN_Subscriber_Movements item = context as V_CANTEEN_Subscriber_Movements;
+
+                                    if (item != null && item.CancelDate == null && item.Fee < 0)
+                                    {
+                                        <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => DailyCancellation(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_CHANGE")">@TextProvider.Get("CANTEEN_ACTION_DAILYCANCEL")</GridCommandButton>
+                                    }
+                                    if (item != null && item.CancelDate != null && item.Fee < 0)
+                                    {
+                                        <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => DailyCancellation(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_CHANGE")">@TextProvider.Get("CANTEEN_ACTION_REOPEN")</GridCommandButton>
+                                    }
+                                }
+                            </GridCommandColumn>
+                        </GridColumns>
+                    </TelerikGrid>
+                </Content>
+            </WizardStep>
+            <WizardStep Label="@TextProvider.Get("SHOW_SIGNED_REQUEST")" Icon="@("fa-regular fa-file-signature")" OnChange="OnStepChanged">
+                <Content>
+                    <div class="form-group application-detail-tab">
+                        <div class="document-container">
+                            @if (SubscriberDetail.FILE_FileInfo_ID != null)
+                            {
+
+
+                                var dbfile = FileProvider.GetFileInfo(SubscriberDetail.FILE_FileInfo_ID.Value);
+
+                                <div class="preview-container">
+                                    <div class="preview-url-container">
+                                        <PDFViewer FILE_FileInfoID="@dbfile.ID"></PDFViewer>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </Content>
+            </WizardStep>
+            <WizardStep Label="@TextProvider.Get("CANTEEN_USER_DOCUMENTS")" Icon="@("fa-regular fa-file")" OnChange="OnStepChanged">
+                <Content>
+                    <div class="form-group application-detail-tab">
+                        @if (SubscriberDetail != null && SubscriberDetail.AUTH_Users_ID != null)
+                        {
+                            <UserDokuments AUTH_Users_ID="@SubscriberDetail.AUTH_Users_ID.Value.ToString()"></UserDokuments>
+                        }
+                    </div>
+                </Content>
+            </WizardStep>
+            @if (SubscriberDetail.FILE_FileInfo_SpecialMenu_ID != null)
+            {
+                <WizardStep Label="@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_MEDICAL_ATTEST")" Icon="@("fa-regular fa-user-doctor")" OnChange="OnStepChanged">
+                    <Content>
+                        <div class="form-group application-detail-tab">
+                            <div class="document-container">
+                                @if (SubscriberDetail.FILE_FileInfo_SpecialMenu_ID != null)
+                                {
+                                    <div class="preview-container">
+                                        <div class="preview-url-container">
+                                            <PDFViewer FILE_FileInfoID="@SubscriberDetail.FILE_FileInfo_SpecialMenu_ID"></PDFViewer>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </Content>
+                </WizardStep>
+            }
+        </WizardSteps>
+        <WizardButtons>
+        </WizardButtons>
+        <WizardSettings>
+            <WizardStepperSettings Linear="false" />
+        </WizardSettings>
+    </TelerikWizard>
+</div>

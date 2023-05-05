@@ -1,0 +1,230 @@
+﻿@page "/Login/{ReturnUrl?}"
+
+
+@using ICWebApp.Application.Interface.Provider
+@using ICWebApp.Application.Settings
+@using ICWebApp.DataStore.MSSQL.Interfaces
+@using ICWebApp.DataStore.MSSQL.Interfaces.UnitOfWork
+@using ICWebApp.Domain.DBModels
+@using ICWebApp.Domain.Models
+@using Microsoft.AspNetCore.Components.Web
+@using System.Globalization
+@namespace ICWebApp.Pages.Authorization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, SPID.AspNetCore.Authentication
+
+@inject IUnitOfWork _unitOfWork;
+@inject ITEXTProvider TextProvider;
+
+@{
+    var prefixes = await _unitOfWork.Repository<AUTH_Municipality>().ToListAsync();
+    var result = new List<MunicipalityDomainSelectableItem>();
+    var Languages = await _unitOfWork.Repository<LANG_Languages>().ToListAsync();
+
+    if (Languages != null)
+    {
+        foreach (var l in Languages)
+        {
+            foreach (var d in prefixes)
+            {
+                var text = _unitOfWork.Repository<TEXT_SystemTexts>().FirstOrDefault(p => p.Code == d.Prefix_Text_SystemTexts_Code && p.LANG_LanguagesID == l.ID);
+
+                if (text != null)
+                {
+                    result.Add(new MunicipalityDomainSelectableItem()
+                    {
+                        Prefix = text.Text,
+                        AUTH_Municipality_ID = d.ID
+                    });
+                }
+            }
+        }
+    }
+
+    Guid MunicipalityID = Guid.Empty;
+    var CurrentMunicipality = result.Where(p => p.Prefix != null && Request.Host.Value.Contains(p.Prefix)).FirstOrDefault();
+
+    if (CurrentMunicipality != null && CurrentMunicipality.AUTH_Municipality_ID != null)
+    {
+        MunicipalityID = CurrentMunicipality.AUTH_Municipality_ID.Value;
+    }
+    else if (Request.Host.Value.Contains("localhost"))
+    {
+        MunicipalityID = ComunixSettings.TestMunicipalityID;
+    }
+
+    var _globalConf = await _unitOfWork.Repository<CONF_Enviroment>().FirstOrDefaultAsync();
+    var spidConf = await _unitOfWork.Repository<CONF_Spid>().FirstOrDefaultAsync(p => p.AUTH_Municipality_ID == MunicipalityID);
+    var spidMaintenance = await _unitOfWork.Repository<CONF_Spid_Maintenance>().FirstOrDefaultAsync(e => e.Enabled && DateTime.Now >= e.DisplayFrom && DateTime.Now <= e.DisplayTo);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="_content/Telerik.UI.for.Blazor/css/kendo-theme-default/all.css" />
+    <link href="css/spid.css" rel="stylesheet" />
+    <link href="css/colors.css" rel="stylesheet" />
+    <link href="css/responsive/site-800px.css" rel="stylesheet" />
+    <link href="css/telerik/custom.css" rel="stylesheet" />
+    <link href="ICWebApp.styles.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="css/bootstrap-italia/css/bootstrap-italia.min.css" rel="stylesheet" />
+    <link href="css/agid/custom.css" rel="stylesheet" />
+
+    <script nonce="comunix123" src="_content/Telerik.UI.for.Blazor/js/telerik-blazor.js" defer></script>
+    <script nonce="comunix123" src="/js/localizationHelper.js"></script>
+    <script nonce="comunix123" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script nonce="comunix123" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script nonce="comunix123" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script nonce="comunix123" src="/js/spid/spid.js"></script>
+    <script nonce="comunix123" src="/js/Services/spidHelper.js"></script>
+    <script nonce="comunix123" src="/js/Mobile/mobileHelper.js"></script>
+    <script nonce="comunix123" src="/js/Services/enviromentHelper.js"></script>
+    <script nonce="comunix123" src="/js/bootstrap-italia/bootstrap-italia.bundle.min.js"></script>
+
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+
+    <title>Comunix</title>
+</head>
+
+<body>
+
+    <partial name="../App/Partial/_ConnectionLost.cshtml" />
+
+    <component type="typeof(ICWebApp.Components.Layout.Frontend.TopRow)" render-mode="ServerPrerendered" param-ShowSearchButton="@false"/>
+    <main id="topelement">        
+        <div class="container">
+            <div class="row justify-content-center pb-3 pt-5">
+                <div class="col-12 col-lg-10">
+                    <div class="col-lg-8">
+                        <component type="typeof(ICWebApp.Components.Layout.Frontend.Title)" param-TitleValue="@(RouteData.Values["TitleValue"] = "LOGIN_OPTIONS")" render-mode="ServerPrerendered" />
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row py-5 login-page-efre-container">
+                <div class="col-12">
+                    <component type="typeof(ICWebApp.Components.Authorization.FesrEfreComponent)" render-mode="ServerPrerendered" />
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-12">
+                    <div class="login-container">
+                        <div class="login-container-row">
+                            <div class="login-element custom-login-element">
+                                <component type="typeof(ICWebApp.Components.Authorization.LoginComponent)" param-RedirectUrl="@RouteData.Values["ReturnUrl"]" render-mode="ServerPrerendered" />
+                            </div>
+                            <div class="login-element registration-login-element">
+                                <component type="typeof(ICWebApp.Components.Authorization.RegistrationDetailComponent)" render-mode="ServerPrerendered" />
+                            </div>
+                        </div>
+                        <div style="display: none;">
+                            @RouteData.Values["ErrorCode"]
+                            @RouteData.Values["ReturnUrl"]
+                        </div>
+                        <div class="login-container-row">
+                            <div class="login-element spid-login-element">
+                                <h4 class="custom-color-primary">
+                                    SPID
+                                </h4>
+                                <div class="small-element-separator"></div>
+                                @if (CultureInfo.CurrentCulture.Name.Contains("it"))
+                                {
+                                    <div class="font-normal">
+                                        SPID, il Sistema Pubblico di Identità Digitale, è la soluzione che ti permette di accedere a tutti i servizi online locali e nazionali con un'unica Identità Digitale (username e password) utilizzabile da computer, tablet e smartphone.
+                                    </div>
+                                    <div class="small-element-separator"></div>
+                                    <div>
+                                        <a class="login-link font-small" href="https://www.spid.gov.it/" target="_blank">Ulteriori informazioni</a>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div>
+                                        <a class="login-link font-small" href="https://www.spid.gov.it/cos-e-spid/come-attivare-spid/" target="_blank">Richiesta SPID</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="font-normal">
+                                        SPID, das öffentliche System der digitalen Identität, ermöglicht den Zugriff auf alle lokalen und nationalen Online-Dienste mittels einer einzigen digitalen Identität (Benutzername und Passwort), nutzbar mit PC, Tablet und Smartphone.
+                                    </div>
+                                    <div class="small-element-separator"></div>
+                                    <div>
+                                        <a class="login-link font-small custom-color-primary" href="https://www.spid.gov.it/" target="_blank">Mehr Informationen</a>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div>
+                                        <a class="login-link font-small custom-color-primary" href="https://www.spid.gov.it/cos-e-spid/come-attivare-spid/" target="_blank">SPID anfordern</a>
+                                    </div>
+                                }
+                                @if (_globalConf != null && _globalConf.EnabledSpid == true && spidConf != null && spidConf.Enabled == true)
+                                {
+                                    <div class="element-separator"></div>
+                                    <component type="typeof(ICWebApp.Components.Authorization.Spid.SpidButton)" render-mode="ServerPrerendered" />
+                                    @if (spidMaintenance != null)
+                                    {
+                                        <div class="small-element-separator"></div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div style="color: red">
+                                            @if (CultureInfo.CurrentCulture.Name.Contains("it"))
+                                            {
+                                                @if (spidMaintenance.StartDate.Date == spidMaintenance.EndDate.Date)
+                                                {
+                                                    <p>In data @spidMaintenance.StartDate.ToString("dd/MM/yyyy") dalle ore @spidMaintenance.StartDate.ToString("HH:mm") alle @spidMaintenance.EndDate.ToString("HH:mm") vengono eseguite lavori di manutenzione per il login con SPID. Il servizio non sará garantito nel periodo indicato.</p>
+                                                }
+                                                else
+                                                {
+                                                    <p>Dal @spidMaintenance.StartDate.ToString("dd/MM/yyyy") alle ore @spidMaintenance.StartDate.ToString("HH:mm") al @spidMaintenance.EndDate.ToString("dd/MM/yyyy") alle ore @spidMaintenance.EndDate.ToString("HH:mm") vengono eseguite lavori di manutenzione per il login con SPID. Il servizio non sará garantito nel periodo indicato.</p>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @if (spidMaintenance.StartDate.Date == spidMaintenance.EndDate.Date)
+                                                {
+                                                    <p>Am @spidMaintenance.StartDate.ToString("dd.MM.yyyy") von @spidMaintenance.StartDate.ToString("HH:mm") bis @spidMaintenance.EndDate.ToString("HH:mm") Uhr werden Wartungsarbeiten am SPID-Login durchgeführt. Der Dienst kann in dieser Zeit nicht garantiert werden. </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>Vom @spidMaintenance.StartDate.ToString("dd.MM.yyyy") um @spidMaintenance.StartDate.ToString("HH:mm") Uhr bis zum @spidMaintenance.EndDate.ToString("dd/MM/yyyy") um @spidMaintenance.EndDate.ToString("HH:mm") Uhr werden Wartungsarbeiten am SPID-Login durchgeführt. Der Dienst kann in dieser Zeit nicht garantiert werden. </p>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="small-element-separator"></div>
+                                    <div style="color: red;">
+                                        @TextProvider.Get("SPID_NOT_AVAIABLE")
+                                    </div>
+                                }
+                                <div class="element-separator"></div>
+                                <div class="page-footer-services">
+                                    <div class="page-footer-agde">
+                                        <img src="/Images/Spid/agid-logo-lb.svg" />
+                                    </div>
+                                    <div class="page-footer-spid">
+                                        <img src="/Images/Spid/spid-logo-b-lb.svg" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="login-element-empty">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </main>
+    <component type="typeof(ICWebApp.Components.Layout.Frontend.Footer)" render-mode="ServerPrerendered" />
+    <script nonce="comunix123" src="_framework/blazor.server.js"></script>
+</body>
+</html>

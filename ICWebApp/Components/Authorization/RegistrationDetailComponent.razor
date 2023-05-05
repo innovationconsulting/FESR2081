@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="login-container">
+    <div class="login-title custom-color-primary">
+        <h4>@TextProvider.Get("REGISTRATION_DETAIL_TITLE")</h4>
+    </div>
+    @if (EnviromentService.IsMobile)
+    {
+        <div class="small-element-separator"></div>
+    }
+    else
+    {
+        <div class="element-separator"></div>
+    }
+    <div class="login-section">
+        <div class="registration-container">
+            <div class="font-normal registration-detail">
+                @{
+                    var markupText = (MarkupString)TextProvider.Get("REGISTER_DETAIL_DESCRIPTION");
+                }
+                
+                @markupText
+            </div>
+            <div class="extra-small-element-separator"></div>
+            @if (EnviromentConf != null && (EnviromentConf.EnabledRegistration == true || NavManager.BaseUri.Contains("localhost")))
+            {
+                <div class="button-container">
+                    <button class="btn btn-primary" type="button" @onclick="HandleRegisterPassword">@(TextProvider.Get("REGISTER_DETAIL_BUTTON"))</button>
+                </div>
+            }
+            else if(EnviromentConf != null)
+            {
+                <div style="color: red;">
+                    @TextProvider.Get("REGISTRATION_NOT_ENABLED")
+                </div>
+            }
+        </div>
+    </div>
+</div>

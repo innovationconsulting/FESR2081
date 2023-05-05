@@ -1,0 +1,16 @@
+.room-container[b-heegstcj80] {
+    border: 0px solid #dfdfdf;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+}
+
+.textarea-wrapper > .k-textarea > textarea[b-heegstcj80] {
+    min-height: 550px;
+}
+
+.k-textarea[b-heegstcj80] {
+
+    min-height: 100px;
+}

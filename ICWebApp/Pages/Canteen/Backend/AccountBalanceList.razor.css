@@ -1,0 +1,32 @@
+﻿h5, .h5 {
+    color: #0f7173;
+}
+.balance-warning {
+    color: #d9a30f !important;
+}
+.balance-danger {
+    color: red !important;
+}
+.filter-authorities {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.authority-tag {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+
+.button-group{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}

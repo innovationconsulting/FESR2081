@@ -1,0 +1,19 @@
+.signing-preview-container[b-0yyxj233hc] {
+    height: 600px;
+    margin-bottom: 20px;
+}
+@media(max-width: 600px){
+    .signing-preview-container[b-0yyxj233hc] {
+        max-height: 600px;
+    }
+}
+.form-group-container[b-0yyxj233hc]{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+.segment-button-container[b-0yyxj233hc]{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}

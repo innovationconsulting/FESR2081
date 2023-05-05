@@ -1,0 +1,37 @@
+﻿<TelerikWindow @bind-Visible="@EnviromentService.ShowDownloadPreviewWindow" Centered="true" Modal="true" Draggable="false" Class="pdf-preview-window">
+    <WindowTitle>
+        @TextProvider.Get("TELERIK_PREVIEW_TITLE")
+    </WindowTitle>
+    <WindowContent>
+        <div class="telerik-report-container">       
+            <div class="telerik-report-viewer">
+                <div style="height: 82.5vh; width: 100%;">
+                    @{
+                        const int x0 = 350;
+                        const double y0 = .50;
+                        const int x1 = 1000;
+                        const double y1 = 1.50;
+                        var x = _screenWidth;
+                        var y = y0 + (x - x0) * ((y1 - y0) / (x1 - x0));
+                        y = double.Clamp(y, 0.5, 1.5);
+                        var zoom = (decimal)y;
+                    }
+                    <TelerikPdfViewer Data="EnviromentService.PreviewFile" Width="100%" Height="100%" Zoom="@zoom">
+                        <PdfViewerToolBar>
+                            <PdfViewerToolBarPagerTool/>
+                            <PdfViewerToolBarSpacer/>
+                            <PdfViewerToolBarZoomTool/>
+                            <PdfViewerToolBarSelectionTool/>
+                            <PdfViewerToolBarSearchTool/>
+                            <PdfViewerToolBarDownloadTool/>
+                            <PdfViewerToolBarPrintTool/>
+                        </PdfViewerToolBar>
+                    </TelerikPdfViewer>
+                </div>
+            </div>
+        </div>
+    </WindowContent>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="HidePreview" />
+    </WindowActions>
+</TelerikWindow>

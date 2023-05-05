@@ -1,0 +1,61 @@
+﻿@page "/User/Management"
+
+@layout MainLayout
+<TelerikWindow @bind-Visible="LangSelectWindowVisible" Modal="true">
+    <WindowTitle>@TextProvider.Get("FORCE_PASSWORD_RESET_SELECT_EMAIL_LANGUAGE")</WindowTitle>
+    <WindowActions></WindowActions>
+    <WindowContent>
+        <SfDropDownList DataSource="@_languages" @bind-Value="selectedLang" TValue="string" TItem="LanguageSelection">
+            <DropDownListFieldSettings Text="Name" Value="Id"></DropDownListFieldSettings>
+        </SfDropDownList>
+        <div class="small-element-separator"></div>
+        <TelerikButtonGroup>
+            <TelerikButton Class="btn btn-secondary" ButtonType="ButtonType.Button" OnClick="CancelSending">@TextProvider.GetOrCreate("FORCE_PASSWORD_RESET_EMAIL_CANCEL_BUTTON")</TelerikButton>
+            <TelerikButton Class="btn btn-primary" ButtonType="ButtonType.Button" OnClick="ForcePasswordResetAndSendMail">@TextProvider.GetOrCreate("FORCE_PASSWORD_RESET_EMAIL_SEND_BUTTON")</TelerikButton>
+        </TelerikButtonGroup>
+    </WindowContent>
+</TelerikWindow>
+<div class="segment-container custom-background-default">
+    <div class="element-separator"></div>
+    <div class="segment-separator custom-border-primary"></div>
+    <div class="small-element-separator"></div>
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                      Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikGrid Data="@Data" Pageable="false" Sortable="false" Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@Add" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                <GridSearchBox></GridSearchBox>
+            </GridToolBarTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(AUTH_Users.Fullname)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_FULLNAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(AUTH_Users.Email)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_EMAIL")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(AUTH_Users.LastLoginTimeStamp)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_LASTLOGIN")" DisplayFormat="{0:dd.MM.yyyy}" Width="200px"></GridColumn>
+                <GridColumn Field="@nameof(AUTH_Users.LastForceResetMailSent)" Title="@TextProvider.GetOrCreate("BACKEND_USER_MANAGEMENT_LAST_RESET_NAIL_SENT")" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Width="220px"></GridColumn>
+                <GridColumn Field="@nameof(FORM_Definition.Enabled)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_DEAKTIVATED")" Width="180px">
+                    <Template>
+                        @{
+                            AUTH_Users item = context as AUTH_Users;
+
+                            <TelerikSwitch @bind-Value="@item.LockoutEnabled" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        AUTH_Users item = context as AUTH_Users;
+
+                        if (item != null)
+                        {
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => Edit(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                            <GridCommandButton Command="MyCustomCommand" Class="btn btn-secondary" OnClick="@(() => OpenWindow(item))" Icon="SvgIcon.EnvelopLink" title="@TextProvider.Get("FORCE_RESET_PW_AND_SEND_MAIL")"></GridCommandButton>
+                            <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => Remove(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>

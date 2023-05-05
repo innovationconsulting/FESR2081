@@ -1,0 +1,35 @@
+﻿
+.header-desc, .row-desc, .footer-desc {
+    width: 99%;
+}
+
+.header-value, .row-value, .footer-value {
+    min-width: 150px;
+}
+
+.heaver-actions, .row-actions, .footer-actions {
+    min-width: 80px;
+}
+
+.footer-value {
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+
+.footer-desc {
+    text-align: right !important;
+}
+
+.row-desc {
+    padding-right: 5px;
+    padding-top: 5px;
+}
+
+.row-value {
+    padding-right: 5px;
+    padding-top: 5px;
+}
+
+.row-actions {
+    padding-top: 5px;
+}

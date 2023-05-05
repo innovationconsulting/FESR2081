@@ -1,0 +1,23 @@
+﻿@if ((Visible && BusyIndicatorService.IsBusy == false) || (Visible && IgnoreGlobalLoader))
+{
+    <div class="loader-container @Class">
+        @if (MyCivisService.Enabled != true)
+        {
+            <div class="logo-icon">
+                <img src="/Images/BusyIndicator/Spinner.gif">
+            </div>
+        }
+        else
+        {
+            <div class="logo-icon">
+                <i class="fa fa-spin fa-spinner"></i>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Text))
+        {
+            <div class="logo-text">
+                @Text
+            </div>
+        }
+    </div>
+}

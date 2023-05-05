@@ -1,0 +1,314 @@
+﻿@page "/Room/User/{BookingID}"
+@layout FrontendLayout
+
+@if (BookingGroup != null)
+{
+    <AuthorizeView>
+        <Authorized>
+            <div class="container">
+                <div class="row mt-lg-80 mt-3 mb-4">
+                    <div class="col-lg-3 mb-4 border-col hide-max-576">
+                        <AnchorList></AnchorList>
+                    </div>
+                    <div class="col-lg-8 offset-lg-1">
+                        <div class="user-application-container it-page-sections-container">
+                            <CustomLoader Visible="@(IsDataBusy)"
+                                      Text="@null" Class="initial-data-loader">
+                            </CustomLoader>
+
+                            <Anchor Title="@(TextProvider.Get("FRONTEND_MY_BOOKINGS_TITLE"))" ID="@(TextProvider.Get("FRONTEND_MY_BOOKINGS_TITLE"))" Order="1">
+
+                                <div class="booking-container">
+                                    @foreach (var building in Bookings.Where(p => !string.IsNullOrEmpty(p.BuildingName)).Select(p => p.BuildingName).Distinct().OrderBy(p => p).ToList())
+                                    {
+                                        <div class="font-title">
+                                            @building
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="booking-building-subcontainer">
+                                            @foreach (var room in Bookings.Where(p => p.BuildingName == building).Select(p => p.Name).Distinct().OrderBy(p => p).ToList())
+                                            {
+                                                <div class="booking-room-title">
+                                                    @room
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="booking-room-subcontainer">
+                                                    @foreach (var pos in Bookings.Where(p => p.BuildingName == building && p.Name == room).OrderBy(p => p.Description).ToList())
+                                                    {
+                                                        <div class="booked-item">
+                                                            @pos.Description
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                            }
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                    }
+                                    @foreach (var building in Bookings.Where(p => string.IsNullOrEmpty(p.BuildingName)).Select(p => p.Name).Distinct().OrderBy(p => p).ToList())
+                                    {
+                                        <div class="font-title">
+                                            @building
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="booking-building-subcontainer">
+                                            @foreach (var pos in Bookings.Where(p => p.BuildingName == null && p.Name == building).OrderBy(p => p.Description).ToList())
+                                            {
+                                                <div class="booked-item">
+                                                    @pos.Description
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                            }
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                    }
+                                </div>
+                            </Anchor>
+                            <Anchor Title="@(TextProvider.Get("FRONTEND_APPLICATION_STATUS"))" ID="@(TextProvider.Get("FRONTEND_APPLICATION_STATUS"))" Order="2">
+                                @if (CurrentStatusLogList != null && CurrentStatusLogList.Count() > 0)
+                                {
+                                    <div class="calendar-vertical mb-3">
+                                        @foreach (var e in CurrentStatusLogList.OrderByDescending(p => p.ChangeDate))
+                                        {
+                                            <div class="calendar-date">
+                                                <div class="calendar-date-day">
+                                                    <h3 class="calendar-date-day-content">
+                                                        @if (e.ChangeDate != null)
+                                                        {
+                                                            <small class="calendar-date-day__year">@e.ChangeDate.Value.ToString("yyyy")</small>
+                                                            <span class="title-xxlarge-regular d-flex justify-content-center">@e.ChangeDate.Value.ToString("dd")</span>
+                                                            <small class="calendar-date-day__month">@e.ChangeDate.Value.ToString("MMM")</small>
+                                                        }
+                                                    </h3>
+                                                </div>
+                                                <div class="calendar-date-description rounded">
+                                                    <div class="calendar-date-description-content">
+                                                        <div class="calendar-status-container">
+                                                            <i class="@e.IconCSS"></i>
+                                                            <div class="calendar-status-container-right">
+                                                                @if (e.ChangeDate != null)
+                                                                {
+                                                                    <div class="font-small">@(e.ChangeDate.Value.ToString("HH:mm"))</div>
+                                                                }
+                                                                <h4 class="h5 mb-0 ">@e.Status</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (BookingGroup.SubmitAt != null && BookingGroup.CreationDate != null)
+                                        {
+                                            var CommittedStatus = StatusList.FirstOrDefault(p => p.ID == FORMStatus.Comitted);
+
+                                            @if (CommittedStatus != null)
+                                            {
+                                                <div class="calendar-date">
+                                                    <div class="calendar-date-day">
+                                                        <h3 class="calendar-date-day-content">
+                                                            @if (BookingGroup.SubmitAt != null)
+                                                            {
+                                                                <small class="calendar-date-day__year">@BookingGroup.SubmitAt.Value.ToString("yyyy")</small>
+                                                                <span class="title-xxlarge-regular d-flex justify-content-center">@BookingGroup.SubmitAt.Value.ToString("dd")</span>
+                                                                <small class="calendar-date-day__month">@BookingGroup.SubmitAt.Value.ToString("MMM")</small>
+                                                            }
+                                                        </h3>
+                                                    </div>
+                                                    <div class="calendar-date-description rounded">
+                                                        <div class="calendar-date-description-content">
+                                                            @if (!string.IsNullOrEmpty(CommittedStatus.StatusName))
+                                                            {
+                                                                <div class="calendar-status-container">
+                                                                    <i class="@CommittedStatus.IconCSS"></i>
+                                                                    <div class="calendar-status-container-right">
+                                                                        @if (BookingGroup.SubmitAt != null)
+                                                                        {
+                                                                            <div class="font-small">@(BookingGroup.SubmitAt.Value.ToString("HH:mm"))</div>
+                                                                        }
+                                                                        <h4 class="h5 mb-0 ">@CommittedStatus.StatusName</h4>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-date">
+                                                    <div class="calendar-date-day">
+                                                        <h3 class="calendar-date-day-content">
+                                                            @if (BookingGroup.CreationDate != null)
+                                                            {
+                                                                <small class="calendar-date-day__year">@BookingGroup.CreationDate.Value.ToString("yyyy")</small>
+                                                                <span class="title-xxlarge-regular d-flex justify-content-center">@BookingGroup.CreationDate.Value.ToString("dd")</span>
+                                                                <small class="calendar-date-day__month">@BookingGroup.CreationDate.Value.ToString("MMM")</small>
+                                                            }
+                                                        </h3>
+                                                    </div>
+                                                    <div class="calendar-date-description rounded">
+                                                        <div class="calendar-date-description-content">
+                                                            <div class="calendar-status-container">
+                                                                <i class="fa-regular fa-file-plus"></i>
+                                                                <div class="calendar-status-container-right">
+                                                                    @if (BookingGroup.CreationDate != null)
+                                                                    {
+                                                                        <div class="font-small">@(BookingGroup.CreationDate.Value.ToString("HH:mm"))</div>
+                                                                    }
+                                                                    <h4 class="h5 mb-0 ">@TextProvider.Get("FORM_USER_DETAIL_CREATED_STATUS")</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </Anchor>
+
+                            <Anchor Title="@(TextProvider.Get("FRONTEND_APPLICATION_PAYMENTS"))" ID="@(TextProvider.Get("FRONTEND_APPLICATION_PAYMENTS"))" Order="3">
+                                <div class="payment-container font-normal">
+                                    <UserPaymentList FilterTransactionList="@CurrenTransactionList"></UserPaymentList>
+                                </div>
+                            </Anchor>
+                            <Anchor Title="@(TextProvider.Get("FRONTEND_APPLICATION_APP"))" ID="@(TextProvider.Get("FRONTEND_APPLICATION_APP"))" IsCard="true" Order="4">
+                                @if (BookingGroup != null)
+                                {
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_ANAGRAFIC_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                                        <label class="application-value">@BookingGroup.FirstName @BookingGroup.LastName</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                                        <label class="application-value">@BookingGroup.FiscalNumber</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_GENDER")</label>
+                                        <label class="application-value">
+                                            @if (BookingGroup.Gender == "M")
+                                            {
+                                                @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                                            }
+                                            else if (BookingGroup.Gender == "F")
+                                            {
+                                                @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                                            }
+                                        </label>
+                                    </div>
+                                    <div class="element-separator"></div>
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_BIRTH_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_COUNTY_OF_BIRTH")</label>
+                                        <label class="application-value">@BookingGroup.CountyOfBirth</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_PLACE_OF_BIRTH")</label>
+                                        <label class="application-value">@BookingGroup.PlaceOfBirth</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_DATE_OF_BIRTH")</label>
+                                        <label class="application-value">
+                                            @if (BookingGroup.DateOfBirth != null)
+                                            {
+                                                @BookingGroup.DateOfBirth.Value.ToString("dd.MM.yyyy")
+                                            }
+                                        </label>
+                                    </div>
+                                    <div class="element-separator"></div>
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_DOMICILE_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                                        <label class="application-value">@BookingGroup.DomicileStreetAddress</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                                        <label class="application-value">@BookingGroup.DomicilePostalCode</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                                        <label class="application-value">@BookingGroup.DomicileMunicipality</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                                        <label class="application-value">@BookingGroup.DomicileProvince</label>
+                                    </div>
+                                    <div class="element-separator"></div>
+                                    <h4>
+                                        @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                                    </h4>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                                        <label class="application-value">@BookingGroup.Email</label>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="application-row">
+                                        <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                                        <label class="application-value">
+                                            @if (!string.IsNullOrEmpty(BookingGroup.MobilePhone))
+                                            {
+                                                var IntPhoneNumber = long.Parse(BookingGroup.MobilePhone.Replace("+", ""));
+
+                                                @IntPhoneNumber.ToString("+## ### ### ####")
+                                            }
+                                        </label>
+                                    </div>
+                                    @if (BookingGroup.FILE_FileInfo_ID != null)
+                                    {
+                                        <div class="element-separator"></div>
+                                        <h4>
+                                            @TextProvider.Get("FRONTEND_APPLICATION_RESSOURCES_REQUEST")
+                                        </h4>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="ressource-container">
+                                            @if (BookingGroup.FILE_FileInfo_ID != null)
+                                            {
+                                                var dbfile = FileProvider.GetFileInfo(BookingGroup.FILE_FileInfo_ID.Value);
+
+                                                @if (dbfile != null)
+                                                {
+                                                    <div class="application-row">
+                                                        <div class="document-detail-download" @onclick="@(() => DownloadRessource(BookingGroup.FILE_FileInfo_ID.Value, dbfile.FileName))">
+                                                            <div class="document-detail-download-icon">
+                                                                <svg class="icon icon-primary icon-sm me-1" aria-hidden="true">
+                                                                    <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                                                </svg>
+                                                            </div>
+                                                            <div class="document-detail-download-description font-normal">
+                                                                @dbfile.FileName (@(dbfile.Size / 1024) kb)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </Anchor>
+
+                            <button class="btn btn-secondary" @onclick="ReturnToPreviousPage">@TextProvider.Get("BUTTON_BACK")</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+        </NotAuthorized>
+    </AuthorizeView>
+}

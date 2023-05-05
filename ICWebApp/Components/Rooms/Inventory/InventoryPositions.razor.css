@@ -1,0 +1,5 @@
+﻿.table-toolbar
+{
+    display: flex;
+    justify-content: space-evenly;
+}

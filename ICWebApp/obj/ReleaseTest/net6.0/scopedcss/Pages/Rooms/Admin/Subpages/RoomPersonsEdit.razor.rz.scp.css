@@ -1,0 +1,28 @@
+.search-box[b-qsegwpakoh]
+{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.room-person-search-box[b-qsegwpakoh]{
+    width: 38px !important;
+}
+
+.person-search-result-container[b-qsegwpakoh]{
+    height: 400px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.search-item[b-qsegwpakoh] {
+    border: 1px solid #d9d9d9;
+    padding: 20px;
+    cursor: pointer;
+}
+.search-item:hover[b-qsegwpakoh] {
+    border-color: #0F7173;
+    color: #0F7173;
+}

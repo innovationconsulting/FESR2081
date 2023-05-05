@@ -1,0 +1,84 @@
+﻿.layout-element
+{
+    border: 1px solid #d9d9d9;
+    margin-bottom: 8px;
+    border-radius: 3px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    flex: 1;
+    height: 30px;
+    line-height: 18px;
+    overflow: hidden;
+}
+    .layout-element:hover {
+        background-color: #0F7173;
+        color: white;
+    }
+.layout-sub-container, .layout-sub-column-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+.layout-sub-container-data, .layout-sub-column-container-data {
+    flex: 1;
+}
+.layout-sub-container-icon, .layout-sub-column-container-icon {
+    line-height: 24px;
+    padding-left: 5px;
+}
+.layout-element-name {
+    overflow: hidden;
+}
+.expand-button {
+    cursor: pointer;
+    color: #808080;
+}
+.expand-button:hover{
+    color: #25CCDB;
+}
+
+.layout-element-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.layout-sorter{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.layout-sorter-button {
+    width: 24px;
+    height: 14px;
+    line-height: 8px;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    text-align: center;    
+    color: #808080;
+    cursor: pointer;
+}
+    .layout-sorter-button:hover {
+        background-color: #0F7173;
+        border-color: #0F7173;
+        color: white;
+    }
+    .layout-sorter-button i {
+        font-size: 12px !important;
+        margin: auto;
+    }
+.layout-sorter-placeholder {
+    width: 24px;
+    height: 14px;
+    border: 1px solid white;
+    border-radius: 3px;
+}
+
+.layer-dropable {
+    border-top: 30px solid #F6F6F6 !important;
+    padding-top: 5px !important;
+}

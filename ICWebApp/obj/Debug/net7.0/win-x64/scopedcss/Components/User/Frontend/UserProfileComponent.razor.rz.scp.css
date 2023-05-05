@@ -1,0 +1,18 @@
+.btn[b-mtfd80pq9k] {
+    padding-right: 0px !important;
+}
+.nav-item a[b-mtfd80pq9k]{
+    width: auto !important;
+}
+.user-text[b-mtfd80pq9k] {
+    color: #0C5152 !important;
+}
+.user-text:hover[b-mtfd80pq9k] {
+    color: #25CCDB !important;
+    text-decoration: underline;
+}
+.user-item[b-mtfd80pq9k]{
+    display: flex;
+    justify-content: flex-start;
+    gap: 3px;
+}

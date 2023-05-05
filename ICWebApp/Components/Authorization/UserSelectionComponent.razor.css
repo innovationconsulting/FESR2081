@@ -1,0 +1,16 @@
+﻿.user-selection-content
+{
+    display: flex;
+    gap: 10px;
+}
+.user-selection-dropdown{
+    width: 100%;
+}
+
+.user-selection-actions{
+
+}
+.user-add-button{
+    width: 42px !important;
+    height: 38px;
+}

@@ -1,0 +1,150 @@
+﻿@if (Item != null)
+{
+    <div class="layout-element-container" @ondragstart="@(() => DragStart(Item))" @ondragend="@(() => DragEnd(Item))" draggable="true"
+         ondragenter="Layer_setDraggableClass(this)" ondragleave="Layer_removeDraggableClass(this)" ondragover="event.preventDefault();"
+         @ondrop="@(() => Drop(new LayerDropItem() { SortOrder = Item.SortOrder, ColumnPos = Item.ColumnPos, ParentID=Item.FORM_Definition_Field_Parent_ID }))" @ondrop:stopPropagation="true">
+        <div class="layout-element" id="layout_@(Item.ID)" onclick="LayerElementJumpToView('@(Item.ID)')" onmouseover="LayerElementHover('@(Item.ID)')" onmouseout="LayerElementStopHover('@(Item.ID)')">
+            <div class="layout-element-name font-small">
+                @{
+                    string value = Item.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name;
+                }
+                @if (!string.IsNullOrEmpty(value))
+                {
+                    if (value.Length > 30)
+                    {
+                        value = value.Substring(0, 30);
+                    }
+                }
+                else
+                {
+                    value = Item.DatabaseName;
+                }
+
+                @value
+            </div>
+            <div class="element-toolbar">
+                @if (Data != null && Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID).Count() > 0)
+                {
+                    <div class="expand-button" onclick="event.stopPropagation(); $('#container_@(Item.ID)').toggle(100); $('#expand-button_down_@(Item.ID)').toggle(0); $('#expand-button_up_@(Item.ID)').toggle(0);">
+                        <div id="expand-button_up_@Item.ID">
+                            <i class="fa-sharp fa-solid fa-chevron-up"></i>
+                        </div>
+                        <div id="expand-button_down_@Item.ID" style="display: none;">
+                            <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="element-external-toolbar">
+            <div class="layout-sorter">
+                @if (Item.SortOrder != MinSort)
+                {
+                    <div class="layout-sorter-button sorter-up" @onclick="@(() => MoveUp(Item))" tabindex="-1">
+                        <i class="fa-sharp fa-solid fa-chevron-up"></i>
+                    </div>
+                }
+                else
+                {
+                    <div class="layout-sorter-placeholder">
+                    </div>
+                }
+                @if (Item.SortOrder != MaxSort)
+                {
+                    <div class="layout-sorter-button sorter-down" @onclick="@(() => MoveDown(Item))" tabindex="-1">
+                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                    </div>
+                }
+                else
+                {
+                    <div class="layout-sorter-placeholder">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    var context = "#layout_" + Item.ID;
+
+    <SfContextMenu Target="@context" TValue="MenuItem">
+        <MenuItems>
+            <MenuItem Text="@value" Disabled="true"></MenuItem>
+            <MenuItem Separator="true"></MenuItem>
+            <MenuItem Id="edit" Text="@FormBuilderHelper.Edit" IconCss="fa-regular fa-pen"></MenuItem>
+            <MenuItem Id="delete" Text="@FormBuilderHelper.Delete" IconCss="fa-regular fa-trash-can"></MenuItem>
+        </MenuItems>
+        <MenuEvents TValue="MenuItem" ItemSelected="SelectedHandler"></MenuEvents>
+    </SfContextMenu>
+    @if (Data != null && Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID && p.ToRemove == false).Count() > 0)
+    {
+        <div class="layout-sub-container" id="container_@(Item.ID)">
+            <div class="layout-sub-container-icon">
+                <i class="fa-regular fa-arrow-turn-down-right"></i>
+            </div>
+            <div class="layout-sub-container-data">
+                @foreach (var col in Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID && p.ToRemove == false).Select(p => p.ColumnPos).Distinct().OrderBy(p => p.Value).ToList())
+                {
+                    <div class="layout-element-container">
+                        <div class="layout-element" id="layout_@(Item.ID)_@(col)" onclick="LayerElementJumpToView('@(Item.ID)_@(col)')" onmouseover="LayerElementHover('@(Item.ID)_@(col)')" onmouseout="LayerElementStopHover('@(Item.ID)_@(col)')">
+                            <div class="layout-element-name font-small">
+                                @FormBuilderHelper.LayoutElementColumn @(col + 1)
+                            </div>
+                            <div class="element-toolbar">
+                                @if (Data != null && Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID && p.ToRemove == false).Count() > 0)
+                                {
+                                <div class="expand-button" onclick="event.stopPropagation(); $('#subcontainer_@(Item.ID)_@(col)').toggle(100); $('#expand-button_down_@(Item.ID)_@(col)').toggle(0); $('#expand-button_up_@(Item.ID)_@(col)').toggle(0);">
+                                        <div id="expand-button_up_@(Item.ID)_@(col)">
+                                            <i class="fa-sharp fa-solid fa-chevron-up"></i>
+                                        </div>
+                                        <div id="expand-button_down_@(Item.ID)_@(col)" style="display: none;">
+                                            <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="element-external-toolbar">
+                            <div class="layout-sorter">
+                                <div class="layout-sorter-placeholder">
+                                </div>
+                                <div class="layout-sorter-placeholder">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    var subcontext = "#layout_" + Item.ID + "_" + col;
+    
+                    <SfContextMenu Target="@subcontext" TValue="MenuItem">
+                        <MenuItems>
+                            <MenuItem Id="edit" Disabled="true" Text="@FormBuilderHelper.Edit" IconCss="fa-regular fa-pen"></MenuItem>
+                            <MenuItem Id="delete" Disabled="true" Text="@FormBuilderHelper.Delete" IconCss="fa-regular fa-trash-can"></MenuItem>
+                        </MenuItems>
+                    </SfContextMenu>
+
+                    <div class="layout-sub-column-container" id="subcontainer_@(Item.ID)_@(col)">
+                        <div class="layout-sub-column-container-icon">
+                            <i class="fa-regular fa-arrow-turn-down-right"></i>
+                        </div>
+                        <div class="layout-sub-column-container-data">
+                            @foreach (var d in Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID && p.ColumnPos == col && p.ToRemove == false).OrderBy(p => p.SortOrder).ToList())
+                            {
+                                long maxPos = 0;
+                                long minPos = 0;
+
+                                @if (Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID && p.ColumnPos == col && p.ToRemove == false).Select(p => p.SortOrder).Max() != null)
+                                    maxPos = Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID && p.ColumnPos == col && p.ToRemove == false).Select(p => p.SortOrder).Max().Value;
+
+                                @if (Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID && p.ColumnPos == col && p.ToRemove == false).Select(p => p.SortOrder).Min() != null)
+                                    minPos = Data.Where(p => p.FORM_Definition_Field_Parent_ID == Item.ID && p.ColumnPos == col && p.ToRemove == false).Select(p => p.SortOrder).Min().Value;
+
+                                <LayerElement Item="d" Data="@Data.ToList()" MaxSort="maxPos" MinSort="minPos" OnMoveUp="MoveUp" OnMoveDown="MoveDown" OnEdit="Edit" 
+                                              OnDelete="Delete" OnDragEnd="DragEnd" OnDragStart="DragStart" OnDrop="Drop"></LayerElement>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}

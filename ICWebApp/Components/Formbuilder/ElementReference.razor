@@ -1,0 +1,209 @@
+﻿<div class="field-container">
+    <div class="list-container">
+        @if (Model != null && (Model.FORM_Definition_Fields_Type_ID == FORMElements.ColumnContainer || Model.FORM_Definition_Fields_Type_ID == FORMElements.Difference))
+        {
+            <table>
+            <tr class="list-header">
+                    @if (Model != null && Model.FORM_Definition_Fields_Type_ID == FORMElements.ColumnContainer)
+                    {
+                        <th class="header-value" colspan="4">
+                            @TextProvider.Get("FORM_ELEMENT_REFERENCE_TITLE")
+                        </th>
+                    }
+                    @if(Model != null && Model.FORM_Definition_Fields_Type_ID == FORMElements.Difference)
+                    {
+                        <th class="header-value">
+                            @TextProvider.Get("FORM_ELEMENT_REFERENCE_TITLE")
+                        </th>
+                    }
+                <th class="header-actions">
+                    @TextProvider.Get("ACTIONS")
+                </th>
+            </tr>
+
+            @foreach (var subItem in Model.FORM_Definition_Field_ReferenceFORM_Definition_Field.Where(p => p.ToRemove == false).OrderBy(p => p.SortOrder))
+            {
+                <tr class="list-row">
+                    @if (Model != null && Model.FORM_Definition_Fields_Type_ID == FORMElements.ColumnContainer)
+                    {
+                        <td class="row-text-start">
+                            @TextProvider.Get("REFERENCE_IF")
+                        </td>
+                        <td class="row-value-dropdown">
+                            @if (subItem.InEdit)
+                            {
+                                <TelerikDropDownList Data="@PossibleReferenceList.OrderBy(p => p.SortOrder)" TextField="NameShort" ValueField="ID" @bind-Value="subItem.FORM_Definition_Field_Source_ID" OnChange="@(() => ReferenceItemChanged(subItem))"></TelerikDropDownList>
+                            }
+                            else
+                            {
+                                @if (subItem.FORM_Definition_Field_Source != null && subItem.FORM_Definition_Field_Source.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage) != null)
+                                {
+                                    <label>@subItem.FORM_Definition_Field_Source.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name</label>
+                                }
+                                else
+                                {
+                                    <label>@TextProvider.Get("SELECTION_HERE")</label>
+                                }
+                            }
+                        </td>
+                        @if (subItem.FORM_Definition_Field_Source_ID != null)
+                        {
+                            var sourceItem = FormBuilderHelper.FormDefinition.FORM_Definition_Field.FirstOrDefault(p => p.ID == subItem.FORM_Definition_Field_Source_ID.Value);
+
+                            if(sourceItem != null && sourceItem.FORM_Definition_Fields_Type_ID != null)
+                            {
+                                var type = FormBuilderHelper.GetDefintionFieldType(sourceItem.FORM_Definition_Fields_Type_ID.Value);
+
+                                @if (type != null && type.ID == FORMElements.Checkbox)
+                                {
+                                    <td class="row-value-switch">
+                                        <TelerikSwitch @bind-Value="subItem.TriggerValueBool" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Enabled="subItem.InEdit"
+                                           Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small"></TelerikSwitch>
+                                    </td>
+                                }
+                                else if (type != null && type.ID == FORMElements.Radiobutton)  //RADIO
+                                {
+                                    <td class="row-value-dropdown">
+                                        <div class="row-value-dropdown-container">
+                                            @if (subItem.InEdit)
+                                            {
+                                                <TelerikSwitch @bind-Value="subItem.Negate" OnLabel="@TextProvider.Get("NOT")" OffLabel=" " Width="100px" Enabled="subItem.InEdit"
+                                                    Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small"></TelerikSwitch>
+                                            }
+                                            else
+                                            {
+                                                @if (subItem.Negate)
+                                                {
+                                                    <label>@TextProvider.Get("NOT")</label>
+                                                }
+                                                else
+                                                {
+                                                    <label></label>
+                                                }
+                                            }
+                                            <TelerikDropDownList Data="@subItem.OptionList" TextField="DescriptionShort" ValueField="StringID" @bind-Value="subItem.TriggerValue" Enabled="subItem.InEdit"></TelerikDropDownList>
+                                        </div>
+                                    </td>
+                                }
+                                else if (type != null && type.ID == FORMElements.Dropdown)  //DROPDOWN
+                                {
+                                    <td class="row-value-dropdown">
+                                        <div class="row-value-dropdown-container">
+                                            @if (subItem.InEdit)
+                                            {
+                                                <TelerikSwitch @bind-Value="subItem.Negate" OnLabel="@TextProvider.Get("NOT")" OffLabel=" " Width="100px" Enabled="subItem.InEdit"
+                                                    Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small"></TelerikSwitch>
+                                            }
+                                            else
+                                            {
+                                                @if (subItem.Negate)
+                                                {
+                                                    <label>@TextProvider.Get("NOT")</label>
+                                                }
+                                                else
+                                                {
+                                                    <label></label>
+                                                }
+                                            }
+                                            <TelerikDropDownList Data="@subItem.OptionList" TextField="DescriptionShort" ValueField="StringID" @bind-Value="subItem.TriggerValue" Enabled="subItem.InEdit"></TelerikDropDownList>
+                                        </div>
+                                    </td>
+                                }
+                            }
+                        }
+                    }
+                    @if (Model != null && Model.FORM_Definition_Fields_Type_ID == FORMElements.Difference)
+                    {
+                        <td class="row-value-dropdown">
+                            @if (subItem.InEdit)
+                            {
+                                <TelerikDropDownList Data="@PossibleReferenceList.OrderBy(p => p.SortOrder)" TextField="Name" ValueField="ID" @bind-Value="subItem.FORM_Definition_Field_Source_ID"></TelerikDropDownList>
+                            }
+                            else
+                            {
+                                @if (subItem.FORM_Definition_Field_Source != null && subItem.FORM_Definition_Field_Source.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage) != null)
+                                {
+                                    <label>@subItem.FORM_Definition_Field_Source.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name</label>
+                                }
+                                else
+                                {
+                                    <label>@TextProvider.Get("SELECTION_HERE")</label>
+                                }
+                            }
+                        </td>   
+                    }                                             
+                    <td class="row-actions">
+                        <div class="row-tool-box">
+                            @if (!subItem.InEdit)
+                            {
+                                <div class="element-edit">
+                                    <TelerikButton Icon="SvgIcon.Pencil" ButtonType="@ButtonType.Button" OnClick="@(() => Edit(subItem))" TabIndex="-1"></TelerikButton>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="element-edit">
+                                    <TelerikButton Icon="SvgIcon.Save" ButtonType="@ButtonType.Button" OnClick="@(() => Save(subItem))" TabIndex="-1"></TelerikButton>
+                                </div>
+                            }
+                            <div class="element-edit">
+                                <TelerikButton Icon="SvgIcon.X" ButtonType="@ButtonType.Button" OnClick="@(() => RemoveReference(subItem))" TabIndex="-1"></TelerikButton>
+                            </div>
+                            <div class="element-sorter">
+
+                                @if (subItem.SortOrder != Model.FORM_Definition_Field_ReferenceFORM_Definition_Field.Where(p => p.ToRemove == false).Min(p => p.SortOrder))
+                                {
+                                    <div class="sorter-button sorter-up">
+                                        <TelerikButton Icon="SvgIcon.ChevronUp" ButtonType="@ButtonType.Button" OnClick="@(() => MoveUp(subItem))" TabIndex="-1"></TelerikButton>
+                                    </div>
+                                }
+                                    @if (subItem.SortOrder != Model.FORM_Definition_Field_ReferenceFORM_Definition_Field.Where(p => p.ToRemove == false).Max(p => p.SortOrder))
+                                {
+                                    <div class="sorter-button sorter-down">
+                                        <TelerikButton Icon="SvgIcon.ChevronDown" ButtonType="@ButtonType.Button" OnClick="@(() => MoveDown(subItem))" TabIndex="-1"></TelerikButton>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+            <tr class="list-add-item" @onclick="AddReference">
+                <td colspan="5">
+                    <div class="list-add-text">
+                        @TextProvider.Get("LIST_COMPONENT_ADD_BUTTON")
+                    </div>
+                </td>
+            </tr>
+        </table>
+        }
+        else if(Model != null && Model.FORM_Definition_Fields_Type_ID == FORMElements.Signature)
+        {
+            <div class="sign-reference-container">
+                <div class="sign-name-reference-field">
+                    <div class="sign-name-label">
+                        @TextProvider.Get("FORM_REFERENCE_SIGNATURE_NAME_LABEL")
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="sign-name-dropdown">
+                        <SfDropDownList DataSource="@PossibleReferenceList" @bind-Value="@(Model.Ref_Signature_Name)" TValue="Guid?" TItem="@FORM_Definition_Field" Placeholder="@TextProvider.Get("FORM_REFERENCE_SIGNATURE_NAME_PLACEHOLDER")">
+                            <DropDownListFieldSettings Text="Name" Value="ID"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+                <div class="sign-mail-reference-field">
+                    <div class="sign-name-label">
+                        @TextProvider.Get("FORM_REFERENCE_SIGNATURE_EMAIL_LABEL")
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="sign-name-dropdown">
+                        <SfDropDownList DataSource="@PossibleReferenceList" @bind-Value="@(Model.Ref_Signature_Mail)" TValue="Guid?" TItem="@FORM_Definition_Field" Placeholder="@TextProvider.Get("FORM_REFERENCE_SIGNATURE_EMAIL_PLACEHOLDER")">
+                            <DropDownListFieldSettings Text="Name" Value="ID"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

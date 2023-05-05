@@ -1,0 +1,37 @@
+﻿@using Syncfusion.Blazor.Popups
+
+@if (DialogService != null)
+{
+    @if(DialogService.ShowDialogWindow)
+    {
+        <div id="dialog-anchor" class="dialog-anchor">
+            <SfDialog CssClass="dialog-window"
+                      Target="#dialog-anchor"
+                      AllowDragging="false"
+                      IsModal="true" 
+                      Width="500px"
+                      ShowCloseIcon="@DialogService.ShowCloseButton"
+                      @bind-Visible="@DialogService.ShowDialogWindow">
+                <DialogTemplates>
+                    <Header>@DialogService.HeaderTitle</Header>
+                    <Content>
+                        <div class="Dialog-window-content">
+                            @DialogService.Content
+                        </div>
+                    </Content>
+                </DialogTemplates>
+                <DialogEvents Closed="@CancelDialog" />
+                <DialogButtons>
+                    @if (!string.IsNullOrEmpty(DialogService.Confirm_Button_Text))
+                    {
+                        <DialogButton IsPrimary="true" Content="@DialogService.Confirm_Button_Text" OnClick="@ConfirmDialog" />
+                    }
+                    @if (!string.IsNullOrEmpty(DialogService.Cancel_Button_Text))
+                    {
+                        <DialogButton IsPrimary="false" Content="@DialogService.Cancel_Button_Text" OnClick="@CancelDialog" />
+                    }
+                </DialogButtons>
+            </SfDialog>
+        </div>
+    }
+}

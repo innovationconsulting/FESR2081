@@ -1,0 +1,103 @@
+﻿.nav-link-text {
+    margin-left: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.not-selectable .nav-link-text {
+    text-decoration: none !important;
+    font-weight: normal !important;
+}
+
+.nav-item-collapsed .nav-link-text {
+    display: none;
+}
+
+.nav-item-tooltip {
+    visibility: hidden;
+    position: absolute;
+    /*bottom: 100%;*/
+    left: 50%;
+    margin-left: 28px;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    background-color: #27426D;
+    box-shadow: rgb(0 0 0 / 35%) 0px 2px 5px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    white-space: nowrap;
+}
+
+    .nav-item-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        margin-top: -5px;
+        margin-left: -10px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent #27426D transparent transparent;
+    }
+
+@media(max-width: 679.98px) {
+    .nav-item-tooltip {
+        display: none !important;
+    }
+
+    .nav-item-collapsed .nav-link-text {
+        display: block !important;
+    }
+}
+
+.user-support-menu {
+    z-index: 998;
+    position: absolute;
+    border-radius: 3px;
+    padding: 1rem;
+    background-color: rgb(246, 245, 244);
+    width: 400px;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 5px;
+    bottom: 125px;
+    left: 65px;
+    padding-top: 25px;
+}
+
+    .user-support-menu::after {
+        content: "";
+        position: absolute;
+        bottom: 20px;
+        left: 0%;
+        margin-top: -10px;
+        margin-left: -10px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent gray transparent transparent;
+    }
+
+.ticket-success{
+    color: green !important;
+}
+.ticket-error{
+    color: red !important;
+}
+.ticket-button-group{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.phone-number-container{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.privacy-link .btn{
+    border: none !important;
+    text-align: left;
+    line-height: 30px;
+}
+.privacy-link .btn:hover{
+    text-decoration: underline;
+}

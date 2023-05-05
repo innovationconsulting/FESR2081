@@ -1,0 +1,56 @@
+﻿@page "/Form/Application/Comitted/{ID}"
+
+@layout FrontendLayout
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-12">
+                    @if (Data != null && Data.FILE_Fileinfo_ID != null)
+                    {
+                        <div class="h2">
+                            @TextProvider.Get("FRONTEND_APPLICATION_COMITTED_SUCCESSFULL")
+                        </div>
+                        <br />
+                        <div class="segment-container">
+                            @TextProvider.Get("FRONTEND_APPLICATION_COMITTED_DESCRIPTION")
+                        </div>
+                        @if (FORM_AdditionalDefinitions != null && FORM_AdditionalDefinitions.Count() > 0)
+                        {
+                            <br />
+                            <div class="h2">
+                                @TextProvider.Get("FRONTEND_APPLICATION_COMITTED_ADDITIONAL_FORMS")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            @foreach (var d in FORM_AdditionalDefinitions.OrderBy(p => p.SortOrder))
+                            {
+                                <div class="cmp-card-latest-messages mb-3 mb-30" data-bs-toggle="modal">
+                                    <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
+                                        <span class="visually-hidden">@TextProvider.Get("FORMS_FRONTEND_CARD_CATEGORY")</span>
+                                        <div class="card-header border-0 p-0 t-primary">
+                                            <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" @onclick="@(() => NavigateTo("/Form/List/" + d.AUTH_Authority_ID))">@d.AmtName</a>
+                                        </div>
+                                        <div class="card-body p-0 my-2">
+                                            <h3 class="green-title-big t-primary mb-8"><a @onclick="@(() => NavigateTo("/Form/Detail/" + d.ID))" class="text-decoration-none" data-element="service-link">@d.FORM_Name</a></h3>
+                                            <p class="text-paragraph">
+                                                @d.ShortText
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="element-separator"></div>
+                        <div class="segment-button-container">
+                            <button class="btn btn-primary" @onclick="BackToData">@TextProvider.Get("BUTTON_BACK_TO_MY_APPLICATIONS")</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

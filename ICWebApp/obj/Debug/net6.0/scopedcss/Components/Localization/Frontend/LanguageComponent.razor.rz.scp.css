@@ -1,0 +1,15 @@
+.frontend-language-button[b-4onu4jrb5n] {
+    cursor: pointer;
+    color: white;
+}
+    .frontend-language-button:hover[b-4onu4jrb5n] {
+        color: #25CCDB;
+    }
+
+    .frontend-language-button-aktive[b-4onu4jrb5n] {
+        color: #25CCDB;
+        cursor: default;
+    }
+.frontend-language-separator[b-4onu4jrb5n]{
+    color: white;
+}

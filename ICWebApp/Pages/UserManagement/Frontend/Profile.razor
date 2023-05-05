@@ -1,0 +1,428 @@
+﻿@page "/User/Profile"
+@layout FrontendLayout
+
+
+<AuthorizeView>
+<Authorized Context="authorizedContext">
+<div class="container">
+<div class="row mt-lg-80 mt-3 mb-4">
+<div class="col-lg-3 mb-4 border-col hide-max-576">
+    <AnchorList></AnchorList>
+</div>
+<div class="col-lg-8 offset-lg-1">
+@if (AnagraficData != null)
+{
+    if (MessageInfo != "")
+    {
+        <div class="font-normal">@MessageInfo: </div>
+        <div class="element-separator"></div>
+    }
+
+    <div class="user-creation-container it-page-sections-container">
+        <Anchor Title="@(TextProvider.Get("USER_PROFILE_ANAGRAFIC_DATA"))" ID="@(TextProvider.Get("USER_PROFILE_ANAGRAFIC_DATA"))" IsCard="true" Order="1" OnModify="@(() => EditName())">
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_NAME")</label>
+                <label class="application-value">@AnagraficData.FirstName @AnagraficData.LastName</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_FISCALNUMBER")</label>
+                <label class="application-value">@AnagraficData.FiscalNumber</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_GENDER")</label>
+                <label class="application-value">
+                    @if (AnagraficData.Gender != null)
+                    {
+                        @if (AnagraficData.Gender.ToUpper() == "M")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                        }
+                        else if (AnagraficData.Gender.ToUpper() == "W")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                        }
+                    }
+                </label>
+            </div>
+        </Anchor>
+        <Anchor Title="@(TextProvider.Get("USER_PROFILE_BIRTH_DATA"))" ID="@(TextProvider.Get("USER_PROFILE_BIRTH_DATA"))" IsCard="true" Order="2">
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_COUNTY_OF_BIRTH")</label>
+                <label class="application-value">@AnagraficData.CountyOfBirth</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_PLACE_OF_BIRTH")</label>
+                <label class="application-value">@AnagraficData.PlaceOfBirth</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_DATE_OF_BIRTH")</label>
+                <label class="application-value">
+                    @if (AnagraficData.DateOfBirth != null)
+                    {
+                        @AnagraficData.DateOfBirth.Value.ToString("dd.MM.yyyy")
+                    }
+                </label>
+            </div>
+        </Anchor>
+        <Anchor Title="@(TextProvider.Get("USER_PROFILE_DOMICILE_DATA"))" ID="@(TextProvider.Get("USER_PROFILE_DOMICILE_DATA"))" IsCard="true" Order="3" OnModify="@(() => EditDomicileData())">
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_ADDRESS")</label>
+                <label class="application-value">@AnagraficData.DomicileStreetAddress</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_POSTAL_CODE")</label>
+                <label class="application-value">@AnagraficData.DomicilePostalCode</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_MUNICIPALITY")</label>
+                <label class="application-value">@AnagraficData.DomicileMunicipality</label>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_PROVINCE")</label>
+                <label class="application-value">@AnagraficData.DomicileProvince</label>
+            </div>
+        </Anchor>
+        <Anchor Title="@(TextProvider.Get("USER_PROFILE_KONTAKT_DATA"))" ID="@(TextProvider.Get("USER_PROFILE_KONTAKT_DATA"))" IsCard="true" Order="4">
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_EMAIL")</label>
+                <div class="application-value-group">
+                    <label class="application-value">@AnagraficData.Email</label>
+                    <a @onclick="EditEmail" class="text-decoration-none" data-focus-mouse="false">
+                        <span class="text-button-sm-semi t-primary">@TextProvider.Get("ANCHOR_MODIFY_DATA_BUTTON")</span>
+                    </a>
+                </div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_PHONE")</label>
+                <div class="application-value-group">
+                    <label class="application-value">
+                        @if (!string.IsNullOrEmpty(AnagraficData.MobilePhone))
+                        {
+                            var IntPhoneNumber = long.Parse(AnagraficData.MobilePhone.Replace("+", ""));
+
+                            @IntPhoneNumber.ToString("+## ### ### ####")
+                        }
+                    </label>
+                    <a @onclick="EditPhone" class="text-decoration-none" data-focus-mouse="false">
+                        <span class="text-button-sm-semi t-primary">@TextProvider.Get("ANCHOR_MODIFY_DATA_BUTTON")</span>
+                    </a>
+                </div>
+            </div>
+        </Anchor>
+        <Anchor Title="@(TextProvider.Get("USER_PROFILE_ACCOUNT_DATA"))" ID="@(TextProvider.Get("USER_PROFILE_ACCOUNT_DATA"))" IsCard="true" Order="5" OnModify="@(() => EditAccountData())" ModifyTextCode="ANCHOR_CHANGE_PASSWORD">
+            <div class="application-row">
+                <label class="application-label">@TextProvider.Get("USER_PROFILE_PASSWORD")</label>
+                <label class="application-value">************</label>
+                @if (PasswordChangeMessage != null)
+                {
+                    <label class="application-message">@PasswordChangeMessage</label>
+                }
+            </div>
+        </Anchor>
+    </div>
+    <TelerikWindow Modal="true" @bind-Visible="@EditAnagraphicsVisibility" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("USER_PROFILE_NAME_EDIT")
+        </WindowTitle>
+        <WindowContent>
+            @if (GeneralData != null)
+            {
+                <EditForm Model="@GeneralData" OnValidSubmit="SaveName">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    <ICWebApp.Classes.Validation.CustomValidation @ref="customValidation"></ICWebApp.Classes.Validation.CustomValidation>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_FIRSTNAME")</label>
+                        <InputText @bind-Value="GeneralData.Firstname" type="text" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => GeneralData.Firstname)" TextCode="REGISTRATION_FIRSTNAME"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_LASTNAME")</label>
+                        <InputText @bind-Value="GeneralData.Lastname" type="text" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => GeneralData.Lastname)" TextCode="REGISTRATION_LASTNAME"/>
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="segment-button-toolbar">
+                        <button type="button" class="btn btn-secondary" @onclick="@CloseEditName">@TextProvider.Get("BUTTON_CANCEL")</button>
+                        <button type="submit" class="btn btn-primary">@TextProvider.Get("BUTTON_SAVE")</button>
+                    </div>
+                </EditForm>
+            }
+        </WindowContent>
+    </TelerikWindow>
+    <TelerikWindow Modal="true" @bind-Visible="@EditDomicileDataWindowVisible" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("USER_PROFILE_DOMICILE_DATA_EDIT")
+        </WindowTitle>
+        <WindowContent>
+            @if (DomicileData != null)
+            {
+                <EditForm Model="@DomicileData" OnValidSubmit="@SaveDomicileData">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    <div class="domicile-edit-window">
+                        <div class="font-bold custom-color-primary">
+                            @TextProvider.Get("USER_PROFILE_DOMICILE_DATA")
+                        </div>
+                        @if (AddressNotFound == false)
+                        {
+                            <div class="small-element-separator"></div>
+                            <div class="form-group">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_SEARCH_MUNICIPALITY")</label>
+                                <TelerikComboBox TItem="@META_IstatComuni" TValue="@Guid"
+                                                 ScrollMode="@DropDownScrollMode.Virtual"
+                                                 OnRead="@GetRemoteMunicipalities"
+                                                 ItemHeight="30" PageSize="15"
+                                                 ValueMapper="@GetModelFromValue"
+                                                 TextField="@nameof(META_IstatComuni.NameDE)"
+                                                 ValueField="@nameof(META_IstatComuni.ID)"
+                                                 @bind-Value="@SelectedMunicipality"
+                                                 Filterable="true"
+                                                 Class="address-search-box"
+                                                 FilterOperator="@StringFilterOperator.Contains">
+                                    <ComboBoxSettings>
+                                        <ComboBoxPopupSettings Height="200px"/>
+                                    </ComboBoxSettings>
+                                </TelerikComboBox>
+                                <CustomValidationMessage For="@(() => DomicileData.ReqDomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS"/>
+                            </div>
+                            @if (SelectedMunicipality != Guid.Empty)
+                            {
+                                <div class="small-element-separator"></div>
+                                <div class="form-group">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                                    <InputText @bind-Value="DomicileData.ReqDomicileStreetAddress" class="form-control"></InputText>
+                                    <CustomValidationMessage For="@(() => DomicileData.ReqDomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS"/>
+                                </div>
+                                <div class="small-element-separator"></div>
+                                <div class="form-group-multicolumn">
+                                    <div class="form-group flex-half">
+                                        <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                                        <label class="form-label-value">@DomicileData.ReqDomicilePostalCode</label>
+                                    </div>
+                                    <div class="form-group flex-full">
+                                        <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                                        <label class="form-label-value">@DomicileData.ReqDomicileMunicipality</label>
+                                    </div>
+                                    <div class="form-group flex-half">
+                                        <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                                        <label class="form-label-value">@DomicileData.ReqDomicileProvince</label>
+                                    </div>
+                                </div>
+                            }
+                            <div class="extra-small-element-separator"></div>
+                            <div class="address-not-found-container font-small custom-color-primary" @onclick="AddressNotFoundClick">
+                                @TextProvider.Get("REGISTRATION_ADDRESS_NOT_FOUND")
+                            </div>
+                        }
+                        else if (AddressNotFound == true)
+                        {
+                            <div class="form-group">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                                <InputText @bind-Value="DomicileData.ReqDomicileStreetAddress" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => DomicileData.ReqDomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS"/>
+                            </div>
+                            <div class="small-element-separator"></div>
+                            <div class="form-group-multicolumn">
+                                <div class="form-group flex-half">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                                    <InputText @bind-Value="DomicileData.ReqDomicilePostalCode" class="form-control"></InputText>
+                                    <CustomValidationMessage For="@(() => DomicileData.ReqDomicilePostalCode)" TextCode="REGISTRATION_POSTAL_CODE"/>
+                                </div>
+                                <div class="form-group flex-full">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                                    <InputText @bind-Value="DomicileData.ReqDomicileMunicipality" class="form-control"></InputText>
+                                    <CustomValidationMessage For="@(() => DomicileData.ReqDomicileMunicipality)" TextCode="REGISTRATION_MUNICIPALITY"/>
+                                </div>
+                                <div class="form-group flex-half">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                                    <InputText @bind-Value="DomicileData.ReqDomicileProvince" class="form-control"></InputText>
+                                    <CustomValidationMessage For="@(() => DomicileData.ReqDomicileProvince)" TextCode="REGISTRATION_PROVINCE"/>
+                                </div>
+                            </div>
+                            <div class="small-element-separator"></div>
+                            <div class="form-group">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_NATION")</label>
+                                <InputText @bind-Value="DomicileData.ReqDomicileNation" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => DomicileData.ReqDomicileNation)" TextCode="REGISTRATION_NATION"/>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="address-not-found-container font-small custom-color-primary" @onclick="SearchAddressClick">
+                                @TextProvider.Get("REGISTRATION_ADDRESS_SEARCH")
+                            </div>
+                        }
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="segment-button-toolbar">
+                        <button type="button" class="btn btn-secondary" @onclick="@CloseDomicileDataWindow">@TextProvider.Get("BUTTON_CANCEL")</button>
+                        <button type="submit" class="btn btn-primary">@TextProvider.Get("BUTTON_SAVE")</button>
+                    </div>
+                </EditForm>
+            }
+        </WindowContent>
+    </TelerikWindow>
+    <TelerikWindow Modal="true" @bind-Visible="@EditPasswordWindowVisible" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("USER_PROFILE_PASSWORD_EDIT")
+        </WindowTitle>
+        <WindowContent>
+            @if (AccountData != null)
+            {
+                <EditForm Model="@AccountData" OnValidSubmit="SaveAccountData">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_PASSWORD")</label>
+                        <CustomPassword @bind-Value="@Password"/>
+                        <CustomValidationMessage For="@(() => AccountData.Password)" TextCode="REGISTRATION_PASSWORD"/>
+                        @if (AccountData.Password != null && IsValidPassword == false)
+                        {
+                            <div style="color: red">
+                                @TextProvider.Get("REGIISTRATION_PASSWORD_INVALID")
+                            </div>
+                        }
+                    </div>
+                    @if (!string.IsNullOrEmpty(PasswordQuality))
+                    {
+                        <div class="password-quality-bar-background">
+                            <div class="password-quality-bar @PasswordQuality">@TextProvider.GetOrCreate(PasswordQuality)</div>
+                        </div>
+                    }
+                    <div class="extra-small-element-separator"></div>
+                    <div class="info-box">
+                        @(TextProvider.Get("REGISTRATION_PASSWORD_INFORMATION"))
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_CONFIRM_PASSWORD")</label>
+                        <CustomPassword @bind-Value="@AccountData.ConfirmPassword"/>
+                        <CustomValidationMessage For="@(() => AccountData.ConfirmPassword)" TextCode="REGISTRATION_CONFIRM_PASSWORD"/>
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="segment-button-toolbar">
+                        <button type="button" class="btn btn-secondary" @onclick="@CloseAccountDataWindow">@TextProvider.Get("BUTTON_CANCEL")</button>
+                        <button type="submit" class="btn btn-primary">@TextProvider.Get("BUTTON_SAVE")</button>
+                    </div>
+                </EditForm>
+            }
+        </WindowContent>
+    </TelerikWindow>
+    <TelerikWindow Modal="true" @bind-Visible="@EditMailVisibility" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("USER_PROFILE_EMAIL_EDIT")
+        </WindowTitle>
+        <WindowContent>
+            @if (ShowMailVerification == false && KontaktData != null)
+            {
+                <EditForm Model="@KontaktData" OnValidSubmit="VerifyMail">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_EMAIL")</label>
+                        <InputText @bind-Value="KontaktData.Input" type="email" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => KontaktData.Input)" TextCode="REGISTRATION_EMAIL"/>
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="segment-button-toolbar">
+                        <button type="button" class="btn btn-secondary" @onclick="@CloseEditMail">@TextProvider.Get("BUTTON_CANCEL")</button>
+                        <button type="submit" class="btn btn-primary">@TextProvider.Get("BUTTON_SAVE")</button>
+                    </div>
+                </EditForm>
+            }
+            else
+            {
+                <div class="waiting-container">
+                    <lord-icon src="https://cdn.lordicon.com/tkgyrmwc.json"
+                               trigger="loop"
+                               colors="primary:#0f7173,secondary:#08a88a"
+                               style="width:250px;height:250px">
+                    </lord-icon>
+                    <div class="waiting-description font-normal">
+                        @TextProvider.Get("USER_PROFILE_EMAIL_VERIFICATION")
+                    </div>
+                </div>
+            }
+        </WindowContent>
+    </TelerikWindow>
+    <TelerikWindow Modal="true" @bind-Visible="@EditPhoneVisibility" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("USER_PROFILE_PHONE_EDIT")
+        </WindowTitle>
+        <WindowContent>
+            @if (ShowPhoneVerification == false && KontaktData != null)
+            {
+                <EditForm Model="@KontaktData" OnValidSubmit="VerifyPhone">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_MOBILE_PHONE")</label>
+                        <CustomPhone @bind-Value="@KontaktData.Input"></CustomPhone>
+                        <CustomValidationMessage For="@(() => KontaktData.Input)" TextCode="REGISTRATION_MOBILE_PHONE"/>
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="segment-button-toolbar">
+                        <button type="button" class="btn btn-secondary" @onclick="@CloseEditPhone">@TextProvider.Get("BUTTON_CANCEL")</button>
+                        <button type="submit" class="btn btn-primary">@TextProvider.Get("BUTTON_SAVE")</button>
+                    </div>
+                </EditForm>
+            }
+            else
+            {
+                <div class="waiting-phone-container">
+                    <div class="email-container font-normal">
+                        <div class="element-separator"></div>
+                        <div class="email-data-container">
+                            <p>
+                                @{
+                                    MarkupString htmlString = new MarkupString(TextProvider.Get("VERIFYPHONE_TEXT"));
+                                }
+                                @htmlString
+                            </p>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="email-edit-container">
+                            @if (!string.IsNullOrEmpty(AnagraficData.MobilePhone))
+                            {
+                                <div class="email-edit-text font-bold">
+                                    @String.Format("{0:(+##) ###-###-####}", long.Parse(AnagraficData.MobilePhone))
+                                </div>
+                            }
+                        </div>
+                        <div class="element-separator"></div>
+                        <div class="font-normal">
+                            @TextProvider.Get("VERIFYPHONE_CODE")
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <CodeInputComponent @ref="@CodeInput"></CodeInputComponent>
+                        @if (Message != null)
+                        {
+                            <div class="small-element-separator"></div>
+                            <SystemMessageComponent Message="@Message"></SystemMessageComponent>
+                            <div class="element-separator"></div>
+                        }
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="segment-button-toolbar">
+                        <button type="button" @onclick="SaveEditPhone" class="btn btn-primary">@TextProvider.Get("VERIFY_BUTTON")</button>
+                    </div>
+                </div>
+            }
+        </WindowContent>
+    </TelerikWindow>
+}
+</div>
+</div>
+</div>
+
+</Authorized>
+<NotAuthorized>
+    <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+</NotAuthorized>
+</AuthorizeView>

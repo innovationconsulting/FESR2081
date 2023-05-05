@@ -1,0 +1,107 @@
+﻿.bucketview-container {
+    overflow: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+.bucket-container {
+    padding-left: 5px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    width: calc(90vw - 38px) !important;
+    width: -moz-calc(90vw - 38px) !important;
+    width: -webkit-calc(90vw - 38px) !important;
+    width: -o-calc(90vw - 38px) !important;
+    overflow: auto;
+    flex: 1;
+}
+.bucket-item{
+    width: 300px;
+    padding: 5px;
+    border-bottom: 30px solid white;
+    height: 100%;
+    border: 1px solid white;
+}
+.bucket-item.dropable{
+    border: 1px dashed #d9d9d9;
+}
+
+.bucket-title{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.card-container {
+    border: 1px solid #d9d9d9;
+    display: flex;
+    justify-content: space-evenly;
+    cursor: pointer;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    margin-bottom: 5px;
+}
+    .card-container:hover {
+        border-color: #0F7173;
+    }
+.new-task-item{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    width: auto;
+    margin: auto;
+    padding: 5px;
+}
+.show-finished-task-item{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+    .show-finished-task-item:hover{
+        color: #808080;
+    }
+    .show-finished-task-item-description {
+        flex: 1;
+    }
+
+.bucket-task-container .dropable{
+    border-top: 50px solid #F2F2F2;
+    padding-top: 5px;
+}
+.bucketview-header{
+    display: flex;
+    justify-content: space-between;
+}
+.bucketview-filter{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.responsible-filter{
+    width: 220px;
+}
+.status-filter {
+    width: 170px;
+}
+.priority-filter {
+    width: 170px;
+}
+.tag-filter{
+    width: 220px;
+}
+.clear-button{
+    width: 48px;
+    height: 38px !important;
+    line-height: 28px !important;
+}
+.small-task-inaktive {
+    opacity: 0.3;
+}
+.small-task-aktive{
+    border-color: #0F7173 !important;
+}

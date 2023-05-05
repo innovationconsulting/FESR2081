@@ -1,0 +1,147 @@
+﻿@{
+    string BorderCSS = "";
+
+    if (Model != null && Model.HasBorder == true)
+    {
+        BorderCSS = "element-basecontainer-border";
+    }
+}
+@if (Model != null)
+{
+    <div class="elementContainer-top-row">
+        <div class="elementContainer-dbname">
+            @if (Model.CanBeRepeated == true)
+            {
+                <label>@FormBuilderHelper.CanBeRepeated</label>
+            }
+        </div>
+        <div class="elementContainer-dbname">
+            <label>@Model.DatabaseName</label>
+        </div>
+    </div>
+    <div class="elementContainer-basecontainer @BorderCSS">
+        @for (int i = 0; i < Model.ColumnCount; i++)
+        {
+            var colPos = i;
+            var context = "#" + Model.ID.ToString();
+
+            <div class="elementContainer-container" id="@(Model.ID)_@(colPos)" @ondrop:stopPropagation="true" draggable="true" @ondragstart:stopPropagation="true" @ondragend:stopPropagation="true"
+                 ondragenter="formBuilder_setDraggableContainerClass(this)" ondragleave="formBuilder_removeDraggableContainerClass(this)"
+                 @ondrop="@(() => DropHandler(new Formbuilder_DragAndDropItem(){ParentID = Model.ID, Count = 0, ColumnPos = colPos }))" ondragover="event.preventDefault();"
+                 onmouseover="BuilderElementHover('@(Model.ID)_@(colPos)')" onmouseout="BuilderElementStopHover('@(Model.ID)_@(colPos)')">
+                @if (FormBuilderHelper.FormDefinition != null && FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false).ToList() != null)
+                {
+                    @foreach (var f in FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ColumnPos == colPos && p.ToRemove == false).OrderBy(p => p.SortOrder).ToList())
+                    {
+                        @if (f.FORM_Definition_Fields_Type_ID != null)
+                        {
+                            var type = FormBuilderHelper.GetDefintionFieldType(f.FORM_Definition_Fields_Type_ID.Value);
+                            if (type != null && type.IsContainer)
+                            {
+                                long maxPos = 0;
+                                long minPos = 0;
+
+                                @if (FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Max() != null)
+                                    maxPos = FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Max().Value;
+
+                                @if (FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Min() != null)
+                                    minPos = FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Min().Value;
+
+
+                                <div class="form-element-container" @ondrop:stopPropagation="true" draggable="true"
+                                     @ondragstart="@(() => DragFieldStartHandler(f))" @ondragend="@(() => DragFieldEndHandler(f))"
+                                     ondragenter="formBuilder_setDraggableClass(this)" ondragleave="formBuilder_removeDraggableClass(this)"
+                                     @ondrop="@(() => DropHandler(new Formbuilder_DragAndDropItem() { Count = f.SortOrder, ColumnPos = f.ColumnPos, ParentID = f.FORM_Definition_Field_Parent_ID }))" 
+                                     ondragover="event.preventDefault();" onmouseover="BuilderElementHover('@(f.ID)')" onmouseout="BuilderElementStopHover('@(f.ID)')">
+                                    <div class="form-element" id="@f.ID">
+                                        <ICWebApp.Components.Formbuilder.ElementContainer Model="f"
+                                                                  OnMoveUp="MoveUp" OnDragEndHandler="DragFieldEndHandler" OnDragStartHandler="DragFieldStartHandler"
+                                                                  OnMoveDown="MoveDown" OnRemoveClicked="OnRemoveFieldWithSubFields"
+                                                                  OnFieldWithSubFieldsRemovedClicked="OnRemoveFieldWithSubFields" OnEditClicked="OnEdit"
+                                                                  OnDropHandler="DropHandler" OnFieldRemoveClicked="OnRemoveField"
+                                                                  MaxSort="maxPos"
+                                                                  MinSort="minPos">
+                                        </ICWebApp.Components.Formbuilder.ElementContainer>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                long maxPos = 0;
+                                long minPos = 0;
+
+                                @if (FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Max() != null)
+                                    maxPos = FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Max().Value;
+
+                                @if (FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Min() != null)
+                                    minPos = FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Min().Value;
+
+                                <div class="form-element-container" @ondrop:stopPropagation="true" draggable="true"
+                                     @ondragstart="@(() => DragFieldStartHandler(f))" @ondragend="@(() => DragFieldEndHandler(f))"
+                                     ondragenter="formBuilder_setDraggableClass(this)" ondragleave="formBuilder_removeDraggableClass(this)"
+                                     onmouseover="BuilderElementHover('@(f.ID)')" onmouseout="BuilderElementStopHover('@(f.ID)')"
+                                     @ondrop="@(() => DropHandler(new Formbuilder_DragAndDropItem() { Count = f.SortOrder, ColumnPos = f.ColumnPos, ParentID = f.FORM_Definition_Field_Parent_ID }))" ondragover="event.preventDefault();">
+                                    <div class="form-element" id="@f.ID">
+                                        <ICWebApp.Components.Formbuilder.Element Model="f" OnMoveUp="MoveUp" OnMoveDown="MoveDown"
+                                                         OnRemoveClicked="OnRemoveField" OnEditClicked="OnEdit"
+                                                         MaxSort="maxPos"
+                                                         MinSort="minPos">
+                                        </ICWebApp.Components.Formbuilder.Element>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+
+                    <div class="form-element-container" @ondrop:stopPropagation="true" draggable="true" ondragenter="formBuilder_setDraggableClass(this)" ondragleave="formBuilder_removeDraggableClass(this)"
+             @ondrop="@(() => DropHandler(new Formbuilder_DragAndDropItem(){ParentID = Model.ID, Count = FormBuilderHelper.FormDefinition.FORM_Definition_Field.Where(p => p.FORM_Definition_Field_Parent_ID == Model.ID && p.ToRemove == false && p.ColumnPos == colPos).Select(p => p.SortOrder).Max() + 1, ColumnPos = colPos }))" ondragover="event.preventDefault();">
+                        <div class="form-element-empty">
+                        </div>
+                    </div>
+                }
+            </div>
+            <SfContextMenu Target="@context" TValue="MenuItem">
+                <MenuItems>
+                    <MenuItem Text="@Model.DatabaseName" Disabled="true"></MenuItem>
+                    <MenuItem Separator="true"></MenuItem>
+                    <MenuItem Id="edit" Text="@FormBuilderHelper.Edit" IconCss="fa-regular fa-pen"></MenuItem>
+                    <MenuItem Id="delete" Text="@FormBuilderHelper.Delete" IconCss="fa-regular fa-trash-can"></MenuItem>
+                </MenuItems>
+                <MenuEvents TValue="MenuItem" ItemSelected="SelectedHandler"></MenuEvents>
+            </SfContextMenu> 
+        }
+
+
+        <div class="element-toolbar">
+            <div class="element-edit">
+                <div class="element-button" @onclick="@(() => OnEdit(Model))" tabindex="-1">
+                    <i class="fa-regular fa-pen"></i>
+                </div>
+            </div>
+            <div class="element-sorter">
+                @if (Model.SortOrder != MinSort)
+                {
+                    <div class="layout-sorter-button sorter-up" @onclick="@(() => MoveUp(Model))" tabindex="-1">
+                        <i class="fa-sharp fa-solid fa-chevron-up"></i>
+                    </div>
+                }
+                else
+                {
+                    <div class="sorter-button sorter-up">
+                    </div>
+                }
+                @if (Model.SortOrder != MaxSort)
+                {
+                    <div class="layout-sorter-button sorter-down" @onclick="@(() => MoveDown(Model))" tabindex="-1">
+                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                    </div>
+                }
+                else
+                {
+                    <div class="sorter-button sorter-down">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

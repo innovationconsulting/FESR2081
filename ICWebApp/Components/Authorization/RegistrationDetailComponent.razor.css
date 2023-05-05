@@ -1,0 +1,63 @@
+﻿@media (max-width: 680px) {
+
+    .login-logo {
+        display: none;
+    }
+
+    .login-title {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+.login-logo{
+    width: 100%;
+}
+
+.login-title {
+}
+
+.login-logo img{
+    width: 100%;
+}
+
+.login-label{
+}
+
+.login-row{
+    display: flex;
+}
+
+.login-row-left {
+    width: 50%;
+    justify-content: left;
+}
+
+.login-row-right {
+    width: 50%;
+    text-align: right;
+    justify-content: right;
+}
+
+.login-busy-loader {
+    padding-left: calc(50% - 40px) !important;
+    padding-left: -moz-calc(50% - 40px) !important;
+    padding-left: -webkit-calc(50% - 40px) !important;
+    padding-left: -o-calc(50% - 40px) !important;
+}
+
+@media(max-width: 800px) {
+    .button-container {
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+    }
+}
+
+.registration-container{
+    display: flex; 
+    flex-direction: column;
+}
+.registration-detail {
+    flex: 1;
+    min-height: 175px;
+}

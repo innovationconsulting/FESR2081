@@ -1,0 +1,34 @@
+.segment-listview[b-acakilxai5] {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.segment-listview-item-container[b-acakilxai5] {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+    .segment-listview-item-container:hover[b-acakilxai5] {
+        color: #0F7173;
+    }
+
+.segment-listview li[b-acakilxai5] {
+    list-style-type: disclosure-closed;
+}
+
+.listview-item-bullet[b-acakilxai5] {
+    line-height: 100%;
+}
+
+.segment-title[b-acakilxai5] {
+    display: flex;
+    gap: 10px;
+}
+
+.segment-icon[b-acakilxai5] {
+    width: 25px;
+}

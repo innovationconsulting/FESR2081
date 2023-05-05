@@ -1,0 +1,14 @@
+.segment-button-toolbar[b-52t6l64hca]
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-icon[b-52t6l64hca] {
+    color: #0F7173;
+    margin-left: 10px;
+    border-left: 1px solid #808080;
+}
+    .edit-icon:hover[b-52t6l64hca] {
+        color: #25CCDB;
+    }

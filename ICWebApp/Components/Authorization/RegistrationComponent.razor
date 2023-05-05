@@ -1,0 +1,245 @@
+﻿@using ICWebApp.Components
+
+
+<TelerikRootComponent>
+    @if (user != null)
+    {
+        <div class="registration-container font-normal">
+            <CustomLoader Visible="@(IsBusy)" Text="@null" Class="initial-data-loader">
+            </CustomLoader>
+            <EditForm EditContext="@editContext" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+                <Anchor Title="@(TextProvider.Get("REGISTRATION_ANAGRAFIC_DATA"))" ID="@(TextProvider.Get("REGISTRATION_ANAGRAFIC_DATA"))" IsCard="true" Order="1">
+                    <div class="form-group-multicolumn">
+                        <div class="form-group flex-full">
+                            <label for="@anagrafic.ReqFirstName" class="form-label">@TextProvider.Get("REGISTRATION_FIRSTNAME")</label>
+                            <InputText @bind-Value="anagrafic.ReqFirstName" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => anagrafic.ReqFirstName)" TextCode="REGISTRATION_FIRSTNAME" />
+                        </div>
+                        <div class="form-group flex-full">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_LASTNAME")</label>
+                            <InputText @bind-Value="anagrafic.ReqLastName" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => anagrafic.ReqLastName)" TextCode="REGISTRATION_LASTNAME" />
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_GENDER")</label>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="form-group-multicolumn">
+                            <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                <ButtonGroupToggleButton @bind-Selected="@MaleSelected">@TextProvider.Get("REGISTRATION_GENDER_MALE")</ButtonGroupToggleButton>
+                                <ButtonGroupToggleButton @bind-Selected="@FemaleSelected">@TextProvider.Get("REGISTRATION_GENDER_FEMALE")</ButtonGroupToggleButton>
+                            </TelerikButtonGroup>
+                        </div>
+                        <CustomValidationMessage For="@(() => anagrafic.ReqGender)" TextCode="REGISTRATION_GENDER" />
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_COUNTY_OF_BIRTH")</label>
+                        <InputText @bind-Value="anagrafic.ReqCountyOfBirth" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => anagrafic.ReqCountyOfBirth)" TextCode="REGISTRATION_COUNTY_OF_BIRTH" />
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_PLACE_OF_BIRTH")</label>
+                        <InputText @bind-Value="anagrafic.ReqPlaceOfBirth" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => anagrafic.ReqPlaceOfBirth)" TextCode="REGISTRATION_PLACE_OF_BIRTH" />
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_DATE_OF_BIRHT")</label>
+                        <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="anagrafic.ReqDateOfBirth" Min="DateTime.Now.AddYears(-120)" Max="DateTime.Now.AddYears(-18)" class="form-control"></TelerikDatePicker>
+                        <CustomValidationMessage For="@(() => anagrafic.ReqDateOfBirth)" TextCode="REGISTRATION_DATE_OF_BIRHT" />
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_FISCAL_NUMBER")</label>
+                        <InputText @bind-Value="valFiscalNumber" class="form-control" style="@validFiscalNumberCSS"></InputText>
+                        <CustomValidationMessage For="@(() => anagrafic.ReqFiscalNumber)" TextCode="REGISTRATION_FISCAL_NUMBER" />
+                        @if (!validFiscalNumber)
+                        {
+                            <div style="color: red;">@MSGProvider.GetValidationMessage("VALIDATION_ALREADY_EXISTS")</div>
+                        }
+                    </div>
+                </Anchor>
+                <Anchor Title="@(TextProvider.Get("REGISTRATION_DOMICILE_DATA"))" ID="@(TextProvider.Get("REGISTRATION_DOMICILE_DATA"))" IsCard="true" Order="2">
+                    @if (AddressNotFound == false)
+                    {
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_SEARCH_MUNICIPALITY")</label>
+                            <TelerikComboBox Data="@MunicipalitiesList"
+                                     TextField="@nameof(META_IstatComuni.NameDE)"
+                                     ValueField="@nameof(META_IstatComuni.ID)"
+                                     @bind-Value="@SelectedMunicipality"
+                                     ScrollMode="@DropDownScrollMode.Virtual"
+                                     ItemHeight="30" PageSize="15"
+                                     Filterable="true"
+                                     Class="address-search-box"
+                                     FilterOperator="@StringFilterOperator.Contains">
+                                <ComboBoxSettings>
+                                    <ComboBoxPopupSettings Height="200px" />
+                                </ComboBoxSettings>
+                            </TelerikComboBox>
+                            <CustomValidationMessage For="@(() => anagrafic.ReqDomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS" />
+                        </div>
+                        @if (SelectedMunicipality != Guid.Empty)
+                        {
+                            <div class="small-element-separator"></div>
+                            <div class="form-group">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                                <InputText @bind-Value="anagrafic.ReqDomicileStreetAddress" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => anagrafic.ReqDomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS" />
+                            </div>
+                            <div class="small-element-separator"></div>
+                            <div class="form-group-multicolumn">
+                                <div class="form-group flex-half">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                                    <label class="form-label-value">@anagrafic.ReqDomicilePostalCode</label>
+                                </div>
+                                <div class="form-group flex-full">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                                    <label class="form-label-value">@anagrafic.ReqDomicileMunicipality</label>
+                                </div>
+                                <div class="form-group flex-half">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                                    <label class="form-label-value">@anagrafic.ReqDomicileProvince</label>
+                                </div>
+                            </div>
+                        }
+                        <div class="extra-small-element-separator"></div>
+                        <div class="address-not-found-container font-small custom-color-primary" @onclick="AddressNotFoundClick">
+                            @TextProvider.Get("REGISTRATION_ADDRESS_NOT_FOUND")
+                        </div>
+                    }
+                    else if (AddressNotFound == true)
+                    {
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                            <InputText @bind-Value="anagrafic.ReqDomicileStreetAddress" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => anagrafic.ReqDomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS" />
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="form-group-multicolumn">
+                            <div class="form-group flex-half">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                                <InputText @bind-Value="anagrafic.ReqDomicilePostalCode" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => anagrafic.ReqDomicilePostalCode)" TextCode="REGISTRATION_POSTAL_CODE" />
+                            </div>
+                            <div class="form-group flex-full">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                                <InputText @bind-Value="anagrafic.ReqDomicileMunicipality" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => anagrafic.ReqDomicileMunicipality)" TextCode="REGISTRATION_MUNICIPALITY" />
+                            </div>
+                            <div class="form-group flex-half">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                                <InputText @bind-Value="anagrafic.ReqDomicileProvince" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => anagrafic.ReqDomicileProvince)" TextCode="REGISTRATION_PROVINCE" />
+                            </div>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_NATION")</label>
+                            <InputText @bind-Value="anagrafic.ReqDomicileNation" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => anagrafic.ReqDomicileNation)" TextCode="REGISTRATION_NATION" />
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="address-not-found-container font-small custom-color-primary" @onclick="SearchAddressClick">
+                            @TextProvider.Get("REGISTRATION_ADDRESS_SEARCH")
+                        </div>
+                    }
+                </Anchor>
+                <Anchor Title="@(TextProvider.Get("REGISTRATION_KONTAKT_DATA"))" ID="@(TextProvider.Get("REGISTRATION_KONTAKT_DATA"))" IsCard="true" Order="3">
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_EMAIL")</label>
+                        <InputText @bind-Value="anagrafic.DA_Email" type="email" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => anagrafic.DA_Email)" TextCode="REGISTRATION_EMAIL" />
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_MOBILE_PHONE")</label>
+                        <CustomPhone @bind-Value="@anagrafic.ReqPhoneNumber"></CustomPhone>
+                        <CustomValidationMessage For="@(() => anagrafic.ReqPhoneNumber)" TextCode="REGISTRATION_MOBILE_PHONE" />
+                    </div>
+                </Anchor>
+                @if (!Embeedded)
+                {
+                    <Anchor Title="@(TextProvider.Get("REGISTRATION_ACCOUNT_DATA"))" ID="@(TextProvider.Get("REGISTRATION_ACCOUNT_DATA"))" IsCard="true" Order="4">
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_PASSWORD")</label>
+                            <CustomPassword @bind-Value="@Password" />
+                            <CustomValidationMessage For="@(() => anagrafic.Password)" TextCode="REGISTRATION_PASSWORD" />
+                            @if (anagrafic.Password != null && IsValidPassword == false)
+                            {
+                                <div style="color: red">
+                                    @TextProvider.Get("REGIISTRATION_PASSWORD_INVALID")
+                                </div>
+                            }
+                        </div>
+                        @if (!string.IsNullOrEmpty(PasswordQuality))
+                        {
+                            <div class="password-quality-bar-background">
+                                <div class="password-quality-bar @PasswordQuality">@TextProvider.Get(PasswordQuality)</div>
+                            </div>
+                        }
+                        <div class="info-box">
+                            @(TextProvider.Get("REGISTRATION_PASSWORD_INFORMATION"))
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_CONFIRM_PASSWORD")</label>
+                            <CustomPassword @bind-Value="@anagrafic.ConfirmPassword" />
+                            <CustomValidationMessage For="@(() => anagrafic.ConfirmPassword)" TextCode="REGISTRATION_CONFIRM_PASSWORD" />
+                        </div>
+                    </Anchor>
+                }
+                @if (ShowPrivacy == true)
+                {
+                    <Anchor Title="@(TextProvider.Get("PRIVACY_POLICY_PAGE_TITLE"))" ID="@(TextProvider.Get("PRIVACY_POLICY_PAGE_TITLE"))" IsCard="true" Order="5">
+                        @if (Privacy != null)
+                        {
+                            var text = (MarkupString)(Privacy.Description);
+
+                            <TelerikSwitch @bind-Value="_privacyAccepted" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+
+                            <label>@text</label>
+                            <div class="extra-small-element-separator"></div>
+                        }
+                        <TelerikSwitch @bind-Value="_privacyMuniciplityAccepted" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        @{
+                            var textMun = new MarkupString(TextProvider.Get("REG_PRIVACY_MARKUP_COMUNIX"));
+                        }
+                        <label>@textMun</label>
+                        <div class="extra-small-element-separator"></div>
+                        <TelerikSwitch @bind-Value="_privacyCommunicationsAccepted" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        @{
+                            var textCom = new MarkupString(TextProvider.Get("REG_PRIVACY_MARKUP_COMMUNICATION"));
+                        }
+                        <div class="extra-small-element-separator"></div>
+                        <label>@textCom</label>
+                        <div class="extra-small-element-separator"></div>
+                        @if (_displayPrivacyNotAcceptedError)
+                        {
+                            <div class="extra-small-element-separator"></div>
+                            <label style="color:red;">@TextProvider.Get("PRIVACY_BOOL_ERROR")</label>
+                        }
+                    </Anchor>
+                }
+
+                <div class="registration-footer">
+                    <div class="form-group-container">
+                        <button class="btn btn-secondary flex-right vertical-element-separator" type="button" @onclick="BackToPreviousPage">@(TextProvider.Get("BUTTON_CANCEL"))</button>
+                        @if (!Embeedded)
+                        {
+                            <button class="btn btn-primary" type="submit">@(TextProvider.Get("REGISTRATION_BUTTON_REGISTER"))</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary" type="submit">@(TextProvider.Get("REGISTRATION_BUTTON_EMBEDDED_REGISTER"))</button>
+                        }
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    }
+</TelerikRootComponent>

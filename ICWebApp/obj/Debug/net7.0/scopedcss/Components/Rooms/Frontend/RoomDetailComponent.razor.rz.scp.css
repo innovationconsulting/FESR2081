@@ -1,0 +1,98 @@
+.galerie-container[b-vyxz0iui2g]
+{
+    max-width: 1080px;
+    max-height: 500px;
+}
+.property-container[b-vyxz0iui2g] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.property-value[b-vyxz0iui2g] {
+    width: 30px;
+    text-align: end;
+    line-height: 24px;
+}
+
+.property-container i[b-vyxz0iui2g] {
+    line-height: 25px;
+    width: 25px;
+    color: #808080;
+    text-align: center;
+}
+.property-text[b-vyxz0iui2g] {
+    line-height: 24px;
+}
+
+.seating-container[b-vyxz0iui2g] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+    flex-wrap: wrap;
+    max-width: 600px;
+}
+
+.seating-item img[b-vyxz0iui2g] {
+    height: 32px;
+}
+
+.seating-item[b-vyxz0iui2g] {
+    text-align: center;
+}
+
+.room-options ul[b-vyxz0iui2g] {
+    padding-left: 20px;
+}
+.room-options li[b-vyxz0iui2g]{
+    margin-bottom: 10px;
+}
+.item-name b[b-vyxz0iui2g]{
+    margin-right: 10px;
+}
+.price-table[b-vyxz0iui2g] {
+    width: 100%;
+}
+
+.price-header[b-vyxz0iui2g] {
+    background-color: #0F7173;
+    color: white !important;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    border: 0px;
+}
+
+.price-row:first-of-type[b-vyxz0iui2g] {
+    border-bottom: 15px solid white;
+}
+
+.price-cell[b-vyxz0iui2g] {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.price-row-header[b-vyxz0iui2g] {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.contact-item[b-vyxz0iui2g]{
+    margin-bottom: 20px;
+}
+.contact-type[b-vyxz0iui2g], .contact-email[b-vyxz0iui2g], .contact-phone[b-vyxz0iui2g] {
+    /*color: #808080;*/
+}
+.contact-name[b-vyxz0iui2g]{
+    font-weight: bold;
+}
+h3[b-vyxz0iui2g] {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

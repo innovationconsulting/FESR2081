@@ -1,0 +1,142 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>Comunix</PageTitle>
+
+<TelerikRootComponent>
+    <BusyIndicator></BusyIndicator>
+    <DialogWindow/>
+    <PreviewWindow></PreviewWindow>
+    <FloatingMenuComponent></FloatingMenuComponent>
+    <AuthorizeView Policy="Backend">
+        <Authorized>
+            @if (EnviromentService.IsMobile)
+            {
+                <div class="page-header">
+                    <div class="page-header-top-row-container">
+                        <div class="page-header-top-row">
+                            <div class="main-page-top-row-left">
+                                <h3 class="frontend-loggedin-user">
+                                    @(SessionWrapper.CurrentUser.Firstname) @(SessionWrapper.CurrentUser.Lastname)
+                                </h3>
+                            </div>
+                            <div class="main-page-top-row-right">
+                                <div class="mobile-notification-bell">
+                                    <TelerikIcon Icon="@("far fa-bell")"></TelerikIcon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-header-content-container">
+                        <div class="page-header-content">
+                            @if (Municipality != null)
+                            {
+                                <div class="mobile-menu">
+                                    <div class="mobile-menu-button-container" onclick="NavMenu_Mobile_OnShow('mobile-menu-popup-container');">
+                                        <div class="mobile-menu-button">
+                                            <TelerikIcon Icon="@("fas fa-bars")"></TelerikIcon>
+                                        </div>
+                                    </div>
+                                    <div id="mobile-menu-popup-container" class="mobile-menu-popup-container mobile-menu-popup-container-hide">
+                                        <div class="mobile-menu-container">
+                                            <div class="mobile-menu-container-header">
+                                                <div class="mobile-header-user-container">
+                                                    <div class="mobile-header-user-icon">
+                                                        <TelerikIcon Icon="@("fa-solid fa-circle-user")"></TelerikIcon>
+                                                    </div>
+                                                    <div class="mobile-header-user-name">
+                                                        <h1 class="mobile-header-first-row">
+                                                            @TextProvider.Get("WELCOME")
+                                                        </h1>
+                                                        <h2 class="mobile-header-second-row">
+                                                            @(SessionWrapper.CurrentUser.Firstname) @(SessionWrapper.CurrentUser.Lastname)!
+                                                        </h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mobile-header-action-container">
+                                                    <div class="mobile-header-action-container-button" @onclick="HandleLogout">@TextProvider.Get("LOGOUT_BUTTON")</div>
+                                                </div>
+                                            </div>
+                                            <div class="mobile-menu-container-main">
+                                                <ICWebApp.Components.MainMenu.Backend.Mobile.NavMenu />
+                                            </div>
+                                            <div class="mobile-menu-container-footer">
+                                                <div class="mobile-language-container">
+                                                    <ICWebApp.Components.Localization.Frontend.LanguageComponent></ICWebApp.Components.Localization.Frontend.LanguageComponent>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mobile-menu-popup-close" onclick="NavMenu_Mobile_OnHide('mobile-menu-popup-container');">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="page-header-branding" @onclick="ReturnToStart">
+                                    @if (Municipality.Logo != null)
+                                    {
+                                        <div class="page-header-logo">
+                                            @{
+                                                var base64String = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(Municipality.Logo));
+                                            }
+                                            <img src="@base64String" />
+                                        </div>
+                                    }
+                                    <div class="page-header-title">
+                                        <h1 class="page-header-description">@TextProvider.Get("BACKEND_HEADER_BRANDING_DESCRIPTION")</h1>
+                                        <h2 class="page-header-municipality">@Municipality.Name</h2>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="main-page" @onclick="OnScreenClicked">
+                @if (!EnviromentService.IsMobile)
+                {
+                    <div class="main-page-sidebar @SideBarCssClass">
+                        <div class="main-page-sidebar-content">
+                            <ICWebApp.Components.MainMenu.Backend.Desktop.NavMenu CollapsedSideBar="@CollapseMenu" />
+                        </div>
+                    </div>
+                }
+                <main class="main-container backend-main-container @MainCssClass">
+                    <article class="main-page-content" id="topelement">
+                        <div class="main-page-header">
+                            <div class="main-page-breadcrumb">
+                                <ICWebApp.Components.Breadcrumb.Frontend.Breadcrumb></ICWebApp.Components.Breadcrumb.Frontend.Breadcrumb>
+                            </div>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="main-page-body-container">
+                            <div class="main-page-body-content">
+                                @if (SessionWrapper != null && SessionWrapper.PageTitle != null)
+                                {
+                                    <h1 class="main-page-title custom-color-primary">@SessionWrapper.PageTitle</h1>
+                                }
+                               @* @if (SessionWrapper != null && SessionWrapper.PageSubTitle != null)
+                                {
+                                    <h5 class="main-page-subtitle custom-color-primary">@SessionWrapper.PageSubTitle</h5>
+                                }*@
+                                <div class="extra-small-element-separator"></div>
+                                @if (SessionWrapper != null && !SessionWrapper.Initializing)
+                                {
+                                    @Body
+                                }
+                            </div>
+                        </div>
+                    </article>
+                </main>
+            </div>
+            @if(SessionWrapper != null && SessionWrapper.CurrentUser != null)
+            {
+                <div style="display: none !important" id="UserID">
+                    @SessionWrapper.CurrentUser.ID
+                </div>
+            }
+        </Authorized>
+        <NotAuthorized>
+            <RedirectToLogin></RedirectToLogin>
+        </NotAuthorized>
+    </AuthorizeView>
+</TelerikRootComponent>

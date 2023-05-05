@@ -1,0 +1,130 @@
+.filter-container[b-xgdd6shvnm] {
+    width: 100%;
+    position: relative;
+}
+
+.filter-search-input[b-xgdd6shvnm] {
+    border: 1px solid #d9d9d9;
+}
+
+.filter-searchbar[b-xgdd6shvnm] {
+    display: flex;
+    /*gap: 5px;*/
+    justify-content: space-between;
+    padding-left: 10px;
+}
+
+    .filter-searchbar input[b-xgdd6shvnm] {
+        flex: 1;
+        height: 38px !important;
+        border: 0px !important;
+        outline: 0px !important;
+    }
+
+.searchbar-button[b-xgdd6shvnm] {
+    width: 38px !important;
+    height: 38px !important;
+    background-color: white;
+    color: rgb(128 128 128);
+    border-radius: 0px;
+}
+
+    .searchbar-button:hover[b-xgdd6shvnm] {
+        background-color: #0F7173;
+        color: white;
+    }
+
+.filter-popup[b-xgdd6shvnm] {
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 35%) 0px 2px 5px;
+    z-index: 800;
+    padding: 10px;
+    width: 100%;
+}
+
+.filter-second-row[b-xgdd6shvnm] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+    .filter-second-row .filter-element[b-xgdd6shvnm] {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        flex: 1;
+    }
+
+        .filter-second-row .filter-element div[b-xgdd6shvnm] {
+            flex: 1;
+        }
+
+.filter-toolbar[b-xgdd6shvnm] {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.filter-authorities[b-xgdd6shvnm] {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.authority-tag[b-xgdd6shvnm] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+}
+
+.filter-overlay[b-xgdd6shvnm] {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+.filter-submitted[b-xgdd6shvnm], .filter-deadline[b-xgdd6shvnm] {
+    display: flex;
+    gap: 10px;
+}
+.filter-clear-button[b-xgdd6shvnm] {
+    width: 38px !important;
+    margin: auto;
+}
+
+.filter-search-first-row[b-xgdd6shvnm] {
+    display: flex;
+    gap: 10px;
+}
+
+    .filter-search-first-row div[b-xgdd6shvnm] {
+        flex: 1;
+    }
+
+.filter-button-bar[b-xgdd6shvnm]{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.filter-date-element[b-xgdd6shvnm]{
+    width: 100%;
+}
+
+.third-row-css[b-xgdd6shvnm]{
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.third-row-element[b-xgdd6shvnm]{
+    flex: 1;
+}

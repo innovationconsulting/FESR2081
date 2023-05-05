@@ -1,0 +1,186 @@
+﻿<div class="modal fade search-modal" id="search-modal" data-focus-mouse="false" arial-labelledby="searchmodal" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content perfect-scrollbar">
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row variable-gutters">
+                        <div class="col">
+                            <div class="modal-title">
+                                <button class="search-link d-md-none search-cancel-btn" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Chiudi e torna alla pagina precedente">
+                                    <svg class="icon icon-md close-search-icon">
+                                        <use href="css/bootstrap-italia/svg/sprites.svg#it-arrow-left"></use>
+                                    </svg>
+                                </button>
+                                <h2>@TextProvider.Get("AGID_FRONTEND_SEARCH")</h2>
+                                <button class="search-link d-none d-md-block" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Chiudi e torna alla pagina precedente" data-focus-mouse="false">
+                                    <svg class="icon icon-md close-search-icon">
+                                        <use href="css/bootstrap-italia/svg/sprites.svg#it-close-big"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="form-group autocomplete-wrapper">
+                                <div class="search-page-input-container">
+                                    <label for="autocomplete-two" class="visually-hidden">Cerca nel sito</label>
+                                    <input type="text" @bind-value="Search.Text" class="autocomplete ps-5" placeholder="@TextProvider.Get("AGID_FRONTEND_SEARCH_PLACEHOLDER")">
+                                    <span class="autocomplete-icon" aria-hidden="true">
+                                        <svg class="icon">
+                                            <use href="css/bootstrap-italia/svg/sprites.svg#it-search"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <button type="button" class="btn btn-primary">
+                                    <span class="">@TextProvider.Get("AGID_FRONTEND_SEARCH_BUTTON")</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Search.Text))
+                    {
+                        @if (DefinitionList != null && DefinitionList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).Any())
+                        {
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <h2 class="mb-4 mt-5 mb-lg-10">@TextProvider.Get("AGID_FRONTEND_SEARCH_SERVICES")</h2>
+                                    @{
+                                        var count = DefinitionList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).Count();
+                                        if (count > 1)
+                                        {
+                                            <p class="mb-4">
+                                                <strong>@count</strong>@TextProvider.Get("FORMS_FRONTEND_SERVICES_IN_ALPHABETIC_ORDER")
+                                            </p>
+                                        }
+                                    }
+                                    
+                                    <div class="cmp-card-latest-messages mb-3 mb-30">
+                                        @foreach (var item in DefinitionList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).OrderBy(p => p.Title).ToList())
+                                        {
+                                            <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
+                                                @if (!string.IsNullOrEmpty(item.SubTitle) && !string.IsNullOrEmpty(item.SubTitleUrl))
+                                                {
+                                                    <div class="card-header border-0 p-0 t-primary">
+                                                        <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" @onclick="@(() => NavigateTo(item.SubTitleUrl))">@item.SubTitle</a>
+                                                    </div>
+                                                }
+                                                else if (!string.IsNullOrEmpty(item.SubTitle))
+                                                {
+                                                    <div class="card-header border-0 p-0 t-primary">
+                                                        <span class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">@item.SubTitle</span>
+                                                    </div>
+                                                }
+                                                <div class="card-body p-0 my-2">
+                                                    <h3 class="green-title-big t-primary mb-8">
+                                                        <a @onclick="@(() => NavigateTo(item.Url))" class="text-decoration-none" data-element="service-link">@item.Title</a>
+                                                    </h3>
+                                                    @if (!string.IsNullOrEmpty(item.ShortText))
+                                                    {
+                                                        <p class="text-paragraph">
+                                                            @item.ShortText
+                                                        </p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (ArticleList != null && ArticleList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).Any())
+                        {
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <h2 class="mb-4 mt-5 mb-lg-10">@TextProvider.Get("AGID_FRONTEND_SEARCH_NEWS")</h2>
+                                    @{
+                                        var count = ArticleList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).Count();
+                                        if (count > 1)
+                                        {
+                                            <p class="mb-4">
+                                                <strong>@count</strong>@TextProvider.Get("FORMS_FRONTEND_SERVICES_IN_ALPHABETIC_ORDER")
+                                            </p>
+                                        }
+                                    }
+                                    <div class="cmp-card-latest-messages mb-3 mb-30">
+                                        @foreach (var item in ArticleList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).OrderBy(p => p.Title).ToList())
+                                        {
+                                            <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
+                                                @if (!string.IsNullOrEmpty(item.SubTitle) && !string.IsNullOrEmpty(item.SubTitleUrl))
+                                                {
+                                                    <div class="card-header border-0 p-0 t-primary">
+                                                        <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" @onclick="@(() => NavigateTo(item.SubTitleUrl))">@item.SubTitle</a>
+                                                    </div>
+                                                }
+                                                else if (!string.IsNullOrEmpty(item.SubTitle))
+                                                {
+                                                    <div class="card-header border-0 p-0 t-primary">
+                                                        <span class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">@item.SubTitle</span>
+                                                    </div>
+                                                }
+                                                <div class="card-body p-0 my-2">
+                                                    <h3 class="green-title-big t-primary mb-8">
+                                                        <a @onclick="@(() => NavigateTo(item.Url))" class="text-decoration-none" data-element="service-link">@item.Title</a>
+                                                    </h3>
+                                                    @if (!string.IsNullOrEmpty(item.ShortText))
+                                                    {
+                                                        <p class="text-paragraph">
+                                                            @item.ShortText
+                                                        </p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (AuthorityList != null && AuthorityList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).Any())
+                        {
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <h2 class="mb-4 mt-5 mb-lg-10">@TextProvider.Get("AGID_FRONTEND_SEARCH_AUTHORITIES")</h2>
+                                    @{
+                                        var count = AuthorityList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).Count();
+                                        if (count > 1)
+                                        {
+                                            <p class="mb-4">
+                                                <strong>@count</strong>@TextProvider.Get("FORMS_FRONTEND_SERVICES_IN_ALPHABETIC_ORDER")
+                                            </p>
+                                        }
+                                    }
+                                    <div class="cmp-card-latest-messages mb-3 mb-30">
+                                        @foreach (var item in AuthorityList.Where(p => (p.Title != null && p.Title.ToLower().Contains(Search.Text.ToLower())) || (p.SubTitle != null && p.SubTitle.ToLower().Contains(Search.Text.ToLower()))).OrderBy(p => p.Title).ToList())
+                                        {
+                                            <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
+                                                @if (!string.IsNullOrEmpty(item.SubTitle) && !string.IsNullOrEmpty(item.SubTitleUrl))
+                                                {
+                                                    <div class="card-header border-0 p-0 t-primary">
+                                                        <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" @onclick="@(() => NavigateTo(item.SubTitleUrl))">@item.SubTitle</a>
+                                                    </div>
+                                                }
+                                                else if (!string.IsNullOrEmpty(item.SubTitle))
+                                                {
+                                                    <div class="card-header border-0 p-0 t-primary">
+                                                        <span class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">@item.SubTitle</span>
+                                                    </div>
+                                                }
+                                                <div class="card-body p-0 my-2">
+                                                    <h3 class="green-title-big t-primary mb-8">
+                                                        <a @onclick="@(() => NavigateTo(item.Url))" class="text-decoration-none" data-element="service-link">@item.Title</a>
+                                                    </h3>
+                                                    @if (!string.IsNullOrEmpty(item.ShortText))
+                                                    {
+                                                        <p class="text-paragraph">
+                                                            @item.ShortText
+                                                        </p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

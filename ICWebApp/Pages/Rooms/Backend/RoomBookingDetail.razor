@@ -1,0 +1,532 @@
+﻿@page "/RoomBooking/Detail/{ID}"    
+@layout MainLayout
+@using ICWebApp.Components.Rooms
+
+<div class="segment-container custom-background-default application-detail-container">
+    <div class="application-detail-left">
+        <TelerikWindow Modal="true" @bind-Visible="@FilterWindowVisible" Width="700px">
+            <WindowTitle>
+                @TextProvider.Get("BACKEND_FORM_DETAIL_TABLE_FILTER")
+            </WindowTitle>
+            <WindowContent>
+                <div class="filter-container">
+                    <ICWebApp.Components.Rooms.Filter.FilterComponent Filter="@Filter" OnSearch="FilterSearch" OnClose="FilterClose" Modal="true"></ICWebApp.Components.Rooms.Filter.FilterComponent>
+                </div>
+            </WindowContent>
+            <WindowActions>
+                <WindowAction Name="Close" OnClick="FilterClose" />
+            </WindowActions>
+        </TelerikWindow>
+        <CustomLoader Visible="@(IsDataBusy)"
+                                Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikListView Data="@Bookinggroups.OrderByDescending(p => p.CreationDate)" Pageable="true" PageSize="15">
+            <HeaderTemplate>
+                <div class="application-list-title-container">
+                    <div class="application-list-title-back">
+                        <TelerikButton OnClick="@BackToPreviousPage" ButtonType="ButtonType.Button" ThemeColor="Primary" Class="button-flex-end" Icon="@("fa-regular fa-arrow-left-long")"></TelerikButton>
+                    </div>
+                    <div class="font-normal application-list-title custom-color-primary">
+                        @TextProvider.Get("BACKEND_ROOM_LIST_TITLE")
+                    </div>
+                    <div class="application-list-title-calendar">  
+                        <TelerikButton OnClick="@GoToCalendar" ButtonType="ButtonType.Button" ThemeColor="Primary" Class="button-flex-end" Icon="@("fa-regular fa-calendar-clock")"></TelerikButton>
+                    </div>
+                    <div class="application-list-title-filter">
+                        <TelerikButton OnClick="@ShowFilter" ButtonType="ButtonType.Button" ThemeColor="Primary" Class="button-flex-end" Icon="@("fad fa-sliders-h")"></TelerikButton>
+                    </div>                    
+                </div>
+            </HeaderTemplate>
+            <Template>
+                @{
+                    string selectedCSS = "";
+
+                    if (CurrentBookingGroup != null && context.ID == CurrentBookingGroup.ID)
+                    {
+                        selectedCSS = "card-aktive";
+                    }
+                }
+
+                <div class="k-card k-card-horizontal @selectedCSS" @onclick="@(() => SelectBooking(context.ID))">
+                    <div class="k-vbox k-flex-grow">
+                        <div class="k-card-body application-card">
+                            <div class="font-detail">
+                                @if(context.CreationDate != null)
+                                {
+                                    @context.CreationDate.Value.ToString("dd.MM.yyyy HH:mm")
+                                }
+                            </div>
+                            <div class="font-bold custom-color-primary">
+                                @context.Fullname
+                            </div>
+                            <div class="font-small">
+                                @context.Rooms
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="font-small">
+                                <span>
+                                    <TelerikIcon Icon="@context.IconCSS"></TelerikIcon>
+                                    @context.Status
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Template>
+        </TelerikListView>
+    </div>
+    <div class="application-detail-right">
+        @if (CurrentBookingGroup != null)
+        {
+            <h2 class="application-detail-title custom-color-primary">
+                @CurrentBookingGroup.Fullname
+            </h2>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @CurrentWizardTitle
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="application-wizard-container">
+                <CustomLoader Visible="@(IsWizardBusy)"
+                                    Text="@null" Class="initial-data-loader">
+                </CustomLoader>
+                
+                <TelerikWizard @bind-Value="ApplicationTabIndex" StepperPosition="@WizardStepperPosition.Right">
+                    <WizardSteps>
+                        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_OVERVIEW")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-id-card")">
+                            <Content>
+                                <div class="form-group application-detail-tab font-small">
+                                    @if (CurrentBookingGroup != null)
+                                    {
+                                        <div class="applicant-container">
+                                            <div class="applicant-group">
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("APPLICANT_DATA")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.FirstName @CurrentBookingGroup.LastName</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.FiscalNumber</label>
+                                                </div>
+                                                <div class="element-separator"></div>
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row-segment">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.Email</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row-segment">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                                                    <label class="application-value">
+                                                        @if (!string.IsNullOrEmpty(CurrentBookingGroup.MobilePhone))
+                                                        {
+                                                            var IntPhoneNumber = long.Parse(CurrentBookingGroup.MobilePhone.Replace("+", ""));
+
+                                                            @IntPhoneNumber.ToString("+## ### ### ####")
+                                                        }
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="applicant-group">
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("APPLICATION_TIMES_AND_DEADLINE_DATA")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("PROGRESSIV_NUMBER")</label>
+                                                    <label class="application-value">@(CurrentBookingGroup.ProgressivNumberCombined)</label>                                                    
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICATION_SUBMITTED_AT")</label>
+                                                    @if (CurrentBookingGroup.CreationDate != null)
+                                                    {
+                                                        <label class="application-value">@CurrentBookingGroup.CreationDate.Value.ToString("dd.MM.yyyy HH:mm")</label>
+                                                    }
+                                                </div>
+                                                <div class="element-separator"></div>
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("BOOKING_BOOKINGS_DATA")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("BOOKING_BOOKING_TITLE")</label>
+                                                    <label class="application-value">@(CurrentBookingGroup.Title)</label>                                                    
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("BOOKING_BOOKING_DESCRIPTION")</label>
+                                                    <label class="application-value">@(CurrentBookingGroup.Description)</label>                                                    
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <div class="booking-container">
+                                                        @foreach (var building in CurrentBookingPositions.Where(p => !string.IsNullOrEmpty(p.BuildingName)).Select(p => p.BuildingName).Distinct().OrderBy(p => p).ToList())
+                                                        {
+                                                            <div class="booking-building-title">
+                                                                @building
+                                                            </div>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div class="booking-building-subcontainer">
+                                                                @foreach (var room in CurrentBookingPositions.Where(p => p.BuildingName == building).Select(p => p.Name).Distinct().OrderBy(p => p).ToList())
+                                                                {
+                                                                    <div class="booking-room-title">
+                                                                        @room
+                                                                    </div>
+                                                                    <div class="extra-small-element-separator"></div>
+                                                                    <div class="booking-room-subcontainer">
+                                                                        @foreach (var pos in CurrentBookingPositions.Where(p => p.BuildingName == building && p.Name == room).OrderBy(p => p.Description).ToList())
+                                                                        {
+                                                                            <div class="booked-item">
+                                                                                @pos.Description
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                    <div class="small-element-separator"></div>
+                                                                }
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                        }
+                                                        @foreach (var building in CurrentBookingPositions.Where(p => string.IsNullOrEmpty(p.BuildingName)).Select(p => p.Name).Distinct().OrderBy(p => p).ToList())
+                                                        {
+                                                            <div class="booking-building-title">
+                                                                @building
+                                                            </div>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div class="booking-building-subcontainer">
+                                                                @foreach (var pos in CurrentBookingPositions.Where(p => p.BuildingName == null && p.Name == building).OrderBy(p => p.Description).ToList())
+                                                                {
+                                                                    <div class="booked-item">
+                                                                        @pos.Description
+                                                                    </div>
+                                                                    <div class="small-element-separator"></div>
+                                                                }
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                @if (!string.IsNullOrEmpty(CurrentBookingGroup.Cancellation_IBAN))
+                                                {
+                                                    <div class="element-separator"></div>
+                                                    <h5 class="custom-color-primary">
+                                                        @TextProvider.Get("ROOM_CANCELLATION_TITLE")
+                                                    </h5>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div class="application-row">
+                                                        <label class="application-label">@TextProvider.Get("ROOM_CANCELLATION_OWNER")</label>
+                                                        <label class="application-value">@CurrentBookingGroup.Cancellation_Owner</label>  
+                                                    </div>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div class="application-row">
+                                                        <label class="application-label">@TextProvider.Get("ROOM_CANCELLATION_BANC")</label>
+                                                        <label class="application-value">@CurrentBookingGroup.Cancellation_Banc</label>  
+                                                    </div>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div class="application-row">
+                                                        <label class="application-label">@TextProvider.Get("ROOM_CANCELLATION_IBAN")</label>
+                                                        <label class="application-value">@CurrentBookingGroup.Cancellation_IBAN</label>  
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="element-separator"></div>
+                                        <div class="applicant-container">
+                                            <div class="applicant-group">
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("APPLICATION_STATUS")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                @if (CurrentBookingGroup != null && AllStatusList != null)
+                                                {
+                                                    var status = AllStatusList.FirstOrDefault(p => p.ID == StartStatus);
+                                                 
+                                                    @if(status != null && status.IsFinalStatus != true)
+                                                    {
+                                                        <div class="application-row">
+                                                            <div class="application-value">
+                                                                <TelerikDropDownList Data="@StatusList.OrderBy(p => p.Description)" @bind-Value="@CurrentBookingGroup.ROOM_BookingStatus_ID" ValueField="ID" TextField="Description">
+                                                                    <ItemTemplate Context="ItemContext">
+                                                                        <span class="application-status-item">
+                                                                            <i class="@ItemContext.IconCSS"></i>
+                                                                            @ItemContext.Description
+                                                                        </span>
+                                                                    </ItemTemplate>
+                                                                    <ValueTemplate Context="ValueContext">
+                                                                        <span class="application-status-item">
+                                                                            <i class="@ValueContext.IconCSS"></i>
+                                                                            @ValueContext.Description
+                                                                        </span>
+                                                                    </ValueTemplate>
+                                                                </TelerikDropDownList>
+                                                            </div>                                            
+                                                        </div>
+                                                        @if (CurrentBookingGroup != null && CurrentBookingGroup.ROOM_BookingStatus_ID != StartStatus)
+                                                        {
+                                                            <div class="change-status-container">
+                                                                <div class="small-element-separator"></div>
+                                                                <div class="application-label font-small">
+                                                                    @TextProvider.Get("APPLICATION_STATUS_REASON")
+                                                                </div>
+                                                                <div class="font-extra-small">
+                                                                    @TextProvider.Get("APPLICATION_STATUS_REASON_DETAIL")
+                                                                </div>
+                                                                <div class="extra-small-element-separator"></div>
+                                                                <TextTemplateSelector ExternalContext="ROOMS" ExternalID="@CurrentBookingGroup.ROOM_BookingStatus_ID.ToString()" TextItem="@TextItem"></TextTemplateSelector>
+                                                                <div class="extra-small-element-separator"></div>
+                                                                <div class="change-status-buttons">
+                                                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                                                    OnClick="@ChangeStatus">@TextProvider.Get("APPLICATION_STATUS_CHANGE")</TelerikButton>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                
+                                                    }
+                                                    else if(status != null)
+                                                    {
+                                                        <div class="application-row">
+                                                            <div class="application-value">
+                                                                <span class="application-status-item">
+                                                                    <i class="@status.IconCSS"></i>
+                                                                    @status.Description
+                                                                </span>
+                                                            </div>                                            
+                                                        </div>                                            
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="element-separator"></div>
+                                        <div class="ressource-container">
+                                             <h5 class="custom-color-primary">
+                                                @TextProvider.Get("APPLICATION_RESSOURCE")
+                                            </h5>
+                                            @if(CurrentBookingRessource != null && CurrentBookingRessource.Count() > 0)
+                                            {
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="ressource-document-container">
+                                                    @foreach(var ress in CurrentBookingRessource)
+                                                    {
+                                                        @if (ress.FILE_FileInfo_ID != null)
+                                                        {
+                                                            var dbfile = FileProvider.GetFileInfo(ress.FILE_FileInfo_ID.Value);
+
+                                                            @if (dbfile != null)
+                                                            {
+                                                                <div class="document-detail-download" @onclick="@(() => DownloadRessource(ress.FILE_FileInfo_ID.Value, dbfile.FileName))">
+                                                                    <div class="document-detail-download-icon">
+                                                                        <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                                                                    </div>
+                                                                    <div class="document-detail-download-description font-normal">
+                                                                        @dbfile.FileName (@(dbfile.Size/1024) kb)
+                                                                    </div>
+                                                                </div>
+                                                                <div class="extra-small-element-separator"></div>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="ressource-document-container">
+                                                <UploadComponent FileInfoList="@CurrentBookingUserRessource" RemoveAreYouSure="true" 
+                                                                 OnUpload="SaveRessources" OnRemove="FileRemoved" SmallStyle="true" Multiple="true"></UploadComponent>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </Content>
+                        </WizardStep>
+                        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_ANAGRAFIC")" OnChange="OnStepChanged" Icon="@("fa-solid fa-person")">
+                            <Content>
+                                <div class="form-group application-detail-tab font-small">
+                                    @if (CurrentBookingGroup != null)
+                                    {
+                                        <div class="applicant-container">
+                                            <div class="applicant-group">
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("APPLICANT_ANAGRAFIC_DATA")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.FirstName @CurrentBookingGroup.LastName</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.FiscalNumber</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_GENDER")</label>
+                                                    <label class="application-value">
+                                                        @if (CurrentBookingGroup.Gender == "M")
+                                                        {
+                                                            @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                                                        }
+                                                        else if (CurrentBookingGroup.Gender == "F")
+                                                        {
+                                                            @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                                                        }
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="applicant-group">
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("APPLICANT_BIRTH_DATA")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_COUNTY_OF_BIRTH")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.CountyOfBirth</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_PLACE_OF_BIRTH")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.PlaceOfBirth</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_DATE_OF_BIRTH")</label>
+                                                    <label class="application-value">
+                                                        @if (CurrentBookingGroup.DateOfBirth != null)
+                                                        {
+                                                            @CurrentBookingGroup.DateOfBirth.Value.ToString("dd.MM.yyyy")
+                                                        }
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="element-separator"></div>
+                                        <div class="applicant-container">
+                                            <div class="applicant-group">
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("APPLICANT_DOMICILE_DATA")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.DomicileStreetAddress</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.DomicilePostalCode</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.DomicileMunicipality</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.DomicileProvince</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="applicant-group">
+                                                <h5 class="custom-color-primary">
+                                                    @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                                                </h5>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row-segment">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                                                    <label class="application-value">@CurrentBookingGroup.Email</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="application-row-segment">
+                                                    <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                                                    <label class="application-value">
+                                                        @if (!string.IsNullOrEmpty(CurrentBookingGroup.MobilePhone))
+                                                        {
+                                                            var IntPhoneNumber = long.Parse(CurrentBookingGroup.MobilePhone.Replace("+", ""));
+
+                                                            @IntPhoneNumber.ToString("+## ### ### ####")
+                                                        }
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </Content>
+                        </WizardStep>
+                        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_BOOKING_TAB_DETAILS")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-calendar-days")">
+                            <Content>
+                                <div class="form-group application-detail-tab">
+                                    @if (CurrentBookingGroup != null)
+                                    {
+                                        <ICWebApp.Components.Rooms.Calendar.CalendarComponent Filter="@calendarFilter"></ICWebApp.Components.Rooms.Calendar.CalendarComponent>
+                                    }
+                                </div>
+                            </Content>
+                        </WizardStep>
+                        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_PREVIEW")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-file-certificate")">
+                            <Content>
+                                <div class="form-group application-detail-tab">
+                                    @if (CurrentBookingGroup != null && CurrentBookingGroup.FILE_FileInfo_ID != null)
+                                    {
+                                        <div class="preview-container">
+                                            <div class="preview-url-container">
+                                                <PDFViewer FILE_FileInfoID="@CurrentBookingGroup.FILE_FileInfo_ID"></PDFViewer>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </Content>
+                        </WizardStep>                        
+                        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_STATUS_LOG")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-list-dropdown")">
+                            <Content>
+                                <div class="form-group application-detail-tab">
+                                    <div class="tasks-container">
+                                        <TelerikGrid Data="@CurrentStatusLogList.OrderByDescending(p => p.ChangeDate)" Pageable="false" Sortable="false" Resizable="false"
+                                                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                                            <GridColumns>
+                                                <GridColumn Field="@nameof(V_ROOM_Booking_Status_Log.User)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_STATUS_LOG_USER")"></GridColumn>
+                                                <GridColumn Field="@nameof(V_ROOM_Booking_Status_Log.ChangeDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_STATUS_LOG_CHANGE_DATE")" Width="250px"></GridColumn>
+                                                <GridColumn Field="@nameof(V_ROOM_Booking_Status_Log.Status)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_STATUS_LOG_STATUS")">
+                                                    <Template Context="ItemContext">
+                                                        @{
+                                                            V_ROOM_Booking_Status_Log item = ItemContext as V_ROOM_Booking_Status_Log;
+
+                                                            <span class="application-status-item">
+                                                                <TelerikIcon Icon="@item.IconCSS"></TelerikIcon>
+                                                                @item.Status
+                                                            </span>
+                                                        }
+                                                    </Template>
+                                                </GridColumn>
+                                            </GridColumns>
+                                        </TelerikGrid>
+                                    </div>
+                                </div>
+                            </Content>
+                        </WizardStep>
+                        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_PAYMENTS")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-credit-card")">
+                            <Content>
+                                <div class="form-group application-detail-tab">
+                                    <PaymentList FilterTransactionList="@CurrenTransactionList" UserSelectionUserID="@CurrentBookingGroup.AUTH_User_ID"
+                                                 OnTransactionCreated="@TransactionCreated" ShowBollo="false" ></PaymentList>
+                                </div>
+                            </Content>
+                        </WizardStep>                    
+                    </WizardSteps>
+                    <WizardButtons>
+                    </WizardButtons>
+                    <WizardSettings>
+                        <WizardStepperSettings Linear="false" />
+                    </WizardSettings>
+                </TelerikWizard>
+            </div>
+        }
+    </div>    
+</div>

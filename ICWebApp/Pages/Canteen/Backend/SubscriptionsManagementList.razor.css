@@ -1,0 +1,143 @@
+﻿.hide {
+    display: none !important;
+}
+
+.btn {
+    width: 250px;
+}
+
+.application-detail-left {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-right: 20px;
+    border-right: 1px solid #d9d9d9;
+}
+
+
+.application-detail-right {
+    width: 350px;
+}
+
+
+.application-detail-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.segment-container {
+    border: 0px solid #dfdfdf;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.img.subscriber-status-icon {
+    width: 16px;
+    margin-right: 5px;
+}
+
+.k-toolbar .k-input, .k-toolbar .k-picker {
+    width: unset;
+    width: 100% !important;
+}
+
+.k-grid-header .k-header {
+    text-align: center;
+    border-left: 0px;
+}
+
+.k-grid-header .k-header {
+    text-align: center !important;
+}
+
+.k-grid .k-header .k-link,
+.k-grid .k-header {
+    text-align: center;
+}
+
+.k-grid .k-grid-header th .k-cell-inner,
+.k-grid .k-grid-header th .k-cell-inner > .k-link {
+    display: block;
+    text-align: center !important;
+    white-space: normal;
+}
+
+.k-column-title {
+    white-space: normal;
+}
+
+.th.k-header.k-touch-action-none {
+    align-items: center;
+    text-align: center;
+}
+
+.centered-header-grid .k-cell-inner > .k-link {
+    justify-content: center !important;
+}
+
+.k-column-title {
+    align-items: center;
+    text-align: center;
+    width: 100% !important;
+}
+
+.k-grid .k-state-selected {
+    color: black !important;
+}
+
+form-group-no-margin {
+    float: left;
+    margin: 0px;
+}
+
+form-group-no-margin {
+    text-align: left;
+}
+
+h5, .h5 {
+    color: #0f7173;
+}
+
+.toolbar-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.toolbar-button {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+    .toolbar-button i {
+        line-height: 21px;
+    }
+
+.btn {
+    width: auto !important;
+}
+
+.toolbar-button-disabled {
+    opacity: 0.8;
+    background-color: #0f7173 !important;
+    cursor: default !important;
+}
+.progress-detail{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+.font-detail{
+    font-size: 13px;
+}
+.progress-detail-total{
+    margin-right: 10px;
+}
+.progress-info-title{
+    font-size: 18px;
+    font-weight: bold;
+}

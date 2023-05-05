@@ -1,0 +1,117 @@
+﻿@if (Task != null)
+{
+    <tr class="task-container @Class" @onclick="@(() => Onclick.InvokeAsync())">
+        <td>
+            <div class="check-item">
+                @if (Task.CompletedAt == null)
+                {
+                    <div class="check-element" @onclick="@(() => CheckCheckItem())" @onclick:stopPropagation="true">
+                    </div>
+                }
+                else
+                {
+                    <div class="check-element check-element-aktive" @onclick="@(() => UnCheckCheckItem())" @onclick:stopPropagation="true">
+                    </div>
+                }
+            </div>
+        </td>
+        <td>
+            <div class="task-title">
+                @Task.Title
+            </div>
+        </td>
+        <td>
+            <div class="task-responsible">
+                @if (TaskResponsibleList != null && TaskResponsibleList.Count() > 0)
+                {
+                    @foreach (var resp in TaskResponsibleList.OrderBy(p => p.SortDesc))
+                    {
+                        var user = AUTHProvider.GetUserSync(resp.AUTH_Users_ID.Value);
+
+                        <UserCard SmallStyle="true" User="@user"></UserCard>
+                    }
+                }
+            </div>
+        </td>
+        <td>
+            <div class="task-properties">
+                @if (Task.TASK_Priority_ID != null && PriorityList != null)
+                {
+                    var priority = PriorityList.FirstOrDefault(p => p.ID == Task.TASK_Priority_ID);
+
+                    if (priority != null)
+                    {
+                        <div class="properties-icon" title="@priority.Description">
+                            <i class="@priority.Icon"></i>
+                        </div>
+                    }
+                }
+                @if (Task.TASK_Status_ID != null && StatusList != null)
+                {
+                    var status = StatusList.FirstOrDefault(p => p.ID == Task.TASK_Status_ID);
+
+                    if (status != null)
+                    {
+                        <div class="properties-icon" title="@status.Description">
+                            <i class="@status.Icon"></i>
+                        </div>
+                    }
+                }
+                @if (HasComments)
+                {
+                    <div class="properties-icon" title="@TextProvider.Get("TASKS_ADD_COMMENTS")">
+                        <i class="fa-regular fa-comment"></i>
+                    </div>
+                }
+                @if (HasFiles)
+                {
+                    <div class="properties-icon" title="@TextProvider.Get("TASKS_ADD_FILES")">
+                        <i class="fa-regular fa-paperclip"></i>
+                    </div>
+                }
+                @if (HasEskalation)
+                {
+                    <div class="properties-icon" title="@TextProvider.Get("TASKS_ADD_ESKALATION")">
+                        <i class="fa-regular fa-light-emergency-on"></i>
+                    </div>
+                }
+            </div>
+        </td>
+        <td>
+            <div class="task-deadline">
+                @if (Task.Deadline != null)
+                {
+                    @Task.Deadline.Value.ToString("dd.MM.yyyy")
+                }
+            </div>
+        </td>
+        <td>
+            <div class="task-tags">
+                @if (TaskTagList != null && TaskTagList.Count() > 0)
+                {
+                    @foreach (var item in TaskTagList.OrderBy(p => p.SortOrder))
+                    {
+                        if (item != null)
+                        {
+                            var tag = TagList.FirstOrDefault(p => p.ID == item.TASK_Tag_ID);
+
+                            if (tag != null)
+                            {
+                                <div class="tag-item" style="background-color: @(tag.Color + "aa") !important; border-color: @(tag.Color) !important">
+                                    <div class="tag-description font-small">
+                                        @tag.Description
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                }
+            </div>
+        </td>
+    </tr>
+}
+else
+{
+    <tr style="height: 28px;" class="@Class">
+    </tr>
+}

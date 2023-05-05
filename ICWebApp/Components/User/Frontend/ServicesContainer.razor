@@ -1,0 +1,41 @@
+﻿<div class="col-12 service-container">
+    <div class="cmp-input-search">
+        <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
+            <div class="input-group">
+                <label for="autocomplete-autocomplete-three" class="visually-hidden">@TextProvider.Get("FORMS_FRONTEND_SEARCH_BY_KEYWORD")</label>
+                <input @bind-value="Keyword" type="search" class="autocomplete form-control" placeholder="@TextProvider.Get("FORMS_FRONTEND_SEARCH_BY_KEYWORD")">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">@TextProvider.Get("FORMS_FRONTEND_SEARCH_BUTTON")</button>
+                </div>
+                <span class="autocomplete-icon" aria-hidden="true">
+                    <svg class="icon icon-sm icon-primary">
+                        <use href="css/bootstrap-italia/svg/sprites.svg#it-search"></use>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="cmp-accordion">
+        <div class="accordion" id="accordion-@AccordionID">
+            @foreach (var item in Data.Where(p => string.IsNullOrEmpty(Keyword) || (p.Title != null && p.Title.ToLower().Contains(Keyword.ToLower())) 
+                                               || (p.Rooms != null && p.Rooms.ToLower().Contains(Keyword.ToLower()))
+                                               || (p.Description != null && p.Description.ToLower().Contains(Keyword.ToLower()))
+                                               || (p.Days != null && p.Days.ToLower().Contains(Keyword.ToLower()))
+                                            ).OrderByDescending(p => p.LastChangeDate ?? p.CreationDate).Take(ShowCount).ToList())
+            {
+           
+                <ServiceItem Item="item" ParentID="@AccordionID"></ServiceItem>
+            }
+        </div>
+    </div>
+    @if (ShowCount < Data.Where(p => string.IsNullOrEmpty(Keyword) || (p.Title != null && p.Title.ToLower().Contains(Keyword.ToLower())) 
+                                    || (p.Rooms != null && p.Rooms.ToLower().Contains(Keyword.ToLower()))
+                                    || (p.Description != null && p.Description.ToLower().Contains(Keyword.ToLower()))
+                                    || (p.Days != null && p.Days.ToLower().Contains(Keyword.ToLower()))
+                                    ).Count())
+    {
+        <button type="button" class="btn accordion-view-more mb-2 pt-3 t-primary title-xsmall-semi-bold ps-lg-3" data-focus-mouse="false" @onclick="IncreaseShowCount">
+            <span class="">@TextProvider.Get("FRONTEND_SERVICES_SHOW_MORE")</span>
+        </button>
+    }
+</div>

@@ -1,0 +1,106 @@
+@media (min-width: 768px) .form-inline .form-group {
+                              display: inline-block;
+                              margin-bottom: 0;
+                              vertical-align: middle;[b-ui58lgh2wq]
+                          }
+
+
+.hide[b-ui58lgh2wq] {
+    display: none !important;
+}
+
+.form-group[b-ui58lgh2wq] {
+    float: left;
+    margin: 5px;
+}
+
+.btn[b-ui58lgh2wq] {
+    width: 250px;
+}
+
+.application-detail-left[b-ui58lgh2wq] {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-right: 20px;
+    border-right: 1px solid #d9d9d9;
+}
+
+
+.application-detail-right[b-ui58lgh2wq] {
+    width: 350px;
+    
+}
+
+
+.application-detail-container[b-ui58lgh2wq] {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.segment-container[b-ui58lgh2wq] {
+    border: 0px solid #dfdfdf;
+    padding: 0px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+/*    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;*/
+}
+
+.img.subscriber-status-icon[b-ui58lgh2wq] {
+    width: 16px;
+    margin-right: 5px;
+}
+
+.k-toolbar .k-input[b-ui58lgh2wq], .k-toolbar .k-picker[b-ui58lgh2wq] {
+    width: unset;
+    width: 100% !important;
+}
+
+.k-grid-header .k-header[b-ui58lgh2wq] {
+    text-align: center;
+    border-left: 0px;
+}
+
+.k-grid-header .k-header[b-ui58lgh2wq] {
+    text-align: center !important;
+}
+
+.k-grid .k-header .k-link[b-ui58lgh2wq], /* for sortable grid */
+.k-grid .k-header[b-ui58lgh2wq] {
+    text-align: center;
+}
+
+.k-grid .k-grid-header th .k-cell-inner[b-ui58lgh2wq],
+.k-grid .k-grid-header th .k-cell-inner > .k-link[b-ui58lgh2wq] {
+    display: block;
+    text-align: center !important;
+    white-space: normal;
+}
+
+.k-column-title[b-ui58lgh2wq] {
+    white-space: normal;
+}
+
+.th.k-header.k-touch-action-none[b-ui58lgh2wq] {
+    align-items: center;
+    text-align: center;
+}
+
+.centered-header-grid .k-cell-inner > .k-link[b-ui58lgh2wq] {
+    justify-content: center !important;
+}
+
+.k-column-title[b-ui58lgh2wq] {
+    align-items: center;
+    text-align: center;
+    width: 100% !important;
+}
+
+.k-grid .k-state-selected[b-ui58lgh2wq] {
+    color: black !important;
+}
+
+h5[b-ui58lgh2wq], .h5[b-ui58lgh2wq] {
+    color: #0f7173;
+}

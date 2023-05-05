@@ -1,0 +1,63 @@
+﻿@page "/Form/Status/Settings"
+
+@layout MainLayout
+
+@if(MunicipalStatusList != null && MunicipalStatusList.Count() > 0)
+{
+    <div class="status-list-container">
+        <TelerikListView Data="@MunicipalStatusList.OrderBy(p => p.SortOrder)" Pageable="false">
+            <Template>
+                @if (context.FORM_Application_Status_ID != null)
+                {
+                    var status = FormApplicationProvider.GetStatus(context.FORM_Application_Status_ID.Value);
+
+                    @if (status != null)
+                    {
+                        <div class="k-card k-card-horizontal status-card">
+                            <div class="k-vbox k-flex-grow">
+                                <div class="k-card-body status-card-container">                            
+                                    <div class="status-list-row-item">
+                                        <div class="status-list-enabled-container">
+                                            <TelerikSwitch @bind-Value="context.Enabled" OnLabel=" " OffLabel=" " Width="65px"
+                                                    Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small" OnChange="@(() => SaveMunicipalStatus(context))"></TelerikSwitch>
+                                        </div>
+                                        <div class="status-list-description-container">
+                                            <span class="status-list-icon">
+                                                <TelerikIcon Icon="@status.Icon"></TelerikIcon>
+                                            </span>
+
+                                            <label class="font-normal">
+                                                @if (status.TEXT_SystemTexts_Code != null)
+                                                {
+                                                    @TextProvider.Get(status.TEXT_SystemTexts_Code)
+                                                }
+                                            </label>
+                                        </div>
+                                        <div class="status-list-toolbar">
+                                            <div class="table-sorter-buttons">
+                                                @if(context.SortOrder != MunicipalStatusList.Min(p => p.SortOrder))
+                                                {
+                                                    <TelerikButton Class="btn btn-secondary status-list-button" OnClick="@(() => MoveUpStatus(context))" Icon="SvgIcon.ChevronUp"></TelerikButton>
+                                                }
+                                                @if(context.SortOrder != MunicipalStatusList.Max(p => p.SortOrder))
+                                                {
+                                                    <TelerikButton Class="btn btn-secondary status-list-button" OnClick="@(() => MoveDownStatus(context))" Icon="SvgIcon.ChevronDown"></TelerikButton>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="status-list-document-container">
+                                            <TelerikSwitch @bind-Value="context.GeneratesPDF" OnLabel=" " OffLabel=" " Width="65px"
+                                                    Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small" OnChange="@(() => SaveMunicipalStatus(context))">
+                                            </TelerikSwitch>
+                                            @TextProvider.Get("FORM_STATUS_CREATES_PDF")
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+        </Template>
+        </TelerikListView>        
+    </div>
+}

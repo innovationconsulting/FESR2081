@@ -1,0 +1,149 @@
+﻿.room-filter-component {
+    padding: 15px;
+    width: 100%;
+}
+    .meeting-datetime-picker-from,
+    .meeting-datetime-picker-to {
+        max-width: 250px;
+        width: 100%;
+    }
+
+.meeting-filter-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.meeting-date {
+    width: 60%;
+}
+.meeting-time{
+    width: 40%;
+    min-width: 100px;
+}
+/*.meeting-duration {
+    width: 120px;
+}*/
+.meeting-value{
+    display: flex;
+    gap: 10px;
+}
+.meeting-label{
+    height: 30px;
+}
+.meeting-toolbar {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+.meeting-toolbar-content{
+}
+.create-series-button {
+    color: #0F7173;
+    cursor: pointer;
+    height: 30px;
+}
+    .create-series-button:hover {
+        text-decoration: underline;
+        color: #1DA2AF
+    }
+.create-series-button i{
+    margin-left: 5px;
+    margin-right: 10px;
+}
+.series-top-bar{
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+}
+.series-meeting-container {
+    border: 1px solid #f2f2f2;
+    padding: 10px;
+}
+.series-meeting-container-second-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+.container-title {
+    background-color: white;
+    margin-top: -22px;
+    padding-right: 10px;
+    width: fit-content;
+}
+.meeting-series-from, .meeting-series-to {
+    width: 100%;
+    max-width: 150px;
+}
+.series-time{
+    width: 100%;
+}
+.series-type-container-second-row{
+    display: flex;
+    justify-content: space-between;
+}
+.type-container-left .element-radio-button {
+    height: 40px;
+}
+.type-container-left {
+    padding-right: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.type-container-right {
+    margin-left: 15px;
+    padding-left: 15px;
+    border-left: 1px solid #f2f2f2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.advanced-radio-button{
+    display: flex; 
+    justify-content: flex-start;
+    gap: 10px;
+    line-height: 34px;
+    flex-wrap: wrap;
+}
+.daily-day-input{
+    display: flex;
+    justify-content: flex-start;
+}
+.radio-label{
+    margin-left: -6px;
+}
+.weekly-input {
+    display: flex;
+    gap: 10px;
+    height: 38px;
+    line-height: 34px;
+}
+.week-day-container{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.monthly-input {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.meeting-duration-input {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+.meeting-series-duration-from {
+    display: flex;
+    gap: 10px;
+    line-height: 34px;
+    height: 38px;
+}
+.series-search-container{
+    display: flex;
+    justify-content: flex-start;
+}

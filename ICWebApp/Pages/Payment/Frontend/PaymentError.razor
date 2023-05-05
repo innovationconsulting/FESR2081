@@ -1,0 +1,21 @@
+﻿@page "/PaymentError/{Family_ID}/{ReturnUrl}"
+
+@layout FrontendLayout
+
+<div class="container">
+    <div class="row mt-lg-80 mt-3 mb-4">
+        <div class="col-12">
+            <div class="segment-container" style="color: red;">
+                @TextProvider.Get("PAYMENT_ERROR")
+                <div class="element-separator"></div>
+                <button class="btn btn-secondary" @onclick="ReturnToStart">@TextProvider.Get("BACK_TO_START")</button>
+            </div>
+            @if (ShowCloseTag == true)
+            {
+                <div style="display:none !important;" class="close-custom-popup">
+                    @Uri.UnescapeDataString(ReturnUrl)
+                </div>
+            }
+        </div>
+    </div>
+</div>       

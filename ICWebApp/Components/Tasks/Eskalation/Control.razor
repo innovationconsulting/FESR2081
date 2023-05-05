@@ -1,0 +1,96 @@
+﻿@if(List != null)
+{
+    <div class="eskalation-control-container">
+        @if (List.Count() > 0)
+        {
+            <div class="eskalation-title-container">
+                <div class="eskalation-date font-normal">
+                    @TextProvider.Get("TASK_ESKALATION_DATE")
+                </div>
+                <div class="eskalation-responsible font-normal">
+                    @TextProvider.Get("TASK_ESKALATION_TARGETS")
+                </div>
+            </div>
+            <div class="small-element-separator"></div>
+        }
+        <div class="eskalation-data-container">
+            @foreach(var esk in List)
+            {
+                @if (esk != null)
+                {
+                    <div class="eskalation-item-container" @onclick="@(() => EditEskalation(esk))" @onclick:stopPropagation="true">
+                        <div class="eskalation-date">
+                            @if(esk.PlannedNotificationDate != null)
+                            {
+                                @esk.PlannedNotificationDate.Value.ToString("dd.MM.yyyy")
+                            }
+                        </div>
+                        <div class="eskalation-responsible-container">
+                            @foreach(var r in esk.TASK_Task_Eskalation_Responsible.ToList())
+                            {
+                                @if(r != null && r.AUTH_Users_ID != null)
+                                {
+                                    var user = AUTHProvider.GetUserSync(r.AUTH_Users_ID.Value);
+
+                                    @if(user != null)
+                                    {
+                                        <div class="eskalation-responsible-item">
+                                            <UserCard SmallStyle="true" User="user"></UserCard>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                        <div class="check-description-buttons">
+                            <div class="check-button" @onclick="@(() => RemoveItem(esk))" @onclick:stopPropagation="true">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="extra-small-element-separator"></div>
+        <div class="eskalation-item-add-container" @onclick="AddEskalation" @onclick:stopPropagation="true">
+            @TextProvider.Get("TASK_ESKALATION_ADD")
+        </div>
+    </div>
+}
+
+<TelerikWindow Modal="true" @bind-Visible="@EditEskalationVisibility" Width="600px" Class="task-quickadd-window">
+    <WindowTitle>
+        @TextProvider.Get("TASK_ADD_ESKALATION")        
+    </WindowTitle>
+    <WindowContent>
+        @if (Eskalation != null)
+        {
+            <div class="eskalation-edit-container">     
+                <div class="eskalation-edit-date font-normal">
+                    @TextProvider.Get("TASK_ESKALATION_DATE")
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div>
+                    <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="Eskalation.PlannedNotificationDate" class="form-control"></TelerikDatePicker>
+                </div>
+                <div class="small-element-separator"></div>
+                <div class="eskalation-responsible font-normal">
+                    @TextProvider.Get("TASK_ESKALATION_TARGETS")
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="eskalation-edit-responsible">
+                    <ICWebApp.Components.Tasks.Eskalation.Responsible.Control TaskEskalationID="@Eskalation.ID" ItemAdded="ResponsibleAddEvent" ItemRemoved="ResponsibleRemovedEvent" 
+                                                                                ResponsibleList="Eskalation.TASK_Task_Eskalation_Responsible.ToList()">
+                    </ICWebApp.Components.Tasks.Eskalation.Responsible.Control>
+                </div>
+                <div class="small-element-separator"></div>
+                <div class="button-container">
+                    <button class="btn btn-secondary" type="button" @onclick="HideEskalation">@TextProvider.Get("BUTTON_CANCEL")</button>
+                    <button class="btn btn-primary" type="button" @onclick="SaveEskalation">@TextProvider.Get("BUTTON_SAVE")</button>
+                </div>
+            </div>
+        }
+    </WindowContent>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="HideEskalation" />
+    </WindowActions>
+</TelerikWindow>

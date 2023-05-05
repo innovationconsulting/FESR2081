@@ -1,0 +1,139 @@
+﻿@if (Contacts != null)
+{
+    <div class="contact-container">
+        <TelerikGrid Data="@Contacts.Where(p => p.CONT_Contact != null).OrderBy(p => p.CONT_Contact.Fullname).ToList()"
+                     Pageable="false"
+                     Sortable="true"
+                     Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable"
+                     Groupable="false"
+                     Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@AddContact" Icon="SvgIcon.Plus">@TextProvider.GetOrCreate("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(ROOM_Rooms_Contact.ShowOnline)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_VISIBLE")" Width="auto">
+                    <Template>
+                        @{
+                            ROOM_Rooms_Contact item = context as ROOM_Rooms_Contact;
+
+                            <TelerikSwitch @bind-Value="@item.ShowOnline" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="@nameof(ROOM_Rooms_Contact.Fullname)" Title="@TextProvider.GetOrCreate("ROOM_OPTION_CONTACT_FULLNAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(ROOM_Rooms_Contact.ID)" Title="@TextProvider.GetOrCreate("ROOM_OPTION_CONTACT_CATEGORY")" Width="auto">
+                    <Template>
+                        @{
+                            ROOM_Rooms_Contact item = context as ROOM_Rooms_Contact;
+
+                            if (ContactTypes != null && item.ROOM_Rooms_Contact_Type != null)
+                            {
+                                var categories = ContactTypes.Where(p => item.ROOM_Rooms_Contact_Type.Select(x => x.ROOM_Contact_Type_ID).Contains(p.ID));
+
+                                if (categories != null)
+                                {
+                                    string result = "";
+
+                                    @foreach (var cat in categories)
+                                    {
+                                        result += cat.Description + ", ";
+                                    }
+
+                                    result = result.TrimEnd().TrimEnd(',');
+
+                                    <div class="optin-contant-description">
+                                        @result
+                                    </div>
+                                }
+                            }
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="@nameof(ROOM_Rooms_Contact.SendEmail)" Title="@TextProvider.GetOrCreate("ROOM_OPTION_CONTACT_EMAIL")" Width="140px">
+                    <Template>
+                        @{
+                            ROOM_Rooms_Contact item = context as ROOM_Rooms_Contact;
+
+                            <TelerikSwitch @bind-Value="@item.SendEmail" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="@nameof(ROOM_Rooms_Contact.SendSMS)" Title="@TextProvider.GetOrCreate("ROOM_OPTION_CONTACT_SMS")" Width="140px"> 
+                    <Template>
+                        @{
+                            ROOM_Rooms_Contact item = context as ROOM_Rooms_Contact;
+
+                            <TelerikSwitch @bind-Value="@item.SendSMS" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridCommandColumn Width="200px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        ROOM_Rooms_Contact item = context as ROOM_Rooms_Contact;
+
+                        if (item != null)
+                        {
+                            <div class="table-toolbar">
+                                <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => SetContactType(item))" Icon="@("fa-regular fa-pen")" title="@TextProvider.GetOrCreate("TOOLTIP_SET_TYPE")"></GridCommandButton>
+                                @if(item.CONT_Contact != null && !string.IsNullOrEmpty(item.CONT_Contact.EMail))
+                                {
+                                    <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => ToggleEmail(item))" Icon="@("fa-solid fa-at")" title="@TextProvider.GetOrCreate("TOOLTIP_TOGGLE_EMAIL")"></GridCommandButton>
+                                }
+                                @if (item.CONT_Contact != null && !string.IsNullOrEmpty(item.CONT_Contact.Phone))
+                                {
+                                    <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => ToggleSMS(item))" Icon="@("fa-solid fa-comment-sms")" title="@TextProvider.GetOrCreate("TOOLTIP_TOGGLE_SMS")"></GridCommandButton>
+                                }
+                                <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => RemoveContact(item))" Icon="SvgIcon.Trash" title="@TextProvider.GetOrCreate("TOOLTIP_DELETE")"></GridCommandButton>
+                            </div>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+
+    <TelerikWindow Modal="true" @bind-Visible="@ShowContactTypeSelection" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("CONTACT_TYPE_SELECTION")
+        </WindowTitle>
+        <WindowContent>
+            @if (CurrentContact != null)
+            {
+                <div class="contact-container">
+                    <div class="form-group">
+                        <SfMultiSelect DataSource="@ContactTypes" @bind-Value="@SelectedContactTypeIDs" TValue="string[]" TItem="@V_ROOM_Contact_Type" Placeholder="@TextProvider.Get("CONTACT_CATEGORY_PLACEHOLDER")">
+                            <MultiSelectFieldSettings Text="Description" Value="IDString"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <label class="login-label" id="name_label">@TextProvider.Get("ROOM_TABLE_OPTIONS_VISIBLE")</label>
+                    <div class="form-group"></div>
+                    <div class="extra-small-element-separator"></div>
+                    <TelerikSwitch @bind-Value="@CurrentContact.ShowOnline" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                    <div class="small-element-separator"></div>
+                    <div class="segment-button-toolbar">
+                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Class="k-standalone-button" OnClick="@SaveContactType">@TextProvider.GetOrCreate("BUTTON_SAVE")</TelerikButton>
+                    </div>
+                </div>
+            }
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideContactType" />
+        </WindowActions>
+    </TelerikWindow>
+
+    <TelerikWindow Modal="true" @bind-Visible="@ShowContactSelection" Width="800px">
+        <WindowTitle>
+            @TextProvider.Get("CONTACT_SELECTION")
+        </WindowTitle>
+        <WindowContent>
+            <div class="contact-container">
+                <SelectionComponent ContactSelected="SaveContact" ExistingContacts="Contacts.Where(p => p.CONT_Contact_ID != null).Select(p => p.CONT_Contact_ID.Value).ToList()"></SelectionComponent>
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="CloseContact" />
+        </WindowActions>
+    </TelerikWindow>
+}

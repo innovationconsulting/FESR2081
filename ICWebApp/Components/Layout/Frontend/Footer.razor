@@ -1,0 +1,211 @@
+﻿@if (Municipality != null && MunicipalityFooter != null)
+{
+    <footer class="it-footer" id="footer">
+        <div class="it-footer-main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 footer-items-wrapper logo-wrapper">
+                        @if (Municipality.EU_Logo_Active == true)
+                        {
+                            <img class="ue-logo" src="images/frontend/logo-eu-inverted.svg" alt="logo Unione Europea">
+                        }
+                        <div class="it-brand-wrapper">
+                            <a href="#">
+                                @if (Municipality.Logo != null)
+                                {
+                                    var base64String = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(Municipality.Logo));
+
+                                    <div class="icon">
+                                        <img class="icon-img" aria-hidden="true" src="@base64String" />
+                                    </div>
+                                }
+                                <div class="it-brand-text">
+                                    <h2 class="no_toc">@TextProvider.Get("FRONTEND_HEADER_BRANDING_DESCRIPTION") @Municipality.Name</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 footer-items-wrapper">
+                        <h3 class="footer-heading-title">@TextProvider.Get("AGID_FOOTER_CONTACT")</h3>
+                        <ul class="footer-list">
+                            <li>
+                                <p>
+                                    @TextProvider.Get("FRONTEND_HEADER_BRANDING_DESCRIPTION") @Municipality.Name<br>
+                                    @MunicipalityFooter.Address - @MunicipalityFooter.Location<br>
+                                    @if (!string.IsNullOrEmpty(Municipality.TaxNumber))
+                                    {
+                                        @TextProvider.Get("AGID_FOOTER_FISCAL_DATA") @Municipality.TaxNumber<br>
+                                    }
+                                    <br>
+                                    @TextProvider.Get("AGID_FOOTER_CONTACT_EMAIL") @MunicipalityFooter.Email<br>
+                                    @TextProvider.Get("AGID_FOOTER_CONTACT_PEC_EMAIL") @MunicipalityFooter.PEC<br>
+                                    @TextProvider.Get("AGID_FOOTER_CONTACT_PHONE") @MunicipalityFooter.Phone<br>
+                                    @if (!string.IsNullOrEmpty(MunicipalityFooter.CodiceUnivoco))
+                                    {
+                                        <br>
+                                        @TextProvider.Get("AGID_FOOTER_CODICE_UNIVOCO") @MunicipalityFooter.CodiceUnivoco<br>
+                                    }
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 footer-items-wrapper">
+                        <h3 class="footer-heading-title">@TextProvider.Get("AGID_FOOTER_OPENING_SCHEDULE")</h3>
+                        <ul class="footer-list">
+                            <li>
+                                <p>
+                                    @((MarkupString)MunicipalityFooter.OpeningHours)
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Municipality.Soc_Twitter) || !string.IsNullOrEmpty(Municipality.Soc_Facebook) || !string.IsNullOrEmpty(Municipality.Soc_Youtube) || !string.IsNullOrEmpty(Municipality.Soc_Telegramm) || !string.IsNullOrEmpty(Municipality.Soc_Whatsapp) || !string.IsNullOrEmpty(Municipality.Soc_RSS))
+                    {
+                        <div class="col-md-3 footer-items-wrapper">
+                            <h3 class="footer-heading-title">@TextProvider.Get("AGID_FRONTEND_FOLLOW_US")</h3>
+                            <ul class="list-inline text-start social">
+                                @if (!string.IsNullOrEmpty(Municipality.Soc_Twitter))
+                                {
+                                    <li class="list-inline-item">
+                                        <a class="p-1 text-white" href="@Municipality.Soc_Twitter" target="_blank">
+                                            <svg class="icon icon-sm icon-white align-top">
+                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-twitter"></use>
+                                            </svg>
+                                            <span class="visually-hidden">Twitter</span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (!string.IsNullOrEmpty(Municipality.Soc_Facebook))
+                                {
+                                    <li class="list-inline-item">
+                                        <a class="p-1 text-white" href="@Municipality.Soc_Facebook" target="_blank">
+                                            <svg class="icon icon-sm icon-white align-top">
+                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-facebook"></use>
+                                            </svg>
+                                            <span class="visually-hidden">Facebook</span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (!string.IsNullOrEmpty(Municipality.Soc_Youtube))
+                                {
+                                    <li class="list-inline-item">
+                                        <a class="p-1 text-white" href="@Municipality.Soc_Youtube" target="_blank">
+                                            <svg class="icon icon-sm icon-white align-top">
+                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-youtube"></use>
+                                            </svg>
+                                            <span class="visually-hidden">YouTube</span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (!string.IsNullOrEmpty(Municipality.Soc_Telegramm))
+                                {
+                                    <li class="list-inline-item">
+                                        <a class="p-1 text-white" href="@Municipality.Soc_Telegramm" target="_blank">
+                                            <svg class="icon icon-sm icon-white align-top">
+                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-telegram"></use>
+                                            </svg>
+                                            <span class="visually-hidden">Telegram</span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (!string.IsNullOrEmpty(Municipality.Soc_Instagram))
+                                {
+                                    <li class="list-inline-item">
+                                        <a class="p-1 text-white" href="@Municipality.Soc_Instagram" target="_blank">
+                                            <svg class="icon icon-sm icon-white align-top">
+                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-instagram"></use>
+                                            </svg>
+                                            <span class="visually-hidden">Instagram</span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (!string.IsNullOrEmpty(Municipality.Soc_Whatsapp))
+                                {
+                                    <li class="list-inline-item">
+                                        <a class="p-1 text-white" href="@Municipality.Soc_Whatsapp" target="_blank">
+                                            <svg class="icon icon-sm icon-white align-top">
+                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-whatsapp"></use>
+                                            </svg>
+                                            <span class="visually-hidden">Whatsapp</span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (!string.IsNullOrEmpty(Municipality.Soc_RSS))
+                                {
+                                    <li class="list-inline-item">
+                                        <a class="p-1 text-white" href="@Municipality.Soc_RSS" target="_blank">
+                                            <svg class="icon icon-sm icon-white align-top">
+                                                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-rss"></use>
+                                            </svg>
+                                            <span class="visually-hidden">RSS</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                            @if (Municipality.ShowGreenSupportNumber == true)
+                            {
+                                <h3 class="footer-heading-title footer-heading-second-row">@TextProvider.Get("AGID_FRONTEND_SUPPORT")</h3>
+                                <a href="tel:+39800500552">
+                            <div class="green-number">
+                                @if (System.Globalization.CultureInfo.CurrentCulture.Name.Contains("de-DE"))
+                                {
+                                    <img src="images/AGID/Gruene_Nummer_DE.svg" alt="Comunix Grüne Nummer">
+                                }
+                                else
+                                {
+                                    <img src="images/AGID/Gruene_Nummer_IT.svg" alt="Comunix numero verde">
+                                }
+                            </div>
+                            </a>
+                            }
+                        </div>
+                    }
+                    <div class="col-md-3 footer-items-wrapper">
+                        <h3 class="footer-heading-title">@TextProvider.Get("LANDING_ONLINE_DIENSTE")</h3>
+                        <ul class="footer-list">
+                            @if (AktiveApps != null && AktiveApps.Select(p => p.APP_Application_ID).ToList().Contains(Applications.Forms)) //ONLINE DIENSTE
+                            {
+                                <li>
+                                    <a @onclick="GoToApplications">@TextProvider.Get("FRONTEND_DASHBOARD_APPLICATIONS")</a>
+                                </li>
+                            }
+                            @if (AktiveApps != null && AktiveApps.Select(p => p.APP_Application_ID).ToList().Contains(Applications.Canteen)) //MENSA
+                            {
+                                <li>
+                                    <a @onclick="GoToMensa">@TextProvider.Get("FRONTEND_DASHBOARD_MENSA")</a>
+                                </li>
+                            }
+                            @if (AktiveApps != null && AktiveApps.Select(p => p.APP_Application_ID).ToList().Contains(Applications.Rooms)) //Raumbuchung
+                            {
+                                <li>
+                                    <a @onclick="GoToRooms">@TextProvider.Get("FRONTEND_DASHBOARD_ROOMS")</a>
+                                </li>
+                            }
+                            @if (AktiveApps != null && AktiveApps.Select(p => p.APP_Application_ID).ToList().Contains(Applications.Mantainences)) //Meldungen
+                            {
+                                <li>
+                                    <a @onclick="GoToNotifications">@TextProvider.Get("FRONTEND_DASHBOARD_NOTIFICATIONS")</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 footer-items-wrapper">
+                        <div class="footer-bottom">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (SessionWrapper != null && SessionWrapper.CurrentUser != null)
+        {
+            <div style="display: none !important" id="UserID">
+                @SessionWrapper.CurrentUser.ID
+            </div>
+        }
+    </footer>
+}

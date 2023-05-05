@@ -1,0 +1,156 @@
+﻿.element-container{
+    display: flex;
+    gap: 10px;
+    /*height: 100px;*/
+    overflow: hidden;
+    cursor: pointer;
+}
+.element-content{
+    justify-content: flex-start;
+    width: 100%;
+}
+.element-toolbar {
+    border-left: 1px solid #dfdfdf;
+    padding-left: 10px;
+    display: flex;
+    gap: 10px;
+}
+.element-edit{
+    margin: auto;
+}
+.element-sorter {
+    margin: auto;
+}
+.element-container label {
+    color: #0F7173;
+}
+.element-dbname{
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+.element-fieldname{
+    margin: auto;
+}
+.element-edit-toolbar{
+    display: flex;
+    justify-content: space-between;
+}
+.element-required{
+    height: 30px;
+}
+.element-anchor{
+    height: 30px;
+}
+.element-multicolumn {
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+.element-multicolumn .form-group{
+    width: 100%;
+}
+
+.element-subtypeselector{
+    width: 200px;
+}
+.element-first-row{
+    display: flex;
+    justify-content: space-between;
+}
+.element-left {
+}
+.element-right{
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    font-size: 14px;
+}
+.element-option-label{
+    margin-top: 15px;
+    font-size: 12px;
+}
+.element-option-selection{
+    padding: 5px;
+}
+.element-option-selection-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.element-option-selection-value{
+    width: 100%;
+}
+.element-option-selection-remove{
+    margin: auto;
+}
+.element-option-selection-add {
+    border: 1px dashed #dfdfdf;
+    text-align: center;
+    padding: 10px;
+    color: #0F7173;
+    font-size: 12px;
+}
+.element-option-selection-add:hover{
+    border-color: #0F7173 !important;
+}
+.element-toolbar-right{
+    display: flex;
+    gap: 10px;
+}
+.radio-element label{
+    margin-left: 20px;
+}
+.radio-element{
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+.radio-element label{
+    color: black;
+}
+.layout-sorter-button {
+    width: 24px;
+    height: 14px;
+    line-height: 8px;
+    border: 1px solid #d9d9d9 !important;
+    border-radius: 3px;
+    text-align: center;
+    color: #808080;
+    cursor: pointer;
+}
+
+    .layout-sorter-button:hover {
+        background-color: #0F7173;
+        border-color: #0F7173;
+        color: white;
+    }
+
+    .layout-sorter-button i {
+        font-size: 12px !important;
+        margin: auto;
+    }
+.signature-second-row{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.signature-name{
+    flex: 0.25;
+}
+.signature-email{
+    flex: 1;
+}
+.element-button {
+    width: 28px;
+    height: 28px;
+    line-height: 24px;
+    border: 1px solid #d9d9d9 !important;
+    border-radius: 3px;
+    text-align: center;
+    color: #808080;
+    cursor: pointer;
+}
+    .element-button:hover {
+        background-color: #0F7173;
+        border-color: #0F7173;
+        color: white;
+    }

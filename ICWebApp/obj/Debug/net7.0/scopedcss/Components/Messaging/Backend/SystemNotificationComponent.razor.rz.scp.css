@@ -1,0 +1,109 @@
+.notification-popup-menu[b-wtv58qhazo] {
+    z-index: 998;
+    position: absolute;
+    border-radius: 3px;
+    padding: 1rem;
+    background-color: rgb(246, 245, 244);
+    color: #27426D;
+    width: 350px;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 5px;
+    bottom: 185px;
+    left: 70px;
+    padding-top: 25px;
+}
+
+    .notification-popup-menu[b-wtv58qhazo]::after {
+        content: "";
+        position: absolute;
+        bottom: 20px;
+        left: 0%;
+        margin-top: -10px;
+        margin-left: -10px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent gray transparent transparent;
+    }
+
+.notification-button .notification-icon[b-wtv58qhazo] {
+    font-size: 30px;
+}
+
+.system-notification-popupwindow[b-wtv58qhazo] {
+    color: white;
+    padding: unset;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
+    border-radius: 3px;
+}
+
+    .system-notification-popupwindow.ntf_error[b-wtv58qhazo] {
+        background-color: #C22B19;
+    }
+
+        .system-notification-popupwindow.ntf_error[b-wtv58qhazo]::after {
+            border-color: transparent #C22B19 transparent transparent;
+        }
+
+    .system-notification-popupwindow.ntf_warning[b-wtv58qhazo] {
+        background-color: #EF5102;
+    }
+
+        .system-notification-popupwindow.ntf_warning[b-wtv58qhazo]::after {
+            border-color: transparent #EF5102 transparent transparent;
+        }
+
+    .system-notification-popupwindow.ntf_information[b-wtv58qhazo] {
+        background-color: #f1f1f1;
+        color: black;
+    }
+
+    .system-notification-popupwindow.ntf_success[b-wtv58qhazo] {
+        background-color: #159924;
+    }
+
+        .system-notification-popupwindow.ntf_success[b-wtv58qhazo]::after {
+            border-color: transparent #159924 transparent transparent;
+        }
+
+.system-notification-container[b-wtv58qhazo] {
+    position: relative;
+    padding: 10px 15px;
+    border-radius: 3px;
+    width: 100%;
+    min-width: 250px;
+    text-align: start;
+}
+
+.system-notification-close-button[b-wtv58qhazo] {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 30px;
+    width: 30px;
+    background-color: inherit;
+    border-radius: 3px;
+}
+
+    .system-notification-close-button:hover[b-wtv58qhazo] {
+        background-color: rgba(255,255,255,0.1);
+    }
+
+    .system-notification-btn[b-wtv58qhazo] {
+        display: block;
+        height: 30px;
+        width: 30px;
+        background-color: inherit !important;
+        border: 0px !important;
+        border-radius: 3px;
+        color: inherit;
+        line-height: 15px;
+    }
+
+.system-notification-title[b-wtv58qhazo] {
+    line-height: 1.555;
+    font-weight: bold;
+}
+
+.system-notification-text[b-wtv58qhazo] {
+    line-height: 1.555;
+}

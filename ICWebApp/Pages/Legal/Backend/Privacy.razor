@@ -1,0 +1,25 @@
+﻿@page "/Backend/Privacy"
+
+@layout MainLayout
+
+<div class="element-separator"></div>
+<div class="font-normal">
+    @TextProvider.Get("PRIVACY_BACKEND_DETAIL")
+</div>
+<div class="small-element-separator"></div>
+@if(ExistingFiles != null && ExistingFiles.Count() > 0)
+{
+    <div class="file-container">
+        @foreach(var dbfile in ExistingFiles.OrderBy(p => p.FileName).ToList())
+        {
+            <div class="document-detail-download" @onclick="@(() => DownloadRessource(dbfile.ID, dbfile.FileName))">
+                <div class="document-detail-download-icon">
+                    <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                </div>
+                <div class="document-detail-download-description font-normal">
+                    @dbfile.FileName (@(dbfile.Size / 1024) kb)
+                </div>
+            </div>
+        }
+    </div>
+}

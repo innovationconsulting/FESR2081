@@ -1,0 +1,28 @@
+.anchor-container[b-0ofyt59i8p] {
+    position: sticky;
+    overflow: auto;
+}
+
+.anchor-page-title[b-0ofyt59i8p] {
+    cursor: pointer;
+}
+    .anchor-page-title:hover[b-0ofyt59i8p] {
+        color: #1DA2AF;
+    }
+
+.anchor-element-container[b-0ofyt59i8p] {
+    cursor: pointer;
+}
+    .anchor-element-container:hover[b-0ofyt59i8p] {
+        color: #0F7173;
+        border-right: 3px solid #0F7173;
+    }
+
+.anchor-element[b-0ofyt59i8p] {
+    padding-right: 35px;
+    word-break: break-word;
+}
+.anchor-title[b-0ofyt59i8p] {
+    cursor: pointer;
+    word-break: break-word;
+}

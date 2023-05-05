@@ -1,0 +1,138 @@
+﻿<div>
+    <div class="container-left">
+        <div class="context-container">
+            @foreach (var context in ContextList.OrderBy(p => p.SortOrder))
+            {
+                bool Show = true;
+
+                if (context != null && context.IsRooms == true)
+                {
+                    Show = false;
+                }
+                else if (context != null && context.IsCanteen == true)
+                {
+                    Show = false;
+                }
+                else if (context != null && context.IsOrg == true)
+                {
+                    Show = false;
+                }
+
+                @if (context != null && Show)
+                {
+                    string buttonCSS = "btn-secondary";
+
+                    if (CurrentContext != null && CurrentContext.ID == context.ID)
+                    {
+                        buttonCSS = "btn-primary";
+                    }
+
+                    <div class="btn @buttonCSS authority-tag" @onclick="@(() => OnContextChange(context))" @onclick:stopPropagation="true">
+                        <span>
+                            @context.Text
+                        </span>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="container-right">
+        @if (CurrentContext != null)
+        {
+            //If current context = Anträge --> SubMenu
+            if (CurrentContext.ID == 1) //Anträge
+            {
+                //display Authority selection Menu
+                <div class="container-left">
+                    <div class="context-container">
+                        @if (AuthorityList.Count > 1)
+                        {
+                            string buttonCSS = "btn-secondary";
+                            if (SelectedAuthorities.Count == AuthorityList.Count)
+                            {
+                                buttonCSS = "btn-primary";
+                            }
+                            <div class="btn @buttonCSS authority-tag" @onclick="@(() => ToggleAllAuthorities())" @onclick:stopPropagation="true">
+                                <span>
+                                    <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                                    @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                                </span>
+                            </div>
+                        }
+                        @foreach (var item in AuthorityList)
+                        {
+                            string buttonCSS = "btn-secondary";
+
+                            if (SelectedAuthorities.Count < AuthorityList.Count && SelectedAuthorities.Any(e => e.ID == item.ID))
+                            {
+                                buttonCSS = "btn-primary";
+                            }
+
+                            <div class="btn @buttonCSS authority-tag" @onclick="@(() => OnAuthorityChanged(item))" @onclick:stopPropagation="true">
+                                <span>
+                                    @TextProvider.Get(item.TEXT_SystemText_Code)
+                                </span>
+                            </div>
+                        }
+                        @*<div class="auth-selection-dropdown">
+                            <label style="margin-right: 10px">@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_AUTHORITY"):</label>
+                            <SfDropDownList TValue="AUTH_Authority?" TItem="AUTH_Authority?" DataSource="@AuthorityList" @bind-Value="SelectedAuthority" Width="400px">
+                                <DropDownListEvents TItem="AUTH_Authority?" TValue="AUTH_Authority?" ValueChange="@OnAuthorityDropdownChanged" ></DropDownListEvents>
+                                <DropDownListTemplates TItem="AUTH_Authority">
+                                    <ItemTemplate>
+                                        <div class="dl-item">
+                                            <span>@(TextProvider.Get((context as AUTH_Authority).TEXT_SystemText_Code))</span>
+                                        </div>
+                                    </ItemTemplate>
+                                    <ValueTemplate>
+                                        <div class="dl-item" style="padding-left: 10px">
+                                            <span>@(TextProvider.Get((context as AUTH_Authority).TEXT_SystemText_Code))</span>
+                                        </div>
+                                    </ValueTemplate>
+                                </DropDownListTemplates>
+                            </SfDropDownList>
+                        </div>*@
+
+                    </div>
+                </div>
+            }
+            //Display Table with Forms that have uncompleted tasks / or completed if so desired
+            <TelerikGrid Data="@TaskList" Pageable="true">
+                <DetailTemplate>
+                    @{
+                        var item = context as V_TASK_Statistik_Dashboard;
+                    }
+                    <ICWebApp.Components.Tasks.DashboardComponents.TaskListDetailTemplate TaskContext="@item" OnTaskDeleted="OnTaskDeleted"></ICWebApp.Components.Tasks.DashboardComponents.TaskListDetailTemplate>
+                </DetailTemplate>
+                <GridColumns>
+                    <GridColumn Field="@nameof(V_TASK_Statistik_Dashboard.ContextName)" Title="@GetContextElementColumnTitle()"></GridColumn>
+                    <GridColumn Title="@TextProvider.GetOrCreate("TASKS_COMPLETED")">
+                        <Template>
+                            @{
+                                var item = context as V_TASK_Statistik_Dashboard;
+                            }
+                            @item.Completed/@item.Total
+                        </Template>
+                    </GridColumn>
+                    <GridCommandColumn Width="60px">
+                        @{
+                            var item = context as V_TASK_Statistik_Dashboard;
+                        }
+                        <GridCommandButton Class="btn btn-secondary" Icon="SvgIcon.ListUnorderedSquare" Title="@TextProvider.GetOrCreate("TASK_SHOW_BUCKET")" OnClick="() => { ShowBucketWindow(item); }"></GridCommandButton>
+                    </GridCommandColumn>
+                </GridColumns>
+            </TelerikGrid>
+        }
+    </div>
+</div>
+<TelerikWindow Modal="true" @bind-Visible="@BucketWindowVisibility" Width="90vw" Height="90vh" Class="task-bucket-window">
+    <WindowTitle>
+        @TextProvider.Get("TASK_BUCKET_WINDOW_TITLE")
+    </WindowTitle>
+    <WindowContent>
+        <ICWebApp.Components.Tasks.BucketView Cancelled="HideBucketWindow"></ICWebApp.Components.Tasks.BucketView>
+    </WindowContent>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="HideBucketWindow"/>
+    </WindowActions>
+</TelerikWindow>

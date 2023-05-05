@@ -1,0 +1,117 @@
+﻿@page "/Admin/Templates"
+@layout MainLayout
+
+<div class="element-separator"></div>
+<div class="element-separator"></div>
+<div class="template-container">
+    <div class="application-filter-container">
+        @if (AktiveApplications != null && AktiveApplications.Select(p => p.APP_Application_ID).Contains(Applications.Forms))
+        {
+            var selectedCSS = "";
+
+            if (CurrentApplication == Applications.Forms)
+            {
+                selectedCSS = "filter-selected";
+            }
+
+            <div class="application-filter-item @selectedCSS" @onclick="(() => ChangeCurrentApplication(Applications.Forms))">
+                <i class="fas fa-clipboard-list"></i>
+                @TextProvider.Get("TEXT_TEMPLATES_TAG_APPLICATIONS")
+            </div>
+        }
+        @if (AktiveApplications != null && AktiveApplications.Select(p => p.APP_Application_ID).Contains(Applications.Canteen))
+        {
+            var selectedCSS = "";
+
+            if (CurrentApplication == Applications.Canteen)
+            {
+                selectedCSS = "filter-selected";
+            }
+
+            <div class="application-filter-item @selectedCSS" @onclick="(() => ChangeCurrentApplication(Applications.Canteen))">
+                <i class="fas fa-fork-knife"></i>
+                @TextProvider.Get("TEXT_TEMPLATES_TAG_CANTEEN")
+            </div>
+        }
+        @if (AktiveApplications != null && AktiveApplications.Select(p => p.APP_Application_ID).Contains(Applications.Rooms))
+        {
+            var selectedCSS = "";
+
+            if (CurrentApplication == Applications.Rooms)
+            {
+                selectedCSS = "filter-selected";
+            }
+
+            <div class="application-filter-item @selectedCSS" @onclick="(() => ChangeCurrentApplication(Applications.Rooms))">
+                <i class="fa-regular fa-warehouse-full"></i>
+                @TextProvider.Get("TEXT_TEMPLATES_TAG_ROOMS")
+            </div>
+        }
+        @if (AktiveApplications != null && AktiveApplications.Select(p => p.APP_Application_ID).Contains(Applications.Mantainences))
+        {
+            var selectedCSS = "";
+
+            if (CurrentApplication == Applications.Mantainences)
+            {
+                selectedCSS = "filter-selected";
+            }
+
+            <div class="application-filter-item @selectedCSS" @onclick="(() => ChangeCurrentApplication(Applications.Mantainences))">
+                <i class="fa-regular fa-bell-on"></i>
+                @TextProvider.Get("TEXT_TEMPLATES_TAG_MANTAINENCES")
+            </div>
+        }
+        @if (AktiveApplications != null && AktiveApplications.Select(p => p.APP_Application_ID).Contains(Applications.Organisations))
+        {
+            var selectedCSS = "";
+
+            if (CurrentApplication == Applications.Organisations)
+            {
+                selectedCSS = "filter-selected";
+            }
+
+            <div class="application-filter-item @selectedCSS" @onclick="(() => ChangeCurrentApplication(Applications.Organisations))">
+                <i class="fa-regular fa-user-group "></i>
+                @TextProvider.Get("TEXT_TEMPLATES_TAG_ORGANISATIONS")
+            </div>
+        }
+    </div>
+    <div class="element-separator"></div>
+    @if (CurrentApplication != null)
+    {
+        <div class="application-status-list">
+            <CustomLoader Visible="@(IsDataBusy)"
+                      Text="@null" Class="initial-data-loader">
+            </CustomLoader>
+            <TelerikGrid Data="@StatusList.OrderBy(p => p.SortOrder).ToList()" Pageable="true" Sortable="false" Resizable="false" PageSize="500"
+                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                <DetailTemplate Context="contextDetail">
+                    @{
+                        var SubscriberDetail = contextDetail as StatusItem;
+
+                        <div class="subitem-template">
+                            <TextTemplateInputComponent ExternalContext="@(contextDetail.Context)" 
+                                                        ExternalID="@(contextDetail.ID)"
+                                                        ApplicationID="@CurrentApplication.Value">
+                            </TextTemplateInputComponent>
+                        </div>
+                    }
+                </DetailTemplate>
+                <GridColumns>
+                    <GridColumn Field="@nameof(StatusItem.Icon)" Title=" " Width="150px">
+                        <Template>
+                            @{
+                                StatusItem item = context as StatusItem;
+
+                                <div class="grid-row-icon">
+                                    <i class="@item.Icon"></i>
+                                </div>
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn Field="@nameof(StatusItem.Description)" Title="@TextProvider.Get("TEXT_TEMPLATES_GRID_DESCRIPTION")"></GridColumn>
+                </GridColumns>
+            </TelerikGrid>
+        </div>
+    }
+</div>

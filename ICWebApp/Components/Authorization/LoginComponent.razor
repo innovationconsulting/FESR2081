@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@if (login != null)
+{
+    <div class="login-container">
+        <EditForm @ref="LoginForm" Model="login" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+
+            <div class="login-title custom-color-primary">
+                <h4>@TextProvider.Get("LOGIN_TITLE")</h4>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="login-section font-normal">
+                @if (!IsBusy)
+                {
+                    
+                    <label class="login-label" id="name_label">@TextProvider.Get("LOGIN_PLACEHOLDER_USERNAME")</label>
+                    <InputText id="name" @bind-Value="login.UserName" placeholder="@TextProvider.Get("LOGIN_PLACEHOLDER_USERNAME")" class="form-control login-input"></InputText>                
+                    <div class="small-element-separator"></div>
+                    <label class="login-label" id="password_label">@TextProvider.Get("LOGIN_PLACEHOLDER_PASSWORD")</label>
+                    <CustomPassword @bind-Value="@login.Password" PlaceHolder="@TextProvider.Get("LOGIN_PLACEHOLDER_PASSWORD")" />
+                    <div class="small-element-separator"></div>
+                    @if (Message != null)
+                    {
+                        <SystemMessageComponent Message="@Message"></SystemMessageComponent>
+                        <div class="element-separator"></div>
+                    }
+                    <div class="login-row">
+                        <div class="login-row-left">
+                            @if (ShowResetPasswordButton)
+                            {
+                                <a @onclick="HandleResetPassword" class="login-link font-small" title="@TextProvider.Get("LOGIN_RESETPASSWORD")">@TextProvider.Get("LOGIN_RESETPASSWORD")</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="button-container">
+                        <button class="btn btn-primary" id="login_button" title="@(TextProvider.Get("LOGIN_BUTTON_LOGIN"))" type="submit">@(TextProvider.Get("LOGIN_BUTTON_LOGIN"))</button>
+                    </div>
+                }
+                else
+                {
+                    <CustomLoader IgnoreGlobalLoader="true"></CustomLoader>
+                }
+            </div>
+        </EditForm>
+    </div>
+}
+@if (SessionWrapper.AUTH_Municipality_ID != null)
+{
+    if (NavManager.BaseUri.Contains("localhost"))
+    {
+        var locurl = "https://localhost:7149/Municipality/" + SessionWrapper.AUTH_Municipality_ID.ToString();
+
+        <iframe style="display: none;" src="@locurl"></iframe>
+    }
+    var url = "https://spid.comunix.bz.it/Municipality/" + SessionWrapper.AUTH_Municipality_ID.ToString();
+
+    <iframe style="display: none;" src="@url"></iframe>
+}

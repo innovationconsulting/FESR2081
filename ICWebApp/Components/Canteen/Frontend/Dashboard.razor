@@ -1,0 +1,140 @@
+﻿@using ICWebApp.Application.Settings
+@using ICWebApp.Components.InfoPage
+@{
+    string AdditionalCSS = "";
+}
+
+@if (MyCivisService.Enabled)
+{
+    AdditionalCSS = "my-civis";
+}
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container @AdditionalCSS">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-lg-3 mb-4 border-col hide-max-576">
+                    <AnchorList></AnchorList>
+                </div>
+                <div class="col-lg-8 offset-lg-1">
+                    <div class="it-page-sections-container">
+                        <Anchor Title="@TextProvider.Get("CANTEEN_DASHBOARD_LAST_MOVEMENTS")" ID="@TextProvider.Get("CANTEEN_DASHBOARD_LAST_MOVEMENTS")" Order="1">
+                            <div class="movements-container">
+                                <div class="btn btn-primary" @onclick="@RegisterAbsence">@TextProvider.Get("CANTEEN_DASHBOARD_ABSENCE")</div>
+                                <div class="element-separator"></div>
+                                <div class="canteen-movement-dashboard-grid">
+                                    <table class="table-container">
+                                        <tr class="table-header">
+                                            <th>@TextProvider.Get("CANTEEN_DASHBOARD_DATE")</th>
+                                            <th>@TextProvider.Get("CANTEEN_DASHBOARD_DESCRIPTION")</th>
+                                            <th>@TextProvider.Get("CANTEEN_DASHBOARD_AMOUNT")</th>
+                                        </tr>
+                                        @foreach(var item in LatestMovements.OrderByDescending(p => p.Date))
+                                        {
+                                            string fontColorCSS = "fee-value-red";
+
+                                            <tr class="table-item">
+                                                @if(item.Date != null)
+                                                {
+                                                    <td>@item.Date.Value.ToString("ddd dd.MM.yyyy")</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                <td>@item.Description</td>
+                                                @if (item != null && item.Fee != null && item.Fee > 0)
+                                                {
+                                                    fontColorCSS = "fee-value-green";
+                                                }
+
+                                                @if (item != null && item.Fee != null)
+                                                {
+                                                    <td class="@fontColorCSS" style="width: 71px">
+                                                        @item.Fee.Value.ToString("C2")
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="" style="width: 71px">
+                                                        0,00 €
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                                @if (LatestMovements.Count() >= ShowAmount)
+                                {
+                                    <div class="canteen-button-container">
+                                        <button type="button" class="btn accordion-view-more mb-2 pt-3 t-primary title-xsmall-semi-bold ps-lg-3" data-focus-mouse="false" @onclick="IncreaseShowAmount">
+                                            <span class="">@TextProvider.Get("FRONTEND_SERVICES_SHOW_MORE")</span>
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </Anchor>                        
+                        <Anchor Title="@TextProvider.Get("CANTEEN_DASHBOARD_YOUR_BALANCE")" ID="@TextProvider.Get("CANTEEN_DASHBOARD_YOUR_BALANCE")" Order="2">
+                            <div class="balance-container">
+                                @if(CurrentBalance >= 0)
+                                {
+                                    <h3 class="fee-value-green">
+                                        @CurrentBalance.ToString("C2")
+                                    </h3>
+                                }
+                                else
+                                {
+                                    <h3 class="fee-value-red">
+                                        @CurrentBalance.ToString("C2")
+                                    </h3>                                    
+                                }
+                                <div class="element-separator"></div>
+                                @if(OpenBalance > 0)
+                                {
+                                    
+                                    @if (Subscribers.Where(a => a.CANTEEN_Subscriber_Status_ID == CanteenStatus.Accepted).ToList().Count > 0)
+                                    {
+                                        <div class="btn btn-primary" @onclick="RechargeBalance">@TextProvider.Get("CANTEEN_DASHBOARD_RECHARGE")</div>
+                                    }
+                                } else
+                                {
+                                    //Info no more balance needed
+                                }
+                            </div>
+                        </Anchor>
+                        @if ((CurrentSchoolyear != null && CurrentSchoolyear.RegisterBeginDate <= DateTime.Now && (CurrentSchoolyear.RegisterEndDate.Value.AddDays(1)) >= DateTime.Now) ||
+                             (Subscribers != null && Subscribers.Count() > 0))
+                        {
+                            <Anchor Title="@TextProvider.Get("CANTEEN_DASHBOARD_RIGHT_TITLE")" ID="@TextProvider.Get("CANTEEN_DASHBOARD_RIGHT_TITLE")" Order="3">
+                                @if (CurrentSchoolyear != null && CurrentSchoolyear.RegisterBeginDate <= DateTime.Now && (CurrentSchoolyear.RegisterEndDate.Value.AddDays(1)) >= DateTime.Now)
+                                {
+                                    <div class="btn btn-primary" @onclick="@CreateSubscription">@TextProvider.Get("CANTEEN_DASHBOARD_REQUEST")</div>
+                                    <div class="element-separator"></div>
+                                    <div class="small-element-separator"></div>
+                                }
+                                @if (Subscribers != null && Subscribers.Count() > 0)
+                                {
+                                    <ICWebApp.Components.User.Frontend.ServicesContainer Data="SubscribersList"></ICWebApp.Components.User.Frontend.ServicesContainer>
+                                }
+                            </Anchor>
+                        }
+                        <Anchor Title="@TextProvider.Get("CANTEEN_DASHBOARD_AKTIONS")" ID="@TextProvider.Get("CANTEEN_DASHBOARD_AKTIONS")" Order="4">
+                            <div class="button-wrapper mensa-buttons d-md-flex">
+                                @foreach (var action in ActionItems.OrderBy(p => p.SortOrder))
+                                {
+                                    <button type="button" class="btn btn-outline-primary btn-re bg-white" @onclick="@action.Action">
+                                        <span class="">@action.Title</span>
+                                    </button>
+                                }
+                            </div>
+                        </Anchor>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>
+

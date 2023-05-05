@@ -1,0 +1,134 @@
+﻿@if (MenuItem != null)
+{
+    @if (SubMenuItems != null && SubMenuItems.Count() > 0)
+    {
+        string aktiveCSS = "";
+        var UrlList = SubMenuItems.Select(p => p.Url).ToList();
+
+        @if (SubMenuVisible)
+        {
+            aktiveCSS = "nav-item-frontend-active";
+        }
+
+        if (MenuItem.Url != null && NavManager.Uri.EndsWith(MenuItem.Url))
+        {
+            aktiveCSS = "nav-item-frontend-active";
+        }
+
+        if (UrlList.Any(p => p != null && NavManager.Uri.EndsWith(p)))
+        {
+            aktiveCSS = "nav-item-frontend-active";
+        }
+
+        <div class="nav-item-frontend @aktiveCSS" @onclick="ToggleVisbility">
+            <NavLink>
+                @*<TelerikIcon Icon="@MenuItem.Icon"></TelerikIcon>*@
+                <span class="nav-link-text">@TextProvider.Get(MenuItem.TEXT_SystemTextsCode)</span>
+            </NavLink>
+        </div>
+        @if (SubMenuVisible)
+        {
+         
+            <div class="nav-item-frontend-popupcontainer">
+                <div class="nav-item-frontend-popupcontainer-flex">
+                    @{
+                        var GroupList = SubMenuItems.Select(p => p.Group_TEXT_SysemTexts_Code).Distinct().ToList();
+                    }
+                    @if (GroupList != null && (GroupList.Count() > 1  || !string.IsNullOrEmpty(GroupList.FirstOrDefault())))
+                    {
+                        @foreach (var g in GroupList)
+                        {
+                            if (g != null)
+                            {
+                                var groupUrl = SubMenuItems.FirstOrDefault(p => p.Group_TEXT_SysemTexts_Code == g);
+
+                                <div class="nav-item-frontend-column">
+                                    @if (groupUrl != null && !string.IsNullOrEmpty(groupUrl.GroupUrl))
+                                    {
+                                        <div class="nav-item-frontend-title nav-item-frontend-title-hoverable font-bold" @onclick="@(() => NavigateTo(groupUrl.GroupUrl))">
+                                            @TextProvider.Get(g)
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="nav-item-frontend-title">
+                                            @TextProvider.Get(g)
+                                        </div>
+                                    }
+                                    <div class="small-element-separator"></div>
+                                    @foreach (var item in SubMenuItems.Where(p => p.Group_TEXT_SysemTexts_Code == g))
+                                    {
+                                        <div class="nav-item-frontend-subelement" @onclick="@(() => NavigateTo(item.Url))">
+                                            @if (string.IsNullOrEmpty(item.DynamicName))
+                                            {
+                                                <div class="nav-item-frontend-subelement-text font-small">
+                                                    @TextProvider.Get(item.TEXT_SystemTextsCode)
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="nav-item-frontend-subelement-text font-small">
+                                                    @item.DynamicName
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="nav-item-frontend-column">
+                            <div class="small-element-separator"></div>
+                            @foreach (var item in SubMenuItems)
+                            {
+                                <div class="nav-item-frontend-subelement" @onclick="@(() => NavigateTo(item.Url))">
+                                    @if (string.IsNullOrEmpty(item.DynamicName))
+                                    {
+                                        <div class="nav-item-frontend-subelement-text font-small">
+                                            @TextProvider.Get(item.TEXT_SystemTextsCode)
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="nav-item-frontend-subelement-text font-small">
+                                            @item.DynamicName
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                @if (MenuItem.Url != null)
+                {
+                    <div class="nav-item-frontend-popupcontainer-footer custom-color-primary" @onclick="@(() => NavigateTo(MenuItem.Url))">
+                        <div class="popupcontainer-main-link font-bold">
+                            @TextProvider.Get("FRONTEND_MENU_MAIN_ITEM_LINK")
+                        </div>
+                        <div class="popupcontainer-main-icon">
+                            <TelerikIcon Icon="@("fas fa-arrow-right")"></TelerikIcon>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        string aktiveCSS = "";
+
+        if (MenuItem.Url != null && NavManager.Uri.EndsWith(MenuItem.Url))
+        {
+            aktiveCSS = "nav-item-frontend-active";
+        }
+
+        <div class="nav-item-frontend @aktiveCSS" @onclick="@(() => NavigateTo(MenuItem.Url))">
+            <NavLink>
+                @*<TelerikIcon Icon="@MenuItem.Icon"></TelerikIcon>*@
+                <span class="nav-link-text">@TextProvider.Get(MenuItem.TEXT_SystemTextsCode)</span>
+            </NavLink>
+        </div>
+    }
+}

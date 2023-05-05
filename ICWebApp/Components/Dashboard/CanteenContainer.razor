@@ -1,0 +1,77 @@
+﻿@if (Authority != null)
+{
+    <div class="authority-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                                Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+       <div class="authority-first-row">
+                <div class="authority-card custom-color-primary" @onclick="@(() => ShowListByStatusGroup(2))">
+                    <div class="authority-card-icon">
+                        <TelerikIcon Icon="@("fa-regular fa-file-import")"></TelerikIcon>
+                    </div>
+                    <div class="authority-card-content">
+                        <div class="authority-card-value h5">
+                            @ApplicationOpenCount
+                        </div>
+                        <div class="authority-card-description">
+                            <div class="font-normal">
+                                @TextProvider.Get("AUTHORITY_STATISTIK_OPEN_COUNT")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="authority-card custom-color-primary" @onclick="@(() => ShowListByStatusGroup(3))">
+                    <div class="authority-card-icon">
+                        <TelerikIcon Icon="@("fa-regular fa-file-signature")"></TelerikIcon>
+                    </div>
+                    <div class="authority-card-content">
+                        <div class="authority-card-value h5">
+                            @ApplicationWaitinglistCount
+                        </div>
+                        <div class="authority-card-description">
+                            <div class="font-normal">
+                                @TextProvider.Get("AUTHORITY_STATISTIK_WAITINGLIST_COUNT")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="element-separator"></div>
+            <div class="last-applications-container">
+                <TelerikGrid Data="@Subscribers.OrderByDescending(p => p.CreationDate)" Pageable="false" Sortable="false" Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" OnRowClick="@OnRowClick">
+                    <GridColumns>
+                        <GridColumn Field="@nameof(V_CANTEEN_Subscriber.FullName)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_NAME")"></GridColumn>                        
+                        <GridColumn Field="@nameof(V_CANTEEN_Subscriber.StatusText)" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_STATUS")">
+                            <Template Context="statusContext"> 
+                                @{
+                                    V_CANTEEN_Subscriber item = statusContext as V_CANTEEN_Subscriber;
+
+                                if (item != null)
+                                {
+                                    <span class="icon-element">
+                                        <TelerikIcon Icon="@item.StatusIcon"></TelerikIcon>
+                                        <span style="margin-left: 5px;">
+                                            @item.StatusText
+                                        </span>
+                                    </span>
+                                }
+                            }
+                            </Template>
+                        </GridColumn>
+                        <GridColumn Field="@nameof(V_CANTEEN_Subscriber.CreationDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_SUBMITTED")"></GridColumn>   
+                        <GridCommandColumn Width="120px" Title="@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_ACTIONS")">
+                            @{
+                                V_CANTEEN_Subscriber item = context as V_CANTEEN_Subscriber;
+
+                                if (item != null)
+                                {
+                                    <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => ShowDetailPage(item.ID))" Icon="@("fa-regular fa-file-import")" title="@TextProvider.Get("TOOLTIP_DETAIL")"></GridCommandButton>
+                                }
+                            }
+                        </GridCommandColumn>
+                    </GridColumns>
+                </TelerikGrid>
+            </div>
+    </div>
+}

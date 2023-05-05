@@ -1,0 +1,66 @@
+﻿@inherits LayoutComponentBase
+
+<link href="css/bootstrap-italia/css/bootstrap-italia.min.css" rel="stylesheet" />
+<link href="css/agid/custom.css" rel="stylesheet" />
+<base href="~/" />
+
+<PageTitle>Comunix</PageTitle>
+
+<TelerikRootComponent>
+    @if (Municipality != null)
+    {
+        <ICWebApp.Components.Layout.Frontend.TopRow ShowMenu="true" ShowUserData="true"></ICWebApp.Components.Layout.Frontend.TopRow>
+        <main id="topelement">
+            <BusyIndicator></BusyIndicator>
+            <DialogWindow/>
+            <PreviewWindow></PreviewWindow>
+            <div class="container" id="main-container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-10">
+                        <ICWebApp.Components.Breadcrumb.Frontend.Breadcrumb></ICWebApp.Components.Breadcrumb.Frontend.Breadcrumb>
+                    </div>
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(SessionWrapper.PageTitle))
+            {
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-10">
+                            <div class="cmp-heading pb-3 pt-4 pb-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h1 class="layout-page-title">@SessionWrapper.PageTitle</h1>
+                                        @if (!string.IsNullOrEmpty(SessionWrapper.PageSubTitle))
+                                        {
+                                            <p class="subtitle-small mb-3">@SessionWrapper.PageSubTitle</p>
+                                        }
+                                        @if (SessionWrapper.PageButtonAction != null)
+                                        {
+                                            <div class="element-separator"></div>
+                                            <button type="button" class="btn btn-primary fw-bold" data-focus-mouse="false" @onclick="SessionWrapper.PageButtonAction">
+                                                <span class="">@SessionWrapper.PageButtonActionTitle</span>
+                                            </button>
+                                        }
+                                    </div>
+                                    <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0 page-index-container">
+                                        <ICWebApp.Components.ActionBar.ActionBar></ICWebApp.Components.ActionBar.ActionBar>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (SessionWrapper.ShowTitleSepparation == true)
+                    {
+                        <hr class="d-none d-lg-block mb-0 mt-2">
+                    }
+                </div>
+            }
+            @if (SessionWrapper != null && !SessionWrapper.Initializing)
+            {
+                @Body
+            }
+        </main>
+        <ICWebApp.Components.Layout.Frontend.Footer></ICWebApp.Components.Layout.Frontend.Footer>
+        <ICWebApp.Components.Search.Frontend.Searchbar></ICWebApp.Components.Search.Frontend.Searchbar>
+    }
+</TelerikRootComponent>

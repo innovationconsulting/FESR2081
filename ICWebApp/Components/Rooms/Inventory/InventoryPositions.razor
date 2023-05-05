@@ -1,0 +1,69 @@
+﻿@if (PositionsList != null)
+{
+    <div class="inventory-position-container">
+        <TelerikWindow Modal="true" @bind-Visible="@ShowNewAmountWindow" Width="300px">
+            <WindowTitle>
+                @TextProvider.Get("BACKEND_ROOM_INVENTORY_POSITION_ADD")
+            </WindowTitle>
+            <WindowContent>
+                <div class="galerie-popup-container">
+                    @if (NewItem != null)
+                    {
+                        <EditForm Model="@NewItem">                                                
+                            <div class="form-group">
+                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_INVENTORY_NEW_QUANTITY")</label>
+                                <InputNumber min="0" @bind-Value="NewItem.Quantity" class="form-control"></InputNumber>
+                                @if (!string.IsNullOrEmpty(InventoryMinValueError))
+                                {
+                                    <div style="color: red;">
+                                        @InventoryMinValueError
+                                    </div>
+                                }
+                            </div>                                                    
+                            <div class="small-element-separator"></div>
+                            <div class="segment-button-toolbar">
+                                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                        OnClick="@HideNewPosition">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                        OnClick="@SavePosition">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </WindowContent>
+        </TelerikWindow>
+        <TelerikGrid Data="@PositionsList.OrderByDescending(p => p.CreationDate)"
+                     Pageable="false"
+                     Sortable="true"
+                     Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable"
+                     Groupable="false"
+                 Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@AddPosition" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+                <GridColumns>
+                    <GridColumn Field="@nameof(V_ROOM_RoomOptions_Positions.User)" Title="@TextProvider.Get("BACKEND_ROOM_INVENTORY_USER")" Width="auto"></GridColumn>
+                    <GridColumn Field="@nameof(V_ROOM_RoomOptions_Positions.Quantity)" Title="@TextProvider.Get("BACKEND_ROOM_INVENTORY_QUANTITY")" Width="auto"></GridColumn>
+                    <GridColumn Field="@nameof(V_ROOM_RoomOptions_Positions.CreationDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("BACKEND_ROOM_INVENTORY_CREATIONDATE")" Width="auto"></GridColumn>
+                    <GridCommandColumn Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                        @{
+                        V_ROOM_RoomOptions_Positions item = context as V_ROOM_RoomOptions_Positions;
+
+                            if (item != null && item.AUTH_Users_ID == SessionWrapper.CurrentUser.ID)
+                            {
+                                <div class="table-toolbar">
+                                <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => DeletePosition(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                                </div>
+                            }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>                                              
+        <div class="small-element-separator"></div>
+        <div class="segment-button-toolbar">
+            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                    OnClick="@CloseWindow">@TextProvider.Get("BUTTON_CLOSE")</TelerikButton>
+        </div>
+    </div>
+}

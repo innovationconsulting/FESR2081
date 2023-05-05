@@ -1,0 +1,113 @@
+﻿@using ICWebApp.Components.InfoPage;
+
+@{
+    int orderID = 0;
+}
+
+<div class="container">
+    <div class="row mt-lg-80 mt-3 mb-4">
+        <div class="col-lg-3 mb-4 border-col hide-max-576">
+            <AnchorList></AnchorList>
+        </div>  
+        <div class="col-lg-8 offset-lg-1">
+            <div class="form-detail-container it-page-sections-container">
+                @if (DataProperties != null)
+                {
+                    @foreach (var p in DataProperties.OrderBy(p => p.SortOrder))
+                    {
+                        if (!string.IsNullOrEmpty(p.Description))
+                        {
+                            var markupDescription = new MarkupString(p.Description);
+
+                            <Anchor Title="@p.Title" ID="@p.Title" Order="orderID">                            
+                                @markupDescription
+                            </Anchor>                            
+
+                            orderID++;
+                        }
+                    }
+                }
+                @if (DataRessources != null && DataRessources.Count() > 0)
+                {
+                    <Anchor Title="@(TextProvider.Get("CANTEEN_DETAIL_RESSOURCES"))" ID="@(TextProvider.Get("CANTEEN_DETAIL_RESSOURCES"))" Order="@orderID">
+                        @foreach (var r in DataRessources.OrderBy(p => p.SortOrder))
+                        {
+                            var res = DataResourceExtendeds.FirstOrDefault(e => e.CANTEEN_Ressources_ID == r.ID);
+
+                            if (res != null && res.FILE_FileInfo_ID != null)
+                            {
+                                var fileSize = FileProvider.GetFileSize(res.FILE_FileInfo_ID.Value);
+
+                                <div class="document-detail-download" @onclick="@(() => DownloadRessource(res.FILE_FileInfo_ID.Value, res.Description))">
+                                    <div class="document-detail-download-icon">
+                                        <svg class="icon icon-primary icon-sm me-1" aria-hidden="true">
+                                            <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="document-detail-download-description font-normal">
+                                        @res.Description (@(fileSize / 1024) kb)
+                                    </div>
+                                </div>
+                            }
+                            else if (r.FILE_FileInfo_ID != null)
+                            {
+                                var fileSize = FileProvider.GetFileSize(r.FILE_FileInfo_ID.Value);
+
+                                <div class="document-detail-download" @onclick="@(() => DownloadRessource(r.FILE_FileInfo_ID.Value, r.Description))">
+                                    <div class="document-detail-download-icon">
+                                        <svg class="icon icon-primary icon-sm me-1" aria-hidden="true">
+                                            <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="document-detail-download-description font-normal">
+                                        @r.Description (@(fileSize / 1024) kb)
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </Anchor>
+
+                    orderID++;
+                }
+
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <div class="element-separator"></div>
+                        <div class="login-element custom-login-element">
+                            <div class="login-container">
+                                <div class="text-left">
+                                    <button class="btn btn-primary" name="next_to_service" @onclick="RedirectToLogin">
+                                        @TextProvider.GetOrCreate("CANTEEN_LOGIN")
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </NotAuthorized>
+                    <Authorized>
+                        @if (SessionWrapper != null && SessionWrapper.CurrentSubstituteUser == null)
+                        {
+                            <div class="element-separator"></div>
+                            <div class="login-element custom-login-element">
+                                <div class="login-container">
+                                    <div class="text-left">
+                                        <button class="btn btn-primary" name="next_to_service" @onclick="ContinueToService">
+                                            @TextProvider.GetOrCreate("CANTEEN_DASHBOARD_ONLINE_SERVICE")
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="element-separator"></div>
+                            <div class="service-not-aviable">
+                                @TextProvider.Get("ORG_SERVICE_NOT_AVIABLE")
+                            </div>
+                        }
+                    </Authorized>
+                </AuthorizeView>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>

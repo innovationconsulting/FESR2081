@@ -1,0 +1,55 @@
+﻿.element-checkbox
+{
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.element-checkbox-switch{
+    width: 65px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.element-checkbox-text{
+    /*width: 100%;*/
+}
+.element-error-style{
+    border:1px solid red;
+}
+
+.element-error {
+    color: red;
+}
+
+.element-difference{
+
+}
+.form-dropdown-item-container, .form-dropdown-item-value-container {
+    display: flex;
+    justify-content: space-between;
+}
+.form-dropdown-item-charge{
+    font-weight: bold;
+}
+.form-dropdown-item-value-container .form-dropdown-item-description {
+    overflow: hidden;
+}
+.form-dropdown-item-container .form-dropdown-item-description {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.form-dropdown-item-value-container {
+    height: 36px;
+    line-height: 36px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.element-value .element-radio-button {
+    display: flex;
+    gap: 15px;
+    flex-wrap: nowrap;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}

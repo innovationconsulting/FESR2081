@@ -1,0 +1,111 @@
+﻿.payment-transaction-card {
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-left: 4px solid #0F7173;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+    .payment-transaction-card:last-of-type {
+        border-bottom: 1px solid #d9d9d9 !important;
+    }
+
+.transaction-card-to-pay {
+    border-left-color: #ed2c13 !important;
+}
+
+.payment-transaction-container, .position-container {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.payment-detail-container {
+    flex: 1;
+}
+
+.payment-first-row {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.payment-second-row {
+    display: flex;
+    gap: 20px;
+    color: #808080;
+}
+.payment-third-row{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 45px;
+    margin-bottom: 5px;
+}
+
+.payment-transaction-description, .position-description {
+    flex: 1;
+    color: #808080;
+}
+
+.payment-transaction-amount {
+    justify-self: flex-end;
+    color: black;
+}
+
+.payment-transaction-positions {
+    margin-left: 170px;
+    padding-top: 10px;
+}
+
+.payment-transaction-container:hover {
+    color: #0F7173;
+    cursor: pointer;
+}
+
+.payment-detail-button {
+    width: 25px;
+}
+
+.payment-detail-button-spacer {
+    width: 25px;
+}
+
+.payment-summary-button-spacer {
+    width: 15px;
+}
+
+.payment-transaction-status {
+    display: flex;
+    gap: 10px;
+    width: 150px;
+}
+.payment-transaction-date{
+    width: 150px;
+    padding-left:30px;
+}
+
+.transaction-status-icon {
+    text-align: center;
+    width: 20px !important;
+}
+
+.payment-transaction-creation-date{
+    text-align: end;
+    flex: 1;
+    color: #808080;
+}
+
+@media(max-width: 800px){
+    .payment-transaction-date, .payment-transaction-status{
+        width: 120px !important;
+    }
+    .payment-first-row, .payment-second-row{
+        gap: 5px !important;
+    }
+    .payment-transaction-positions{
+        margin-left: 125px !important;
+    }
+}

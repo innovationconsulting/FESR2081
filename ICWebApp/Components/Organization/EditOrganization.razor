@@ -1,0 +1,609 @@
+﻿@if (Anagrafic != null && User != null && SelectedCompanyType != null)
+{
+    <div class="org-container">
+    <EditForm EditContext="@editContext">
+    <ICWebApp.Classes.Validation.CustomValidation @ref="customValidation"></ICWebApp.Classes.Validation.CustomValidation>
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <h4>
+        @TextProvider.Get("ORG_REQUEST_ORG_DATA")
+    </h4>
+    <div class="extra-small-element-separator"></div>
+    @if (!IsBackend)
+    {
+        <div class="form-group">
+            <label for="@User.AUTH_Company_Type_ID" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_TYPE")</label>
+            <InputText @bind-Value="SelectedCompanyType.Text" disabled class="form-control form-disabled"></InputText>
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <label for="@User.AUTH_Company_Type_ID" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_TYPE")</label>
+            <TelerikDropDownList Data="@CompanyTypeList" TextField="Text" ValueField="ID" @bind-Value="@User.AUTH_Company_Type_ID" Enabled="false"></TelerikDropDownList>
+        </div>
+    }
+    @if (!IsBackend)
+    {
+        @if (SelectedCompanyLegalForm != null)
+        {
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                @if (SelectedCompanyType.IsAssociation == true || SelectedCompanyType.IsOnulus == true || SelectedCompanyType.IsSport == true)
+                {
+                    <label for="@Anagrafic.AUTH_Company_LegalForm_ID" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_LEGAL_FORM")</label>
+                }
+                else
+                {
+                    <label for="@Anagrafic.AUTH_Company_LegalForm_ID" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_REPRESENTATION_FORM")</label>
+                }
+                <InputText @bind-Value="SelectedCompanyLegalForm.Text" disabled class="form-control form-disabled"></InputText>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="extra-small-element-separator"></div>
+        <div class="form-group">
+            @if (SelectedCompanyType.IsAssociation == true || SelectedCompanyType.IsOnulus == true || SelectedCompanyType.IsSport == true)
+            {
+                <label for="@Anagrafic.AUTH_Company_LegalForm_ID" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_LEGAL_FORM")</label>
+            }
+            else
+            {
+                <label for="@Anagrafic.AUTH_Company_LegalForm_ID" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_REPRESENTATION_FORM")</label>
+            }
+            <TelerikDropDownList Data="@CompanyLegalFormList.Where(p => p.AUTH_Company_Type_ID == User.AUTH_Company_Type_ID).OrderBy(p => p.Text)" TextField="Text" ValueField="ID"
+                                 @bind-Value="@User.AUTH_Company_LegalForm_ID" Filterable="true" FilterOperator="@StringFilterOperator.Contains" Enabled="false">
+            </TelerikDropDownList>
+        </div>
+    }
+
+    <div class="element-separator"></div>
+    <h4>
+        @if (SelectedCompanyType.IsAssociation == true)
+        {
+            @TextProvider.Get("ORG_DATA_ASSOCIATION")
+        }
+        else if (SelectedCompanyType.IsOnulus == true || SelectedCompanyType.IsSport == true)
+        {
+            @TextProvider.Get("ORG_DATA_VEREIN")
+        }
+        else
+        {
+            @if (SelectedCompanyType.ID == Guid.Parse("505f2b86-4301-4c55-8dbe-3ee494e5569d")) //Sachwalterschaft
+            {
+                @TextProvider.Get("ORG_ANAGRAFIC_DATA_SACHWALTERSCHAFT")
+            }
+            else
+            {
+                @TextProvider.Get("ORG_ANAGRAFIC_DATA")
+            }
+        }
+    </h4>
+    <div class="extra-small-element-separator"></div>
+    @if (SelectedCompanyType.IsPrivate == true && SelectedCompanyType.ID == Guid.Parse("505f2b86-4301-4c55-8dbe-3ee494e5569d"))
+    {
+        <div class="form-group-multicolumn">
+            <div class="form-group flex-full">
+                <label for="@Anagrafic.FirstName" class="form-label">@TextProvider.Get("ORG_REQUEST_FIRSTNAME")</label>
+                <InputText @bind-Value="Anagrafic.FirstName" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.FirstName)" TextCode="ORG_REQUEST_FIRSTNAME"/>
+            </div>
+            <div class="form-group flex-full">
+                <label for="@Anagrafic.LastName" class="form-label">@TextProvider.Get("ORG_REQUEST_LASTNAME")</label>
+                <InputText @bind-Value="Anagrafic.LastName" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.LastName)" TextCode="ORG_REQUEST_LASTNAME"/>
+            </div>
+        </div>
+
+        @if (!IsBackend)
+        {
+            <div class="form-group-multicolumn">
+                <div class="form-group flex-full">
+                    <label for="@Anagrafic.FiscalNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                    <InputText @bind-Value="Anagrafic.FiscalNumber" disabled class="form-control form-disabled"></InputText>
+                    <CustomValidationMessage For="@(() => Anagrafic.FiscalNumber)" TextCode="ORG_REQUEST_FISCAL_NUMBER"/>
+                </div>
+                @if (SelectedCompanyLegalForm != null && SelectedCompanyLegalForm.ID == Guid.Parse("fc0a0e03-9685-4ddb-9f5c-61b9fe08bb11"))
+                {
+                    <div class="form-group flex-full">
+                        <label for="@Anagrafic.VatNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                        <InputText @bind-Value="Anagrafic.VatNumber" disabled class="form-control form-disabled"></InputText>
+                        <CustomValidationMessage For="@(() => Anagrafic.VatNumber)" TextCode="ORG_REQUEST_VAT_NUMBER"/>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="form-group-multicolumn">
+                <div class="form-group flex-full">
+                    <label for="@Anagrafic.FiscalNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                    <InputText @bind-Value="Anagrafic.FiscalNumber" class="form-control"></InputText>
+                    <CustomValidationMessage For="@(() => Anagrafic.FiscalNumber)" TextCode="ORG_REQUEST_FISCAL_NUMBER"/>
+                </div>
+                @if (SelectedCompanyLegalForm != null && SelectedCompanyLegalForm.ID == Guid.Parse("fc0a0e03-9685-4ddb-9f5c-61b9fe08bb11"))
+                {
+                    <div class="form-group flex-full">
+                        <label for="@Anagrafic.VatNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                        <InputText @bind-Value="Anagrafic.VatNumber" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => Anagrafic.VatNumber)" TextCode="ORG_REQUEST_VAT_NUMBER"/>
+                    </div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div class="form-group">
+            <label for="@Anagrafic.FirstName" class="form-label">@TextProvider.Get("ORG_REQUEST_DENOMINATION")</label>
+            <InputText @bind-Value="Anagrafic.FirstName" class="form-control"></InputText>
+            <CustomValidationMessage For="@(() => Anagrafic.FirstName)" TextCode="ORG_REQUEST_DENOMINATION"/>
+        </div>
+
+        @if (!IsBackend)
+        {
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label for="@Anagrafic.FiscalNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                <InputText @bind-Value="Anagrafic.FiscalNumber" disabled class="form-control form-disabled"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.FiscalNumber)" TextCode="ORG_REQUEST_FISCAL_NUMBER"/>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group-multicolumn">
+                @if (SelectedCompanyType.IsAssociation == true)
+                {
+                    <div class="form-group flex-full">
+                        <label for="@Anagrafic.VatNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                        <InputText @bind-Value="Anagrafic.VatNumber" disabled class="form-control form-disabled"></InputText>
+                        <CustomValidationMessage For="@(() => Anagrafic.VatNumber)" TextCode="ORG_REQUEST_VAT_NUMBER"/>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group flex-full">
+                        <label for="@Anagrafic.VatNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                        <InputText @bind-Value="Anagrafic.VatNumber" disabled class="form-control form-disabled"></InputText>
+                        <CustomValidationMessage For="@(() => Anagrafic.VatNumber)" TextCode="ORG_REQUEST_VAT_NUMBER"/>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label for="@Anagrafic.FiscalNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                <InputText @bind-Value="Anagrafic.FiscalNumber" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.FiscalNumber)" TextCode="ORG_REQUEST_FISCAL_NUMBER"/>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group-multicolumn">
+                @if (SelectedCompanyType.IsAssociation == true)
+                {
+                    <div class="form-group flex-full">
+                        <label for="@Anagrafic.VatNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                        <InputText @bind-Value="Anagrafic.VatNumber" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => Anagrafic.VatNumber)" TextCode="ORG_REQUEST_VAT_NUMBER"/>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group flex-full">
+                        <label for="@Anagrafic.VatNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                        <InputText @bind-Value="Anagrafic.VatNumber" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => Anagrafic.VatNumber)" TextCode="ORG_REQUEST_VAT_NUMBER"/>
+                    </div>
+                }
+            </div>
+        }
+        @if (SelectedCompanyType.IsAssociation == true || SelectedCompanyType.IsSport == true || SelectedCompanyType.IsOnulus == true)
+        {
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label for="@Anagrafic.PECEmail" class="form-label">@TextProvider.Get("ORG_REQUEST_PEC_EMAIL")</label>
+                <InputText @bind-Value="Anagrafic.PECEmail" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.PECEmail)" TextCode="ORG_REQUEST_PEC_EMAIL"/>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group-multicolumn">
+                <div class="form-group full-width">
+                    <label for="@Anagrafic.CodiceDestinatario" class="form-label">@TextProvider.Get("ORG_REQUEST_CODICE_DESTINATARIO")</label>
+                    <InputText @bind-Value="Anagrafic.CodiceDestinatario" class="form-control"></InputText>
+                    <CustomValidationMessage For="@(() => Anagrafic.CodiceDestinatario)" TextCode="ORG_REQUEST_CODICE_DESTINATARIO"/>
+                </div>
+
+                @if (SelectedCompanyType.IsAssociation == true)
+                {
+                    <div class="form-group full-width">
+                        <label for="@Anagrafic.HandelskammerEintragung" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_HANDELSKAMMER")</label>
+                        <InputText @bind-Value="Anagrafic.HandelskammerEintragung" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => Anagrafic.HandelskammerEintragung)" TextCode="ORG_REQUEST_EINTRAGUNG_HANDELSKAMMER"/>
+                    </div>
+                }
+
+            </div>
+            @if (SelectedCompanyType.IsOnulus)
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group-multicolumn">
+                    <div class="form-group full-width">
+                        <label for="@Anagrafic.EintragungNr" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_NR")</label>
+                        <InputText @bind-Value="Anagrafic.EintragungNr" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => Anagrafic.EintragungNr)" TextCode="ORG_REQUEST_EINTRAGUNG_NR"/>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="@Anagrafic.EintragungDatum" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_DATUM")</label>
+                        <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="Anagrafic.EintragungDatum" class="form-control"></TelerikDatePicker>
+                        <CustomValidationMessage For="@(() => Anagrafic.EintragungDatum)" TextCode="ORG_REQUEST_EINTRAGUNG_DATUM"/>
+                    </div>
+                </div>
+            }
+        }
+        @if ((SelectedCompanyType != null && SelectedCompanyType.CanBeBolloFree) || (SelectedCompanyLegalForm != null && SelectedCompanyLegalForm.CanBeBolloFree == true))
+        {
+            <div class="element-separator"></div>
+            <h4>
+                @TextProvider.Get("ORG_BOLLO")
+            </h4>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("ORG_BOLLO_FREE")</label>
+                <div class="extra-small-element-separator"></div>
+                <div>
+                    <TelerikSwitch @bind-Value="Anagrafic.BolloFree" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                   Class="list-item-switch" OnChange="@BolloFreeChangedHandler">
+                    </TelerikSwitch>
+                </div>
+            </div>
+            @if (BolloFreeReasons != null && BolloFreeReasons.Count() > 0 && Anagrafic.BolloFree == true)
+            {
+                <div class="small-element-separator"></div>
+                <div class="form-group">
+                    <label for="@Anagrafic.AUTH_BolloFree_Reason_ID" class="form-label">@TextProvider.Get("ORG_BOLLO_REASON")</label>
+                    <TelerikDropDownList Data="@BolloFreeReasons.OrderBy(p => p.SortOrder).ToList()" TextField="Text" ValueField="ID"
+                                         @bind-Value="@Anagrafic.AUTH_BolloFree_Reason_ID">
+                    </TelerikDropDownList>
+                    <CustomValidationMessage For="@(() => Anagrafic.AUTH_BolloFree_Reason_ID)" TextCode="ORG_BOLLO_REASON"/>
+                </div>
+            }
+        }
+        @if (SelectedCompanyType.IsAssociation == true || SelectedCompanyType.IsSport == true || SelectedCompanyType.IsOnulus == true)
+        {
+            <div class="element-separator"></div>
+            <h4>
+                @TextProvider.Get("ORG_BANC_DATA")
+            </h4>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("ORG_KONTOINHABER")</label>
+                <InputText @bind-Value="Anagrafic.KontoInhaberReq" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.KontoInhaberReq)" TextCode="ORG_KONTOINHABER"/>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("ORG_BANKNAME")</label>
+                <InputText @bind-Value="Anagrafic.BanknameReq" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.BanknameReq)" TextCode="ORG_BANKNAME"/>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("ORG_IBAN")</label>
+                <InputText @bind-Value="Anagrafic.IBANReq" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.IBANReq)" TextCode="ORG_IBAN"/>
+            </div>
+        }
+    }
+    <div class="element-separator"></div>
+    <h4>
+        @TextProvider.Get("ORG_DATA_ADDRESS")
+    </h4>
+    @if (AddressNotFound == false)
+    {
+        <div class="extra-small-element-separator"></div>
+        <div class="form-group">
+            <label class="form-label">@TextProvider.Get("REGISTRATION_SEARCH_MUNICIPALITY")</label>
+            <TelerikComboBox TItem="@META_IstatComuni" TValue="@Guid"
+                             ScrollMode="@DropDownScrollMode.Virtual"
+                             OnRead="@GetRemoteMunicipalities"
+                             ItemHeight="30" PageSize="15"
+                             ValueMapper="@GetModelFromValue"
+                             TextField="@nameof(META_IstatComuni.NameDE)"
+                             ValueField="@nameof(META_IstatComuni.ID)"
+                             @bind-Value="@SelectedMunicipality"
+                             Filterable="true"
+                             Class="address-search-box"
+                             OnChange="@(() => UpdateAddressData(SelectedMunicipality))"
+                             FilterOperator="@StringFilterOperator.Contains">
+                <ComboBoxSettings>
+                    <ComboBoxPopupSettings Height="200px"/>
+                </ComboBoxSettings>
+            </TelerikComboBox>
+            <CustomValidationMessage For="@(() => Anagrafic.DomicileStreetAddress)" TextCode="REGISTRATION_SEARCH_MUNICIPALITY"/>
+        </div>
+        @if (SelectedMunicipality != Guid.Empty)
+        {
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                <InputText @bind-Value="Anagrafic.DomicileStreetAddress" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.DomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS"/>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group-multicolumn">
+                <div class="form-group flex-half">
+                    <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                    <label class="form-label-value">@Anagrafic.DomicilePostalCode</label>
+                </div>
+                <div class="form-group flex-full">
+                    <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                    <label class="form-label-value">@Anagrafic.DomicileMunicipality</label>
+                </div>
+                <div class="form-group flex-half">
+                    <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                    <label class="form-label-value">@Anagrafic.DomicileProvince</label>
+                </div>
+            </div>
+        }
+        <div class="extra-small-element-separator"></div>
+        <div class="address-not-found-container font-small custom-color-primary" @onclick="@(() => AddressNotFoundClick())">
+            @TextProvider.Get("REGISTRATION_ADDRESS_NOT_FOUND")
+        </div>
+    }
+    else if (AddressNotFound == true)
+    {
+        <div class="form-group">
+            <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+            <InputText @bind-Value="Anagrafic.DomicileStreetAddress" class="form-control"></InputText>
+            <CustomValidationMessage For="@(() => Anagrafic.DomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS"/>
+        </div>
+        <div class="extra-small-element-separator"></div>
+        <div class="form-group-multicolumn">
+            <div class="form-group flex-half">
+                <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                <InputText @bind-Value="Anagrafic.DomicilePostalCode" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.DomicilePostalCode)" TextCode="REGISTRATION_POSTAL_CODE"/>
+            </div>
+            <div class="form-group flex-full">
+                <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                <InputText @bind-Value="Anagrafic.DomicileMunicipality" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.DomicileMunicipality)" TextCode="REGISTRATION_MUNICIPALITY"/>
+            </div>
+            <div class="form-group flex-half">
+                <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                <InputText @bind-Value="Anagrafic.DomicileProvince" class="form-control"></InputText>
+                <CustomValidationMessage For="@(() => Anagrafic.DomicileProvince)" TextCode="REGISTRATION_PROVINCE"/>
+            </div>
+        </div>
+        <div class="extra-small-element-separator"></div>
+        <div class="address-not-found-container font-small custom-color-primary" @onclick="@(() => SearchAddressClick())">
+            @TextProvider.Get("REGISTRATION_ADDRESS_SEARCH")
+        </div>
+    }
+    <div class="extra-small-element-separator"></div>
+    <div class="form-group">
+        <label class="form-label">@TextProvider.Get("ORG_NATION")</label>
+        <InputText @bind-Value="Anagrafic.DomicileNation" class="form-control"></InputText>
+        <CustomValidationMessage For="@(() => Anagrafic.DomicileNation)" TextCode="ORG_NATION"/>
+    </div>
+    <div class="element-separator"></div>
+    <h4>
+        @TextProvider.Get("ORG_KONTAKT_DATA")
+    </h4>
+    <div class="small-element-separator"></div>
+    <div class="form-group">
+        <label class="form-label">@TextProvider.Get("ORG_EMAIL")</label>
+        <InputText @bind-Value="Anagrafic.Email" type="email" class="form-control"></InputText>
+        <CustomValidationMessage For="@(() => Anagrafic.Email)" TextCode="ORG_EMAIL"/>
+    </div>
+    <div class="extra-small-element-separator"></div>
+    <div class="form-group">
+        <label class="form-label">@TextProvider.Get("ORG_MOBILE_PHONE")</label>
+        <CustomPhone @bind-Value="@Anagrafic.MobilePhone"></CustomPhone>
+        <CustomValidationMessage For="@(() => Anagrafic.MobilePhone)" TextCode="ORG_MOBILE_PHONE"/>
+    </div>
+    <div class="extra-small-element-separator"></div>
+    <div class="form-group">
+        <label class="form-label">@TextProvider.Get("ORG_PHONE")</label>
+        <CustomPhone @bind-Value="@Anagrafic.Phone"></CustomPhone>
+        <CustomValidationMessage For="@(() => Anagrafic.Phone)" TextCode="ORG_PHONE"/>
+    </div>
+
+    </EditForm>
+    @if (SelectedCompanyType != null && SelectedCompanyType.IsPrivate != true && GesetzlicherVertreter != null)
+    {
+        <EditForm EditContext="@editGVContext">
+            <ICWebApp.Classes.Validation.CustomValidation @ref="customGVValidation"></ICWebApp.Classes.Validation.CustomValidation>
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <div class="element-separator"></div>
+            <h4>
+                @TextProvider.Get("ORG_GESETZLICHER_VERTRETER")
+            </h4>
+            <div class="extra-small-element-separator"></div>
+            <div class="gesetzlicher-vertreter-container">
+                <div class="registration-data-container">
+                    <h5>
+                        @TextProvider.Get("REGISTRATION_ANAGRAFIC_DATA")
+                    </h5>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group-multicolumn">
+                        <div class="form-group flex-full">
+                            <label for="@GesetzlicherVertreter.GV_FirstName" class="form-label">@TextProvider.Get("REGISTRATION_FIRSTNAME")</label>
+                            <InputText @bind-Value="GesetzlicherVertreter.GV_FirstName" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_FirstName)" TextCode="REGISTRATION_FIRSTNAME"/>
+                        </div>
+                        <div class="form-group flex-full">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_LASTNAME")</label>
+                            <InputText @bind-Value="GesetzlicherVertreter.GV_LastName" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_LastName)" TextCode="REGISTRATION_LASTNAME"/>
+                        </div>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_GENDER")</label>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="form-group-multicolumn">
+                            <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                <ButtonGroupToggleButton @bind-Selected="@MaleSelected">@TextProvider.Get("REGISTRATION_GENDER_MALE")</ButtonGroupToggleButton>
+                                <ButtonGroupToggleButton @bind-Selected="@FemaleSelected">@TextProvider.Get("REGISTRATION_GENDER_FEMALE")</ButtonGroupToggleButton>
+                            </TelerikButtonGroup>
+                        </div>
+                        <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_Gender)" TextCode="REGISTRATION_GENDER"/>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_COUNTY_OF_BIRTH")</label>
+                        <InputText @bind-Value="GesetzlicherVertreter.GV_CountyOfBirth" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_CountyOfBirth)" TextCode="REGISTRATION_COUNTY_OF_BIRTH"/>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_PLACE_OF_BIRTH")</label>
+                        <InputText @bind-Value="GesetzlicherVertreter.GV_PlaceOfBirth" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_PlaceOfBirth)" TextCode="REGISTRATION_PLACE_OF_BIRTH"/>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_DATE_OF_BIRHT")</label>
+                        <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="GesetzlicherVertreter.GV_DateOfBirth" Min="DateTime.Now.AddYears(-120)" Max="DateTime.Now.AddYears(-18)" class="form-control"></TelerikDatePicker>
+                        <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_DateOfBirth)" TextCode="REGISTRATION_DATE_OF_BIRHT"/>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_FISCAL_NUMBER")</label>
+                        <InputText @bind-Value="GesetzlicherVertreter.GV_FiscalNumber" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_FiscalNumber)" TextCode="REGISTRATION_FISCAL_NUMBER"/>
+                    </div>
+                    <div class="element-separator"></div>
+                    <h4>
+                        @TextProvider.Get("REGISTRATION_DOMICILE_DATA")
+                    </h4>
+
+                    @if (GV_AddressNotFound == false)
+                    {
+                        <div class="extra-small-element-separator"></div>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_SEARCH_MUNICIPALITY")</label>
+                            <TelerikComboBox TItem="@META_IstatComuni" TValue="@Guid"
+                                             ScrollMode="@DropDownScrollMode.Virtual"
+                                             OnRead="@GetRemoteMunicipalities"
+                                             ItemHeight="30" PageSize="15"
+                                             ValueMapper="@GetModelFromValue"
+                                             TextField="@nameof(META_IstatComuni.NameDE)"
+                                             ValueField="@nameof(META_IstatComuni.ID)"
+                                             @bind-Value="@GV_SelectedMunicipality"
+                                             Filterable="true"
+                                             Class="address-search-box"
+                                             OnChange="@(() => GV_UpdateAddressData(GV_SelectedMunicipality))"
+                                             FilterOperator="@StringFilterOperator.Contains">
+                                <ComboBoxSettings>
+                                    <ComboBoxPopupSettings Height="200px"/>
+                                </ComboBoxSettings>
+                            </TelerikComboBox>
+                            <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_DomicileStreetAddress)" TextCode="REGISTRATION_SEARCH_MUNICIPALITY"/>
+                        </div>
+                        @if (GV_SelectedMunicipality != Guid.Empty)
+                        {
+                            <div class="extra-small-element-separator"></div>
+                            <div class="form-group">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                                <InputText @bind-Value="GesetzlicherVertreter.GV_DomicileStreetAddress" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_DomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS"/>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="form-group-multicolumn">
+                                <div class="form-group flex-half">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                                    <label class="form-label-value">@GesetzlicherVertreter.GV_DomicilePostalCode</label>
+                                </div>
+                                <div class="form-group flex-full">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                                    <label class="form-label-value">@GesetzlicherVertreter.GV_DomicileMunicipality</label>
+                                </div>
+                                <div class="form-group flex-half">
+                                    <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                                    <label class="form-label-value">@GesetzlicherVertreter.GV_DomicileProvince</label>
+                                </div>
+                            </div>
+                        }
+                        <div class="extra-small-element-separator"></div>
+                        <div class="address-not-found-container font-small custom-color-primary" @onclick="@(() => GV_AddressNotFoundClick())">
+                            @TextProvider.Get("REGISTRATION_ADDRESS_NOT_FOUND")
+                        </div>
+                    }
+                    else if (GV_AddressNotFound == true)
+                    {
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                            <InputText @bind-Value="GesetzlicherVertreter.GV_DomicileStreetAddress" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_DomicileStreetAddress)" TextCode="REGISTRATION_ADDRESS"/>
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="form-group-multicolumn">
+                            <div class="form-group flex-half">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                                <InputText @bind-Value="GesetzlicherVertreter.GV_DomicilePostalCode" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_DomicilePostalCode)" TextCode="REGISTRATION_POSTAL_CODE"/>
+                            </div>
+                            <div class="form-group flex-full">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                                <InputText @bind-Value="GesetzlicherVertreter.GV_DomicileMunicipality" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_DomicileMunicipality)" TextCode="REGISTRATION_MUNICIPALITY"/>
+                            </div>
+                            <div class="form-group flex-half">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                                <InputText @bind-Value="GesetzlicherVertreter.GV_DomicileProvince" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_DomicileProvince)" TextCode="REGISTRATION_PROVINCE"/>
+                            </div>
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_NATION")</label>
+                            <InputText @bind-Value="GesetzlicherVertreter.GV_DomicileNation" class="form-control"></InputText>
+                            <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_DomicileNation)" TextCode="REGISTRATION_NATION"/>
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="address-not-found-container font-small custom-color-primary" @onclick="@(() => GV_SearchAddressClick())">
+                            @TextProvider.Get("REGISTRATION_ADDRESS_SEARCH")
+                        </div>
+                    }
+                    <div class="element-separator"></div>
+                    <h4>
+                        @TextProvider.Get("REGISTRATION_KONTAKT_DATA")
+                    </h4>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_EMAIL")</label>
+                        <InputText @bind-Value="GesetzlicherVertreter.GV_Email" type="email" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_Email)" TextCode="REGISTRATION_EMAIL"/>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("ORG_MOBILE_PHONE")</label>
+                        <CustomPhone @bind-Value="@GesetzlicherVertreter.GV_MobilePhone"></CustomPhone>
+                        <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_MobilePhone)" TextCode="ORG_MOBILE_PHONE"/>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("REGISTRATION_PHONE")</label>
+                        <CustomPhone @bind-Value="@GesetzlicherVertreter.GV_Phone"></CustomPhone>
+                        <CustomValidationMessage For="@(() => GesetzlicherVertreter.GV_Phone)" TextCode="REGISTRATION_PHONE"/>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    }
+
+    @if (FormError == true)
+    {
+        <div class="element-separator"></div>
+        <div class="container-error">
+            @TextProvider.Get("FORM_APPLICATION_ERROR")
+        </div>
+    }
+    <div class="element-separator"></div>
+    <div class="button-container">
+        <button class="btn btn-secondary" type="button" @onclick="Cancel">@TextProvider.Get("BUTTON_CANCEL")</button>
+        <button class="btn btn-primary" type="button" @onclick="Save">@TextProvider.Get("BUTTON_SAVE")</button>
+    </div>
+    </div>
+}

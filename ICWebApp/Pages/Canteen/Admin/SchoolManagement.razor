@@ -1,0 +1,55 @@
+﻿@page "/Admin/Canteen/SchoolManagement"
+
+@layout MainLayout
+
+<div class="segment-container custom-background-default">
+    <div class="segment-separator custom-border-primary"></div>
+    <div class="small-element-separator"></div>
+    <div class="form-group form-group-small">
+        <div class="segment-title custom-color-primary">@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_SCHOOLS")</div>
+    </div>
+    <div class="extra-small-element-separator"></div>
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikGrid Data="@Schools" Pageable="false" Sortable="false" Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@AddSchool" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(CANTEEN_School.Name)" Title="@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_SCHOOL_TABLE_NAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(CANTEEN_School.SchoolTypeID)" Title="@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_SCHOOL_TABLE_TYPE")" Width="auto">
+                    <Template>
+                        @{
+                            CANTEEN_School item = context as CANTEEN_School;
+
+                            @if (item != null)
+                            {
+                                var schoolType = Types.FirstOrDefault(p => p.id == item.SchoolTypeID);
+
+                                @if (schoolType != null)
+                                {
+                                    <div>@(schoolType.Text)</div>
+                                }
+                            }
+                        }
+                    </Template>
+                </GridColumn>
+                <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        CANTEEN_School item = context as CANTEEN_School;
+
+                        if (item != null)
+                        {
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditSchool(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditSchoolPeriod(item))" Icon="SvgIcon.Calendar" title="@TextProvider.Get("TOOLTIP_PERIOD")"></GridCommandButton>
+                            <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => RemoveSchool(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>    

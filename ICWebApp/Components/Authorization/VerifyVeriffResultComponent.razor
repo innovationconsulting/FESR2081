@@ -1,0 +1,206 @@
+﻿<TelerikRootComponent>
+    <div class="email-container font-normal">
+        <div class="email-footer">
+            @if (VeriffResponse != null)
+            {
+                <div class="veriff-response-container">
+                    @if(VeriffResponse.Status == "approved")
+                    {                        
+                        <div class="veriff-reponse-icon veriff-success">
+                            <TelerikIcon Icon="SvgIcon.Check" />
+                        </div>
+                        <div class="veriff-reponse-text veriff-success">
+                            @TextProvider.Get("VERIFF_SUCCESS")
+                        </div>
+                    }
+                    else if (VeriffResponse.Status == "WrongData")
+                    {                   
+                        <div class="veriff-reponse-icon veriff-error">
+                            <TelerikIcon Icon="SvgIcon.X" />
+                        </div>
+                        <div class="veriff-reponse-text veriff-error">
+                            @TextProvider.Get("VERIFF_WRONG_DATA")
+                        </div>
+                    }
+                    else
+                    {             
+                        <div class="veriff-reponse-icon veriff-error">
+                            <TelerikIcon Icon="SvgIcon.X" />
+                        </div>
+                        <div class="veriff-reponse-text veriff-error">
+                            @TextProvider.Get("VERIFF_ERROR")
+                        </div>
+                    }
+                </div>
+                
+                @if (VeriffResponse.Status == "WrongData" && User != null && Anagrafic != null)
+                {
+                    <div class="small-element-separator"></div>
+                    <div class="user-container">
+                        <table>
+                            @{
+                                string FirstNameCSS = "";
+
+                                if (User.Firstname != VeriffResponse.Firstname)
+                                {
+                                    FirstNameCSS = "row-error";
+                                }
+                            }
+                            <tr class="@FirstNameCSS">
+                                <td class="title-row">
+                                    @TextProvider.Get("REGISTRATION_FIRSTNAME")
+                                </td>
+                                <td>
+                                    @User.Firstname
+                                </td>
+                            </tr>
+                            @{
+                                string LastNameCSS = "";
+
+                                if (User.Lastname != VeriffResponse.Lastname)
+                                {
+                                    LastNameCSS = "row-error";
+                                }
+                            }
+                            <tr class="@LastNameCSS">
+                                <td class="title-row">
+                                    @TextProvider.Get("REGISTRATION_LASTNAME")
+                                </td>
+                                <td>
+                                    @User.Lastname
+                                </td>
+                            </tr>
+                            @{
+                                string DateOfBirthCSS = "";
+
+                                if (Anagrafic.DateOfBirth != VeriffResponse.DateOfBirth)
+                                {
+                                    DateOfBirthCSS = "row-error";
+                                }
+                            }
+                            <tr class="@DateOfBirthCSS">
+                                <td class="title-row">
+                                    @TextProvider.Get("REGISTRATION_DATE_OF_BIRHT")
+                                </td>
+                                <td>
+                                    @if (Anagrafic.DateOfBirth != null) 
+                                    {
+                                        @Anagrafic.DateOfBirth.Value.ToString("dd.MM.yyyy");
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <button class="btn btn-primary flex-right" type="button" @onclick="ShowEditWindow">@(TextProvider.Get("VERIFF_BUTTON_EDIT_DATA"))</button>
+                    <div class="element-separator"></div>
+                }
+            }
+            else if(RepeatCount >= RepeatLimit)
+            {
+                <div class="veriff-response-container">
+                    <div class="veriff-reponse-icon veriff-error">
+                        <TelerikIcon Icon="SvgIcon.X" />
+                    </div>
+                    <div class="veriff-reponse-text veriff-error">
+                        @TextProvider.Get("VERIFF_UNKNOWN_ERROR")
+                    </div>
+                </div>
+                <div class="small-element-separator"></div>
+                <div class="form-group-container">
+                    <button class="btn btn-secondary" @onclick="@HandleLogout">@TextProvider.Get("LOGOUT_BUTTON")</button>
+                </div>                
+            }
+            else
+            {
+                <div class="loader-gif-container">
+                    <div class="veriff-spinner">
+                        <CustomLoader></CustomLoader>
+                    </div>
+                    <div class="spinning-text font-normal">
+                        @TextProvider.Get("WAIT_FOR_VERIFICATION")
+                    </div>
+                </div>
+            }
+            @if(VeriffResponse != null && VeriffResponse.Status == "WrongData")
+            {
+                if (!string.IsNullOrEmpty(RepeatVeriffMessage))
+                {
+                    <div class="small-element-separator"></div>
+                    <div style="color: red !important;">
+                        @RepeatVeriffMessage
+                    </div>
+                    <div class="small-element-separator"></div>
+                }
+            }
+            @if (VeriffResponse != null)
+            {
+                <div class="small-element-separator"></div>
+                <div class="form-group-container">
+                    <button class="btn btn-secondary" @onclick="@HandleLogout">@TextProvider.Get("LOGOUT_BUTTON")</button>
+                    @if (VeriffResponse.Status == "approved")
+                    {
+                        <button class="btn btn-primary" @onclick="@HandleLogout">@TextProvider.Get("BUTTON_BACK_TO_HOME")</button>
+                    }
+                    else if(VeriffResponse.Status == "WrongData")
+                    {
+                        if (!string.IsNullOrEmpty(RepeatVeriffMessage))
+                        {
+                            <button class="btn btn-primary" @onclick="@HandleAgain">@TextProvider.Get("BUTTON_VERIFF_AGAIN")</button>
+                        }
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" @onclick="@HandleAgain">@TextProvider.Get("BUTTON_VERIFF_AGAIN")</button>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <TelerikWindow Modal="true" @bind-Visible="@EditWindowVisible" Width="500px">
+        <WindowTitle>
+            @TextProvider.Get("ANAGRAFIC_DATA_EDIT")
+        </WindowTitle>
+        <WindowContent>
+            @if(Anagrafic != null)
+            {
+                <EditForm Model="@Anagrafic" OnSubmit="SaveData">
+                    <div class="user-creation-container">
+                        <div class="form-group-multicolumn">
+                            <div class="form-group flex-full">
+                                <label for="@Anagrafic.ReqFirstName" class="form-label">@TextProvider.Get("REGISTRATION_FIRSTNAME")</label>
+                                <InputText @bind-Value="Anagrafic.ReqFirstName" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => Anagrafic.ReqFirstName)" TextCode="REGISTRATION_FIRSTNAME" />
+                            </div>
+                            <div class="form-group flex-full">
+                                <label class="form-label">@TextProvider.Get("REGISTRATION_LASTNAME")</label>
+                                <InputText @bind-Value="Anagrafic.ReqLastName" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => Anagrafic.ReqLastName)" TextCode="REGISTRATION_LASTNAME" />
+                            </div>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("REGISTRATION_DATE_OF_BIRHT")</label>
+                            <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="Anagrafic.ReqDateOfBirth" Min="DateTime.Now.AddYears(-120)" Max="DateTime.Now.AddYears(-18)" class="form-control"></TelerikDatePicker>
+                            <CustomValidationMessage For="@(() => Anagrafic.ReqDateOfBirth)" TextCode="REGISTRATION_DATE_OF_BIRHT" />
+                        </div>
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="registration-footer">
+                        <div class="small-element-separator"></div>
+                        <div class="form-group-container">
+                            <div class="form-group-container-left"></div>
+                            <div class="form-group-container-right flex-container">
+                                <button class="btn btn-secondary flex-left vertical-element-separator" type="button" @onclick="HideEditWindow">@(TextProvider.Get("BUTTON_CANCEL"))</button>
+                                <button class="btn btn-primary flex-right" type="submit">@(TextProvider.Get("BUTTON_SAVE"))</button>
+                            </div>
+                        </div>
+                    </div>
+                </EditForm>
+            }
+        </WindowContent>
+    </TelerikWindow>
+
+</TelerikRootComponent>
+

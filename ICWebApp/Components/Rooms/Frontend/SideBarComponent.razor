@@ -1,0 +1,27 @@
+﻿<div class="sidebar-container sticky-top">
+    <div class="quick-view-step">
+        <h5>
+            @TextProvider.Get("FRONTEND_BOOKING_SIDEBAR_TIME")
+        </h5>
+        <div class="small-element-separator"></div>
+        <div class="font-normal">
+            @if (!string.IsNullOrEmpty(TimeStampText))
+            {
+                @((MarkupString)TimeStampText)
+            }
+        </div>
+    </div>
+    <div class="element-separator"></div>
+    <div class="quick-view-step">
+        <h5>
+            @TextProvider.Get("FRONTEND_BOOKING_SIDEBAR_ROOM")
+        </h5>
+        <div class="small-element-separator"></div>
+        <div class="font-normal">
+            @if (!string.IsNullOrEmpty(RoomText))
+            {
+                @((MarkupString)RoomText)
+            }
+        </div>
+    </div>
+</div>

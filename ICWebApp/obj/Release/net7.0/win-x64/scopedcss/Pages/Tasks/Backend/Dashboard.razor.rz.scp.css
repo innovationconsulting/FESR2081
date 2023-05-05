@@ -1,0 +1,97 @@
+.wizard-content-container[b-s3p3p1xghc] {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+.status-element-container[b-s3p3p1xghc]{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.status-container[b-s3p3p1xghc] {
+    max-width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #d9d9d9;
+    padding: 20px;
+    gap: 20px;
+}
+
+.status-container-left[b-s3p3p1xghc]{
+    width: 100px;
+    font-size: 28px;
+}
+.desc-container-lower-row[b-s3p3p1xghc]{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.status-container-left[b-s3p3p1xghc]{
+    width: 100px;
+}
+.status-container-middle[b-s3p3p1xghc] {
+    flex: 1;
+}
+.status-container-right[b-s3p3p1xghc] {
+    width: 200px;
+}
+.button-container[b-s3p3p1xghc]{
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}
+    .button-container .btn[b-s3p3p1xghc] {
+        width: 38px !important;
+        height: 38px;
+    }
+.table-sorter-buttons .btn[b-s3p3p1xghc]{
+    height: 19px !important;
+}
+
+.status-icon[b-s3p3p1xghc]{
+    width: 40px;
+    line-height: 60px;
+    margin: auto;
+    color: #808080;
+}
+
+.segment-container[b-s3p3p1xghc] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.segment-left[b-s3p3p1xghc]{
+    width: 300px;
+    border-right: 1px solid #d9d9d9;
+    margin-top: 30px;
+    margin-right: 10px;
+    padding-right: 10px;
+}
+.segment-right[b-s3p3p1xghc]{
+    flex: 1;
+}
+.context-container[b-s3p3p1xghc]{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.context-item-container[b-s3p3p1xghc] {
+    border: 2px solid #0F7173;
+    color: #0F7173;
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+.context-item-container:hover[b-s3p3p1xghc]{
+    background-color: #0F7173CC;
+    color: white;
+}
+.context-aktiv[b-s3p3p1xghc] {
+    background-color: #0F7173CC;
+    color: white;
+    cursor: default !important;
+}

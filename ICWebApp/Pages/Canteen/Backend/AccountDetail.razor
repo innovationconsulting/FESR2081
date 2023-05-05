@@ -1,0 +1,154 @@
+﻿@page "/Canteen/AccountDetail/{UserID}"
+@layout MainLayout
+
+@if (CurrentUser != null)
+{
+    <TelerikWindow Modal="true" @bind-Visible="@ShowMovementWindow" Width="600px">
+        <WindowTitle>
+            @TextProvider.Get("CANTEEN_MOVEMENT_EDIT_WINDOW")
+        </WindowTitle>
+        <WindowContent>
+            <div>
+                @if(MovementToAdd != null)
+                {
+                    <EditForm Model="@MovementToAdd" OnValidSubmit="@SaveMovement">
+                        <DataAnnotationsValidator></DataAnnotationsValidator>
+                        <div class="movement-detail-container">
+                            <div class="form-group">
+                                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_MOVEMENT_DETAIL")</label>
+                                <InputText @bind-Value="MovementToAdd.DescriptionRequired" class="form-control"></InputText>
+                                <CustomValidationMessage For="@(() => MovementToAdd.DescriptionRequired)" TextCode="CANTEEN_MOVEMENT_DETAIL" />
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="form-group">
+                                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_MOVEMENT_VALUE")</label>
+                                <TelerikNumericTextBox @bind-Value="MovementToAdd.FeeRequired" Min="@((CurrentUser.Balance.Value - MovementToAddInitialValue) * -1)" class="form-control" Format="C" Decimals="2"></TelerikNumericTextBox>
+                                <CustomValidationMessage For="@(() => MovementToAdd.FeeRequired)" TextCode="CANTEEN_MOVEMENT_VALUE" />
+                            </div>
+                        </div>
+                        <div class="segment-button-toolbar">
+                            <div class="btn btn-secondary" type="button" @onclick="@HideMovementWindow">@TextProvider.Get("BUTTON_CANCEL")</div>
+                            <button class="btn btn-primary" type="submit">@TextProvider.Get("BUTTON_SAVE")</button>
+                        </div>
+                    </EditForm>
+                }
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideMovementWindow" />
+        </WindowActions>
+    </TelerikWindow>
+
+    <div class="element-separator"></div>
+    <div class="account-detail-first-row">
+        <div class="balance-container">
+            <div class="segment-header custom-color-primary">
+                <div class="segment-header-icon">
+                    <TelerikIcon Icon="@("fa-regular fa-sack-dollar")"></TelerikIcon>
+                </div>
+                <h3>
+                    @TextProvider.Get("CANTEEN_DASHBOARD_YOUR_BALANCE")
+                </h3>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="balance-value-container">
+                @if (CurrentUser.Balance != null)
+                {
+                    @CurrentUser.Balance.Value.ToString("C2")
+                }
+                else
+                {
+                    <span>
+                        0,00 €
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="element-separator"></div>
+    <div class="element-separator"></div>
+    <div class="movements-container">
+        <div class="segment-header custom-color-primary">
+            <div class="segment-header-icon">
+                <TelerikIcon Icon="@("fa-regular fa-arrow-right-arrow-left")"></TelerikIcon>
+            </div>
+            <h3>
+                @TextProvider.Get("CANTEEN_DASHBOARD_LAST_MOVEMENTS")
+            </h3>
+        </div>
+        <div class="element-separator"></div>
+        <div class="backend-movements-grid">
+            <TelerikGrid Data="@Movements.OrderByDescending(p => p.Date)" Pageable="true" PageSize="20" Sortable="false" Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                <GridToolBarTemplate>
+                    <GridCommandButton OnClick="@AddMovement" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                </GridToolBarTemplate>
+                <GridColumns>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.Date)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_DATE")" DisplayFormat="{0:dddd, dd.MM.yyyy}" Width="200px"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.Description)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_DESCRIPTION")"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber_Movements.Fee)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_AMOUNT")" Context="contextDetail" Width="200px">
+                        <Template>
+                            @{
+                                V_CANTEEN_Subscriber_Movements item = contextDetail as V_CANTEEN_Subscriber_Movements;
+
+                                string fontColorCSS = "fee-value-red";
+
+                                if (item != null && item.Fee != null && item.Fee > 0)
+                                {
+                                    fontColorCSS = "fee-value-green";
+                                }
+
+                                if (item != null && item.Fee != null)
+                                {
+                                <span class="demand-status-container @fontColorCSS">
+                                    @item.Fee.Value.ToString("C2")
+                                </span>
+                                }
+                                else
+                                {
+                                <span class="demand-status-container">
+                                    0,00 €
+                                </span>
+                                }
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridCommandColumn Context="propertyContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                        @{
+                                V_CANTEEN_Subscriber_Movements item = propertyContext as V_CANTEEN_Subscriber_Movements;
+
+                                if (item != null && item.IsMunicipalInput == true)
+                                {
+                                <div class="table-toolbar">
+                                    <GridCommandButton Class="btn btn-secondary icon-m0" OnClick="@(() => EditMovement(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                                    <GridCommandButton Class="btn btn-secondary icon-m0" OnClick="@(() => DeleteMovement(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                                </div>
+                                }
+                        }
+                    </GridCommandColumn>
+                </GridColumns>
+            </TelerikGrid>
+        </div>
+    </div>
+    <div class="element-separator"></div>
+    <div class="element-separator"></div>
+    <div class="document-container">
+        @if (CurrentUser != null && CurrentUser.AUTH_User_ID != null)
+        {
+            <div class="segment-header custom-color-primary">
+                <div class="segment-header-icon">
+                    <TelerikIcon Icon="@("fa-regular fa-file")"></TelerikIcon>
+                </div>
+                <h3>
+                    @TextProvider.Get("CANTEEN_USER_DOCUMENTS")
+                </h3>
+            </div>
+            <div class="small-element-separator"></div>
+            <ICWebApp.Components.Canteen.UserDokuments AUTH_Users_ID="@CurrentUser.AUTH_User_ID.Value.ToString()"></ICWebApp.Components.Canteen.UserDokuments>
+        }
+    </div>
+    <div class="element-separator"></div>
+    <div class="segment-button-toolbar">
+        <div class="btn btn-secondary" @onclick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_RETURN")</div>
+    </div>
+}

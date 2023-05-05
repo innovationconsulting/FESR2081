@@ -1,0 +1,96 @@
+﻿@page "/Backend/MessageCommunications"
+@layout MainLayout
+
+<div class="element-separator"></div>
+<div class="segment-container custom-background-default application-detail-container">
+    <div class="application-detail">
+        <div class="grid-data-container segment-loader-container">
+            <CustomLoader Visible="@(IsDataBusy)"
+                                    Text="@null" Class="initial-data-loader">
+            </CustomLoader>
+            <TelerikGrid Data="@Messages" Pageable="true" Sortable="true" Resizable="true" PageSize="30" Navigable="true"
+                         SelectionMode="GridSelectionMode.None"
+                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                <GridToolBarTemplate>
+                    <GridSearchBox DebounceDelay="200"></GridSearchBox>
+                </GridToolBarTemplate>
+                <GridColumns>
+                    <GridColumn Field="@nameof(MSG_Message.FirstReadDate)" Title="" DisplayFormat="{0:ddd, dd.MM.yyyy}" Width="40px">
+                        <Template>
+                            @{
+                                var item = context as MSG_Message;
+                                if (item.FirstReadDate == null)
+                                {
+                                    <div class="segment-line-right segment-value custom-color-details flex-center">
+                                        <div class="icon-Container">
+                                            <TelerikIcon Icon="@("fa-solid fa-envelope")"></TelerikIcon>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="segment-line-right segment-value custom-color-details flex-center">
+                                        <div class="icon-Container">
+                                            <TelerikIcon Icon="@("fa-regular fa-envelope-open")"></TelerikIcon>
+                                        </div>
+                                    </div>
+                                }
+                              
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn Field="@nameof(MSG_Message.CreationDate)" Title="@TextProvider.GetOrCreate("MESSAGE_SEND_DATE")" DisplayFormat="{0:ddd, dd.MM.yyyy}" Width="200px">
+                        <Template>
+                            @{
+                                var item = context as MSG_Message;
+                                <div class="segment-line-right segment-value custom-color-details flex-center">
+                                    @item.CreationDate
+                                </div>
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn Field="@nameof(MSG_Message.Subject)" Title="@TextProvider.GetOrCreate("MESSAGE_SUBJECT")"></GridColumn>
+                    <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                        @{
+                            var item = context as MSG_Message;
+                            <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => ReadMessage(item))" Icon="SvgIcon.Eye" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                        }
+                    </GridCommandColumn>
+                </GridColumns>
+            </TelerikGrid>
+        </div>
+    </div>
+</div>
+
+<br/>
+
+
+
+<TelerikWindow Class="trasition-window" Width="640px"  Centered="true" Draggable="true" @bind-Visible=@WindowVisible Modal="true">
+    <WindowTitle>
+        <div class="icon-Container">
+            <TelerikIcon Icon="@("fa-solid fa-envelope-open")"></TelerikIcon>
+        </div><strong>@CurrentMessage.Subject</strong>
+    </WindowTitle>
+    <WindowActions>
+        <WindowAction Name="Close" />
+    </WindowActions>
+    <WindowContent>
+        <div class="status-change-container">
+            <div class="form-group">
+                <p>
+                    @{
+                        MarkupString htmlString = new MarkupString(CurrentMessage.Messagetext);
+                    }
+                    @htmlString
+                </p>
+            </div>
+            <div class="message-peek-footer">
+                <div class="link-button" @onclick="@(() => GoToMessage(CurrentMessage))">
+                    @TextProvider.Get("MESSAGE_GO_TO_PAGE_LINK")
+                    <i class="fa-regular fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>       
+    </WindowContent>
+</TelerikWindow>

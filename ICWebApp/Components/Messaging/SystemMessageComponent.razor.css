@@ -1,0 +1,9 @@
+﻿.system-message-title {
+    font-weight: bold;
+}
+
+.system-message-container {
+    padding: 10px;
+    border-radius: 3px;
+    width: 100%;
+}

@@ -1,0 +1,88 @@
+﻿@page "/Form/Definition/Deadline/Add/{DefinitionID}/{ID}/{WizardIndex}/{ActiveIndex}"
+
+@layout MainLayout
+
+@if (Data != null)
+{
+
+    <div class="segment-container custom-background-default">
+        <EditForm Model="Data">
+            <DataAnnotationsValidator />
+            <div class="segment-title custom-color-primary">
+                @if (ID == "New")
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_PROPERTY_DEADLINE_ADD")</h3>
+                }
+                else
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_PROPERTY_DEADLINE_EDIT")</h3>
+                }
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_DEADLINE_TITLE_GENERAL")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_DEADLINE_ADDITIONALDAYS")</label>
+                <InputNumber @bind-Value="Data.AdditionalDays" class="form-control"></InputNumber>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_DEADLINE_CASE")</label>
+                <TelerikDropDownList Data="@TimeTypes" TextField="Description" ValueField="ID" @bind-Value="@Data.FORM_Definition_Deadlines_TimeType_ID"></TelerikDropDownList>
+                <CustomValidationMessage For="@(() => Data.FORM_Definition_Deadlines_TimeType_ID)" TextCode="BACKEND_FORM_DEFINITION_DEADLINE_CASE" />
+            </div>        
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_TARGETS")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <TelerikWindow Modal="true" @bind-Visible="@ShowTargetWindow" Width="600px">
+                    <WindowTitle>
+                        @TextProvider.Get("BACKEND_FORM_DEFINITION_TARGET_EDIT")
+                    </WindowTitle>
+                    <WindowContent>
+                        <div>
+                            <EditForm Model="@CurrentTarget" OnValidSubmit="@SaveTarget" Context="targetPopupContext">
+                                <div>
+                                    <div class="form-group">
+                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_TARGET_SELECTION")</label>
+                                        <TelerikDropDownList Data="@UserList" TextField="Fullname" ValueField="ID" @bind-Value="@CurrentTarget.AUTH_Users_ID" Filterable="true"></TelerikDropDownList>
+                                    </div>   
+                                </div>
+                                <div class="segment-button-toolbar">
+                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                                    OnClick="@CloseTarget">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                                    OnClick="@SaveTarget">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+                                </div>
+                            </EditForm>
+                        </div>
+                    </WindowContent>
+                </TelerikWindow>
+                <TelerikGrid Data="@TargetList" Pageable="false" Sortable="false" Resizable="false"
+                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                    <GridToolBarTemplate>
+                        <GridCommandButton OnClick="@AddTarget" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                    </GridToolBarTemplate>
+                    <GridColumns>
+                        <GridColumn Field="@nameof(FORM_Definition_Deadlines_Target.Fullname)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TARGET_NAME")"></GridColumn>
+                        <GridColumn Field="@nameof(FORM_Definition_Deadlines_Target.Email)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TARGET_EMAIL")"></GridColumn>
+                        <GridCommandColumn Context="targetContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                            <GridCommandButton Command="Edit" OnClick="@UpdateTarget" Icon="SvgIcon.Pencil"></GridCommandButton>
+                            <GridCommandButton Command="Delete" OnClick="@DeleteTarget" Icon="SvgIcon.Trash"></GridCommandButton>
+                        </GridCommandColumn>
+                    </GridColumns>
+                </TelerikGrid>
+            </div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                OnClick="@SaveForm">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

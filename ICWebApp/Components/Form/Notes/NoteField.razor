@@ -1,0 +1,114 @@
+﻿@if(Data != null)
+{
+    <div class="field-container">
+        <div class="field-description font-normal">
+            @if(Definition != null)
+            {
+                @Definition.Description
+            }
+            else
+            {
+                @(Data.DescriptionDE + "/" + Data.DescriptionIT)    
+            }
+        </div>
+        <div class="field-data-container font-normal">
+            <div class="field-value-container">
+                @if (InEdit != true)
+                {
+                    <div class="field-value">
+                        @if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("65162054-2d3a-4b83-8c28-4bc7f1092f41")) //TEXT
+                        {
+                            <div class="field-value-label">
+                                @Data.Value
+                            </div>
+                        }
+                        else if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("5d971e10-32f0-4711-b392-3c612d896485")) //MONEY
+                        {
+                            <div class="field-value-money">
+                                @if (Data.DecimalValue != null)
+                                {
+                                    @Data.DecimalValue.Value.ToString("C")
+                                }
+                            </div>
+                        }
+                        else if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("eba356ab-f68d-4714-af97-4a06cd3f5201")) //NUMBER
+                        {
+                            <div class="field-value-number">
+                                @Data.Value
+                            </div>
+                        }
+                        else if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("8e98190f-b77f-47ff-96e6-fdfd668d6c37")) //DATE
+                        {
+                            <div class="field-value-date">
+                                @if (Data.DateValue != null)
+                                {
+                                    @Data.DateValue.Value.ToString("dd.MM.yyyy")
+                                }
+                            </div>
+                        }
+                        else if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("92a513c5-75a0-48c6-a5e1-02ed6601c9cd")) //CHECKBOX
+                        {
+                            <div class="field-value-checkbox">
+                                <TelerikSwitch @bind-Value="Data.BoolValue" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch" Enabled="false"></TelerikSwitch>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="field-value-inedit">
+                        <EditForm Model="@Data">
+                            @if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("65162054-2d3a-4b83-8c28-4bc7f1092f41")) //TEXT
+                            {
+                                <div class="field-value-label">
+                                    <InputText @bind-Value="Data.Value" class="form-control"></InputText>
+                                </div>
+                            }
+                            else if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("5d971e10-32f0-4711-b392-3c612d896485")) //MONEY
+                            {
+                                <div class="field-value-money">
+                                    <TelerikNumericTextBox @bind-Value="Data.DecimalValue" class="form-control" Format="C"></TelerikNumericTextBox>
+                                </div>
+                            }
+                            else if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("eba356ab-f68d-4714-af97-4a06cd3f5201")) //NUMBER
+                            {
+                                <div class="field-value-number">
+                                    <InputNumber @bind-Value="Data.IntValue" class="form-control" />
+                                </div>
+                            }
+                            else if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("8e98190f-b77f-47ff-96e6-fdfd668d6c37")) //DATE
+                            {
+                                <div class="field-value-date">
+                                    <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="Data.DateValue" class="form-control"></TelerikDatePicker>
+                                </div>
+                            }
+                            else if (Data.FORM_Definition_Municipal_Field_Type_ID == Guid.Parse("92a513c5-75a0-48c6-a5e1-02ed6601c9cd")) //CHECKBOX
+                            {
+                                <div class="field-value-checkbox">
+                                    <TelerikSwitch @bind-Value="Data.BoolValue" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                </div>
+                            }
+                        </EditForm>
+                    </div>
+                }
+            </div>            
+            <div class="field-button-container">                
+                @if (InEdit != true)
+                {
+                    <div class="btn btn-secondary" @onclick="Edit">
+                        <TelerikIcon Icon="SvgIcon.Pencil"></TelerikIcon>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn btn-secondary" @onclick="Save">
+                        <TelerikIcon Icon="SvgIcon.Save"></TelerikIcon>
+                    </div>
+                    <div class="btn btn-secondary" @onclick="Cancel">
+                        <TelerikIcon Icon="SvgIcon.Cancel"></TelerikIcon>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

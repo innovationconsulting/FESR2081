@@ -1,0 +1,198 @@
+﻿@page "/News/Detail/{ArticleID}"
+
+@if (Article != null && Article.Title != null)
+{
+    <section id="detail-section">
+        <div class="py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="news-content-container  font-normal">
+                            <div class="news-detail-container custom-background-default">
+                                @if (Article.Image != null)
+                                {
+                                    @((MarkupString)Article.Image)
+                                }
+                                else
+                                {
+                                    bool ShowDefault = true;
+
+                                    @if (Article.FamilyID != null)
+                                    {
+                                        var ress = NEWSProvider.GetArticleImageSync(Article.FamilyID.Value);
+
+                                        @if (ress != null && ress.FILE_Fileinfo_ID != null)
+                                        {
+                                            var file = FileProvider.GetFileStorage(ress.FILE_Fileinfo_ID.Value);
+
+                                            @if (file != null && file.FileImage != null)
+                                            {
+                                                ShowDefault = false;
+                                                var base64 = Convert.ToBase64String(file.FileImage);
+
+                                                <img src="data:image/png;base64,@base64" alt="@Article.Title" title="@Article.Title" />
+                                            }
+                                        }
+                                    }
+
+                                    @if (ShowDefault == true)
+                                    {
+                                        <img src="/Images/Backend/Logo_512x512.png" alt="Comunix Default Image" title="Comunix Default Image" />
+                                    }
+                                }
+                                <div class="news-detail-text">
+                                    @((MarkupString)Article.Content)
+                                </div>
+                                @if (ArticleRessourceList != null && ArticleRessourceList.Count() > 0)
+                                {
+                                    <div class="news-ressource-container">
+                                        @foreach (var ress in ArticleRessourceList)
+                                        {
+                                            if (ress.FILE_FileInfo_ID != null)
+                                            {
+                                                var fileInfo = FileProvider.GetFileInfo(ress.FILE_FileInfo_ID.Value);
+
+                                                <div class="form-detail-download" @onclick="@(() => DownloadRessource(ress.FILE_FileInfo_ID.Value, fileInfo.FileName))">
+                                                    <div class="form-detail-download-icon">
+                                                        <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                                                    </div>
+                                                    <div class="form-detail-download-description font-normal">
+                                                        @fileInfo.FileName (@(fileInfo.Size / 1024) kb)
+                                                    </div>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+                            @if (Article.Link != null)
+                            {
+                                <div class="link-container">
+                                    <a href="@(Article.Link)" target="_blank">@TextProvider.Get("NEWS_ARTICLE_LINK")</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="news-sections">
+        <div class="py-5">
+            <div class="container">
+                <div class="row justify-content-center pb-3">
+                    <div class="col-12">
+                        @if (ArticleList != null)
+                        {
+                            <div class="news-positioning-container">
+                                <div class="news-belt-container">
+                                    <div id="left-arrow">
+                                        <i class="fa-sharp fa-solid fa-chevron-left"></i>
+                                    </div>
+                                    <div id="right-arrow">
+                                        <i class="fa-sharp fa-solid fa-chevron-right"></i>
+                                    </div>
+                                    <div class="news-preview-container" id="news-preview-container" @ref="@_containerRef">
+                                        @foreach (var news in ArticleList.OrderByDescending(p => p.PublishingDate).ToList())
+                                        {
+                                            <div class="news-item-container" @onclick="@(() => GoToNews(news.ID.ToString()))">
+                                                <div class="news-item-image">
+                                                    <div class="news-image">
+                                                        @if (news.Image != null)
+                                                        {
+                                                            var image = (MarkupString)(news.Image);
+
+                                                            @image
+                                                        }
+                                                        else
+                                                        {
+                                                            bool ShowDefault = true;
+
+                                                            @if (news.FamilyID != null)
+                                                            {
+                                                                var ress = NEWSProvider.GetArticleImageSync(news.FamilyID.Value);
+
+                                                                @if (ress != null && ress.FILE_Fileinfo_ID != null)
+                                                                {
+                                                                    var file = FileProvider.GetFileStorage(ress.FILE_Fileinfo_ID.Value);
+
+                                                                    @if (file != null && file.FileImage != null)
+                                                                    {
+                                                                        ShowDefault = false;
+                                                                        var base64 = Convert.ToBase64String(file.FileImage);
+
+                                                                        <img src="data:image/png;base64,@base64" alt="@news.Title" title="@news.Title" />
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            @if (ShowDefault == true)
+                                                            {
+                                                                <img src="/Images/Backend/Logo_512x512.png" alt="Comunix Default Image" title="Comunix Default Image" />
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="news-data-column">
+                                                    <div class="news-date font-small font-semibold">
+                                                        <div class="news-date-icon">
+                                                            <TelerikIcon Icon="@("fa-regular fa-calendar")"></TelerikIcon>
+                                                        </div>
+                                                        <div class="news-date-value">
+                                                            @if (news.PublishingDate != null)
+                                                            {
+                                                                @news.PublishingDate.Value.ToString("dd.MM.yyyy")
+                                                            }
+                                                            else
+                                                            {
+                                                                @DateTime.Now.ToString("dd.MM.yyyy")
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div class="news-title custom-color-primary">
+                                                        @if (!string.IsNullOrEmpty(news.Title))
+                                                        {
+                                                            @if (news.Title.Length > 50)
+                                                            {
+                                                                <div class="font-title">
+                                                                    @(news.Title.Substring(0, 50) + "...")
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="font-title">
+                                                                    @news.Title
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="font-title">
+                                                                @(TextProvider.Get("NEWS_DEFAULT_TITLE"))
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div class="news-item-buttons">
+                                                        <div class="news-button" @onclick="@(() => GoToNews(news.ID.ToString()))">
+                                                            <div class="news-button-text font-small">@TextProvider.Get("FRONTEND_DASHBOARD_MORE_BUTTON")</div>
+                                                            <TelerikIcon Icon="@("fa-regular fa-chevron-right")"></TelerikIcon>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

@@ -1,0 +1,73 @@
+﻿@page "/Translations"
+
+@layout MainLayout
+
+@if (Data != null)
+{
+    <TelerikWindow Modal="true" @bind-Visible="@WindowVisible" Width="900px">
+        <WindowTitle>
+            Übersetzungen
+        </WindowTitle>
+        <WindowContent>
+            <div class="payment-item-container">
+                @if (CurrentTranslationDE != null && CurrentTranslationIT != null)
+                {
+                    <EditForm Model="CurrentTranslationIT">
+                        <div class="font-bold custom-color-primary">
+                            Deutsch
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="font-normal">
+                            @CurrentTranslationDE.Code
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="font-normal">
+                            <InputText @bind-Value="CurrentTranslationDE.Text" class="form-control"></InputText>
+                        </div>
+                        <div class="element-separator"></div>
+                        <div class="font-bold custom-color-primary">
+                            Italienisch
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="font-normal">
+                            @CurrentTranslationIT.Code
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="font-normal">
+                            <InputText @bind-Value="CurrentTranslationIT.Text" class="form-control"></InputText>
+                        </div>
+                    </EditForm>
+                    <div class="small-element-separator"></div>
+                    <div class="payment-buttons">
+                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                               OnClick="@WindowClose">@TEXTProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                               OnClick="@SaveTranslation">@TEXTProvider.Get("BUTTON_SAVE")</TelerikButton>                            
+                    </div>
+                    
+                }
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="WindowClose" />
+        </WindowActions>
+    </TelerikWindow>
+    <TelerikGrid Data="@Data.OrderBy(p => p.Code)" Pageable="true" PageSize="40" Sortable="true" Resizable="false"
+                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" FilterMode="@GridFilterMode.FilterRow">
+        <GridColumns>
+            <GridColumn Field="@nameof(V_Translations.Code)" Title="Code"></GridColumn>
+            <GridColumn Field="@nameof(V_Translations.TextDE)" Title="Deutsch"></GridColumn>
+            <GridColumn Field="@nameof(V_Translations.TextIT)" Title="Italienisch"></GridColumn>
+            <GridCommandColumn Context="taskContext" Width="120px" Title="@TEXTProvider.Get("ACTIONS")">
+                @{
+                    V_Translations item = taskContext as V_Translations;
+
+                    if (item != null)
+                    {
+                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditTranslation(item))" Icon="SvgIcon.Pencil" title="Bearbeiten"></GridCommandButton>
+                    }
+                }
+            </GridCommandColumn>
+        </GridColumns>
+    </TelerikGrid>
+}

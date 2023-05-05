@@ -1,0 +1,41 @@
+﻿@page "/Admin/Canteen/CanteenManagement"
+
+@layout MainLayout
+
+<div class="segment-container custom-background-default">
+
+    <div class="segment-separator custom-border-primary"></div>
+
+    <div class="extra-small-element-separator"></div>
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikGrid Data="@Canteens" Pageable="false" Sortable="false" Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@AddCanteen" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(CANTEEN_Canteen.Name)" Title="@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_CANTEEN_TABLE_NAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(CANTEEN_Canteen.TotalSpots)" Title="@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_CANTEEN_TABLE_TOTAL_SPOTS")" Width="200px"></GridColumn>
+                <GridColumn Field="@nameof(CANTEEN_Canteen.PricePerUse)" Title="@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_CANTEEN_TABLE_PRICE")" DisplayFormat="{0:C}" Width="200px"></GridColumn>
+                <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        CANTEEN_Canteen item = context as CANTEEN_Canteen;
+
+                        if (item != null)
+                        {
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditCanteen(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditCanteenPeriod(item))" Icon="SvgIcon.Calendar" title="@TextProvider.Get("TOOLTIP_PERIOD")"></GridCommandButton>
+                            //<GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => StudentListCanteen(item))" Icon="user" title="@TextProvider.Get("TOOLTIP_STUDENTS_PER_DAY")"></GridCommandButton>
+                            <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => RemoveCanteen(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                
+                      
+                        }
+                    }
+                </GridCommandColumn>
+               
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>    

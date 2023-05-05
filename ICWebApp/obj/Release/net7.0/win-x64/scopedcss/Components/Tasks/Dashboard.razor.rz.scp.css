@@ -1,0 +1,104 @@
+.dashboard-container[b-vmaolmmwjj]{
+}
+
+.container-left[b-vmaolmmwjj] {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.container-right[b-vmaolmmwjj] {
+    flex: 1;}
+
+.context-container[b-vmaolmmwjj] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.context-item-container[b-vmaolmmwjj] {
+    border: 2px solid #0F7173;
+    color: #0F7173;
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+    .context-item-container:hover[b-vmaolmmwjj] {
+        background-color: #0F7173CC;
+        color: white;
+    }
+
+.context-aktiv[b-vmaolmmwjj] {
+    background-color: #0F7173CC;
+    color: white;
+    cursor: default !important;
+}
+
+.row-item[b-vmaolmmwjj] {
+    border: 1px solid #d9d9d9;
+    border-left: 5px solid #d9d9d9;
+    line-height: 30px;
+    margin-bottom: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+    .row-item:hover[b-vmaolmmwjj] {
+        background-color: #F2F2F2;
+    }
+.second-level-container[b-vmaolmmwjj]{
+    margin-left: 40px;
+}
+
+.third-level-container[b-vmaolmmwjj]{
+    margin-left: 40px;
+}
+.first-level-item[b-vmaolmmwjj] {
+    text-align:center;
+}
+.second-level-item[b-vmaolmmwjj] {
+    text-align: center;
+}
+table[b-vmaolmmwjj]{
+    width: 100%;
+}
+
+.second-level-spacer[b-vmaolmmwjj] {
+    margin-left: 20px;
+}
+.second-level-spacer tr[b-vmaolmmwjj]{
+    margin-bottom: 5px;
+}
+.third-level-spacer[b-vmaolmmwjj]{
+    height: 5px;
+}
+.show-all-element[b-vmaolmmwjj] {
+    border: 1px dashed #d9d9d9;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+}
+    .show-all-element:hover[b-vmaolmmwjj] {
+        border-color: #0F7173;
+        color: #0F7173;
+    }
+.authority-tag[b-vmaolmmwjj] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+.task-context-container[b-vmaolmmwjj] {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Comunix</title>
+    <style nonce="comunix123">
+        @font-face {
+            font-family: 'Ubuntu';
+            src: url('Ubuntu.woff') format('woff');
+        }
+
+        html, body {
+            font-family: 'Ubuntu', Ubuntu-Bold, Ubuntu-Light, Ubuntu-Medium;
+        }
+
+        .trademark {
+            font-size: 16px !important;
+            vertical-align: top;
+        }
+
+        .main-container {
+            width: 100%;
+            height: 100%;
+            background: url('Background.webp');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .mantainance-container {
+            position: fixed;
+            bottom: 10vh;
+            right: 0px;
+            margin: auto;
+            height: 260px;
+            width: 1000px;
+            background-color: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .sub-container {
+            padding: 30px;
+        }
+
+        .branding-container {
+            position: fixed;
+            right: 0px;
+            top: 0px;
+            width: 90vw;
+            max-width: 800px;
+        }
+
+        .main-icon {
+            width: 100%;
+        }
+
+            .main-icon img {
+                width: 100%;
+            }
+
+        .mantainance-icon { /*margin-left: 40px;*/
+        }
+
+            .mantainance-icon img {
+                height: 250px;
+                width: 250px;
+            }
+
+        html, body {
+            padding: 0px !important;
+            margin: 0px !important;
+            width: 100%;
+            height: 100%;
+        }
+
+        .second-row {
+            display: flex;
+            gap: 100px;
+            justify-content: flex-start;
+            text-align: left;
+        }
+
+        .mantainance-text {
+            color: #0F7173;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-weight: normal !important;
+        }
+
+        .header-desktop {
+            display: block;
+        }
+
+        .header-mobile {
+            display: none;
+        }
+
+        .body-desktop {
+            display: flex;
+        }
+
+        .body-mobile {
+            display: none;
+        }
+
+        .desktop-body {
+            display: block !important;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .mobile-body {
+            display: none !important;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        @media(max-width: 1080px) {
+            .desktop-body {
+                display: none !important;
+            }
+
+            .mobile-body {
+                display: block !important;
+            }
+
+            html, body {
+                font-family: 'Ubuntu', Ubuntu-Bold, Ubuntu-Light, Ubuntu-Medium;
+            }
+
+            .trademark {
+                font-size: 16px !important;
+                vertical-align: top;
+            }
+
+            .main-container {
+                width: 100%;
+                height: 100%;
+                background: unset !important;
+                background-color: #0F7173 !important;
+            }
+
+            .mantainance-container {
+                position: fixed;
+                top: 10vh;
+                margin: auto;
+                height: auto;
+                width: auto;
+                background-color: transparent !important;
+            }
+
+            .sub-container {
+                display: flex;
+                flex-direction: column;
+                gap: 100px; /*width: 800px;*/
+                padding: unset !important;
+            }
+
+            .main-icon {
+                display: flex;
+                justify-content: space-evenly;
+            }
+
+                .main-icon img {
+                    width: 500px;
+                }
+
+            .mantainance-icon {
+                display: flex;
+                justify-content: space-evenly;
+            }
+
+                .mantainance-icon img {
+                    height: 160px;
+                    width: 160px;
+                }
+
+            html, body {
+                padding: 0px !important;
+                margin: 0px !important;
+                width: 100%;
+                height: 100%;
+            }
+
+            .second-row {
+                display: flex;
+                flex-direction: column;
+                gap: 50px;
+                text-align: center;
+            }
+
+            .mantainance-text {
+                color: white;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                justify-content: space-between;
+            }
+
+            h2 {
+                font-weight: normal !important;
+                font-size: 14px !important;
+            }
+
+            .mantainance-container {
+                left: 0 !important;
+                padding: 15px !important;
+            }
+
+            .sub-container {
+                width: 100% !important;
+            }
+
+            .main-icon img {
+                width: 85% !important;
+            }
+
+            .mantainance-icon img {
+                width: 20vh !important;
+                height: 20vh !important;
+            }
+
+            .trademark {
+                font-size: 14px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 style="display: none !important">5XX Level Errors</h1><h2 style="display: none !important">::CLOUDFLARE_ERROR_500S_BOX::</h2> <div class="desktop-body"> <div class="main-container"> </div><div class="branding-container"> <div class="main-icon header-desktop"> <img src="Header.png" alt="Header"> </div><div class="main-icon header-mobile"> <img src="Logo.png" alt="logo"> </div></div><div class="mantainance-container body-desktop"> <div class="sub-container"> <div class="second-row"> <div class="mantainance-icon"> <img src="working.gif" alt="Spinner"> </div><div class="mantainance-text"> <h3> Es werden gerade Wartungsarbeiten an Comunix durchgefuehrt.<br /> Bitte versuchen Sie es spaeter erneut. </h3> <h3> Attualmente sono in corso lavori di manutenzione su Comunix.<br /> Per favore riprova piu tardi. </h3> </div></div></div></div><div class="mantainance-container body-mobile"> <div class="sub-container"> <div class="second-row"> <div class="mantainance-icon"> <img src="working.gif" alt="Spinner"> </div><div class="mantainance-text"> <h3> Es werden gerade Wartungsarbeiten an Comunix durchgefuehrt.<br /> Bitte versuchen Sie es spaeter erneut. </h3> <h3> Attualmente sono in corso lavori di manutenzione su Comunix.<br /> Per favore riprova piu tardi. </h3> </div></div></div></div></div><div class="mobile-body"> <div class="main-container"> <div class="mantainance-container"> <div class="sub-container"> <div class="main-icon"> <img src="Comunix.png" alt="Logo"> </div><div class="second-row"> <div class="mantainance-icon"> <img src="working_inverted.gif" alt="Spinner"> </div><div class="mantainance-text"> <h2> Es werden gerade Wartungsarbeiten an Comunix durchgefuehrt.<br /> Bitte versuchen Sie es spaeter erneut. </h2> <h2> Attualmente sono in corso lavori di manutenzione su Comunix.<br /> Per favore riprova piu tardi. </h2> </div></div></div></div></div></div>
+</body>
+</html>

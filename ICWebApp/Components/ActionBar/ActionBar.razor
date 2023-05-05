@@ -1,0 +1,25 @@
+﻿@if (ActionBarService != null && ActionBarService.GetActionBarItems() != null && ActionBarService.GetActionBarItems().Count() > 0)
+{
+    <div class="dropdown">
+        <button aria-label="@TEXTProvider.Get("AGID_FRONTEND_ACTIONBAR_VIEW_ACTIONS_ARIAL")" class="btn btn-dropdown dropdown-toggle text-decoration-underline d-inline-flex align-items-center fs-0" type="button" id="viewActions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-focus-mouse="false">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-more-items"></use>
+            </svg>
+            <small>@TEXTProvider.Get("AGID_FRONTEND_ACTIONBAR_VIEW_ACTIONS")</small>
+        </button>
+        <div class="dropdown-menu shadow-lg" aria-labelledby="viewActions" style="">
+            <div class="link-list-wrapper">
+                <ul class="link-list" role="menu">
+                    @foreach (var item in ActionBarService.GetActionBarItems())
+                    {
+                        <li role="none">
+                            <a class="list-item" @onclick="item.Action" role="menuitem" data-focus-mouse="false">
+                                <span>@item.Title</span>
+                            </a>
+                        </li>     
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}

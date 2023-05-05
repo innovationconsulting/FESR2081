@@ -1,0 +1,193 @@
+﻿@if (Task != null)
+{
+    <div class="task-add-container font-normal">
+        <CustomLoader Visible="DataIsBusy" IgnoreGlobalLoader="true"></CustomLoader>
+        <EditForm Model="@Task" @ref="InputForm">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <div class="task-container">
+                <div class="container-left">
+                    <div class="form-group">
+                        @if (TaskService.Context != null)
+                        {
+                            <h3 class="custom-color-primary">@TaskService.Context.Text - @Task.ContextName</h3>
+                        }
+                        else
+                        {
+                            <h3 class="custom-color-primary">@Task.ContextName</h3>
+                        }
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("TASK_ADD_TITLE")</label>
+                        <InputText @bind-Value="Task.TitleReq" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => Task.TitleReq)" TextCode="TASK_ADD_TITLE" />
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("TASK_ADD_DESCRIPTION")</label>
+                        <InputTextArea @bind-Value="Task.Description" class="form-control form-text-area form-text-area-small" resizable="false" />
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("TASK_ADD_RESPONSIBLE")</label>
+                        <ICWebApp.Components.Tasks.Responsible.Control TaskID="@Task.ID" ResponsibleList="TaskResponsibleList" ItemRemoved="ResponsibleRemovedEvent" ItemAdded="ResponsibleAddedEvent"></ICWebApp.Components.Tasks.Responsible.Control>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("TASK_ADD_TAGS")</label>
+                        <ICWebApp.Components.Tasks.Tag.Control TaskID="@Task.ID" TagList="TaskTagList" ItemRemoved="TagRemovedEvent" ItemAdded="TagAddedEvent"></ICWebApp.Components.Tasks.Tag.Control>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-subcontainer">
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("TASK_ADD_STATUS")</label>
+                            <TelerikDropDownList Data="@StatusList.OrderBy(p => p.SortOrder)" @bind-Value="@Task.TASK_Status_ID"
+                                             ValueField="ID" TextField="Name">
+                                <ItemTemplate Context="ItemContext">
+                                    <span class="application-status-item">
+                                        <TelerikIcon Icon="@ItemContext.Icon"></TelerikIcon>
+                                        @ItemContext.Description
+                                    </span>
+                                </ItemTemplate>
+                                <ValueTemplate Context="ValueContext">
+                                    <span class="application-status-item">
+                                        <TelerikIcon Icon="@ValueContext.Icon"></TelerikIcon>
+                                        @ValueContext.Description
+                                    </span>
+                                </ValueTemplate>
+                            </TelerikDropDownList>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("TASK_ADD_PRIORITY")</label>
+                            <TelerikDropDownList Data="@PriorityList.OrderBy(p => p.SortOrder)" @bind-Value="@Task.TASK_Priority_ID"
+                                             ValueField="ID" TextField="Name">
+                                <ItemTemplate Context="ItemContext">
+                                    <span class="application-status-item">
+                                        <TelerikIcon Icon="@ItemContext.Icon"></TelerikIcon>
+                                        @ItemContext.Description
+                                    </span>
+                                </ItemTemplate>
+                                <ValueTemplate Context="ValueContext">
+                                    <span class="application-status-item">
+                                        <TelerikIcon Icon="@ValueContext.Icon"></TelerikIcon>
+                                        @ValueContext.Description
+                                    </span>
+                                </ValueTemplate>
+                            </TelerikDropDownList>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("TASK_ADD_BUCKET")</label>
+                            <TelerikDropDownList Data="@BucketList.OrderBy(p => p.SortOrder)" @bind-Value="@Task.TASK_Bucket_ID"
+                                             ValueField="ID" TextField="Name">
+                                <ItemTemplate Context="ItemContext">
+                                    <span class="application-status-item">
+                                        <TelerikIcon Icon="@ItemContext.Icon"></TelerikIcon>
+                                        @ItemContext.Description
+                                    </span>
+                                </ItemTemplate>
+                                <ValueTemplate Context="ValueContext">
+                                    <span class="application-status-item">
+                                        <TelerikIcon Icon="@ValueContext.Icon"></TelerikIcon>
+                                        @ValueContext.Description
+                                    </span>
+                                </ValueTemplate>
+                            </TelerikDropDownList>
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-subcontainer">
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("TASK_ADD_DEADLINE")</label>
+                            <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="Task.Deadline" Min="DateTime.Today" class="form-control"></TelerikDatePicker>
+                        </div>
+                        <div class="form-spacer">
+                        </div>
+                        <div class="form-spacer">
+                        </div>
+                    </div>                    
+                    <div class="element-separator"></div>
+                    <div class="form-group form-wizard task-wizard">
+                        @{
+                            string TextChecklist = TextProvider.Get("TASKS_ADD_CHECKLIST");
+                            string TextComment = TextProvider.Get("TASKS_ADD_COMMENTS");
+                            string TextEskalation = TextProvider.Get("TASKS_ADD_ESKALATION");
+                            string TextFile = TextProvider.Get("TASKS_ADD_FILES");
+
+                            if (TaskCheckItemsList != null && TaskCheckItemsList.Count() > 0)
+                            {
+                                TextChecklist += " " + TaskCheckItemsList.Where(p => p.CompletedAt != null).Count() + "/" + TaskCheckItemsList.Count();
+                            }
+
+                            if (TaskCommentList != null && TaskCommentList.Count() > 0)
+                            {
+                                TextComment += " (" + TaskCommentList.Count() + ")";
+                            }
+
+                            if (TaskEskalationList != null && TaskEskalationList.Count() > 0)
+                            {
+                                TextEskalation += " (" + TaskEskalationList.Count() + ")";
+                            }
+
+                            if (FileList != null && FileList.Count() > 0)
+                            {
+                                TextFile += " (" + FileList.Count() + ")";
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="container-right">
+                    <TelerikWizard ShowPager="false">
+                        <WizardSteps>
+                            <WizardStep Label="@TextChecklist" Icon="@("fa-regular fa-list-tree")">
+                                <Content>
+                                    <div class="task-form-wizard-page">
+                                        <ICWebApp.Components.Tasks.Checklist.Control List="@TaskCheckItemsList" TaskID="@Task.ID" ItemAdded="CheckItemAddedEvent" ItemEdited="CheckItemEditedEvent" ItemRemoved="CheckItemRemovedEvent" ItemChecked="CheckItemChecked" ItemUnchecked="CheckItemUnchecked"></ICWebApp.Components.Tasks.Checklist.Control>
+                                    </div>
+                                </Content>
+                            </WizardStep>
+                            <WizardStep Label="@TextComment" Icon="@("fa-regular fa-comment")">
+                                <Content>
+                                    <div class="task-form-wizard-page">
+                                        <ICWebApp.Components.Tasks.Comments.Control List="@TaskCommentList" TaskID="@Task.ID" ItemAdded="CommentAddedEvent"></ICWebApp.Components.Tasks.Comments.Control>
+                                    </div>
+                                </Content>
+                            </WizardStep>
+                            <WizardStep Label="@TextEskalation" Icon="@("fa-regular fa-light-emergency-on")">
+                                <Content>
+                                    <div class="task-form-wizard-page">
+                                        <ICWebApp.Components.Tasks.Eskalation.Control List="@TaskEskalationList" TaskID="@Task.ID" ItemAdded="EskalationAddEvent" ItemRemoved="EskalationRemovedEvent"></ICWebApp.Components.Tasks.Eskalation.Control>
+                                    </div>
+                                </Content>
+                            </WizardStep>
+                            <WizardStep Label="@TextFile" Icon="@("fa-regular fa-paperclip")">
+                                <Content>
+                                    <div class="task-form-wizard-page">
+                                        <UploadComponent FileInfoList="FileList" Multiple="true" SmallStyle="true" Accept=".jpg, .png, .pdf" OnRemove="OnRemoveFile" OnUpload="OnUploadFile"></UploadComponent>
+                                    </div>
+                                </Content>
+                            </WizardStep>
+                        </WizardSteps>
+                        <WizardButtons Context="SubContext">
+                        </WizardButtons>
+                        <WizardSettings>
+                            <WizardStepperSettings Linear="false" />
+                        </WizardSettings>
+                    </TelerikWizard>
+                </div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                           OnClick="@CancelForm">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                           OnClick="@SaveForm">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}
+else
+{
+    <div class="task-loader-container">
+        <CustomLoader IgnoreGlobalLoader="true"></CustomLoader>
+    </div>
+}

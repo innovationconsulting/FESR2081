@@ -1,0 +1,81 @@
+﻿@if (ArticleList != null && ArticleList.Count() > 0)
+{
+    <div class="news-container">        
+        @if (ArticleList.Count() > 0)
+        {
+            <div class="news-positioning-container">
+                <div class="news-belt-container">
+                    <div id="left-arrow">
+                        <i class="fa-sharp fa-solid fa-chevron-left"></i>
+                    </div>
+                    <div id="right-arrow">
+                        <i class="fa-sharp fa-solid fa-chevron-right"></i>
+                    </div>
+                    <div class="news-preview-container" id="news-preview-container" @ref="@_containerRef">
+                        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+                        </CustomLoader>
+
+                        @foreach (var news in ArticleList.Where(p => p.ID != CurrentArticleId).OrderByDescending(p => p.PublishingDate).ToList())
+                        {
+                            <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0" @onclick="@(() => GoToNews(news.ID.ToString()))">
+                                <div class="card-image-wrapper with-read-more">
+                                    <div class="card-body p-3 pb-5">
+                                        <div class="category-top">
+                                            <span class="title-xsmall-semi-bold fw-semibold">@TextProvider.Get("AGID_NEWS_MUNICIPAL_HOMEPAGE")</span>
+                                        </div>
+                                        <h3 class="card-title text-paragraph-medium u-grey-light">@news.Title</h3>
+                                        <p class="text-paragraph-card u-grey-light m-0">@news.ShortContent</p>
+                                    </div>
+                                    <div class="card-image card-image-rounded pb-5">
+                                        @if (news.Image != null)
+                                        {
+                                            var image = (MarkupString)(news.Image);
+
+                                            @image
+                                        }
+                                        else
+                                        {
+                                            bool ShowDefault = true;
+
+                                            @if (news.FamilyID != null)
+                                            {
+                                                var ress = NEWSProvider.GetArticleImageSync(news.FamilyID.Value);
+
+                                                @if (ress != null && ress.FILE_Fileinfo_ID != null)
+                                                {
+                                                    var file = FileProvider.GetFileStorage(ress.FILE_Fileinfo_ID.Value);
+
+                                                    @if (file != null && file.FileImage != null)
+                                                    {
+                                                        ShowDefault = false;
+                                                        var base64 = Convert.ToBase64String(file.FileImage);
+
+                                                        <img src="data:image/png;base64,@base64" alt="@news.Title" title="@news.Title" />
+                                                    }
+                                                }
+                                            }
+
+                                            @if (ShowDefault == true)
+                                            {
+                                                <img src="/Images/Backend/Logo_512x512.png" alt="Comunix Default Image" title="Comunix Default Image" />
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                                <a class="read-more ps-3" @onclick="@(() => GoToNews(news.ID.ToString()))" data-focus-mouse="false">
+                                    <span class="text">@TextProvider.Get("AGID_NEWS_SHOW_ARTICLE")</span>
+                                    <svg class="icon">
+                                        <use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-arrow-right"></use>
+                                    </svg>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="element-separator"></div>
+        }
+    </div>
+}

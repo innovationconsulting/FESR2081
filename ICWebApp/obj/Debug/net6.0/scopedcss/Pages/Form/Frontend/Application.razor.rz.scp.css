@@ -1,0 +1,48 @@
+.segment-listview[b-2y9f2cugdp] {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.segment-listview-item-container[b-2y9f2cugdp] {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+    .segment-listview-item-container:hover[b-2y9f2cugdp] {
+        color: #0F7173;
+    }
+.segment-listview li[b-2y9f2cugdp] {
+    list-style-type: disclosure-closed;
+}
+.listview-item-bullet[b-2y9f2cugdp]{
+    line-height: 100%;
+}
+
+.container-error[b-2y9f2cugdp]{
+    color: red;
+}
+
+.application-upload-container-error[b-2y9f2cugdp] {
+    color: red;
+}
+
+.form-application-document-upload-container[b-2y9f2cugdp]{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.form-application-document-element[b-2y9f2cugdp]{
+    width: 48%;
+}
+
+.privacy-check-container .element-checkbox[b-2y9f2cugdp] {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+}
+.form-application-container[b-2y9f2cugdp]{
+    position: relative;
+}

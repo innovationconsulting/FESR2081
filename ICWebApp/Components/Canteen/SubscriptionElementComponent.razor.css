@@ -1,0 +1,63 @@
+﻿h5, .h5 {
+    color: #0f7173;
+}
+
+.preview-container {
+    height: 500px;
+}
+
+.preview-url-container {
+    height: 100%;
+}
+
+.viewerobject {
+    min-height: 500px;
+}
+
+.mensa-change-container {
+    display: flex;
+    gap: 10px;
+}
+
+.element-group-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+    text-align: start;
+}
+
+.demand-status-container {
+    margin: 0 5px;
+}
+
+.element-group {
+    width: 48%;
+    border: 1px solid #d9d9d9;
+    padding: 10px;
+    border-radius: 3px;
+    line-height: 38px;
+}
+.element-group-row{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.element-group-row-description{
+    width: 200px;
+}
+.element-editable{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+    .element-editable .btn {
+        width: 38px;
+        height: 38px;
+    }
+.editable-row{
+    line-height: 38px;
+}
+.different-value{
+    color: red !important;
+}

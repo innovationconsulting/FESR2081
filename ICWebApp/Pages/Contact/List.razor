@@ -1,0 +1,31 @@
+﻿@page "/Contacts/List"
+
+@layout MainLayout
+
+<div class="element-separator"></div>
+<div class="segment-container custom-background-default">
+    <div class="grid-data-container segment-loader-container">
+        <TelerikGrid Data="@Data" Pageable="false" Sortable="false" Resizable="false"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@Add" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(V_CONT_Contact.Fullname)" Title="@TextProvider.Get("BACKEND_CONTACTS_LIST_NAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_CONT_Contact.EMail)" Title="@TextProvider.Get("BACKEND_CONTACTS_LIST_EMAIL")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_CONT_Contact.Phone)" Title="@TextProvider.Get("BACKEND_CONTACTS_LIST_PHONE")" Width="auto"></GridColumn>
+                <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        V_CONT_Contact item = context as V_CONT_Contact;
+
+                        if (item != null)
+                        {
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => Edit(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                            <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => Remove(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>

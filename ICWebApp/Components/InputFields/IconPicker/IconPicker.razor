@@ -1,0 +1,14 @@
+﻿<div class="icon-picker-container">
+    @{
+        var dropDownGuid = Guid.NewGuid();
+    }
+    <div class="selected-icon" @onclick="ToggleMenu"><i class="@Value"></i></div>
+    <div class="dropdown-container" style="@_menuDisplayCss" id="@dropDownGuid">
+        @foreach(var icon in MetaList)
+        {
+            <div class="icon-container" @onclick="@(() => OnIconChanged(icon.IconClass))">
+                <i class="@(icon.IconClass)"></i>
+            </div>
+        }
+    </div>    
+</div>

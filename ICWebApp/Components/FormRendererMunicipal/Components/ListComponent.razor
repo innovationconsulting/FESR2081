@@ -1,0 +1,47 @@
+﻿@if(Field.FORM_Application_Field_SubData != null && Field.FORM_Application_Field_SubData.Count > 0)
+{
+    <div class="field-container">
+        <div class="list-container">
+            <table>
+                <tr class="list-header">
+                    <th class="header-desc">
+                        @TextProvider.Get("LIST_COMPONENT_DESCRIPTION")
+                    </th>
+                    <th class="header-value">
+                        @TextProvider.Get("LIST_COMPONENT_VALUE")
+                    </th>
+                </tr>
+                @foreach (var subItem in Field.FORM_Application_Field_SubData)
+                {
+                    <tr class="list-row">
+                        <td class="row-desc">
+                            <InputText type="text" class="form-control" @bind-Value="@subItem.Description" disabled="@true" />
+                        </td>
+                        <td class="row-value">
+                            <TelerikNumericTextBox @bind-Value="subItem.DecimalValue" class="form-control" Format="C" Enabled="false"></TelerikNumericTextBox>
+                        </td>
+                    </tr>
+                }
+                <tr class="list-footer">
+                    <td class="footer-desc">
+                        <label>@TextProvider.Get("LIST_COMPONENT_FOOTER_SUMME")</label>
+                    </td>
+                    <td class="footer-value">
+                        @if (!string.IsNullOrEmpty(Field.Value))
+                        {
+                            <label>
+                                @decimal.Parse(Field.Value).ToString("C2")
+                            </label>
+                        }
+                        else
+                        {
+                            <label>
+                                0,00 €
+                            </label>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

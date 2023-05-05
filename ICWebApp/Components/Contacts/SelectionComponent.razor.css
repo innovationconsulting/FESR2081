@@ -1,0 +1,14 @@
+﻿.segment-button-toolbar
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-icon {
+    color: #0F7173;
+    margin-left: 10px;
+}
+
+    .edit-icon:hover {
+        color: #25CCDB;
+    }

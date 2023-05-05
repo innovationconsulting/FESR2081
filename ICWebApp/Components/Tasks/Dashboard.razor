@@ -1,0 +1,404 @@
+﻿<div class="dashboard-container">
+    <div class="container-left">
+        <h5 class="custom-color-primary">@TextProvider.Get("TASK_SETTINGS_CONTEXT")</h5>
+        <div class="element-separator"></div>
+        <div class="context-container">
+            @foreach (var context in ContextList.OrderBy(p => p.SortOrder))
+            {
+                bool Show = true;
+
+                if (context != null && context.IsRooms == true && AuthorityList.FirstOrDefault(p => p.IsRooms == true && AllowedAuthorities.Contains(p.ID)) == null)
+                {
+                    Show = false;
+                }
+                else if (context != null && context.IsCanteen == true && AuthorityList.FirstOrDefault(p => p.IsMensa == true && AllowedAuthorities.Contains(p.ID)) == null)
+                {
+                    Show = false;
+                }
+                else if (context != null && context.IsOrg == true && AuthorityList.FirstOrDefault(p => p.IsSubstitution == true && AllowedAuthorities.Contains(p.ID)) == null)
+                {
+                    Show = false;
+                }
+
+                @if (context != null && Show)
+                {
+                    string buttonCSS = "btn-secondary";
+
+                    if (CurrentContext != null && CurrentContext.ID == context.ID)
+                    {
+                        buttonCSS = "btn-primary";
+                    }
+
+                    <div class="btn @buttonCSS authority-tag" @onclick="@(() => OnContextChange(context))" @onclick:stopPropagation="true">
+                        <span>
+                            @context.Text
+                        </span>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="container-right">
+        @if (CurrentContext != null)
+        {
+            <table class="first-level-container">
+                <tr class="row-task-header">
+                    <th>@TextProvider.Get("TASK_GROUP_TITLE")</th>
+                    <th>@TextProvider.Get("TASK_TASK_TITLE")</th>
+                    <th></th>
+                </tr>
+                <tr class="third-level-spacer" colspan="10"></tr>
+                @if (TaskList != null && TaskList.Count() > 0)
+                {
+                    @if (CurrentContext.ID == 1) //Applications
+                    {
+                        @foreach (var item in AuthorityList.OrderBy(p => p.SortOrder).ToList())
+                        {
+                            if (AllowedAuthorities.Contains(item.ID) && TaskList.Select(p => p.AUTH_Authority_ID).Contains(item.ID))
+                            {
+                                <tr class="first-level-item row-item" onclick="$('#@(item.ID)').toggle(100); $('#detail-button_down_@(item.ID)').toggle(0); $('#detail-button_up_@(item.ID)').toggle(0);">
+                                    <td class="detail-description">
+                                        @item.Description
+                                    </td>
+                                    <td class="detail-counter">
+                                        @(TaskList.Where(p => p.Total != p.Completed && p.AUTH_Authority_ID == item.ID).Sum(p => p.Completed))/@TaskList.Where(p => p.Total != p.Completed && p.AUTH_Authority_ID == item.ID).Sum(p => p.Total)
+                                    </td>
+                                    <td class="detail-button">
+                                        <div id="detail-button_up_@(item.ID)" style="display: none;">
+                                            <TelerikIcon Icon="@("fas fa-chevron-up")"></TelerikIcon>
+                                        </div>
+                                        <div id="detail-button_down_@(item.ID)">
+                                            <TelerikIcon Icon="@("fas fa-chevron-down")"></TelerikIcon>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="third-level-spacer" colspan="10"></tr>
+                                <tr id="@item.ID" style="display: none;">
+                                    <td colspan="10">
+                                        <div class="second-level-container">
+                                            <table>
+                                                @foreach (var second in TaskList.Where(p => p.Total != p.Completed && p.AUTH_Authority_ID == item.ID).ToList())
+                                                {
+                                                    @if (second != null)
+                                                    {
+                                                        <tr class="second-level-item row-item" @onclick="@(() => ShowTaskList(second))">
+                                                            <td class="detail-description">
+                                                                @second.ContextName
+                                                            </td>
+                                                            <td class="detail-counter">
+                                                                @(second.Completed)/@second.Total
+                                                            </td>
+                                                            <td class="detail-button">
+                                                                @if (second.ShowSubContent)
+                                                                {
+                                                                    <div id="detail-button_up_@(item.ID)">
+                                                                        <TelerikIcon Icon="@("fas fa-chevron-up")"></TelerikIcon>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div id="detail-button_down_@(item.ID)">
+                                                                        <TelerikIcon Icon="@("fas fa-chevron-down")"></TelerikIcon>
+                                                                    </div>
+                                                                }
+                                                            </td>
+                                                        </tr>
+
+                                                        @if (second.ShowSubContent && second.TaskList != null && second.TaskList.Count() > 0)
+                                                        {
+                                                            <tr class="third-level-spacer" colspan="10"></tr>
+                                                            <tr class="third-level-container">
+                                                                <td colspan="10">
+                                                                    <div class="second-level-spacer">
+                                                                        <table>
+                                                                            <tr class="row-task-header">
+                                                                                <th></th>
+                                                                                <th>@TextProvider.Get("TASK_ROW_TITLE")</th>
+                                                                                <th>@TextProvider.Get("TASK_ROW_RESPONSIBLE")</th>
+                                                                                <th>@TextProvider.Get("TASK_ROW_PROPERTIES")</th>
+                                                                                <th>@TextProvider.Get("TASK_ROW_DEADLINE")</th>
+                                                                                <th>@TextProvider.Get("TASK_ROW_TAGS")</th>
+                                                                            </tr>
+                                                                            <tr class="third-level-spacer"></tr>
+                                                                            @foreach (var task in second.TaskList)
+                                                                            {
+                                                                                @if (task != null)
+                                                                                {
+                                                                                    <ICWebApp.Components.Tasks.RowTask TaskID="@task.ID" Saved="@(() => TaskSaved(second, task.ID))" Class="third-level-item row-item"
+                                                                               Onclick="@(() => ShowBucketWindow(task))">
+                                                                                    </ICWebApp.Components.Tasks.RowTask>
+                                                                                    <tr class="third-level-spacer"></tr>
+                                                                                }
+                                                                            }
+                                                                        </table>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr class="third-level-spacer" colspan="10"></tr>
+                                                        }
+                                                    }
+                                                }
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @if (ShowCompleted == false && TaskList.Where(p => p.Total == p.Completed && p.TASK_Context_ID == CurrentContext.ID).Count() != 0)
+                                {
+                                    <tr>
+                                        <td colspan="10">
+                                            <div class="show-all-element" @onclick="OnShowCompleted">
+                                                @TextProvider.Get("TASK_SHOW_COMPLETED")
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                                else if (ShowCompleted == true)
+                                {
+                                    <tr>
+                                        <td colspan="10">
+                                            <div class="second-level-container">
+                                                <table>
+                                                    @foreach (var second in TaskList.Where(p => p.Total == p.Completed && p.AUTH_Authority_ID == item.ID).ToList())
+                                                    {
+                                                        @if (second != null)
+                                                        {
+                                                            <tr class="second-level-item row-item" @onclick="@(() => ShowTaskList(second))">
+                                                                <td class="detail-description">
+                                                                    @second.ContextName
+                                                                </td>
+                                                                <td class="detail-counter">
+                                                                    @(second.Completed)/@second.Total
+                                                                </td>
+                                                                <td class="detail-button">
+                                                                    @if (second.ShowSubContent)
+                                                                    {
+                                                                        <div id="detail-button_up_@(item.ID)">
+                                                                            <TelerikIcon Icon="@("fas fa-chevron-up")"></TelerikIcon>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div id="detail-button_down_@(item.ID)">
+                                                                            <TelerikIcon Icon="@("fas fa-chevron-down")"></TelerikIcon>
+                                                                        </div>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+
+                                                            @if (second.ShowSubContent && second.TaskList != null && second.TaskList.Count() > 0)
+                                                            {
+                                                                <tr class="third-level-spacer" colspan="10"></tr>
+                                                                <tr class="third-level-container">
+                                                                    <td colspan="10">
+                                                                        <div class="second-level-spacer">
+                                                                            <table>
+                                                                                <tr class="row-task-header">
+                                                                                    <th></th>
+                                                                                    <th>@TextProvider.Get("TASK_ROW_TITLE")</th>
+                                                                                    <th>@TextProvider.Get("TASK_ROW_RESPONSIBLE")</th>
+                                                                                    <th>@TextProvider.Get("TASK_ROW_PROPERTIES")</th>
+                                                                                    <th>@TextProvider.Get("TASK_ROW_DEADLINE")</th>
+                                                                                    <th>@TextProvider.Get("TASK_ROW_TAGS")</th>
+                                                                                </tr>
+                                                                                <tr class="third-level-spacer"></tr>
+                                                                                @foreach (var task in second.TaskList)
+                                                                                {
+                                                                                    @if (task != null)
+                                                                                    {
+                                                                                        <ICWebApp.Components.Tasks.RowTask TaskID="@task.ID" Saved="@(() => TaskSaved(second, task.ID))" Class="third-level-item row-item"
+                                                                               Onclick="@(() => ShowBucketWindow(task))">
+                                                                                        </ICWebApp.Components.Tasks.RowTask>
+                                                                                        <tr class="third-level-spacer"></tr>
+                                                                                    }
+                                                                                }
+                                                                            </table>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr class="third-level-spacer" colspan="10"></tr>
+                                                            }
+                                                        }
+                                                    }
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var second in TaskList.Where(p => p.Total != p.Completed && p.TASK_Context_ID == CurrentContext.ID).ToList())
+                        {
+                            @if (second != null)
+                            {
+                                <tr class="second-level-item row-item" @onclick="@(() => ShowTaskList(second))">
+                                    <td class="detail-description">
+                                        @second.ContextName
+                                    </td>
+                                    <td class="detail-counter">
+                                        @(second.Completed)/@second.Total
+                                    </td>
+                                    <td class="detail-button">
+                                        @if (second.ShowSubContent)
+                                        {
+                                            <div id="detail-button_up_@(second.ContextElementID)">
+                                                <TelerikIcon Icon="@("fas fa-chevron-up")"></TelerikIcon>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div id="detail-button_down_@(second.ContextElementID)">
+                                                <TelerikIcon Icon="@("fas fa-chevron-down")"></TelerikIcon>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+
+                                @if (second.ShowSubContent && second.TaskList != null && second.TaskList.Count() > 0)
+                                {
+                                    <tr class="third-level-spacer" colspan="10"></tr>
+                                    <tr class="third-level-container">
+                                        <td colspan="10">
+                                            <div class="second-level-spacer">
+                                                <table>
+                                                    <tr class="row-task-header">
+                                                        <th></th>
+                                                        <th>@TextProvider.Get("TASK_ROW_TITLE")</th>
+                                                        <th>@TextProvider.Get("TASK_ROW_RESPONSIBLE")</th>
+                                                        <th>@TextProvider.Get("TASK_ROW_PROPERTIES")</th>
+                                                        <th>@TextProvider.Get("TASK_ROW_DEADLINE")</th>
+                                                        <th>@TextProvider.Get("TASK_ROW_TAGS")</th>
+                                                    </tr>
+                                                    <tr class="third-level-spacer"></tr>
+                                                    @foreach (var task in second.TaskList)
+                                                    {
+                                                        @if (task != null)
+                                                        {
+                                                            <ICWebApp.Components.Tasks.RowTask TaskID="@task.ID" Saved="@(() => TaskSaved(second, task.ID))" Class="third-level-item row-item"
+                                                               Onclick="@(() => ShowBucketWindow(task))">
+                                                            </ICWebApp.Components.Tasks.RowTask>
+                                                            <tr class="third-level-spacer"></tr>
+                                                        }
+                                                    }
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr class="third-level-spacer" colspan="10"></tr>
+                                }
+                            }
+                        }
+                        @if (ShowCompleted == false && TaskList.Where(p => p.Total == p.Completed && p.TASK_Context_ID == CurrentContext.ID).Count() != 0)
+                        {
+                            <tr>
+                                <td colspan="10">
+                                    <div class="show-all-element" @onclick="OnShowCompleted">
+                                        @TextProvider.Get("TASK_SHOW_COMPLETED")
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else if (ShowCompleted == true)
+                        {
+                            <tr>
+                                <td colspan="10">
+                                    <div class="second-level-container">
+                                        <table>
+                                            @foreach (var second in TaskList.Where(p => p.Total == p.Completed && p.TASK_Context_ID == CurrentContext.ID).ToList())
+                                            {
+                                                @if (second != null)
+                                                {
+                                                    <tr class="second-level-item row-item" @onclick="@(() => ShowTaskList(second))">
+                                                        <td class="detail-description">
+                                                            @second.ContextName
+                                                        </td>
+                                                        <td class="detail-counter">
+                                                            @(second.Completed)/@second.Total
+                                                        </td>
+                                                        <td class="detail-button">
+                                                            @if (second.ShowSubContent)
+                                                            {
+                                                                <div id="detail-button_up_@(second.ContextElementID)">
+                                                                    <TelerikIcon Icon="@("fas fa-chevron-up")"></TelerikIcon>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div id="detail-button_down_@(second.ContextElementID)">
+                                                                    <TelerikIcon Icon="@("fas fa-chevron-down")"></TelerikIcon>
+                                                                </div>
+                                                            }
+                                                        </td>
+                                                    </tr>
+
+                                                    @if (second.ShowSubContent && second.TaskList != null && second.TaskList.Count() > 0)
+                                                    {
+                                                        <tr class="third-level-spacer" colspan="10"></tr>
+                                                        <tr class="third-level-container">
+                                                            <td colspan="10">
+                                                                <div class="second-level-spacer">
+                                                                    <table>
+                                                                        <tr class="row-task-header">
+                                                                            <th></th>
+                                                                            <th>@TextProvider.Get("TASK_ROW_TITLE")</th>
+                                                                            <th>@TextProvider.Get("TASK_ROW_RESPONSIBLE")</th>
+                                                                            <th>@TextProvider.Get("TASK_ROW_PROPERTIES")</th>
+                                                                            <th>@TextProvider.Get("TASK_ROW_DEADLINE")</th>
+                                                                            <th>@TextProvider.Get("TASK_ROW_TAGS")</th>
+                                                                        </tr>
+                                                                        <tr class="third-level-spacer"></tr>
+                                                                        @foreach (var task in second.TaskList)
+                                                                        {
+                                                                            @if (task != null)
+                                                                            {
+                                                                                <ICWebApp.Components.Tasks.RowTask TaskID="@task.ID" Saved="@(() => TaskSaved(second, task.ID))" Class="third-level-item row-item"
+                                                                               Onclick="@(() => ShowBucketWindow(task))">
+                                                                                </ICWebApp.Components.Tasks.RowTask>
+                                                                                <tr class="third-level-spacer"></tr>
+                                                                            }
+                                                                        }
+                                                                    </table>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr class="third-level-spacer" colspan="10"></tr>
+                                                    }
+                                                }
+                                            }
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </table>
+        }
+    </div>
+</div>
+
+<TelerikWindow Modal="true" @bind-Visible="@BucketWindowVisibility" Width="90vw" Height="90vh" Class="task-bucket-window">
+    <WindowTitle>
+        @TextProvider.Get("TASK_BUCKET_WINDOW_TITLE")
+    </WindowTitle>
+    <WindowContent>
+        <ICWebApp.Components.Tasks.BucketView Cancelled="HideBucketWindow"></ICWebApp.Components.Tasks.BucketView>
+    </WindowContent>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="HideBucketWindow" />
+    </WindowActions>
+</TelerikWindow>

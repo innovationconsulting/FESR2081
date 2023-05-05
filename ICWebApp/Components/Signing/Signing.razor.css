@@ -1,0 +1,19 @@
+﻿.signing-preview-container {
+    height: 600px;
+    margin-bottom: 20px;
+}
+@media(max-width: 600px){
+    .signing-preview-container {
+        max-height: 600px;
+    }
+}
+.form-group-container{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+.segment-button-container{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}

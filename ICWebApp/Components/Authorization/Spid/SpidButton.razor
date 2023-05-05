@@ -1,0 +1,14 @@
+﻿<div class="spid-container">
+    <a class="italia-it-button italia-it-button-size-m button-spid" @onclick="OnRedirect">
+        <span class="italia-it-button-icon">
+            <img src="/Images/Spid/spid-ico-circle-bb.svg" alt="" />
+        </span>
+        <span class="italia-it-button-text">
+            Entra con SPID
+        </span>
+      </a>
+
+      <div style="color: red;" class="spid-error-message">
+        @SpidResponse
+      </div>
+</div>

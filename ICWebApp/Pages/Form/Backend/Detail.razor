@@ -1,0 +1,1364 @@
+﻿@page "/Backend/Form/Detail/{ID}"
+@page "/Backend/Form/Detail/{ID}/{ActiveIndex}"
+
+@layout MainLayout
+
+<div class="segment-container custom-background-default application-detail-container">
+<div class="application-detail-left">
+    <TelerikWindow Modal="true" @bind-Visible="@FilterWindowVisible" Width="700px">
+        <WindowTitle>
+            @TextProvider.Get("BACKEND_FORM_DETAIL_TABLE_FILTER")
+        </WindowTitle>
+        <WindowContent>
+            <div class="filter-container">
+                <ICWebApp.Components.Form.Filter.FilterComponent Filter="@Filter" OnSearch="FilterSearch" OnClose="FilterClose" Modal="true"></ICWebApp.Components.Form.Filter.FilterComponent>
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="FilterClose"/>
+        </WindowActions>
+    </TelerikWindow>
+    <CustomLoader Visible="@(IsDataBusy)"
+                  Text="@null" Class="initial-data-loader">
+    </CustomLoader>
+    <TelerikListView Data="@Data.OrderByDescending(p => p.SubmitAt)" Pageable="true" PageSize="15">
+        <HeaderTemplate>
+            <div class="application-list-title-container">
+                <div class="application-list-title-back">
+                    <TelerikButton OnClick="@BackToPreviousPage" ButtonType="ButtonType.Button" ThemeColor="Primary" Class="button-flex-end" Icon="@("fa-regular fa-arrow-left-long")"></TelerikButton>
+                </div>
+                <div class="font-normal application-list-title custom-color-primary">
+                    @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TITLE")
+                </div>
+                <div class="application-list-title-filter">
+                    <TelerikButton OnClick="@ShowFilter" ButtonType="ButtonType.Button" ThemeColor="Primary" Class="button-flex-end" Icon="@("fad fa-sliders-h")"></TelerikButton>
+                </div>
+            </div>
+        </HeaderTemplate>
+        <Template>
+            @{
+                string selectedCSS = "";
+
+                if (CurrentApplication != null && context.ID == CurrentApplication.ID)
+                {
+                    selectedCSS = "card-aktive";
+                }
+            }
+
+            <div class="k-card k-card-horizontal @selectedCSS" @onclick="@(() => SelectApplication(context.ID))">
+                <div class="k-vbox k-flex-grow">
+                    <div class="k-card-body application-card">
+                        <div class="font-detail">
+                            @context.Authority
+                        </div>
+                        <div class="font-bold custom-color-primary">
+                            @context.FormName
+                        </div>
+                        @if (context.FORM_Definition_Category_ID == FORMCategories.Maintenance)
+                        {
+                            <div class="font-small">
+                                @context.Mantainance_Title
+                            </div>
+                        }
+                        <div class="font-small">
+                            @context.Name
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="font-small">
+                            <span>
+                                <TelerikIcon Icon="@context.StatusIcon"></TelerikIcon>
+                                @context.Status
+                            </span>
+                        </div>
+                        @if (context != null && context.ArchivedBool == true)
+                        {
+                            <div class="extra-small-element-separator"></div>
+                            <div class="icon-element">
+                                <TelerikIcon Icon="@("fa-regular fa-box-archive")"></TelerikIcon>
+                                <span style="margin-left: 5px;">
+                                    @TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_ARCHIVED")
+                                </span>
+                            </div>
+                        }
+                        @if (context != null && context.PriorityStatus != null && context.PriorityIcon != null)
+                        {
+                            <div class="extra-small-element-separator"></div>
+                            <span class="icon-element">
+                                <TelerikIcon Icon="@context.PriorityIcon"></TelerikIcon>
+                                <span style="margin-left: 5px;">
+                                    @context.PriorityStatus
+                                </span>
+                            </span>
+                        }
+                        <div class="extra-small-element-separator"></div>
+                        <div class="font-small">
+                            @context.Responsible
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Template>
+    </TelerikListView>
+</div>
+<div class="application-detail-right">
+@if (CurrentDefinition != null && CurrentApplication != null)
+{
+    @if (CurrentDefinition != null && CurrentDefinition.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+    {
+        <h2 class="application-detail-title custom-color-primary">
+            @CurrentDefinition.AmtName - @CurrentDefinition.FORM_Name
+        </h2>
+    }
+    else
+    {
+        <h2 class="application-detail-title custom-color-primary">
+            @CurrentDefinition.FORM_Name - @CurrentApplication.Mantainance_Title
+        </h2>
+    }
+    <div class="application-wizard-container">
+    <CustomLoader Visible="@(IsWizardBusy)"
+                  Text="@null" Class="initial-data-loader">
+    </CustomLoader>
+    <div class="wizard-hide-disabled">
+    <TelerikWizard @bind-Value="ApplicationTabIndex" StepperPosition="@WizardStepperPosition.Right" Class="">
+    <WizardSteps>
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_OVERVIEW")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-id-card")">
+    <Content>
+    <h3 class="application-detail-sub-title custom-color-primary">
+        @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_OVERVIEW")
+    </h3>
+    <div class="small-element-separator"></div>
+    <div class="form-group application-detail-tab font-small">
+    @if (CurrentApplication != null)
+    {
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                    <label class="application-value">@CurrentApplication.FirstName @CurrentApplication.LastName</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                    <label class="application-value">@CurrentApplication.FiscalNumber</label>
+                </div>
+                <div class="element-separator"></div>
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row-segment">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                    <label class="application-value">@CurrentApplication.Email</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row-segment">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                    <label class="application-value">
+                        @if (!string.IsNullOrEmpty(CurrentApplication.MobilePhone))
+                        {
+                            var IntPhoneNumber = long.Parse(CurrentApplication.MobilePhone.Replace("+", ""));
+
+                            @IntPhoneNumber.ToString("+## ### ### ####")
+                        }
+                    </label>
+                </div>
+            </div>
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICATION_TIMES_AND_DEADLINE_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("PROGRESSIV_NUMBER")</label>
+                    <label class="application-value">@(CurrentDefinition.FormCode + "-" + CurrentApplication.ProgressivYear + "-" + CurrentApplication.ProgressivNumber)</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICATION_SUBMITTED_AT")</label>
+                    @if (CurrentApplication.SubmitAt != null)
+                    {
+                        <label class="application-value">@CurrentApplication.SubmitAt.Value.ToString("dd.MM.yyyy HH:mm")</label>
+                    }
+                </div>
+                @if (CurrentDefinition.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("APPLICATION_LEGAL_DEADLINE_AT")</label>
+                        @if (CurrentApplication.LegalDeadline != null)
+                        {
+                            <label class="application-value">@CurrentApplication.LegalDeadline.Value.ToString("dd.MM.yyyy HH:mm")</label>
+                        }
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("APPLICATION_LEGAL_ESTIMATED_FINISH_DATE")</label>
+                        @if (CurrentApplication.EstimatedDeadline != null)
+                        {
+                            <label class="application-value">@CurrentApplication.EstimatedDeadline.Value.ToString("dd.MM.yyyy HH:mm")</label>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="element-separator"></div>
+                    <div class="application-row manteinance-row">
+                        <h5 class="custom-color-primary">
+                            @TextProvider.Get("MANTEINANCE_DATA")
+                        </h5>
+                        <div class="manteinance-edit-button">
+                            <button class="btn btn-secondary" @onclick="EditManteinance">
+                                <TelerikIcon Icon="SvgIcon.Pencil"></TelerikIcon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("FORM_MANTAINANCE_INPUT_MUNICIPAL_DEADLINE")</label>
+                        @if (CurrentApplication.MunicipalDeadline != null)
+                        {
+                            <label class="application-value">@CurrentApplication.MunicipalDeadline.Value.ToString("dd.MM.yyyy")</label>
+                        }
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("MANTEINANCE_TITLE")</label>
+                        <label class="application-value">@CurrentApplication.Mantainance_Title</label>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    @if (!string.IsNullOrEmpty(CurrentApplication.Mantainance_Description))
+                    {
+                        <div class="application-row">
+                            <label class="application-label">@TextProvider.Get("MANTEINANCE_REASON")</label>
+                            @{
+                                var markupdesc = (MarkupString)CurrentApplication.Mantainance_Description;
+                            }
+                            <label class="application-value">@markupdesc</label>
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                    }
+                    @if (CurrentDefinition.HasPriorities == true)
+                    {
+                        var prio = PriorityList.FirstOrDefault(p => p.ID == CurrentApplication.FORM_Application_Priority_ID);
+
+                        @if (prio != null)
+                        {
+                            <div class="application-row">
+                                <label class="application-label">@TextProvider.Get("FORM_MANTAINANCE_PRIORITY")</label>
+                                @{
+                                    var markupdesc = (MarkupString)CurrentApplication.Mantainance_Description;
+                                }
+                                <span class="application-value">
+                                    <i class="@prio.Icon"></i>
+                                    @prio.Name
+                                </span>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                        }
+                    }
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_ONLY_MUNICIPALITY")</label>
+                        <label class="application-value">
+                            <TelerikSwitch @bind-Value="@CurrentApplication.IsMunicipal" OnLabel=" " OffLabel=" " Width="65px"
+                                           Class="list-item-switch" Enabled="false">
+                            </TelerikSwitch>
+                        </label>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("BACKEND_FORM_ADIMINISTRATION_MUNICIPALITY_COMMITTEE")</label>
+                        <label class="application-value">
+                            <TelerikSwitch @bind-Value="@CurrentApplication.IsMunicipalCommittee" OnLabel=" " OffLabel=" " Width="65px"
+                                           Class="list-item-switch" Enabled="false">
+                            </TelerikSwitch>
+                        </label>
+                    </div>
+                    <TelerikWindow Modal="true" @bind-Visible="@ChangeManteinanceVisibile" Width="800px">
+                        <WindowTitle>
+                            @TextProvider.Get("POPUP_CHANGE_MANTEINANCE_TITLE")
+                        </WindowTitle>
+                        <WindowContent>
+                            <div class="change-status-container">
+                                <EditForm Model="@CurrentApplication">
+                                    <div class="form-group">
+                                        <label for="@CurrentApplication.MunicipalDeadline" class="form-label">@TextProvider.Get("FORM_MANTAINANCE_INPUT_MUNICIPAL_DEADLINE")</label>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="municipal-input">
+                                            <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="CurrentApplication.MunicipalDeadline" class="form-control"></TelerikDatePicker>
+                                        </div>
+                                    </div>
+                                    @if (CurrentApplication.IsMunicipal && HasCommitteeRights)
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="form-group">
+                                            <label for="@CurrentApplication.IsMunicipalCommittee" class="form-label">@TextProvider.Get("FORM_MANTAINANCE_INPUT_MUNICIPAL_COMMITTEE")</label>
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="municipal-input">
+                                                <TelerikSwitch @bind-Value="@CurrentApplication.IsMunicipalCommittee" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                            </div>
+                                        </div>
+                                    }
+                                </EditForm>
+                                <div class="segment-button-toolbar">
+                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                                   OnClick="@CloseChangeManteinance">
+                                        @TextProvider.Get("BUTTON_CANCEL")
+                                    </TelerikButton>
+                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                                   OnClick="@ChangeManteinance">
+                                        @TextProvider.Get("BUTTON_SAVE")
+                                    </TelerikButton>
+                                </div>
+                            </div>
+                        </WindowContent>
+                    </TelerikWindow>
+                }
+            </div>
+        </div>
+        <div class="element-separator"></div>
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <div class="form-group">
+                    <h5 class="custom-color-primary">
+                        @TextProvider.Get("APPLICATION_RESPONSIBLE")
+                    </h5>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row responsible-relative">
+                        @if (CurrentApplication.TASK_Task_ID != null && TaskResponsibleList != null)
+                        {
+                            <div class="responsible-container" @onclick="@(() => ShowResponsibleSelection())" @onclick:stopPropagation="true">
+                                @if (TaskResponsibleList.Count() > 0)
+                                {
+                                    @foreach (var resp in TaskResponsibleList.OrderBy(p => p.SortDesc))
+                                    {
+                                        var user = AuthProvider.GetUserSync(resp.AUTH_Users_ID.Value);
+
+                                        <div class="responsible-item" @onclick="@(() => ResponsibleRemove(resp))" @onclick:stopPropagation="true">
+                                            <UserCard SmallStyle="false" User="@user"></UserCard>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="responsible-placeholder">
+                                        @TextProvider.Get("APPLICATION_RESPONSIBLE_PLACEHOLDER")
+                                    </div>
+                                }
+                            </div>
+                            @if (ResponsibleSelectionVisibile)
+                            {
+                                <div class="responsible-quickadd-container">
+                                    <ICWebApp.Components.Tasks.Responsible.Control TaskID="@CurrentApplication.TASK_Task_ID.Value" ResponsibleList="@TaskResponsibleList" ShowInputField="false"
+                                                                                   ItemAdded="ResponsibleQuickAdd" ItemRemoved="ResponsibleQuickRemove" OverlayClicked="ResponsibleOverlayClicked">
+                                    </ICWebApp.Components.Tasks.Responsible.Control>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="applicant-group">
+                <TelerikWindow Modal="true" @bind-Visible="@ChangeStatusWindowVisible" Width="800px">
+                    <WindowTitle>
+                        @TextProvider.Get("POPUP_CHANGE_STATUS_TITLE")
+                    </WindowTitle>
+                    <WindowContent>
+                        <div class="change-status-container">
+                            @if (!ShowDocumentTemplateWindow)
+                            {
+                                <div class="application-value">
+                                    <TelerikDropDownList Data="@StatusList.OrderBy(p => p.SortOrder)" @bind-Value="@CurrentApplication.FORM_Application_Status_ID"
+                                                         ValueField="ID" TextField="Name">
+                                        <ItemTemplate Context="ItemContext">
+                                            <span class="application-status-item">
+                                                <i class="@ItemContext.Icon"></i>
+                                                @ItemContext.Name
+                                            </span>
+                                        </ItemTemplate>
+                                        <ValueTemplate Context="ValueContext">
+                                            <span class="application-status-item">
+                                                <i class="@ValueContext.Icon"></i>
+                                                @ValueContext.Name
+                                            </span>
+                                        </ValueTemplate>
+                                    </TelerikDropDownList>
+                                </div>
+                                <div class="change-status-container">
+                                    <div class="small-element-separator"></div>
+                                    <div class="reason-title font-small">
+                                        @TextProvider.Get("APPLICATION_STATUS_REASON")
+                                    </div>
+                                    <div class="font-extra-small">
+                                        @TextProvider.Get("APPLICATION_STATUS_REASON_DETAIL")
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    @{
+                                        string Context = "FORMS";
+                                    }
+                                    @if (CurrentDefinition.FORM_Definition_Category_ID == FORMCategories.Maintenance)
+                                    {
+                                        Context = "MANTAINENCES";
+                                    }
+                                    <TextTemplateSelector ExternalContext="@Context" ExternalID="@CurrentApplication.FORM_Application_Status_ID.ToString()" TextItem="@TextItem"></TextTemplateSelector>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="change-status-container">
+                                    <div class="small-element-separator"></div>
+                                    <div class="reason-title font-small">
+                                        @TextProvider.Get("APPLICATION_STATUS_DOCUMENT_REASON")
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    @{
+                                        string Context = "FORMS";
+                                    }
+                                    @if (CurrentDefinition.FORM_Definition_Category_ID == FORMCategories.Maintenance)
+                                    {
+                                        Context = "MANTAINENCES";
+                                    }
+                                    <TextTemplateSelector ExternalContext="@Context" ExternalID="@CurrentApplication.FORM_Application_Status_ID.ToString()" TextItem="@TextDocumentItem" IsDocument="true"></TextTemplateSelector>
+                                </div>
+                            }
+                            <div class="segment-button-toolbar">
+                                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                               OnClick="@CloseChangeStatusWindow">
+                                    @TextProvider.Get("BUTTON_CANCEL")
+                                </TelerikButton>
+                                @{
+                                    var statusLoc = StatusList.FirstOrDefault(p => p.ID == CurrentApplication.FORM_Application_Status_ID);
+                                }
+                                @if (statusLoc != null && CurrentApplication.FORM_Application_Status_ID != StartStatus && statusLoc.UserSelectable == true)
+                                {
+                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                                   OnClick="@ChangeStatus">
+                                        @TextProvider.Get("APPLICATION_STATUS_CHANGE")
+                                    </TelerikButton>
+                                }
+                                else
+                                {
+                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Enabled="false" Class="k-standalone-button"
+                                                   OnClick="@ChangeStatus">
+                                        @TextProvider.Get("APPLICATION_STATUS_CHANGE")
+                                    </TelerikButton>
+                                }
+                            </div>
+                        </div>
+                    </WindowContent>
+                </TelerikWindow>
+                @if (CurrentApplication != null)
+                {
+                    <h5 class="custom-color-primary">
+                        @TextProvider.Get("APPLICATION_ARCHIVED")
+                    </h5>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <TelerikSwitch @bind-Value="@CurrentApplication.ArchivedBool" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")"
+                                       Width="65px" Class="list-item-switch" OnChange="ArchivedChanged">
+                        </TelerikSwitch>
+                    </div>
+                    <div class="element-separator"></div>
+                }
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICATION_STATUS")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                @if (CurrentApplication != null && StartStatus != null)
+                {
+                    var status = FormApplicationProvider.GetStatus(StartStatus.Value);
+
+                    @if (status != null)
+                    {
+                        <div class="application-row">
+                            <div class="application-value">
+                                <span class="application-status-item">
+                                    <i class="@status.Icon"></i>
+                                    @status.Name
+                                </span>
+                            </div>
+                            @if (status != null && status.IsFinalStatus != true)
+                            {
+                                <div class="application-edit-button">
+                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Class="k-standalone-button"
+                                                   OnClick="@ShowChangeStatusWindow">
+                                        @TextProvider.Get("BUTTON_CHANGE_STATUS")
+                                    </TelerikButton>
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="ressource-container">
+            <h5 class="custom-color-primary">
+                @TextProvider.Get("APPLICATION_RESSOURCE")
+            </h5>
+            @if (CurrentApplicationRessource != null && CurrentApplicationRessource.Count() > 0)
+            {
+                <TelerikWindow Modal="true" @bind-Visible="@ShowRequestPaymentFlag" Width="800px">
+                    <WindowTitle>
+                        @TextProvider.Get("FORM_REQUEST_PAYMENT")
+                    </WindowTitle>
+                    <WindowContent>
+                        <div class="request-payment-container">
+                            <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_PAYMENT_IDENTIFIER")</label>
+                            <div class="extra-small-element-separator"></div>
+                            <TelerikDropDownList Data="PagoPaIdentifiers" @bind-Value="SelectedPagoPaIdentifierId" ValueField="@nameof(PAY_PagoPa_Identifier.ID)">
+                                <ValueTemplate Context="ident">
+                                    @TextProvider.Get(ident.TEXT_SystemText_Code)
+                                </ValueTemplate>
+                                <ItemTemplate Context="ident">
+                                    @TextProvider.Get(ident.TEXT_SystemText_Code)
+                                </ItemTemplate>
+                            </TelerikDropDownList>
+                            <div class="element-separator"></div>
+                            <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_BOLLO")</label>
+                            <div class="extra-small-element-separator"></div>
+                            <TelerikSwitch @bind-Value="PayBollo" OnLabel=" " OffLabel=" " Width="65px"
+                                           Class="list-item-switch">
+                            </TelerikSwitch>
+                            <div class="element-separator"></div>
+                            <div class="payment-title-row">
+                                <div class="custom-color-primary payment-title-left">
+                                    @TextProvider.Get("BACKEND_FORM_DEFINITION_PAYMENT_DSCRIPTION")
+                                </div>
+                                <div class="custom-color-primary payment-title-right">
+                                    @TextProvider.Get("BACKEND_FORM_DEFINITION_PAYMENT_AMOUNT")
+                                </div>
+                                <div class="custom-color-primary payment-title-actions">
+                                    @TextProvider.Get("AKTIONS")
+                                </div>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            @foreach (var pos in TransPositions)
+                            {
+                                <EditForm Model="@pos">
+                                    <div class="form-pos">
+                                        <div class="payment-pos-left">
+                                            <InputText @bind-Value="pos.Description" class="form-control"></InputText>
+                                        </div>
+                                        <div class="payment-pos-right">
+                                            <TelerikNumericTextBox @bind-Value="pos.Amount" class="form-control" Format="C"></TelerikNumericTextBox>
+                                        </div>
+                                        <div class="payment-pos-actions">
+                                            <div class="document-detail-button" @onclick="@(() => RemovePosition(pos.ID))">
+                                                <div class="btn btn-secondary">
+                                                    <TelerikIcon Icon="@("fa-regular fa-xmark")"></TelerikIcon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                </EditForm>
+                            }
+                            <div class="payment-add-position" @onclick="AddPosition">
+                                @TextProvider.Get("PAYMENT_ADD_ROW")
+                            </div>
+                            <div class="element-separator"></div>
+                            <div class="payment-button-container">
+                                <div class="btn btn-secondary" @onclick="HideRequestPayment">@TextProvider.Get("BUTTON_CANCEL")</div>
+                                <div class="btn btn-primary" @onclick="RequestPayment">@TextProvider.Get("BUTTON_SAVE")</div>
+                            </div>
+                        </div>
+                    </WindowContent>
+                </TelerikWindow>
+
+                <div class="extra-small-element-separator"></div>
+                <div class="ressource-document-container">
+                    @foreach (var ress in CurrentApplicationRessource)
+                    {
+                        @if (ress.FILE_FileInfo_ID != null)
+                        {
+                            var dbfile = FileProvider.GetFileInfo(ress.FILE_FileInfo_ID.Value);
+
+                            @if (dbfile != null)
+                            {
+                                <div class="document-detail-container">
+                                    @if (ress.BolloRequested != true)
+                                    {
+                                        <div class="document-detail-button" @onclick="@(() => ShowRequestPayment(ress))">
+                                            <div class="btn btn-secondary">
+                                                <TelerikIcon Icon="@("fa-regular fa-euro-sign")"></TelerikIcon>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="document-detail-button-disabled">
+                                            <div class="btn btn-secondary">
+                                                <TelerikIcon Icon="@("fa-regular fa-file-invoice-dollar")"></TelerikIcon>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (ress.FILE_FileInfo_ID != null && ress.UserUpload == true)
+                                    {
+                                        <div class="document-detail-button" @onclick="@(() => RemoveUserRessource(ress.FILE_FileInfo_ID.Value))">
+                                            <div class="btn btn-secondary">
+                                                <TelerikIcon Icon="@("fa-regular fa-xmark")"></TelerikIcon>
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="document-detail-download" @onclick="@(() => DownloadRessource(ress.FILE_FileInfo_ID.Value, dbfile.FileName))">
+                                        <div class="document-detail-download-icon">
+                                            <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                                        </div>
+                                        <div class="document-detail-download-description font-normal">
+                                            @dbfile.FileName (@(dbfile.Size / 1024) kb)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                            }
+                        }
+                    }
+                </div>
+            }
+            <div class="extra-small-element-separator"></div>
+            <div class="ressource-document-container">
+                <TelerikWindow Modal="true" @bind-Visible="@ShowRessourceUploadFlag" Width="800px">
+                    <WindowTitle>
+                        @TextProvider.Get("FORM_UPLOAD_FILES")
+                    </WindowTitle>
+                    <WindowContent>
+                        <div class="ressource-upload-container">
+                            <UploadComponent FileInfoList="@CurrentUserUpload" RemoveAreYouSure="true"
+                                             OnRemove="FileRemoved" SmallStyle="true" Multiple="true">
+                            </UploadComponent>
+                            <div class="element-separator"></div>
+                            <div class="btn btn-secondary" @onclick="CancelRessourceUpload">@TextProvider.Get("BUTTON_CANCEL")</div>
+                            <div class="btn btn-primary" @onclick="SaveRessources">@TextProvider.Get("BUTTON_SAVE")</div>
+                        </div>
+                    </WindowContent>
+                </TelerikWindow>
+                <div class="btn btn-primary btn-flex" @onclick="ShowRessourceUpload">@TextProvider.Get("FORM_UPLOAD_FILES")</div>
+            </div>
+        </div>
+    }
+    </div>
+    </Content>
+    </WizardStep>
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_ANAGRAFIC")" OnChange="OnStepChanged" Icon="@("fa-solid fa-person")">
+    <Content>
+    <h3 class="application-detail-sub-title custom-color-primary">
+        @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_ANAGRAFIC")
+    </h3>
+    <div class="small-element-separator"></div>
+    <div class="form-group application-detail-tab font-small">
+    @if (CurrentApplication != null)
+    {
+        <div class="element-separator"></div>
+        <h4 class="custom-color-primary">
+            @TextProvider.Get("APPLICANT_BACKEND_APPLICANT")
+        </h4>
+        <div class="small-element-separator"></div>
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_ANAGRAFIC_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                    <label class="application-value">@CurrentApplication.FirstName @CurrentApplication.LastName</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                    <label class="application-value">@CurrentApplication.FiscalNumber</label>
+                </div>
+                @if (CurrentApplication.VATNumber != null)
+                {
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row">
+                        <label class="application-label">@TextProvider.Get("APPLICANT_VATNUMBER")</label>
+                        <label class="application-value">@CurrentApplication.VATNumber</label>
+                    </div>
+                }
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_GENDER")</label>
+                    <label class="application-value">
+                        @if (CurrentApplication.Gender == "M")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                        }
+                        else if (CurrentApplication.Gender == "W")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                        }
+                    </label>
+                </div>
+            </div>
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_BIRTH_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_COUNTY_OF_BIRTH")</label>
+                    <label class="application-value">@CurrentApplication.CountyOfBirth</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PLACE_OF_BIRTH")</label>
+                    <label class="application-value">@CurrentApplication.PlaceOfBirth</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_DATE_OF_BIRTH")</label>
+                    <label class="application-value">
+                        @if (CurrentApplication.DateOfBirth != null)
+                        {
+                            @CurrentApplication.DateOfBirth.Value.ToString("dd.MM.yyyy")
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="element-separator"></div>
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_DOMICILE_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                    <label class="application-value">@CurrentApplication.DomicileStreetAddress</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                    <label class="application-value">@CurrentApplication.DomicilePostalCode</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                    <label class="application-value">@CurrentApplication.DomicileMunicipality</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                    <label class="application-value">@CurrentApplication.DomicileProvince</label>
+                </div>
+            </div>
+
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row-segment">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                    <label class="application-value">@CurrentApplication.Email</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row-segment">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                    <label class="application-value">
+                        @if (!string.IsNullOrEmpty(CurrentApplication.MobilePhone))
+                        {
+                            var IntPhoneNumber = long.Parse(CurrentApplication.MobilePhone.Replace("+", ""));
+
+                            @IntPhoneNumber.ToString("+## ### ### ####")
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(CurrentApplication.IBAN))
+        {
+            <div class="element-separator"></div>
+            <div class="applicant-container">
+                <div class="applicant-group">
+                    <h5 class="custom-color-primary">
+                        @TextProvider.Get("APPLICANT_BANC_DATA")
+                    </h5>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row-segment">
+                        <label class="application-label">@TextProvider.Get("ORG_KONTOINHABER")</label>
+                        <label class="application-value">
+                            @CurrentApplication.KontoInhaber
+                        </label>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row-segment">
+                        <label class="application-label">@TextProvider.Get("ORG_BANKNAME")</label>
+                        <label class="application-value">
+                            @CurrentApplication.Bankname
+                        </label>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="application-row-segment">
+                        <label class="application-label">@TextProvider.Get("ORG_IBAN")</label>
+                        <label class="application-value">@CurrentApplication.IBAN</label>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    @if (CurrentApplication != null && CurrentApplication.GV_AUTH_User_ID != null)
+    {
+        <div class="element-separator"></div>
+        <h4 class="custom-color-primary">
+            @TextProvider.Get("APPLICANT_BACKEND_GV")
+        </h4>
+        <div class="small-element-separator"></div>
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_ANAGRAFIC_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                    <label class="application-value">@CurrentApplication.GV_FirstName @CurrentApplication.GV_LastName</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                    <label class="application-value">@CurrentApplication.GV_FiscalCode</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_GENDER")</label>
+                    <label class="application-value">
+                        @if (CurrentApplication.GV_Gender == "M")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                        }
+                        else if (CurrentApplication.GV_Gender == "W")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                        }
+                    </label>
+                </div>
+            </div>
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_BIRTH_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_COUNTY_OF_BIRTH")</label>
+                    <label class="application-value">@CurrentApplication.GV_CountyOfBirth</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PLACE_OF_BIRTH")</label>
+                    <label class="application-value">@CurrentApplication.GV_PlaceOfBirth</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_DATE_OF_BIRTH")</label>
+                    <label class="application-value">
+                        @if (CurrentApplication.GV_DateOfBirth != null)
+                        {
+                            @CurrentApplication.GV_DateOfBirth.Value.ToString("dd.MM.yyyy")
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="element-separator"></div>
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_DOMICILE_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                    <label class="application-value">@CurrentApplication.GV_DomicileStreetAddress</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                    <label class="application-value">@CurrentApplication.GV_DomicilePostalCode</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                    <label class="application-value">@CurrentApplication.GV_DomicileMunicipality</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                    <label class="application-value">@CurrentApplication.GV_DomicileProvince</label>
+                </div>
+            </div>
+
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row-segment">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                    <label class="application-value">@CurrentApplication.GV_Email</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row-segment">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                    <label class="application-value">
+                        @if (!string.IsNullOrEmpty(CurrentApplication.GV_MobilePhone))
+                        {
+                            var IntPhoneNumber = long.Parse(CurrentApplication.GV_MobilePhone.Replace("+", ""));
+
+                            @IntPhoneNumber.ToString("+## ### ### ####")
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+    }
+    @if (CurrentApplication != null && CurrentApplication.ROOT_AUTH_User_ID != null)
+    {
+        <div class="element-separator"></div>
+        <h4 class="custom-color-primary">
+            @TextProvider.Get("APPLICANT_BACKEND_ROOT")
+        </h4>
+        <div class="small-element-separator"></div>
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_ANAGRAFIC_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_NAME")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_FirstName @CurrentApplication.ROOT_LastName</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_FISCALNUMBER")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_FiscalCode</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_GENDER")</label>
+                    <label class="application-value">
+                        @if (CurrentApplication.ROOT_Gender == "M")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_MALE")
+                        }
+                        else if (CurrentApplication.ROOT_Gender == "W")
+                        {
+                            @TextProvider.Get("REGISTRATION_GENDER_FEMALE")
+                        }
+                    </label>
+                </div>
+            </div>
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_BIRTH_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_COUNTY_OF_BIRTH")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_CountyOfBirth</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PLACE_OF_BIRTH")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_PlaceOfBirth</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_DATE_OF_BIRTH")</label>
+                    <label class="application-value">
+                        @if (CurrentApplication.GV_DateOfBirth != null)
+                        {
+                            @CurrentApplication.GV_DateOfBirth.Value.ToString("dd.MM.yyyy")
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="element-separator"></div>
+        <div class="applicant-container">
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_DOMICILE_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_ADDRESS")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_DomicileStreetAddress</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_POSTAL_CODE")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_DomicilePostalCode</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_MUNICIPALITY")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_DomicileMunicipality</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PROVINCE")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_DomicileProvince</label>
+                </div>
+            </div>
+
+            <div class="applicant-group">
+                <h5 class="custom-color-primary">
+                    @TextProvider.Get("APPLICANT_KONTAKT_DATA")
+                </h5>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row-segment">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_EMAIL")</label>
+                    <label class="application-value">@CurrentApplication.ROOT_Email</label>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="application-row-segment">
+                    <label class="application-label">@TextProvider.Get("APPLICANT_PHONE")</label>
+                    <label class="application-value">
+                        @if (!string.IsNullOrEmpty(CurrentApplication.ROOT_MobilePhone))
+                        {
+                            var IntPhoneNumber = long.Parse(CurrentApplication.ROOT_MobilePhone.Replace("+", ""));
+
+                            @IntPhoneNumber.ToString("+## ### ### ####")
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
+    </Content>
+    </WizardStep>
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_NOTES")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-note")">
+        <Content>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_NOTES")
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="form-group application-detail-tab">
+                <div class="application-detail-top-row">
+                    <ICWebApp.Components.Form.Notes.FormNotes FORM_Application_ID="@CurrentApplication.ID"></ICWebApp.Components.Form.Notes.FormNotes>
+                </div>
+                <div class="element-separator"></div>
+                @if (ApplicationMunicipalFields.Count > 0)
+                {
+                    <div class="application-detail-top-row">
+                        <div class="h5 custom-color-primary">@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_MUN_FIELD_TITLE")</div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="application-detail-bottom-row">
+                        <div>
+                            @foreach (var app in ApplicationMunicipalFields.OrderBy(p => p.SortOrder))
+                            {
+                                var munFielddef = DefinitionMunicipalFields.FirstOrDefault(p => p.ID == app.FORM_Definition_Municipal_Field_ID);
+
+                                if (app != null)
+                                {
+                                    <ICWebApp.Components.Form.Notes.NoteField Data="@app" Definition="@munFielddef"></ICWebApp.Components.Form.Notes.NoteField>
+                                    <div class="extra-small-element-separator"></div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </Content>
+    </WizardStep>
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_DETAILS")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-memo-circle-info")">
+        <Content>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_DETAILS")
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="form-group application-detail-tab">
+                @if (CurrentApplication != null)
+                {
+                    <div class="preview-container">
+                        @if (CurrentApplication.Credit != null && CurrentDefinition.HasCredit)
+                        {
+                            <div class="form-application-creadit-input">
+                                <label class="font-normal custom-color-primary">@TextProvider.Get("FORM_APPLICATION_CREDIT")</label>
+                                <TelerikNumericTextBox @bind-Value="CurrentApplication.Credit" class="form-control" Enabled="false" Format="C"></TelerikNumericTextBox>
+                            </div>
+                        }
+                        @if (CurrentDefinition.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+                        {
+                            <div class="preview-url-container">
+                                <ICWebApp.Components.FormRendererMunicipal.Container Application="CurrentApplication" Definition="CurrentDefinition"/>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mantenaince-container">
+                                <div class="applicant-group">
+                                    <div class="font-bold custom-color-primary">
+                                        @CurrentApplication.Mantainance_Title
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    @if (!string.IsNullOrEmpty(CurrentApplication.Mantainance_Description))
+                                    {
+                                        var markupText = (MarkupString)CurrentApplication.Mantainance_Description;
+
+                                        <div class="application-row">
+                                            <div class="font-normal application-value">@markupText</div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="small-element-separator"></div>
+                                <div class="applicant-group">
+                                    @if (Municipality != null && CurrentApplication != null)
+                                    {
+                                        double lat = Municipality.LatLan[0];
+                                        double lan = Municipality.LatLan[1];
+                                        CurrentApplication.Mantainance_LanLat_Title = TextProvider.Get("FORM_MANTAINANCE_PIN_TITLE");
+
+                                        if (CurrentApplication.Mantainance_LanLat != null)
+                                        {
+                                            if (CurrentApplication.Mantainance_LanLat[0] != null && CurrentApplication.Mantainance_LanLat[1] != null)
+                                            {
+                                                lat = CurrentApplication.Mantainance_LanLat[0].Value;
+                                                lan = CurrentApplication.Mantainance_LanLat[1].Value;
+                                            }
+                                        }
+
+                                        <div class="map-container">
+                                            <TelerikMap MinZoom="15" MaxZoom="19" Zoom="15" Height="100%"
+                                                        Center="@(new double[] { lat, lan })">
+                                                <MapLayers>
+                                                    <MapLayer Type="@MapLayersType.Tile"
+                                                              Attribution="@Attribution"
+                                                              Subdomains="@Subdomains"
+                                                              UrlTemplate="@UrlTemplate">
+                                                    </MapLayer>
+                                                    @if (CurrentApplication.Mantainance_LanLat != null && CurrentApplication.Mantainance_LanLat_Title != null)
+                                                    {
+                                                        <MapLayer Type="@MapLayersType.Marker"
+                                                                  Data="@(new List<FORM_Application>() { CurrentApplication })"
+                                                                  LocationField="@nameof(FORM_Application.Mantainance_LanLat)"
+                                                                  TitleField="@nameof(FORM_Application.Mantainance_LanLat_Title)">
+                                                        </MapLayer>
+                                                    }
+                                                </MapLayers>
+                                            </TelerikMap>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </Content>
+    </WizardStep>
+    @{
+        var wizardStepHiddenCss = "wizardstep-hidden";
+        var disablePreviewTab = CurrentDefinition.FORM_Definition_Category_ID == FORMCategories.Maintenance;
+    }
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_PREVIEW")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-file-certificate")" Disabled="@disablePreviewTab">
+        <Content>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_PREVIEW")
+            </h3>
+            <div class="small-element-separator"></div>
+            @if (!disablePreviewTab)
+            {
+                <div class="form-group application-detail-tab">
+                    @if (CurrentApplication != null && CurrentApplication.FILE_Fileinfo_ID != null)
+                    {
+                        <div class="preview-container">
+                            <div class="preview-url-container">
+                                <PDFViewer FILE_FileInfoID="@CurrentApplication.FILE_Fileinfo_ID"></PDFViewer>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </Content>
+    </WizardStep>
+
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_DOCUMENTS")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-box-archive")">
+        <Content>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_DOCUMENTS")
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="form-group application-detail-tab">
+                <div class="document-container">
+                    @foreach (var def in CurrentDefinitionUploads.OrderBy(p => p.SortOrder))
+                    {
+                        @if (CurrentApplicationUploads.Where(p => p.FORM_Definition_Upload_ID == def.ID).ToList().Count() > 0)
+                        {
+                            <div class="font-bold custom-color-primary">
+                                @def.Description
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+
+                            @foreach (var upload in CurrentApplicationUploads.Where(p => p.FORM_Definition_Upload_ID == def.ID).ToList())
+                            {
+                                @foreach (var file in CurrentApplicationFileUploads.Where(p => p.FORM_Application_Upload_ID == upload.ID))
+                                {
+                                    @if (file.FILE_FileInfo_ID != null)
+                                    {
+                                        var dbfile = FileProvider.GetFileInfo(file.FILE_FileInfo_ID.Value);
+
+                                        @if (dbfile != null)
+                                        {
+                                            <div class="document-detail-download" @onclick="@(() => DownloadRessource(file.FILE_FileInfo_ID.Value, dbfile.FileName))">
+                                                <div class="document-detail-download-icon">
+                                                    <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                                                </div>
+                                                <div class="document-detail-download-description font-normal">
+                                                    @dbfile.FileName (@(dbfile.Size / 1024) kb)
+                                                </div>
+                                            </div>
+                                            <div class="extra-small-element-separator"></div>
+                                        }
+                                    }
+                                }
+                                <div class="extra-small-element-separator"></div>
+                            }
+                        }
+                    }
+                    @if (DynamicFiles != null && DynamicFiles.Count() > 0)
+                    {
+                        <div class="font-bold custom-color-primary">
+                            @TextProvider.Get("FORM_APPLICATION_DYNAMIC_FILES")
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        @foreach (var file in DynamicFiles)
+                        {
+                            @if (file.ID != null)
+                            {
+                                var dbfile = FileProvider.GetFileInfo(file.ID);
+
+                                @if (dbfile != null)
+                                {
+                                    <div class="application-row">
+                                        <div class="document-detail-download" @onclick="@(() => DownloadRessource(file.ID, dbfile.FileName))">
+                                            <div class="document-detail-download-icon">
+                                                <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                                            </div>
+                                            <div class="document-detail-download-description">
+                                                @dbfile.FileName (@(dbfile.Size / 1024) kb)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </Content>
+    </WizardStep>
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_STATUS_LOG")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-list-dropdown")">
+        <Content>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_STATUS_LOG")
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="form-group application-detail-tab">
+                <div class="tasks-container">
+
+                    <TelerikGrid Data="@CurrentStatusLogList.OrderByDescending(p => p.ChangeDate)" Pageable="false" Sortable="false" Resizable="false"
+                                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                        <GridColumns>
+                            <GridColumn Field="@nameof(FORM_Application_Status_Log.User)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_STATUS_LOG_USER")"></GridColumn>
+                            <GridColumn Field="@nameof(FORM_Application_Status_Log.ChangeDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_STATUS_LOG_CHANGE_DATE")" Width="250px"></GridColumn>
+                            <GridColumn Field="@nameof(FORM_Application_Status_Log.Status)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_STATUS_LOG_STATUS")">
+                                <Template Context="ItemContext">
+                                    @{
+                                        FORM_Application_Status_Log item = ItemContext as FORM_Application_Status_Log;
+
+                                        <span class="application-status-item">
+                                            <TelerikIcon Icon="@item.StatusIcon"></TelerikIcon>
+                                            @item.Status
+                                        </span>
+                                    }
+                                </Template>
+                            </GridColumn>
+                        </GridColumns>
+                    </TelerikGrid>
+                </div>
+            </div>
+        </Content>
+    </WizardStep>
+    @{
+        var disableChatTab = CurrentDefinition == null || !CurrentDefinition.HasChat;
+    }
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_CHAT")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-message-captions")" Disabled="@disableChatTab">
+        <Content>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_CHAT")
+            </h3>
+            <div class="small-element-separator"></div>
+            @if (!disableChatTab)
+            {
+                <div class="form-group application-detail-tab">
+                    <ICWebApp.Components.Form.Chat.FormChat FORM_Application_ID="@CurrentApplication.ID" ForceChatButton="true"></ICWebApp.Components.Form.Chat.FormChat>
+                </div>
+            }
+        </Content>
+    </WizardStep>
+
+    @{
+        var disablePaymentsTab = CurrentDefinition.FORM_Definition_Category_ID == FORMCategories.Maintenance;
+    }
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_PAYMENTS")" OnChange="OnStepChanged" Icon="@("fa-duotone fa-credit-card")" Disabled="@disablePaymentsTab">
+        <Content>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_TAB_PAYMENTS")
+            </h3>
+            <div class="small-element-separator"></div>
+            @if (!disablePaymentsTab)
+            {
+                <div class="form-group application-detail-tab">
+                    @{
+                        bool AllowRefundAll = false;
+                        @if (CurrentApplication.PayedAt != null && CurrentApplication.SubmitAt == null)
+                        {
+                            AllowRefundAll = true;
+                        }
+                    }
+                    <PaymentList FilterTransactionList="@CurrenTransactionList" UserSelectionUserID="@CurrentApplication.AUTH_Users_ID"
+                                 OnTransactionCreated="@TransactionCreated" ShowBollo="true" AllowBolloRefundAll="@AllowRefundAll" IsApplicationPaymentList="@true" DefaultPagoPaIdentifier="@CurrentDefinition.DefaultPagoPaIdentifierId">
+                    </PaymentList>
+                </div>
+            }
+        </Content>
+    </WizardStep>
+
+    <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_INTERNAL_ARCHIVE")" OnChange="OnStepChanged" Icon="@("fa-regular fa-folder")">
+        <Content>
+            <h3 class="application-detail-sub-title custom-color-primary">
+                @TextProvider.Get("BACKEND_FORM_DETAIL_APPLICATION_INTERNAL_ARCHIVE")
+            </h3>
+            <div class="small-element-separator"></div>
+            <div class="form-group application-detail-tab">
+                @if (CurrentApplication != null)
+                {
+                    <ICWebApp.Components.Form.Files.UserDokuments Application="@CurrentApplication"></ICWebApp.Components.Form.Files.UserDokuments>
+                }
+            </div>
+        </Content>
+    </WizardStep>
+    </WizardSteps>
+    <WizardButtons>
+    </WizardButtons>
+    <WizardSettings>
+        <WizardStepperSettings Linear="false"/>
+    </WizardSettings>
+    </TelerikWizard>
+    </div>
+    </div>
+}
+</div>
+</div>

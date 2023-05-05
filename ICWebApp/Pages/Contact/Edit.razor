@@ -1,0 +1,11 @@
+﻿@page "/Contacts/Edit/{ID}"
+
+@layout MainLayout
+
+@if (Data != null)
+{
+    <div class="element-element-separator"></div>
+    <div class="segment-container custom-background-default small-width">
+        <ICWebApp.Components.Contacts.EditComponent Data="@Data" OnSave="Save" OnCancel="ReturnToPrevious"></ICWebApp.Components.Contacts.EditComponent>
+    </div>
+}

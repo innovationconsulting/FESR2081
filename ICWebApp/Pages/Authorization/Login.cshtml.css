@@ -1,0 +1,85 @@
+﻿.login-container {
+    display: flex;
+    justify-content: flex-start;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 50px;
+    flex-grow: 2;
+}
+
+.spid-login-element {
+    
+}
+
+.login-container-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 50px;
+    width: 100%;
+}
+
+.login-element {
+    background-color: #f2f2f2;
+    padding: 30px;
+    width: 100%;
+    flex: 1;
+}
+
+.login-element-empty{
+    flex: 1;
+    width: 100%;
+    padding: 30px;
+}
+
+
+@media (min-width: 800px) and (max-width: 1080px) {
+    article {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+}
+
+@media(max-width: 800px) {
+    .login-container {
+        gap: 10px;
+    }
+    .login-container-row{
+        gap: 10px;
+    }
+
+    .login-element {
+        width: 100%;
+        padding: 10px;
+        flex: unset !important;
+    }
+
+    .page-footer-services{
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .page-footer-spid img {
+        height: 30px;
+    }
+
+    .page-footer-agde img {
+        height: 30px;
+    }
+}
+
+@media(min-width: 800px) {
+    .page-footer-services {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .page-footer-spid img {
+        height: 50px;
+    }
+
+    .page-footer-agde img {
+        height: 50px;
+    }
+}

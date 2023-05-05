@@ -1,0 +1,33 @@
+﻿.text-template-container
+{
+    position: relative;
+}
+.template-input-container{
+    display: flex;
+    gap: 10px;
+}
+.editor-container{
+    flex: 1;
+}
+.keyword-container {
+    width: 200px;
+    border: 1px solid #d9d9d9;
+    padding: 10px;
+}
+.keyword-container{
+    overflow: auto;
+    max-height: 550px;
+}
+.keyword-item {
+    border: 2px solid #0F7173;
+    border-radius: 3px;
+    color: #0F7173;
+    padding: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+    .keyword-item:hover {
+        color: white;
+        background-color: #0F7173;
+    }

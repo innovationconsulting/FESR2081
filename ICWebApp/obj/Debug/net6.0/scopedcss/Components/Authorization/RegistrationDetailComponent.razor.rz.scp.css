@@ -1,0 +1,63 @@
+@media (max-width: 680px) {
+
+    .login-logo[b-1eldo9e191] {
+        display: none;
+    }
+
+    .login-title[b-1eldo9e191] {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+.login-logo[b-1eldo9e191]{
+    width: 100%;
+}
+
+.login-title[b-1eldo9e191] {
+}
+
+.login-logo img[b-1eldo9e191]{
+    width: 100%;
+}
+
+.login-label[b-1eldo9e191]{
+}
+
+.login-row[b-1eldo9e191]{
+    display: flex;
+}
+
+.login-row-left[b-1eldo9e191] {
+    width: 50%;
+    justify-content: left;
+}
+
+.login-row-right[b-1eldo9e191] {
+    width: 50%;
+    text-align: right;
+    justify-content: right;
+}
+
+.login-busy-loader[b-1eldo9e191] {
+    padding-left: calc(50% - 40px) !important;
+    padding-left: -moz-calc(50% - 40px) !important;
+    padding-left: -webkit-calc(50% - 40px) !important;
+    padding-left: -o-calc(50% - 40px) !important;
+}
+
+@media(max-width: 800px) {
+    .button-container[b-1eldo9e191] {
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+    }
+}
+
+.registration-container[b-1eldo9e191]{
+    display: flex; 
+    flex-direction: column;
+}
+.registration-detail[b-1eldo9e191] {
+    flex: 1;
+    min-height: 175px;
+}

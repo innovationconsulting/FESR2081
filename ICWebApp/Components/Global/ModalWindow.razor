@@ -1,0 +1,28 @@
+﻿@if (Content != null && Parameters != null)
+{
+    <TelerikWindow Visible="@IsVisible" Modal="@Parameters.Modal" Height="@Parameters.Height"
+                    Width="@Parameters.Width" State="@WindowStateParameter" Draggable="@Parameters.Draggable">
+        <WindowTitle>
+            <strong>@Parameters.Title</strong>
+        </WindowTitle>
+        <WindowContent>
+            <div>
+                @Content
+            </div>
+        </WindowContent>
+        <WindowActions>
+            @if (Parameters.ShowMinimize)
+            {
+                <WindowAction Name="Minimize"></WindowAction>
+            }
+            @if (Parameters.ShowMaximize)
+            {
+                <WindowAction Name="Maximize"></WindowAction>
+            }
+            @if (Parameters.ShowClose)
+            {
+                <WindowAction Name="Close" OnClick="OnHandleClose"></WindowAction>
+            }
+        </WindowActions>
+    </TelerikWindow>
+}

@@ -1,0 +1,25 @@
+﻿@page "/Room/Comitted/{BookingGroupID}"
+
+@layout FrontendLayout
+
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-12">
+                    <div class="segment-container">
+                        @TextProvider.Get("FRONTEND_BOOKING_COMMITTED_SUCCESS_DESCRIPTION")
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="segment-button-container">
+                        <button class="btn btn-primary" @onclick="GoToLanding">@TextProvider.Get("FRONTEND_BOOKING_BACK_TO_LANDING")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

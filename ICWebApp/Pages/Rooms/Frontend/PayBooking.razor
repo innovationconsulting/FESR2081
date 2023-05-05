@@ -1,0 +1,18 @@
+﻿@page "/Room/Payment/{BookingGroupID}"
+@layout FrontendLayout
+
+
+@if (ShowPayProvider == true && BookingGroup != null)
+{
+    <div class="container">
+        <div class="row mt-lg-80 mt-3 mb-4">
+            <div class="col-12">
+                <PaymentPage Transactions="PAY_Transaction_IDs" ReturnUrl="@("/Room/Payment/" + BookingGroup.ID)" SourceCode="ROOMS"
+                         ShowBackButton="false" OnPaymentComplete="@CompletePayment">
+                </PaymentPage>
+            </div>
+        </div>
+    </div>
+}
+
+

@@ -1,0 +1,247 @@
+﻿@page "/Mantainance/Detail/{DefinitionID}"
+@using Telerik.Blazor.Components.Editor
+
+@layout FrontendLayout
+
+@{
+    int orderID = 0;
+}
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-lg-3 mb-4 border-col hide-max-576">
+                    <AnchorList></AnchorList>
+                </div>
+                <div class="col-lg-8 offset-lg-1">
+                    <div class="form-application-container it-page-sections-container">
+                        @if (Definition != null && Data != null)
+                        {
+                            @if (!string.IsNullOrEmpty(Definition.FORM_Description))
+                            {
+                                var markupDescription = new MarkupString(Definition.FORM_Description);
+
+                                <Anchor Title="@(TextProvider.Get("FORM_DETAIL_DESCRIPTION"))" ID="@(TextProvider.Get("FORM_DETAIL_DESCRIPTION"))" Order="orderID">
+                                    @markupDescription
+                                </Anchor>
+
+                                orderID++;
+                            }
+                            @if (DataProperties != null)
+                            {
+                                @foreach (var p in DataProperties.OrderBy(p => p.SortOrder))
+                                {
+                                    if (!string.IsNullOrEmpty(p.Description))
+                                    {
+                                        var markupDescription = new MarkupString(p.Description);
+
+                                        <Anchor Title="@(p.Title)" ID="@(p.Title)" Order="orderID">
+                                            @markupDescription
+                                        </Anchor>
+
+                                        orderID++;
+                                    }
+                                }
+                            }
+                            @if (DataRessources != null && DataRessources.Count() > 0)
+                            {
+                                <Anchor Title="@(TextProvider.Get("FORM_DETAIL_RESSOURCES"))" ID="@(TextProvider.Get("FORM_DETAIL_RESSOURCES"))" Order="orderID">
+                                    @foreach (var r in DataRessources.OrderBy(p => p.SortOrder))
+                                    {
+                                        if (r.FILE_FileInfo_ID != null)
+                                        {
+                                            var fileSize = FileProvider.GetFileSize(r.FILE_FileInfo_ID.Value);
+                                            
+                                            <div class="form-detail-download" @onclick="@(() => DownloadRessource(r.FILE_FileInfo_ID.Value, r.Description))">
+                                                <div class="form-detail-download-icon">
+                                                    <svg class="icon icon-primary icon-sm me-1" aria-hidden="true">
+                                                        <use href="css/bootstrap-italia/svg/sprites.svg#it-clip"></use>
+                                                    </svg>
+                                                </div>
+                                                <div class="form-detail-download-description font-normal">
+                                                    @r.Description (@(fileSize / 1024) kb)
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </Anchor>
+
+                                orderID++;
+                            }
+
+                            <Anchor Title="@(TextProvider.Get("FORM_MANTAINANCE_DATA"))" IsCard="true" ID="@(TextProvider.Get("FORM_MANTAINANCE_DATA"))" Order="orderID">
+                                <div class="mantainance-input-container">
+                                    <EditForm Model="@Data" Context="EditFormContext">
+                                        <div class="form-group flex-full">
+                                            <label for="@Data.Mantainance_Title" class="form-label">@TextProvider.Get("FORM_MANTAINANCE_TITLE")</label>
+                                            @{
+                                                string ErrorTitleCSS = "form-control";
+
+                                                @if (!string.IsNullOrEmpty(Data.Mantainance_Title_ErrorCode))
+                                                {
+                                                    ErrorTitleCSS = "form-control mantainance-container-error-style";
+                                                }
+                                            }
+                                            <div class="extra-small-element-separator"></div>
+                                            <InputText @bind-Value="Data.Mantainance_Title" class="@ErrorTitleCSS"></InputText>
+                                            @if (Data.Mantainance_Title_ErrorCode != null)
+                                            {
+                                                <div class="mantainance-container-error font-normal">
+                                                    @if (Data.Mantainance_Title_ErrorCode != null)
+                                                    {
+                                                        @TextProvider.Get(Data.Mantainance_Title_ErrorCode).Replace("{0}", TextProvider.Get("FORM_MANTAINANCE_TITLE"))
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        @if (Definition != null && Definition.HasPriorities == true && PriorityList != null && PriorityList.Count() > 0)
+                                        {
+                                            <label for="@Data.Mantainance_Title" class="form-label">@TextProvider.Get("FORM_MANTAINANCE_PRIORITY")</label>
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="mantainance-priority">                                
+                                                @foreach (var auth in PriorityList.OrderBy(p => p.SortOrder))
+                                                {
+                                                    string buttonCSS = "btn-secondary";
+
+                                                    if (Data.FORM_Application_Priority_ID != null && Data.FORM_Application_Priority_ID == auth.ID)
+                                                    {
+                                                        buttonCSS = "btn-primary";
+                                                    }
+
+                                                    <div class="btn @buttonCSS authority-tag" @onclick="@(() => SetPriority(auth.ID))" @onclick:stopPropagation="true">
+                                                        <span>
+                                                            <TelerikIcon Icon="@auth.Icon"></TelerikIcon>
+                                                            @auth.Name
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="form-group flex-full">
+                                            <label for="@Data.Mantainance_Title" class="form-label">@TextProvider.Get("FORM_MANTAINANCE_DESCRIPTION")</label>
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="change-status-input">
+                                                <TelerikTextArea @bind-Value="Data.Mantainance_Description"
+                                                                 Class="font-normal"
+                                                                 AutoSize="true">
+                                                </TelerikTextArea>
+                                            </div>
+                                        </div>
+                                    </EditForm>
+                                </div>
+                            </Anchor>
+                            
+                            orderID++;
+
+                            <Anchor Title="@(TextProvider.Get("FORM_MANTAINANCE_MAP"))" IsCard="true" ID="@(TextProvider.Get("FORM_MANTAINANCE_MAP"))" Order="orderID">
+                                @if (Data != null)
+                                {
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="form-group">
+                                        <label class="form-label custom-color-primary">@TextProvider.Get("GEO_ADDRESS_LOCATION")</label>
+                                        @if(_address != null)
+                                        {
+                                            <InputText @bind-Value="@_address" class="form-control"></InputText>
+                                        }
+                                    </div>
+                                    <div class="small-element-separator"></div>
+                                    <div class="form-group button-container">
+                                        <div class="btn btn-secondary" @onclick="SetGeoLocation">@TextProvider.Get("SEARCH_ON_MAP")</div>
+                                        <GetCurrentGeoDataComponent SetCurrentLocation="@SetCurrentLocation" />
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="map-container">
+                                        @{
+                                            var point = new double[] { StartLat, StartLan };
+                                            if (Data.Mantainance_LanLat != null)
+                                            {
+                                                point = new double[] { Data.Mantainance_LanLat[0].Value, Data.Mantainance_LanLat[1].Value };
+                                            }
+                                        }
+                                        <TelerikMap MinZoom="15" MaxZoom="19" Zoom="15" OnClick="MapClicked" Height="100%" Center="@(point)">
+                                            <MapLayers>
+                                                <MapLayer Type="@MapLayersType.Tile"
+                                                          Attribution="@Attribution"
+                                                          Subdomains="@Subdomains"
+                                                          UrlTemplate="@UrlTemplate">
+                                                </MapLayer>
+                                                @if (Data.Mantainance_LanLat != null && Data.Mantainance_LanLat_Title != null)
+                                                {
+                                                    <MapLayer Type="@MapLayersType.Marker"
+                                                              Data="@(new List<FORM_Application>() { Data })"
+                                                              LocationField="@nameof(FORM_Application.Mantainance_LanLat)"
+                                                              TitleField="@nameof(FORM_Application.Mantainance_LanLat_Title)">
+                                                    </MapLayer>
+                                                }
+                                            </MapLayers>
+                                        </TelerikMap>
+                                    </div>
+                                }
+                            </Anchor>
+                                                        
+                            orderID++;
+
+                            @if (UploadElements != null && UploadFilesDefinitions != null && UploadFilesDefinitions.Count() > 0)
+                            {
+                                <Anchor Title="@(TextProvider.Get("FORM_MANTAINANCE_UPLOADS"))" IsCard="true" ID="@(TextProvider.Get("FORM_MANTAINANCE_UPLOADS"))" Order="98">
+                                    <div class="form-application-document-upload-container">
+                                        @foreach (var ele in UploadElements)
+                                        {
+                                            var def = UploadFilesDefinitions.FirstOrDefault(p => p.ID == ele.FORM_Definition_Upload_ID);
+
+                                            if (def != null)
+                                            {
+                                                string ErrorCSS = "";
+
+                                                @if (!string.IsNullOrEmpty(ele.ERROR_CODE))
+                                                {
+                                                    ErrorCSS = "application-upload-container-error-style";
+                                                }
+
+                                                <div class="form-application-document-element">
+                                                    <div class="application-upload-container @ErrorCSS">
+                                                        <div class="font-normal">
+                                                            @def.Description
+                                                        </div>
+                                                        <div class="font-extra-small">
+                                                            @def.AlloweTypesParsed
+                                                        </div>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <UploadComponent FileInfoList="ele.CACH_UploadFiles" Multiple="@def.Multiupload" OnRemove="OnRemove" ID="@(ele.ID.ToString())"></UploadComponent>
+                                                    </div>
+                                                    <div class="application-upload-container-error font-normal">
+                                                        @if (!string.IsNullOrEmpty(def.Description) && ele.ERROR_CODE != null)
+                                                        {
+                                                            @TextProvider.Get(ele.ERROR_CODE).Replace("{0}", def.Description)
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </Anchor>
+                            }
+                            @if (!IsValid)
+                            {
+                                <div class="element-separator"></div>
+                                <div class="container-error">
+                                    @TextProvider.Get("FORM_MANTAINANCE_ERROR")
+                                </div>
+                                <div class="element-separator"></div>
+                            }
+                            <div class="form-application-footer">
+                                <div class="btn btn-primary" @onclick="Commit">@TextProvider.Get("FORM_MANTAINANCE_COMMIT_BUTTON")</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>     
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

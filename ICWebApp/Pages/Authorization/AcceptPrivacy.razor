@@ -1,0 +1,32 @@
+@page "/AcceptRegistrationPrivacy/{UserId}"
+
+<div class="privacy-box">
+    @if(Privacy != null)
+    {
+        var text = (MarkupString)(Privacy.Description);
+
+        <TelerikSwitch @bind-Value="_privacyAccepted" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+
+        <label>@text</label>
+        <div class="extra-small-element-separator"></div>
+    }
+    <TelerikSwitch @bind-Value="_privacyMuniciplityAccepted" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+    @{
+        var textmun = new MarkupString(TextProvider.Get("REG_PRIVACY_MARKUP_COMUNIX"));
+    }
+    <label>@textmun</label>
+    <div class="extra-small-element-separator"></div>
+    <TelerikSwitch @bind-Value="_privacyCommunicationsAccepted" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+    @{
+        var textCom = new MarkupString(TextProvider.Get("REG_PRIVACY_MARKUP_COMMUNICATION"));
+    }
+    <label>@textCom</label>
+    <div class="extra-small-element-separator"></div>
+    @if (_displayPrivacyNotAcceptedError)
+    {
+        <div class="extra-small-element-separator"></div>
+        <label style="color:red;">@TextProvider.Get("PRIVACY_BOOL_ERROR")</label>
+    }
+    <div class="element-separator"></div>
+    <button class="btn btn-primary" type="button" @onclick="Submit">@TextProvider.GetOrCreate("PRIVACY_ACCEPT")</button>
+</div>

@@ -1,0 +1,86 @@
+.booking-container[b-arc5b1a0v0]
+{
+    position: relative;
+}
+
+.booking-error-item[b-arc5b1a0v0] {
+    color: #dc3545;
+}
+.booking-action-container[b-arc5b1a0v0]{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.element-checkbox[b-arc5b1a0v0]{
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+.room-bookable-options-container[b-arc5b1a0v0]{
+    margin-left: 25px;
+}
+
+.container-error[b-arc5b1a0v0] {
+    color: #dc3545;
+}
+.room-price-title[b-arc5b1a0v0]{
+    display: flex;
+    gap: 50px;
+    justify-content: flex-start;
+}
+.room-price-item[b-arc5b1a0v0] {
+    display: flex;
+    gap: 50px;
+    justify-content: flex-start;
+    margin-left: 20px;
+    color: #808080;
+}
+.room-title[b-arc5b1a0v0], .room-sub-date[b-arc5b1a0v0] {
+    flex: 1;
+}
+.room-value[b-arc5b1a0v0], .room-sub-value[b-arc5b1a0v0]{
+    width: 100px;
+    text-align: end;
+}
+.room-sub-value[b-arc5b1a0v0]{
+}
+.room-building-subcontainer[b-arc5b1a0v0]{
+    margin-left: 25px;
+}
+.room-building-title[b-arc5b1a0v0] {
+    display: flex;
+    gap: 50px;
+    justify-content: flex-start;
+}
+    .room-building-title .room-title[b-arc5b1a0v0] {
+        flex: 1;
+    }
+    .room-building-title .room-value[b-arc5b1a0v0]{
+        font-weight: bold;
+    }
+
+.sum-container[b-arc5b1a0v0] {
+    border-top: 1px solid #d9d9d9;
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+.room-price-later-detail[b-arc5b1a0v0] {
+    color: #808080;
+    flex: 1;
+}
+.booking-payment-container[b-arc5b1a0v0]{
+    display: flex; 
+    gap: 30px;
+    justify-content: space-between;
+}
+.booking-option-container[b-arc5b1a0v0]{
+    flex: 1;
+}
+
+.booking-payment-sub-container[b-arc5b1a0v0] {
+    width: 48%;
+}

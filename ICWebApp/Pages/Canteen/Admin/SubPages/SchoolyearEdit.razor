@@ -1,0 +1,104 @@
+﻿@page "/Canteen/Admin/Schoolyear/Add/{ID}"
+@layout MainLayout
+
+@if (Data != null)
+{  
+    <TelerikWindow Modal="true" @bind-Visible="@ShowPeriodWindow" Width="600px">
+        <WindowTitle>
+            @TextProvider.Get("MAINMENU_BACKEND_CANTEEN_SCHOOLYEAR_PERIOD_TITLE")
+        </WindowTitle>
+        <WindowContent>
+            <div>
+                @if(PeriodToEdit != null)
+                {
+                    <EditForm Model="@PeriodToEdit" OnValidSubmit="@SavePeriod" Context="editContext">
+                        <DataAnnotationsValidator></DataAnnotationsValidator>
+                        <div class="movement-detail-container">
+                            <div class="form-group form-group-small">
+                                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_SCHOOLYEAR_REGISTER_FROM_DATE")</label>
+                                <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="@PeriodToEdit.BeginDate" class="form-control"></TelerikDatePicker>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="form-group form-group-small">
+                                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_SCHOOLYEAR_REGISTER_TO_DATE")</label>
+                                <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="@PeriodToEdit.EndDate" class="form-control"></TelerikDatePicker>
+                            </div>
+                        </div>
+                        <div class="segment-button-toolbar">
+                            <div class="btn btn-secondary" type="button" @onclick="@HidePeriodWindow">@TextProvider.Get("BUTTON_CANCEL")</div>
+                            <button class="btn btn-primary" type="submit">@TextProvider.Get("BUTTON_SAVE")</button>
+                        </div>
+                    </EditForm>
+                }
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HidePeriodWindow" />
+        </WindowActions>
+    </TelerikWindow>
+
+    <div class="element-separator"></div>
+    <div class="segment-container custom-background-default">
+        <EditForm Model="@Data">
+            <DataAnnotationsValidator />
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_SCHOOLYEAR_TITLE_GENERAL")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_SCHOOLYEAR")</label>
+                @if(YearList != null && YearList.Any())
+                {
+                    <TelerikDropDownList Data="@YearList" TextField="Text" ValueField="Value" @bind-Value="@Data.DisplayText" Class="form-control" Context="dropdownContext" OnChange="@(() => SetStartEndDate(Data))">
+                    </TelerikDropDownList>
+                }
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_SCHOOLYEAR_FROM_DATE")</label>
+                <TelerikDateTimePicker Format="dd.MM.yyyy" @bind-Value="Data.BeginDate" class="form-control"></TelerikDateTimePicker>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_SCHOOLYEAR_TO_DATE")</label>
+                <TelerikDateTimePicker Format="dd.MM.yyyy" Min="DateTime.Now" @bind-Value="Data.EndDate" class="form-control"></TelerikDateTimePicker>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_SCHOOLYEAR_PERIOD_TITLE")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>            
+            <div class="form-group form-group-small">
+                <TelerikGrid Data="@Periods" Pageable="false" Sortable="false" Resizable="false"
+                         EditMode="@GridEditMode.Popup"
+                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                    <GridToolBarTemplate>
+                        <GridCommandButton Command="MyAddCommand" OnClick="@AddPeriod" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                    </GridToolBarTemplate>
+                    <GridColumns>
+                        <GridColumn Field="@nameof(CANTEEN_Schoolyear_RegistrationPeriods.BeginDate)" Title="@TextProvider.Get("CANTEEN_SCHOOLYEAR_REGISTER_FROM_DATE")" DisplayFormat="{0:ddd, dd.MM.yyyy}" Width="auto"></GridColumn>
+                        <GridColumn Field="@nameof(CANTEEN_Schoolyear_RegistrationPeriods.EndDate)" Title="@TextProvider.Get("CANTEEN_SCHOOLYEAR_REGISTER_TO_DATE")" DisplayFormat="{0:ddd, dd.MM.yyyy}" Width="auto"></GridColumn>       
+                        <GridCommandColumn Width="160px" Context="periodContext" Title="@TextProvider.Get("ACTIONS")">
+                            @{
+                                CANTEEN_Schoolyear_RegistrationPeriods item = periodContext as CANTEEN_Schoolyear_RegistrationPeriods;
+
+                                if (item != null)
+                                {
+                                    <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditPeriod(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                    <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => RemovePeriod(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                    
+                                }
+                            }
+                        </GridCommandColumn>
+                    </GridColumns>
+                </TelerikGrid>
+            </div>
+
+            <div class="segment-button-toolbar form-group-small">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                OnClick="@SaveForm">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

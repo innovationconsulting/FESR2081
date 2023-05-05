@@ -1,0 +1,73 @@
+﻿@page "/Backend/User/RegistrationAdminDashboard"
+
+@layout MainLayout
+
+<div class="segment-container custom-background-default">
+    <div class="small-element-separator"></div>
+    <div class="segment-separator custom-border-primary"></div>
+    <div class="small-element-separator"></div>
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikGrid Data="@Data" Pageable="true" Sortable="true" Resizable="false"  PageSize="20"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+            <GridToolBarTemplate>
+                <GridSearchBox DebounceDelay="200"></GridSearchBox>
+            </GridToolBarTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(V_AUTH_Citizens.InternalName)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_MUNICIPALITY")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Citizens.Firstname)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_FIRSTNAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Citizens.Lastname)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_LASTNAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Citizens.Email)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_EMAIL")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Citizens.PhoneNumber)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_PHONE")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Citizens.LastLoginTimeStamp)" Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_LASTLOGIN")" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Width="200px"></GridColumn>
+                <GridCommandColumn Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_EMAILCONFIRMED")">
+                    @{
+                        V_AUTH_Citizens item = context as V_AUTH_Citizens;
+
+                        if (item != null && item.EmailConfirmed == true)
+                        {
+                            <div>@TextProvider.Get("YES")</div>
+                        }
+                        else
+                        {
+
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => ConfirmEmail(item))" Icon="SvgIcon.CheckOutline" title="@TextProvider.Get("TOOLTIP_ENABLE")">@TextProvider.Get("ENABLE")</GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+                <GridCommandColumn Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_PHONECONFIRMED")">
+                    @{
+                        V_AUTH_Citizens item = context as V_AUTH_Citizens;
+
+                        if (item != null && item.PhoneNumberConfirmed == true)
+                        {
+                            <div>@TextProvider.Get("YES")</div>
+                        }
+                        else
+                        {
+
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => ConfirmPhone(item))" Icon="SvgIcon.CheckOutline" title="@TextProvider.Get("TOOLTIP_ENABLE")">@TextProvider.Get("ENABLE")</GridCommandButton>
+                            //<GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => ResendSMS(item))" Icon="envelop" title="@TextProvider.Get("TOOLTIP_RESEND_SMS")">@TextProvider.Get("RESEND_SMS")</GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+                <GridCommandColumn  Title="@TextProvider.Get("BACKEND_USER_MANAGEMENT_TABLE_VERIFFCONFIRMED")">
+                    @{
+                        V_AUTH_Citizens item = context as V_AUTH_Citizens;
+
+                        if (item != null && item.VeriffConfirmed == true)
+                        {
+                            <div>@TextProvider.Get("YES")</div>
+                        }
+                        else
+                        {
+                            <div>@TextProvider.Get("NO")</div>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>

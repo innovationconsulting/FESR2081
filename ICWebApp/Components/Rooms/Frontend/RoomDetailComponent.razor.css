@@ -1,0 +1,98 @@
+﻿.galerie-container
+{
+    max-width: 1080px;
+    max-height: 500px;
+}
+.property-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.property-value {
+    width: 30px;
+    text-align: end;
+    line-height: 24px;
+}
+
+.property-container i {
+    line-height: 25px;
+    width: 25px;
+    color: #808080;
+    text-align: center;
+}
+.property-text {
+    line-height: 24px;
+}
+
+.seating-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+    flex-wrap: wrap;
+    max-width: 600px;
+}
+
+.seating-item img {
+    height: 32px;
+}
+
+.seating-item {
+    text-align: center;
+}
+
+.room-options ul {
+    padding-left: 20px;
+}
+.room-options li{
+    margin-bottom: 10px;
+}
+.item-name b{
+    margin-right: 10px;
+}
+.price-table {
+    width: 100%;
+}
+
+.price-header {
+    background-color: #0F7173;
+    color: white !important;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    border: 0px;
+}
+
+.price-row:first-of-type {
+    border-bottom: 15px solid white;
+}
+
+.price-cell {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.price-row-header {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.contact-item{
+    margin-bottom: 20px;
+}
+.contact-type, .contact-email, .contact-phone {
+    /*color: #808080;*/
+}
+.contact-name{
+    font-weight: bold;
+}
+h3 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,366 @@
+﻿@page "/Tasks/Admin/Dashboard/{ContextID}"
+
+@layout MainLayout
+
+@if (ContextList != null && ContextList.Count() > 0)
+{
+    <div class="element-separator"></div>
+    <div class="segment-container">
+    <div class="segment-left">
+        <h5 class="custom-color-primary">@TextProvider.Get("TASK_SETTINGS_CONTEXT")</h5>
+        <div class="element-separator"></div>
+        <div class="context-container">
+            @foreach (var context in ContextList.OrderBy(p => p.SortOrder))
+            {
+                @if (context != null)
+                {
+                    string buttonCSS = "btn-secondary";
+
+                    if (CurrentContext != null && CurrentContext.ID == context.ID)
+                    {
+                        buttonCSS = "btn-primary";
+                    }
+
+                    <div class="btn @buttonCSS authority-tag" @onclick="@(() => OnContextChange(context))" @onclick:stopPropagation="true">
+                        <span>
+                            @context.Text
+                        </span>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="segment-right form-wizard">
+    <TelerikWizard @bind-Value="@CurrentTab" ShowPager="false">
+    <WizardSteps>
+    <WizardStep Label="@TextProvider.Get("TASKS_SETTINGS_STATUS")" OnChange="OnStepChanged" Icon="@("fa-regular fa-bars-progress")">
+        <Content>
+            <div class="wizard-content-container">
+                <CustomLoader Visible="IsBusy"></CustomLoader>
+                <button class="btn btn-secondary" @onclick="AddStatus">@(TextProvider.Get("ADD"))</button>
+                <div class="small-element-separator"></div>
+                <div class="status-element-container">
+                    @if (StatusList != null && RefreshIconsVisible)
+                    {
+                        <Virtualize Items="StatusList.OrderBy(p => p.SortOrder).ToList()" Context="item" OverscanCount="10">
+                            @if (item != null)
+                            {
+                                <div class="status-container">
+                                    <div class="status-container-left">
+                                        <div class="status-icon">
+                                            <TelerikIcon Icon="@item.Icon"></TelerikIcon>
+                                        </div>
+                                    </div>
+                                    <div class="status-container-middle">
+                                        <div class="desc-container-top-row custom-color-primary">
+                                            <h5>@item.Description</h5>
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                        <div class="desc-container-lower-row">
+                                            <div class="lower-item-left">
+                                                <div class="font-normal">@TextProvider.Get("TASKS_SETTINGS_ENABLED")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.Enabled" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => StatusEnabledChanged(item))"></TelerikSwitch>
+                                            </div>
+                                            <div class="lower-item-right">
+                                                <div class="font-normal"> @TextProvider.Get("TASKS_SETTINGS_COMPLETETASK")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.CompleteTask" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => StatusCompleteTaskChanged(item))"></TelerikSwitch>
+                                            </div>
+                                            <div class="lower-item-right">
+                                                <div class="font-normal"> @TextProvider.Get("TASKS_SETTINGS_DEFAULT")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.Default" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => StatusDefaultChanged(item))"></TelerikSwitch>
+                                            </div>
+                                            <div class="lower-item-right">
+                                                <div class="font-normal"> @TextProvider.Get("TASKS_SETTINGS_DEFAULTCOMPLETETASK")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.DefaultCompleteTask" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => StatusDefaultCompleteTaskChanged(item))"></TelerikSwitch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="status-container-right">
+                                        <div class="button-container">
+                                            <div class="table-sorter-buttons">
+                                                @if (item.SortOrder != StatusList.Min(p => p.SortOrder))
+                                                {
+                                                    <button class="btn btn-secondary" @onclick="@(() => MoveUpStatus(item))">
+                                                        <TelerikIcon Icon="SvgIcon.ChevronUp"></TelerikIcon>
+                                                    </button>
+                                                }
+                                                @if (item.SortOrder != StatusList.Max(p => p.SortOrder))
+                                                {
+                                                    <button class="btn btn-secondary" @onclick="@(() => MoveDownStatus(item))">
+                                                        <TelerikIcon Icon="SvgIcon.ChevronDown"></TelerikIcon>
+                                                    </button>
+                                                }
+                                            </div>
+                                            <button class="btn btn-secondary" @onclick="@(() => EditStatus(item))" title="@TextProvider.Get("TOOLTIP_EDIT")">
+                                                <TelerikIcon Icon="SvgIcon.Pencil"></TelerikIcon>
+                                            </button>
+                                            <button class="btn btn-secondary" @onclick="@(() => DeleteStatus(item))" title="@TextProvider.Get("TOOLTIP_DELETE")">
+                                                <TelerikIcon Icon="SvgIcon.Trash"></TelerikIcon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </Virtualize>
+                    }
+                </div>
+            </div>
+        </Content>
+    </WizardStep>
+    <WizardStep Label="@TextProvider.Get("TASKS_SETTINGS_PRIORITY")" OnChange="OnStepChanged" Icon="@("fa-regular fa-triangle-exclamation")">
+        <Content>
+            <div class="wizard-content-container">
+                <CustomLoader Visible="IsBusy"></CustomLoader>
+                <button class="btn btn-secondary" @onclick="AddPriority">@(TextProvider.Get("ADD"))</button>
+                <div class="small-element-separator"></div>
+                <div class="status-element-container">
+                    @if (PriorityList != null && RefreshIconsVisible)
+                    {
+                        <Virtualize Items="PriorityList.OrderBy(p => p.SortOrder).ToList()" Context="item" OverscanCount="10">
+                            @if (item != null)
+                            {
+                                <div class="status-container">
+                                    <div class="status-container-left">
+                                        <div class="status-icon">
+                                            <TelerikIcon Icon="@item.Icon"></TelerikIcon>
+                                        </div>
+                                    </div>
+                                    <div class="status-container-middle">
+                                        <div class="desc-container-top-row custom-color-primary">
+                                            <h5>@item.Description</h5>
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                        <div class="desc-container-lower-row">
+                                            <div class="lower-item-left">
+                                                <div class="font-normal">@TextProvider.Get("TASKS_SETTINGS_ENABLED")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.Enabled" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => PriorityEnabledChanged(item))"></TelerikSwitch>
+                                            </div>
+                                            <div class="lower-item-right">
+                                                <div class="font-normal">@TextProvider.Get("TASKS_SETTINGS_DEFAULT")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.Default" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => PriorityDefaultChanged(item))"></TelerikSwitch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="status-container-right">
+                                        <div class="button-container">
+                                            <div class="table-sorter-buttons">
+                                                @if (item.SortOrder != PriorityList.Min(p => p.SortOrder))
+                                                {
+                                                    <button class="btn btn-secondary" @onclick="@(() => MoveUpPriority(item))">
+                                                        <TelerikIcon Icon="SvgIcon.ChevronUp"></TelerikIcon>
+                                                    </button>
+                                                }
+                                                @if (item.SortOrder != PriorityList.Max(p => p.SortOrder))
+                                                {
+                                                    <button class="btn btn-secondary" @onclick="@(() => MoveDownPriority(item))">
+                                                        <TelerikIcon Icon="SvgIcon.ChevronDown"></TelerikIcon>
+                                                    </button>
+                                                }
+                                            </div>
+                                            <button class="btn btn-secondary" @onclick="@(() => EditPriority(item))" title="@TextProvider.Get("TOOLTIP_EDIT")">
+                                                <TelerikIcon Icon="SvgIcon.Pencil"></TelerikIcon>
+                                            </button>
+                                            <button class="btn btn-secondary" @onclick="@(() => DeletePriority(item))" title="@TextProvider.Get("TOOLTIP_DELETE")">
+                                                <TelerikIcon Icon="SvgIcon.Trash"></TelerikIcon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </Virtualize>
+                    }
+                </div>
+            </div>
+        </Content>
+    </WizardStep>
+    <WizardStep Label="@TextProvider.Get("TASKS_SETTINGS_TAG")" OnChange="OnStepChanged" Icon="@("fa-regular fa-tag")">
+        <Content>
+            <div class="wizard-content-container">
+                <CustomLoader Visible="IsBusy"></CustomLoader>
+                <button class="btn btn-secondary" @onclick="AddTag">@(TextProvider.Get("ADD"))</button>
+                <div class="small-element-separator"></div>
+                <div class="status-element-container">
+                    @if (TagList != null && RefreshIconsVisible)
+                    {
+                        <Virtualize Items="TagList.OrderBy(p => p.SortOrder).ToList()" Context="item" OverscanCount="10">
+                            @if (item != null)
+                            {
+                                <div class="status-container">
+                                    <div class="status-container-left">
+                                        <div class="tag-color-span" style="background-color: @(item.Color + "aa") !important; border-color: @(item.Color) !important"></div>
+                                    </div>
+                                    <div class="status-container-middle">
+                                        <div class="desc-container-top-row custom-color-primary">
+                                            <h5>@item.Description</h5>
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                        <div class="desc-container-lower-row">
+                                            <div class="lower-item-left">
+                                                <div class="font-normal">@TextProvider.Get("TASKS_SETTINGS_ENABLED")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.Enabled" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => TagEnabledChanged(item))"></TelerikSwitch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="status-container-right">
+                                        <div class="button-container">
+                                            <div class="table-sorter-buttons">
+                                                @if (item.SortOrder != TagList.Min(p => p.SortOrder))
+                                                {
+                                                    <button class="btn btn-secondary" @onclick="@(() => MoveUpTag(item))">
+                                                        <TelerikIcon Icon="SvgIcon.ChevronUp"></TelerikIcon>
+                                                    </button>
+                                                }
+                                                @if (item.SortOrder != TagList.Max(p => p.SortOrder))
+                                                {
+                                                    <button class="btn btn-secondary" @onclick="@(() => MoveDownTag(item))">
+                                                        <TelerikIcon Icon="SvgIcon.ChevronDown"></TelerikIcon>
+                                                    </button>
+                                                }
+                                            </div>
+                                            <button class="btn btn-secondary" @onclick="@(() => EditTag(item))" title="@TextProvider.Get("TOOLTIP_EDIT")">
+                                                <TelerikIcon Icon="SvgIcon.Pencil"></TelerikIcon>
+                                            </button>
+                                            <button class="btn btn-secondary" @onclick="@(() => DeleteTag(item))" title="@TextProvider.Get("TOOLTIP_DELETE")">
+                                                <TelerikIcon Icon="SvgIcon.Trash"></TelerikIcon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </Virtualize>
+                    }
+                </div>
+            </div>
+        </Content>
+    </WizardStep>
+    <WizardStep Label="@TextProvider.Get("TASKS_SETTINGS_BUCKETS")" OnChange="OnStepChanged" Icon="@("fa-regular fa-bucket")">
+        <Content>
+            <div class="wizard-content-container">
+                <CustomLoader Visible="IsBusy"></CustomLoader>
+                <button class="btn btn-secondary" @onclick="AddBucket">@(TextProvider.Get("ADD"))</button>
+                <div class="small-element-separator"></div>
+                <div class="status-element-container">
+                    @if (BucketList != null && RefreshIconsVisible)
+                    {
+                        <Virtualize Items="BucketList.OrderBy(p => p.SortOrder).ToList()" Context="item" OverscanCount="10">
+                            @if (item != null)
+                            {
+                                <div class="status-container">
+                                    <div class="status-container-left">
+                                        <div class="status-icon">
+                                            <TelerikIcon Icon="@item.Icon"></TelerikIcon>
+                                        </div>
+                                    </div>
+                                    <div class="status-container-middle">
+                                        <div class="desc-container-top-row custom-color-primary">
+                                            <h5>@item.Description</h5>
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                        <div class="desc-container-lower-row">
+                                            <div class="lower-item-left">
+                                                <div class="font-normal">@TextProvider.Get("TASKS_SETTINGS_ENABLED")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.Enabled" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => BucketEnabledChanged(item))"></TelerikSwitch>
+                                            </div>
+                                            <div class="lower-item-right">
+                                                <div class="font-normal">@TextProvider.Get("TASKS_SETTINGS_DEFAULT")</div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikSwitch @bind-Value="item.Default" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" OnChange="@(() => BucketDefaultChanged(item))"></TelerikSwitch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="status-container-right">
+                                        <div class="button-container">
+                                            <div class="table-sorter-buttons">
+                                                @if (item.SortOrder != BucketList.Min(p => p.SortOrder))
+                                                {
+                                                    <button class="btn btn-secondary" @onclick="@(() => MoveUpBucket(item))">
+                                                        <TelerikIcon Icon="SvgIcon.ChevronUp"></TelerikIcon>
+                                                    </button>
+                                                }
+                                                @if (item.SortOrder != BucketList.Max(p => p.SortOrder))
+                                                {
+                                                    <button class="btn btn-secondary" @onclick="@(() => MoveDownBucket(item))">
+                                                        <TelerikIcon Icon="SvgIcon.ChevronDown"></TelerikIcon>
+                                                    </button>
+                                                }
+                                            </div>
+                                            <button class="btn btn-secondary" @onclick="@(() => EditBucket(item))" title="@TextProvider.Get("TOOLTIP_EDIT")">
+                                                <TelerikIcon Icon="SvgIcon.Pencil"></TelerikIcon>
+                                            </button>
+                                            <button class="btn btn-secondary" @onclick="@(() => DeleteBucket(item))" title="@TextProvider.Get("TOOLTIP_DELETE")">
+                                                <TelerikIcon Icon="SvgIcon.Trash"></TelerikIcon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </Virtualize>
+                    }
+                </div>
+            </div>
+        </Content>
+    </WizardStep>
+    </WizardSteps>
+    <WizardButtons>
+    </WizardButtons>
+    <WizardSettings>
+        <WizardStepperSettings Linear="false"/>
+    </WizardSettings>
+    </TelerikWizard>
+    </div>
+    </div>
+
+
+    <TelerikWindow Modal="true" @bind-Visible="@ShowStatusWindow" Width="600px">
+        <WindowTitle>
+            @TextProvider.Get("TASKS_STATUS_WINDOW")
+        </WindowTitle>
+        <WindowContent>
+            <ICWebApp.Components.Tasks.Status.Edit Status="@Status" StatusExtended="@StatusExtended" Saved="SaveStatus"
+                                                   Cancelled="CloseStatus" ContextList="ContextList" IsEdit="StatusWindowEdit">
+
+            </ICWebApp.Components.Tasks.Status.Edit>
+        </WindowContent>
+    </TelerikWindow>
+    <TelerikWindow Modal="true" @bind-Visible="@ShowPriorityWindow" Width="600px">
+        <WindowTitle>
+            @TextProvider.Get("TASKS_PRIORITY_WINDOW")
+        </WindowTitle>
+        <WindowContent>
+            <ICWebApp.Components.Tasks.Priority.Edit Priority="@Priority" PriorityExtended="@PriorityExtended"
+                                                     Saved="SavePriority" Cancelled="ClosePriority" ContextList="ContextList" IsEdit="PrioWindowEdit">
+                
+            </ICWebApp.Components.Tasks.Priority.Edit>
+        </WindowContent>
+    </TelerikWindow>
+    <TelerikWindow Modal="true" @bind-Visible="@ShowBucketWindow" Width="600px">
+        <WindowTitle>
+            @TextProvider.Get("TASKS_BUCKET_WINDOW")
+        </WindowTitle>
+        <WindowContent>
+            <ICWebApp.Components.Tasks.Bucket.Edit Bucket="@Bucket" BucketExtended="@BucketExtended"
+                                                   Saved="SaveBucket" Cancelled="CloseBucket" ContextList="ContextList" IsEdit="BucketWindowEdit">
+                
+            </ICWebApp.Components.Tasks.Bucket.Edit>
+        </WindowContent>
+    </TelerikWindow>
+    <TelerikWindow Modal="true" @bind-Visible="@ShowTagWindow" Width="600px">
+        <WindowTitle>
+            @TextProvider.Get("TASKS_TAG_WINDOW")
+        </WindowTitle>
+        <WindowContent>
+            <ICWebApp.Components.Tasks.Tag.Edit Tag="@Tag" TagExtended="@TagExtended" Saved="SaveTag" Cancelled="CloseTag"
+                                                ContextList="ContextList" IsEdit="TagWindowEdit">
+                
+            </ICWebApp.Components.Tasks.Tag.Edit>
+        </WindowContent>
+    </TelerikWindow>
+}

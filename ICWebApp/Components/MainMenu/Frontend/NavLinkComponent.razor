@@ -1,0 +1,13 @@
+﻿@if (MenuItem != null)
+{
+        string aktiveCSS = "";
+
+        if (MenuItem.Url != null && NavManager.Uri.EndsWith(MenuItem.Url))
+        {
+            aktiveCSS = "nav-item-frontend-active";
+        }
+
+        <a class="nav-link @aktiveCSS" data-element="management" @onclick="@(() => NavigateTo(MenuItem.Url))">
+            <span class="@Class">@TextProvider.Get(MenuItem.TEXT_SystemTextsCode)</span>
+        </a>    
+}

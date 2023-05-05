@@ -1,0 +1,21 @@
+﻿@page "/LoginError/{ErrorCode}"
+
+@layout FrontendLayout
+
+@if(!string.IsNullOrEmpty(ErrorCode))
+{
+    <div class="error-container">        
+        <div class="h3 custom-color-primary">
+            @TextProvider.Get("LOGIN_ERROR_TITLE")
+        </div>
+        <div class="element-separator"></div>
+        <div class="spid-error-container">
+            @TextProvider.Get(ErrorCode)
+        </div>    
+    </div>
+}
+
+<div class="element-separator"></div>
+<div class="back-to-login-container">
+    <button class="btn btn-primary" @onclick="BackToLogin">@TextProvider.Get("BUTTON_BACK_TO_LOGIN")</button>
+</div>

@@ -1,0 +1,7 @@
+﻿.sidebar-container
+{
+    top: 20px;
+}
+.sticky-top {
+    z-index: 1 !important;
+}

@@ -1,0 +1,224 @@
+﻿@if (Model != null && Type != null && FormBuilderHelper != null && FormBuilderHelper.CurrentLanguage != null)
+{
+    var context = "#" + Model.ID.ToString();
+    string value = Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name;
+
+    @if (!string.IsNullOrEmpty(value))
+    {
+        if (value.Length > 30)
+        {
+            value = value.Substring(0, 30);
+        }
+    }
+    else
+    {
+        value = Model.DatabaseName;
+    }
+
+    <SfContextMenu Target="@context" TValue="MenuItem">
+        <MenuItems>
+            <MenuItem Text="@value" Disabled="true"></MenuItem>
+            <MenuItem Separator="true"></MenuItem>
+            <MenuItem Id="edit" Disabled="@(!Type.IsEditable)" Text="@FormBuilderHelper.Edit" IconCss="fa-regular fa-pen"></MenuItem>
+            <MenuItem Id="delete" Text="@FormBuilderHelper.Delete" IconCss="fa-regular fa-trash-can"></MenuItem>
+        </MenuItems>
+        <MenuEvents TValue="MenuItem" ItemSelected="SelectedHandler"></MenuEvents>
+    </SfContextMenu>
+
+    <div class="element-container" >
+        <div class="element-content" onclick="event.stopPropagation(); BuilderElementJumpToView('@(Model.ID)')">
+            <div class="element-fieldname">
+                <div class="element-first-row">
+                    <div class="element-left">
+                        @if (Type.ID == FORMElements.Textbox)  
+                        {
+                            @if (!string.IsNullOrEmpty(Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name))
+                            {
+                                <label class="font-detail">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name</label>
+                                <div class="font-normal">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name</div>
+                            }
+                        }
+                        else if (Type.ID == FORMElements.Textarea)    //TEXTAREA
+                        {
+                            @if (!string.IsNullOrEmpty(Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name))
+                            {
+                                <label class="font-detail">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name</label>
+                                <div class="font-normal">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name</div>
+                            }
+                        }
+                        else if (Type.ID == FORMElements.Title) //TITLE
+                        {
+                            <label class="font-detail">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name</label>
+                            <h3 class="custom-color-primary">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name</h3>
+                        }
+                        else if (Type.ID == FORMElements.SubTitle) //SUBTITLE
+                        {
+                            
+                            <label class="font-detail">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name</label>
+                            <div class="font-bold custom-color-primary">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name</div>
+                        }
+                        else if (Type.ID == FORMElements.Spacer) //SPACER
+                        {
+                            <div class="segment-spacer"></div>
+                        }
+                        else if (Type.ID == FORMElements.SmallSpacer) //SMALL SPACER
+                        {
+                            <div class="small-segment-spacer"></div>
+                        }
+                        else if (Type.ID == FORMElements.Details) //DETAILS
+                        {
+                            
+                            <label class="font-detail">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name</label>
+                            <div class="font-extra-small">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name</div>
+                        }
+                        else if (Type.ID == FORMElements.Bullet) //BULLET
+                        {
+                            <label class="font-detail">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name</label>
+                            <div class="font-normal element-bullet">
+                                <div class="element-bullet-icon">
+                                    <TelerikIcon Icon="SvgIcon.Circle"></TelerikIcon>
+                                </div>
+                                <div class="element-bullet-text font-normal">
+                                    @Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name
+                                </div>
+                            </div>
+                        }
+                        else //ALL ROW TITLES
+                        {
+                            <label class="font-detail">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID != FormBuilderHelper.CurrentLanguage).Name</label>
+                            <div class="segment-label font-normal">@Model.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Name</div>
+                        }
+                    </div>
+                   <div class="element-right">
+                        @if (Model.FORM_Definition_Fields_SubType_ID != null && SubTypes != null && SubTypes.Count() > 0)
+                        {
+                            <div class="element-property">
+                                <label>
+                                    @FormBuilderHelper.FormElementType
+                                </label>
+                                <label>
+                                    @if (SubTypes.FirstOrDefault(p => p.ID == Model.FORM_Definition_Fields_SubType_ID) != null)
+                                    {
+                                        @SubTypes.FirstOrDefault(p => p.ID == Model.FORM_Definition_Fields_SubType_ID).Name
+                                    }
+                                </label>
+                            </div>
+                        }
+                        @if (Model.Required && Type.ReadOnly != true)
+                        {
+                            <div class="element-property">
+                                <label>@FormBuilderHelper.FormElementRequired</label>
+                            </div>
+                        }
+
+                        <div class="element-dbname">
+                            <label>@Model.DatabaseName</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="element-second-row">
+                    @if (Type.ID == FORMElements.Textbox)  
+                    {
+                        <input class="form-control" readonly disabled />
+                    }
+                    else if (Type.ID == FORMElements.Number)    //NUMBER
+                    {
+                        <input type="number" class="form-control" readonly disabled />
+                    }
+                    else if (Type.ID == FORMElements.Money)    //MONEY
+                    {
+                        <input type="number" class="form-control" readonly disabled />
+                    }
+                    else if (Type.ID == FORMElements.Datepicker)    //DATEPICKER
+                    {
+                        <input class="form-control" readonly disabled />
+                    }
+                    else if (Type.ID == FORMElements.Timepicker)    //TIMEPICKER
+                    {
+                        <input class="form-control" readonly disabled />
+                    }
+                    else if (Type.ID == FORMElements.Checkbox)    //CHECKBOX
+                    {                        
+                        <TelerikSwitch @bind-Value="DummyBool" OnLabel=" " OffLabel=" " Width="65px" Enabled="false"
+                                       Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small"></TelerikSwitch>
+                    }
+                    else if (Type.ID == FORMElements.Radiobutton)    //RADIO
+                    {
+                        var Data = Model.FORM_Definition_Field_Option;
+
+                        @foreach (var d in Data.Where(p => p.ToRemove == false).OrderBy(p => p.SortOrder))
+                        {
+                            @if (d.FORM_Definition_Field_Option_Extended != null && d.FORM_Definition_Field_Option_Extended.Count() > 0)
+                            {
+                                <div class="radio-element">
+                                    <input type="radio" readonly disabled />
+                                    <label>@d.FORM_Definition_Field_Option_Extended.FirstOrDefault(p => p.LANG_Languages_ID == FormBuilderHelper.CurrentLanguage).Description</label>
+                                </div>
+                            }
+                        }
+                    }
+                    else if (Type.ID == FORMElements.Dropdown)    //DROPDOWN
+                    {
+                        <input class="form-control" readonly disabled />
+                    }
+                    else if (Type.ID == FORMElements.List)     //LIST
+                    {
+                        <ListComponent Field="DummyList" ReadOnly="true"></ListComponent>
+                    }
+                    else if (Type.ID == FORMElements.Difference)     //DIFFERENCE
+                    {
+                        <input type="number" class="form-control" readonly disabled />
+                    }
+                    else if(Type.ID == FORMElements.Signature)
+                    {
+                        <div class="signature-container">
+                            <div class="signature-first-row">
+                                <div class="signature-detail font-detail">
+                                    @FormBuilderHelper.FormElementSignatureDetail
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if(Type.ID == FORMElements.FileUpload)
+                    {
+                        <div class="file-upload-container">
+                            <UploadComponent ReadOnly="true" SmallStyle="true" Multiple="@(Model.UploadMultiple ?? true)"></UploadComponent>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="element-toolbar">            
+            <div class="element-edit">
+                <div class="element-button" @onclick="@OnEdit" tabindex="-1">
+                    <i class="fa-regular fa-pen"></i>
+                </div>
+            </div>
+            <div class="element-sorter">
+                @if (Model.SortOrder != MinSort)
+                {
+                    <div class="layout-sorter-button sorter-up" @onclick="@(() => MoveUp(Model))" tabindex="-1">
+                        <i class="fa-sharp fa-solid fa-chevron-up"></i>
+                    </div>
+                }
+                else
+                {
+                    <div class="sorter-button sorter-up">
+                    </div>
+                }
+                @if (Model.SortOrder != MaxSort)
+                {
+                    <div class="layout-sorter-button sorter-down" @onclick="@(() => MoveDown(Model))" tabindex="-1">
+                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                    </div>
+                }
+                else
+                {
+                    <div class="sorter-button sorter-down">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

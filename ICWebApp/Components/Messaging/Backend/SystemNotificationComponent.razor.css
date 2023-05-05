@@ -1,0 +1,109 @@
+﻿.notification-popup-menu {
+    z-index: 998;
+    position: absolute;
+    border-radius: 3px;
+    padding: 1rem;
+    background-color: rgb(246, 245, 244);
+    color: #27426D;
+    width: 350px;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 5px;
+    bottom: 185px;
+    left: 70px;
+    padding-top: 25px;
+}
+
+    .notification-popup-menu::after {
+        content: "";
+        position: absolute;
+        bottom: 20px;
+        left: 0%;
+        margin-top: -10px;
+        margin-left: -10px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent gray transparent transparent;
+    }
+
+.notification-button .notification-icon {
+    font-size: 30px;
+}
+
+.system-notification-popupwindow {
+    color: white;
+    padding: unset;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
+    border-radius: 3px;
+}
+
+    .system-notification-popupwindow.ntf_error {
+        background-color: #C22B19;
+    }
+
+        .system-notification-popupwindow.ntf_error::after {
+            border-color: transparent #C22B19 transparent transparent;
+        }
+
+    .system-notification-popupwindow.ntf_warning {
+        background-color: #EF5102;
+    }
+
+        .system-notification-popupwindow.ntf_warning::after {
+            border-color: transparent #EF5102 transparent transparent;
+        }
+
+    .system-notification-popupwindow.ntf_information {
+        background-color: #f1f1f1;
+        color: black;
+    }
+
+    .system-notification-popupwindow.ntf_success {
+        background-color: #159924;
+    }
+
+        .system-notification-popupwindow.ntf_success::after {
+            border-color: transparent #159924 transparent transparent;
+        }
+
+.system-notification-container {
+    position: relative;
+    padding: 10px 15px;
+    border-radius: 3px;
+    width: 100%;
+    min-width: 250px;
+    text-align: start;
+}
+
+.system-notification-close-button {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 30px;
+    width: 30px;
+    background-color: inherit;
+    border-radius: 3px;
+}
+
+    .system-notification-close-button:hover {
+        background-color: rgba(255,255,255,0.1);
+    }
+
+    .system-notification-btn {
+        display: block;
+        height: 30px;
+        width: 30px;
+        background-color: inherit !important;
+        border: 0px !important;
+        border-radius: 3px;
+        color: inherit;
+        line-height: 15px;
+    }
+
+.system-notification-title {
+    line-height: 1.555;
+    font-weight: bold;
+}
+
+.system-notification-text {
+    line-height: 1.555;
+}

@@ -1,0 +1,18 @@
+
+.link-button[b-4bnokfpprx] {
+    color: #0F7173;
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+    .link-button i[b-4bnokfpprx] {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .link-button:hover[b-4bnokfpprx] {
+        text-decoration: underline;
+        color: #1DA2AF;
+    }

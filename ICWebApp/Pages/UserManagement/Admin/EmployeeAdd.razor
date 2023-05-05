@@ -1,0 +1,158 @@
+﻿@page "/User/Management/Add/{ID}"
+
+@layout MainLayout
+
+@if (Data != null)
+{
+    <div class="segment-container custom-background-default">
+        <EditForm EditContext="@editContext" OnValidSubmit="HandleValidSubmit" autocomplete="none">
+            <DataAnnotationsValidator />
+            <div class="segment-title custom-color-primary">
+                @if (ID == "New")
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_USER_MANAGEMENT_TITLE_ADD")</h3>
+                }
+                else
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_USER_MANAGEMENT_TITLE_EDIT")</h3>
+                }
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="segment-separator custom-border-primary"></div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_USER_MANAGEMENT_GENERAL_DATA")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_FIRSTNAME")</label>
+                <InputText @bind-Value="Data.Firstname" class="form-control" autocomplete="none"></InputText>
+                <CustomValidationMessage For="@(() => Data.Firstname)" TextCode="BACKEND_USER_MANAGEMENT_FIRSTNAME" />
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_LASTNAME")</label>
+                <InputText @bind-Value="Data.Lastname" class="form-control" autocomplete="none"></InputText>
+                <CustomValidationMessage For="@(() => Data.Lastname)" TextCode="BACKEND_USER_MANAGEMENT_LASTNAME" />
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_PHONE")</label>
+                <CustomPhone @bind-Value="@Data.PhoneNumber"></CustomPhone>
+                <CustomValidationMessage For="@(() => Data.PhoneNumber)" TextCode="BACKEND_USER_MANAGEMENT_PHONE" />
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_USER_MANAGEMENT_USER_DATA")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_EMAIL")</label>
+                <InputText @bind-Value="valEmail" type="email" class="form-control" style="@validEmailCSS" autocomplete="none"></InputText>
+                <CustomValidationMessage For="@(() => Data.DA_Email)" TextCode="BACKEND_USER_MANAGEMENT_EMAIL" />
+                @if (!validEmail)
+                {
+                    <div style="color: red;">@MSGProvider.GetValidationMessage("VALIDATION_ALREADY_EXISTS_MAIL")</div>
+                }
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("REGISTRATION_PASSWORD")</label>
+                <CustomPassword @bind-Value="@Password"/>        
+                <CustomValidationMessage For="@(() => Data.Password)" TextCode="REGISTRATION_PASSWORD" />
+                @if(Data.Password != null &&  IsValidPassword == false)
+                {
+                    <div style="color: red">
+                        @TextProvider.Get("REGIISTRATION_PASSWORD_INVALID")
+                    </div>
+                }
+            </div>
+            @if (!string.IsNullOrEmpty(PasswordQuality))
+            {
+                <div class="password-quality-bar-background">
+                    <div class="password-quality-bar @PasswordQuality">@TextProvider.GetOrCreate(PasswordQuality)</div>
+                </div>
+            }
+            <div class="info-box">
+                @(TextProvider.Get("REGISTRATION_PASSWORD_INFORMATION"))
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("REGISTRATION_CONFIRM_PASSWORD")</label>
+                <CustomPassword @bind-Value="@Data.ConfirmPassword"/>        
+                <CustomValidationMessage For="@(() => Data.ConfirmPassword)" TextCode="REGISTRATION_CONFIRM_PASSWORD" />
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_DISABLE")</label>
+                <TelerikSwitch @bind-Value="Data.LockoutEnabled" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" 
+                                Class="list-item-switch"></TelerikSwitch>    
+            </div>   
+            @if (AuthProvider.HasUserRole(AuthRoles.Developer))  //DEVELOPER
+            { 
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group form-group-small">
+                    <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_MUNICIPALITY")</label>
+                    <TelerikDropDownList Data="@MunicipalityList" TextField="Name" ValueField="ID" @bind-Value="@Data.AUTH_Municipality_ID"></TelerikDropDownList>
+                    <CustomValidationMessage For="@(() => Data.AUTH_Municipality_ID)" TextCode="BACKEND_FORM_DEFINITION_AMT" />
+                </div>   
+            }
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_USER_MANAGEMENT_TITLE_IMAGE")</div>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <UploadComponent FileInfoList="ProfilePicture" Multiple="false" Accept=".jpg, .png" OnRemove="RemoveImage"></UploadComponent>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_USER_MANAGEMENT_TITLE_ROLES")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="edit-rights-container">                
+                <div class="right-item-container-header">
+                    <div class="right-description-header">@TextProvider.Get("BACKEND_USER_MANAGEMENT_ROLE_DESCRIPTION")</div>
+                    <div class="right-enabled-container-header">@TextProvider.Get("BACKEND_USER_MANAGEMENT_ROLE_ENABLED_DESC")</div>
+                    <div class="right-notif-enabled-container-header">@TextProvider.Get("BACKEND_USER_MANAGEMENT_ROLE_NOTIF_DESC")</div>
+                </div>  
+                @foreach(var auth in AuthorityList.OrderBy(p => p.SortOrder).ToList())
+                {
+                    var userAuth = UserAuthorities.FirstOrDefault(p => p.AUTH_Authority_ID == auth.ID);
+
+                    @if(userAuth != null)
+                    {
+                        <div class="right-item-container">
+                            <div class="right-description">@auth.Description</div>
+                            <div class="right-enabled-container" @onclick="@(() => DeleteAuthority(userAuth))">
+                                <TelerikSwitch @bind-Value="@auth.EnabledTrue" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch" Enabled="false"></TelerikSwitch>
+                            </div>
+                            <div class="right-notif-enabled-container">
+                                <TelerikSwitch @bind-Value="userAuth.EnableNotifications" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                            </div>
+                        </div>   
+                    }
+                    else
+                    {
+                        <div class="right-item-container">
+                            <div class="right-description">@auth.Description</div>
+                            <div class="right-enabled-container" @onclick="@(() => AddAuthority(auth))">
+                                <TelerikSwitch @bind-Value="@auth.EnabledFalse" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch" Enabled="false"></TelerikSwitch>
+                            </div>
+                            <div class="right-notif-enabled-container">
+                                <TelerikSwitch @bind-Value="@auth.EnabledFalse" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch" Enabled="false"></TelerikSwitch>
+                            </div>
+                        </div>   
+                    }
+                    <div class="extra-small-element-separator"></div>
+                }
+            </div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                OnClick="@BackToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                OnClick="@HandleValidSubmit">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

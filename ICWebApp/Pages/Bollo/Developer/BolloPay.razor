@@ -1,0 +1,19 @@
+﻿@page "/Bollo/ToPay"
+
+@layout MainLayout
+
+<div class="bollo-container">
+    <TelerikGrid Data="@BolloList.OrderByDescending(p => p.BolloCreationDate)" Pageable="true" PageSize="40" Sortable="true"
+                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" FilterMode="@GridFilterMode.FilterRow">
+        <GridToolBarTemplate>
+            <GridSearchBox DebounceDelay="200"></GridSearchBox>
+        </GridToolBarTemplate>
+        <GridColumns>
+            <GridColumn Field="@nameof(V_PAY_Bollo_To_Pay.FiscalNumber)" Title="Steuernummer"></GridColumn>
+            <GridColumn Field="@nameof(V_PAY_Bollo_To_Pay.UserName)" Title="Bürger"></GridColumn>
+            <GridColumn Field="@nameof(V_PAY_Bollo_To_Pay.BolloCreationDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="Erstellt Am"></GridColumn>
+            <GridColumn Field="@nameof(V_PAY_Bollo_To_Pay.BolloNumber)" Title="Nummer"></GridColumn>
+            <GridColumn Field="@nameof(V_PAY_Bollo_To_Pay.Amount)" DisplayFormat="{0:C}" Title="Betrag"></GridColumn>
+        </GridColumns>
+    </TelerikGrid>
+</div>

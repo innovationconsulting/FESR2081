@@ -1,0 +1,80 @@
+﻿@if(ResponsibleList != null && ResponsiblesToAdd != null)
+{
+    string ShowInputFieldCSS = "";
+
+    if (!ShowInputField)
+    {
+        ShowInputFieldCSS = "input-hidden";
+    }
+
+    <div class="tag-control-container @ShowInputFieldCSS">
+        @if(ShowInputField)
+        {
+            <div class="tag-list-container" @onclick="ToggleResponsibleDropdown" @onclick:stopPropagation="true">
+                @foreach(var item in ResponsibleList.OrderBy(p => p.SortDesc))
+                {
+                    var tag = AllResponsibles.FirstOrDefault(p => p.ID == item.AUTH_Users_ID);
+
+                    if (tag != null)
+                    {
+                        <div class="tag-item-container" @onclick="@(() => RemoveResponsible(tag))" @onclick:stopPropagation="true">
+                            <UserCard User="tag"></UserCard>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="tag-tool">
+                <div class="tag-button" @onclick="ToggleResponsibleDropdown" @onclick:stopPropagation="true">
+                    <i class="fa-regular fa-chevron-down"></i>
+                </div>
+            </div>
+        }
+        @if (ResponsibleDropdownVisibility || !ShowInputField)
+        {
+            <div class="tag-dropdown" id="responsible-dropdown">
+                <div class="searchbar-responsible-list">
+                    <div class="extra-small-element-separator"></div>
+                    <EditForm Model="@Search">
+                        <InputText @bind-Value="@Search.Text" class="form-control" placeholder="@TextProvider.Get("TASK_RESPONSIBLE_SEARCH_PLACEHOLDER")"></InputText>
+                    </EditForm>
+                    <div class="extra-small-element-separator"></div>
+                </div>
+                <div class="tag-dropdown-container">
+                    @if(ShowInputField)
+                    {
+                        <Virtualize Items="@ResponsiblesToAdd.Where(p => string.IsNullOrEmpty(Search.Text) || p.Fullname.ToLower().Contains(Search.Text.ToLower())).OrderBy(p => p.Lastname).ThenBy(p => p.Firstname).ToList()" Context="item" OverscanCount="3">
+                            <div class="tag-item-container" @onclick="@(() => AddResponsible(item))" @onclick:stopPropagation="true">
+                                <UserCard User="item"></UserCard>
+                            </div>
+                        </Virtualize>
+                    }
+                    else
+                    {
+                        <Virtualize Items="@AllResponsibles.Where(p => string.IsNullOrEmpty(Search.Text) || p.Fullname.ToLower().Contains(Search.Text.ToLower())).OrderBy(p => p.Lastname).ThenBy(p => p.Firstname).ToList()" Context="item" OverscanCount="3">
+                            @if (ResponsibleList.Select(p => p.AUTH_Users_ID).Contains(item.ID))
+                            {
+                                <div class="tag-item-container" @onclick="@(() => RemoveResponsible(item))" @onclick:stopPropagation="true">
+                                    <UserCard User="item"></UserCard>
+                                        <div class="tag-item-remove tag-item-remove-aktive">
+                                            <i class="fa-regular fa-user-slash"></i>
+                                        </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="tag-item-container" @onclick="@(() => AddResponsible(item))" @onclick:stopPropagation="true">
+                                    <UserCard User="item"></UserCard>
+                                </div>
+                            }
+                        </Virtualize>
+                    }
+                </div>
+            </div>
+            @if (!ShowInputField)
+            {
+                <div class="drop-down-overlay" @onclick="@InvokeOverlayClicked" @onclick:stopPropagation="true">
+                </div>
+            }
+        }
+    </div>
+}

@@ -1,0 +1,41 @@
+﻿@page "/Backend/News"
+
+@layout MainLayout
+
+<div class="element-separator"></div>
+<div class="custom-grid-toolbar">
+    <div class="custom-grid-toolbar-left">
+        <TelerikButton OnClick="@AddArticle" ButtonType="ButtonType.Button" ThemeColor="Primary" Class="button-flex-start" Icon="SvgIcon.Plus">@TextProvider.Get("NEWS_BACKEND_TABLE_ADD_ARTICLE")</TelerikButton>
+    </div>
+</div>
+<div class="small-element-separator"></div>
+@if (ArticleList != null)
+{
+    <div class="news-container">
+        <TelerikGrid Data="@ArticleList.OrderByDescending(p => p.PublishingDate).ToList()" Pageable="false" Sortable="false" Resizable="false" Navigable="false">
+            <GridColumns>
+                <GridColumn Field="@nameof(V_NEWS_Article.Title)" Title="@TextProvider.GetOrCreate("NEWS_BACKEND_TABLE_TITLE")"></GridColumn>
+                <GridColumn Field="@nameof(V_NEWS_Article.PublishingDate)" DisplayFormat="{0:dd.MM.yyyy}" Title="@TextProvider.GetOrCreate("NEWS_BACKEND_TABLE_PUBLISHING_DATE")"></GridColumn>
+                <GridColumn Field="@nameof(V_NEWS_Article.Enabled)" Title="@TextProvider.GetOrCreate("NEWS_BACKEND_TABLE_PUBLISHING_ENABLED")" Width="120px">
+                    <Template>
+                        @{
+                            V_NEWS_Article item = context as V_NEWS_Article;
+                            <TelerikSwitch @bind-Value="@item.Enabled" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridCommandColumn Width="120px" Title="@TextProvider.Get("NEWS_BACKEND_TABLE_PUBLISHING_ACTIONS")">
+                    @{
+                        V_NEWS_Article item = context as V_NEWS_Article;
+
+                        if (item != null && item.FamilyID != null)
+                        {
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditArticle(item.FamilyID.Value))" Icon="@SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => RemoveArticle(item.FamilyID.Value))" Icon="@SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+}

@@ -1,0 +1,51 @@
+﻿@if(AUTH_Users_List != null && AUTH_Users_List != null)
+{
+    <div class="tag-control-container">
+        <div class="tag-list-container" @onclick="ToggleResponsibleDropdown" @onclick:stopPropagation="true">
+            @if(AUTH_Users_List.Count > 0)
+            {
+                @foreach(var item in AUTH_Users_List)
+                {
+                    var tag = AllResponsibles.FirstOrDefault(p => p.ID == item);
+
+                    if (tag != null)
+                    {
+                        <div class="tag-item-container" onclick="@(() => RemoveResponsible(tag))" @onclick:stopPropagation="true">
+                            <UserCard SmallStyle="true" User="tag"></UserCard>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <div class="font-small">
+                    @TextProvider.Get("TASK_FILTER_RESPONSIBLE_PLACEHOLDER")
+                </div>
+            }
+        </div>
+        <div class="tag-tool">
+            <div class="tag-button" @onclick="ToggleResponsibleDropdown" @onclick:stopPropagation="true">
+                <i class="fa-regular fa-chevron-down"></i>
+            </div>
+        </div>
+        @if (ResponsibleDropdownVisibility)
+        {
+            <div class="tag-dropdown" id="responsible-dropdown">
+                <div class="searchbar-responsible-list">
+                    <div class="extra-small-element-separator"></div>
+                    <EditForm Model="@Search">
+                        <InputText @bind-Value="@Search.Text" class="form-control" placeholder="@TextProvider.Get("TASK_RESPONSIBLE_SEARCH_PLACEHOLDER")"></InputText>
+                    </EditForm>
+                    <div class="extra-small-element-separator"></div>
+                </div>
+                <div class="tag-dropdown-container">
+                    <Virtualize Items="@ResponsiblesToAdd.Where(p => string.IsNullOrEmpty(Search.Text) || p.Fullname.ToLower().Contains(Search.Text.ToLower())).OrderBy(p => p.Lastname).ThenBy(p => p.Firstname).ToList()" Context="item" OverscanCount="3">
+                        <div class="tag-item-container" @onclick="@(() => AddResponsible(item))" @onclick:stopPropagation="true">
+                            <UserCard User="item"></UserCard>
+                        </div>
+                    </Virtualize>
+                </div>
+            </div>
+        }
+    </div>
+}

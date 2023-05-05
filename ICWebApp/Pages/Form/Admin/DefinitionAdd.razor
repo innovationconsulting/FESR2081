@@ -1,0 +1,820 @@
+﻿@page "/Form/Definition/Add/{ID}"
+@page "/Form/Definition/Add/{ID}/{WizardIndex}"
+@page "/Form/Definition/Add/{ID}/{WizardIndex}/{AktiveIndex}"
+@page "/Form/Definition/Add/Application/{ID}"
+@page "/Form/Definition/Add/Mantainance/{ID}"
+
+@layout MainLayout
+
+@if (Data != null)
+{
+    int OptionRowSpan = 10;
+    
+    @if (Data.FORM_Definition_Category_ID == FORMCategories.Maintenance){
+        OptionRowSpan = 7;
+    }
+
+    <div class="segment-container custom-background-default form-wizard">
+        <TelerikWizard @bind-Value="@CurrentTab" ShowPager="false">
+            <WizardSteps>
+                <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DEFINITION_GENERAL_DATA")" OnChange="OnStepChanged" Icon="@("fas fa-stream")">
+                    <Content>
+                        <EditForm Model="Data">
+                            <DataAnnotationsValidator />
+                            <TelerikTileLayout Columns="2" ColumnWidth="100%" ColumnSpacing="30px" RowHeight="50px">
+                                <TileLayoutItems>
+                                    <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_FORM_DEFINITION_GENERAL_DATA")" RowSpan="12">
+                                        <Content>   
+                                            <div class="form-group">
+                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_CODE")</label>
+                                                <InputText @bind-Value="@Data.FormCode" class="form-control" disabled="@true"></InputText>
+                                            </div>
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="formbuilder-language-picker">
+                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                                                <div class="extra-small-element-separator"></div>
+                                                <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                                    <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                                                    <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                                                </TelerikButtonGroup>                                               
+                                            </div>
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="form-group">
+                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_NAME")</label>
+                                                @if(Data.FORM_Definition_Extended != null && Data.FORM_Definition_Extended.Count() > 0 && CurrentLanguage != null)
+                                                {
+                                                    <label class="font-detail">@Data.FORM_Definition_Extended.FirstOrDefault(p => p.LANG_Language_ID != CurrentLanguage).Name</label>
+                                                    <InputText @bind-Value="Data.FORM_Definition_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Name" @onfocusout="NameChanged" class="form-control"></InputText>
+                                                }
+                                            </div>     
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="form-group">
+                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_SHORTTEXT")</label>
+                                                @if(Data.FORM_Definition_Extended != null && Data.FORM_Definition_Extended.Count() > 0 && CurrentLanguage != null)
+                                                {
+                                                    <label class="font-detail">@Data.FORM_Definition_Extended.FirstOrDefault(p => p.LANG_Language_ID != CurrentLanguage).ShortText</label>
+                                                    <InputText @bind-Value="Data.FORM_Definition_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).ShortText" @onfocusout="NameChanged" class="form-control"></InputText>
+                                                }
+                                            </div>     
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="form-group">
+                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_AMT")</label>
+                                                <TelerikDropDownList Data="@DataAemter" TextField="Description" ValueField="ID" @bind-Value="@Data.AUTH_Authority_ID" OnChange="AuthorityChanged"></TelerikDropDownList>
+                                                <CustomValidationMessage For="@(() => Data.AUTH_Authority_ID)" TextCode="BACKEND_FORM_DEFINITION_AMT" />
+                                            </div>                  
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="form-group">
+                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_HIGHLIGHT")</label>
+                                                <div class="extra-small-element-separator"></div>                                                
+                                                <TelerikSwitch @bind-Value="Data.Highlight" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch"></TelerikSwitch>        
+                                            </div>                              
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="form-group">
+                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_HAS_TEMPLATE")</label>
+                                                <div class="extra-small-element-separator"></div>                                                
+                                                <TelerikSwitch @bind-Value="Data.HasTemplate" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch"></TelerikSwitch>        
+                                            </div>
+                                            @if(Data.HasTemplate == true && Templates != null)
+                                            {    
+                                                <div class="extra-small-element-separator"></div>                                               
+                                                <div class="form-group">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_TEMPLATE")</label>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <SfDropDownList DataSource="@Templates" @bind-Value="@Data.FORM_Definition_Template_ID" TValue="Guid?" TItem="@V_FORM_Definition_Template" Placeholder="@TextProvider.Get("BACKEND_FORM_DEFINITION_TEMPLATE_PLACEHOLDER")">
+                                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                                    </SfDropDownList>
+                                                </div>
+                                            }
+                                        </Content>
+                                    </TileLayoutItem>
+                                    <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_FORM_DEFINITION_OPTIONS")" RowSpan="@OptionRowSpan">
+                                        <Content>                                                
+                                            @if (Data.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+                                            {
+                                                @if (Data.HasTemplate != true)
+                                                {
+                                                    <div class="form-group">
+                                                        <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_SIGNS")</div>
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="form-group group-flex">
+                                                        <div class="group-left">
+                                                            <label for="@Data.HasSigning" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_SIGN")</label>
+                                                            <div class="extra-small-element-separator"></div>                                                
+                                                            <div>
+                                                                <TelerikSwitch @bind-Value="Data.HasSigning" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                        Class="list-item-switch" OnChange="@(() => SignChanged("Single"))"></TelerikSwitch>       
+                                                            </div>
+                                                        </div>
+                                                        <div class="group-right">
+                                                            <label for="@Data.HasMultiSigning" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_MULTISIGN")</label>
+                                                            <div class="extra-small-element-separator"></div>                                                
+                                                            <div>
+                                                                <TelerikSwitch @bind-Value="Data.HasMultiSigning" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                        Class="list-item-switch" OnChange="@(() => SignChanged("Multi"))"></TelerikSwitch>       
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                }
+                                                <div class="form-group">
+                                                    <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_PAYMENTS")</div>
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group group-flex">
+                                                    <div class="group-left">
+                                                        <label for="@Data.HasPayment" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_FIXED_FEE")</label>
+                                                        <div class="extra-small-element-separator"></div>                                                
+                                                        <div>
+                                                            <TelerikSwitch @bind-Value="Data.HasPayment" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                            Class="list-item-switch" OnChange="@(() => FeeChanged("Fixed"))"></TelerikSwitch>       
+                                                        </div>
+                                                    </div>
+                                                    <div class="group-right">
+                                                        <label for="@Data.HasFlexiblePrice" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_FLEXIBLE_FEE")</label>
+                                                        <div class="extra-small-element-separator"></div>                                                
+                                                        <div>
+                                                            <TelerikSwitch @bind-Value="Data.HasFlexiblePrice" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                            Class="list-item-switch" OnChange="@(() => FeeChanged("Flexible"))"></TelerikSwitch>       
+                                                        </div>
+                                                    </div>
+                                                    <div class="group-right">
+                                                        <label for="@Data.HasFlexiblePrice" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_IBAN_REQUIRED")</label>
+                                                        <div class="extra-small-element-separator"></div>                                                
+                                                        <div>
+                                                            <TelerikSwitch @bind-Value="Data.HasIBAN" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch"></TelerikSwitch>       
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @if (Data.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+                                                {
+                                                    <div class="extra-small-element-separator"></div>                                                
+                                                    <div class="form-group group-flex">
+                                                        <div class="group-left">
+                                                            <div class="group-right">
+                                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_BOLLO")</label>
+                                                        <div class="extra-small-element-separator"></div>                                                
+                                                                <TelerikSwitch @bind-Value="Data.HasBollo" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                                Class="list-item-switch"></TelerikSwitch>    
+                                                            </div>
+                                                        </div>
+                                                        <div class="group-right">
+                                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_CREDIT")</label>
+                                                        <div class="extra-small-element-separator"></div>                                                
+                                                                <TelerikSwitch @bind-Value="Data.HasCredit" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                                Class="list-item-switch"></TelerikSwitch>  
+                                                        </div> 
+                                                    </div> 
+                                                }
+                                            }
+                                            <div class="small-element-separator"></div>
+                                            <div class="form-group">
+                                                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_FUNCTIONS")</div>
+                                            </div>
+                                            <div class="small-element-separator"></div>
+                                            <div class="form-group group-flex">
+                                                <div class="group-left">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_CHAT")</label>
+                                                    <div class="extra-small-element-separator"></div>                                                
+                                                    <TelerikSwitch @bind-Value="Data.HasChat" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                    Class="list-item-switch"></TelerikSwitch>
+                                                </div>
+                                                @*<div class="group-right">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_TASKS")</label>
+                                                    <div class="extra-small-element-separator"></div>                                                
+                                                    <TelerikSwitch @bind-Value="Data.HasTasks" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                    Class="list-item-switch"></TelerikSwitch>   
+                                                </div>*@
+                                            </div> 
+                                            @if (Data.FORM_Definition_Category_ID == FORMCategories.Maintenance)
+                                            {
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="form-group group-flex">
+                                                    <div class="group-right">
+                                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_PRIORITY")</label>
+                                                        <div class="extra-small-element-separator"></div>                                                
+                                                        <TelerikSwitch @bind-Value="Data.HasPriorities" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                        Class="list-item-switch"></TelerikSwitch>    
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="small-element-separator"></div>
+                                            <div class="form-group">
+                                                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_VISIBILITY")</div>
+                                            </div>
+                                            <div class="small-element-separator"></div>
+                                            <div class="form-group group-flex">
+                                                <div class="group-left">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_ENABLED")</label>
+                                                    <div class="extra-small-element-separator"></div>                                                
+                                                    <TelerikSwitch @bind-Value="Data.Enabled" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                    Class="list-item-switch"></TelerikSwitch>
+                                                </div>
+                                                @if(Data.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+                                                {
+                                                     <div class="group-right">
+                                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_PARALLEL_APPLICATIONS")</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <TelerikSwitch @bind-Value="Data.MultipleParallelApplications" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                        Class="list-item-switch"></TelerikSwitch>     
+                                                    </div>
+                                                }
+                                                 <div class="group-right">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_ONLY_MUNICIPALITY")</label>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <TelerikSwitch @bind-Value="Data.OnlyForMunicipal" OnLabel=" " OffLabel=" " Width="65px" 
+                                                                    Class="list-item-switch"></TelerikSwitch>     
+                                                </div>
+                                            </div>
+                                        </Content>
+                                    </TileLayoutItem>                                    
+                                    @if(Data.HasMultiSigning)
+                                    {
+                                        <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_MULTISIGNING")" RowSpan="6">
+                                            <Content>   
+                                                <div class="form-group form-tile">    
+                                                    <TelerikGrid Data="@Signings.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false" 
+                                                                    ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                                                        <GridToolBarTemplate>
+                                                            <GridCommandButton OnClick="@AddSigning" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                                        </GridToolBarTemplate>
+                                                        <GridColumns>
+                                                            <GridColumn Field="@nameof(FORM_Definition_Signings.Description)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_SIGNING_TABLE_DESCRIPTION")"></GridColumn>
+                                                            <GridCommandColumn Context="uploadContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                                                @{
+                                                                    FORM_Definition_Signings item = uploadContext as FORM_Definition_Signings;
+
+                                                                    if (item != null)
+                                                                    {
+                                                                        <div class="table-toolbar">
+                                                                            <div class="table-sorter-buttons">
+                                                                                @if(item.SortOrder != Signings.Min(p => p.SortOrder))
+                                                                                {
+                                                                                    <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpSignings(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>                                    
+                                                                                }
+                                                                                @if(item.SortOrder != Signings.Max(p => p.SortOrder))
+                                                                                {
+                                                                                    <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownSignings(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>                                    
+                                                                                }
+                                                                            </div>
+                                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditSigning(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteSigning(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                  
+                                                                        </div>                           
+                                                                    }
+                                                                }
+                                                            </GridCommandColumn>
+                                                        </GridColumns>
+                                                    </TelerikGrid>
+                                                </div>
+                                            </Content>
+                                        </TileLayoutItem>
+                                    }
+                                    @if (Data.HasPayment)
+                                    {
+                                        <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_FIXED_PAYMENTS")" RowSpan="6">
+                                            <Content>   
+                                                <div class="form-group form-tile">
+                                                    <label>@TextProvider.Get("BACKEND_FORM_DEFINITION_PAYMENT_IDENTIFIER")</label>
+                                                    <TelerikDropDownList Data="PagoPaIdentifiers" @bind-Value="Data.DefaultPagoPaIdentifierId" ValueField="@nameof(PAY_PagoPa_Identifier.ID)">
+                                                        <ValueTemplate Context="ident">
+                                                            @TextProvider.Get(ident.TEXT_SystemText_Code)
+                                                        </ValueTemplate>
+                                                        <ItemTemplate Context="ident">
+                                                            @TextProvider.Get(ident.TEXT_SystemText_Code)
+                                                        </ItemTemplate>
+                                                    </TelerikDropDownList>
+                                                    <div class="small-element-separator"></div>
+                                                    <TelerikGrid Data="@PaymentPositions.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false"
+                                                                 ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                                                        <GridToolBarTemplate>
+                                                            <GridCommandButton OnClick="@AddPayment" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                                        </GridToolBarTemplate>
+                                                        <GridColumns>
+                                                            <GridColumn Field="@nameof(FORM_Definition_Payment_Position.Description)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_PAYMENT_TABLE_DESCRIPTION")">
+                                                                <Template Context="PaymentListcontext">
+                                                                    @{
+                                                                        FORM_Definition_Payment_Position item = PaymentListcontext as FORM_Definition_Payment_Position;
+                                                                    }
+                                                                    @if (!string.IsNullOrEmpty(item.Description))
+                                                                    {
+                                                                        var desc = (MarkupString)item.Description.Replace("<p>", "").Replace("</p>", "");
+
+                                                                        <span>@desc</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span></span>
+                                                                    }
+                                                                </Template>
+                                                            </GridColumn>
+                                                            <GridColumn Field="@nameof(FORM_Definition_Payment_Position.AmountFormatted)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_PAYMENT_TABLE_AMOUNT")"></GridColumn>
+                                                            <GridCommandColumn Context="uploadContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                                                @{
+                                                                    FORM_Definition_Payment_Position item = uploadContext as FORM_Definition_Payment_Position;
+
+                                                                    if (item != null)
+                                                                    {
+                                                                        <div class="table-toolbar">
+                                                                            <div class="table-sorter-buttons">
+                                                                                @if (item.SortOrder != PaymentPositions.Min(p => p.SortOrder))
+                                                                                {
+                                                                                    <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpPayment(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>
+                                                                                }
+                                                                                @if (item.SortOrder != PaymentPositions.Max(p => p.SortOrder))
+                                                                                {
+                                                                                    <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownPayment(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>
+                                                                                }
+                                                                            </div>
+                                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditPayment(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeletePayment(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            </GridCommandColumn>
+                                                        </GridColumns>
+                                                    </TelerikGrid>
+                                                </div>
+                                            </Content>
+                                        </TileLayoutItem>
+                                    }
+                                    @if (Data.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+                                    {
+                                        <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_DEADLINES_AND_TIMES")" RowSpan="5">
+                                            <Content>
+                                                <div class="form-group">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_DEADLINE_APPLICATION")</label>
+                                                    <TelerikDateTimePicker Format="dd.MM.yyyy HH:mm" @bind-Value="@Data.ApplicationDeadline" Min="DateTime.Now"></TelerikDateTimePicker>
+                                                    <CustomValidationMessage For="@(() => Data.ApplicationDeadline)" TextCode="BACKEND_FORM_DEFINITION_DEADLINE_APPLICATION" />
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_DEADLINE_LEGAL") @TextProvider.Get("ADDITIONAL_TEXT_IN_DAYS")</label>
+                                                    <InputNumber @bind-Value="Data.LegalDeadline" class="form-control"></InputNumber>
+                                                    <CustomValidationMessage For="@(() => Data.LegalDeadline)" TextCode="BACKEND_FORM_DEFINITION_DEADLINE_LEGAL" />
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label for="@Data.EstimateProcessingTime" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_ESTIMATED_TIME") @TextProvider.Get("ADDITIONAL_TEXT_IN_DAYS")</label>
+                                                    <InputNumber @bind-Value="Data.EstimateProcessingTime" class="form-control"></InputNumber>
+                                                    <CustomValidationMessage For="@(() => Data.EstimateProcessingTime)" TextCode="BACKEND_FORM_DEFINITION_ESTIMATED_TIME" />
+                                                </div>
+                                            </Content>
+                                        </TileLayoutItem>
+                                    }
+                                </TileLayoutItems>
+                            </TelerikTileLayout>
+                        </EditForm>
+                    </Content>
+                </WizardStep>
+                <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DEFINITION_DETAILS_TITLE")" OnChange="OnStepChanged" Icon="@("fas fa-file-alt")">
+                    <Content>
+                        <div class="form-group form-relative">
+                            <CustomLoader Visible="@(IsTabBusy)"
+                                                Text="@null" Class="initial-data-loader">
+                            </CustomLoader>
+                            <TelerikTabStrip @bind-ActiveTabIndex="AktiveTabIndex" PersistTabContent="true">
+                                <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_BESCHREIBUNG")">   @*DESCRIPTION*@
+                                    <div class="extra-small-element-separator"></div>   
+                                    <div class="formbuilder-language-picker">
+                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                                        <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                            <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                                            <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                                        </TelerikButtonGroup>             
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>   
+                                    <div class="form-group form-tab">                            
+                                        <div class="form-group">
+                                            @if(Data.FORM_Definition_Extended != null && Data.FORM_Definition_Extended.Count() > 0 && CurrentLanguage != null){
+
+                                                @if(string.IsNullOrEmpty(Data.FORM_Definition_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Description)){
+                                                    Data.FORM_Definition_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Description = Data.FORM_Definition_Extended.FirstOrDefault(p => p.LANG_Language_ID != CurrentLanguage).Description;
+                                                }
+
+                                                <TelerikEditor @bind-Value="Data.FORM_Definition_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Description"
+                                                               Tools="@Tools"
+                                                               EditMode="@EditorEditMode.Div"
+                                                               Class="font-normal"
+                                                               Height="400px">
+                                                    <EditorSettings>
+                                                        <EditorPasteSettings ConvertMsLists="true"
+                                                                             RemoveMsClasses="true"
+                                                                             RemoveMsStyles="true"
+                                                                             RemoveHtmlComments="true"
+                                                                             RemoveAllAttributes="true"
+                                                                             StripTags="@StripTags"
+                                                                             RemoveAttributes="@RemoveAttributes">
+                                                        </EditorPasteSettings>
+                                                    </EditorSettings>
+                                                </TelerikEditor>
+                                            }
+                                        </div>
+                                    </div>
+                                </TabStripTab>
+                                <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_DETAILS")">
+                                    <div class="form-group form-tab">                                
+                                        <TelerikGrid Data="@Properties.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false" 
+                                                        ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+                                            <GridToolBarTemplate>
+                                                <GridCommandButton OnClick="@AddProperty" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                            </GridToolBarTemplate>
+                                            <GridColumns>
+                                                <GridColumn Field="@nameof(FORM_Definition_Property.Title)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_PROPERTY_TABLE_TITLE")"></GridColumn>
+                                                <GridCommandColumn Context="propertyContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                                    @{
+                                                        FORM_Definition_Property item = propertyContext as FORM_Definition_Property;
+
+                                                        if (item != null)
+                                                        {
+                                                            <div class="table-toolbar">
+                                                                <div class="table-sorter-buttons">
+                                                                    @if(item.SortOrder != Properties.Min(p => p.SortOrder))
+                                                                    {
+                                                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpProperty(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>                                    
+                                                                    }
+                                                                    @if(item.SortOrder != Properties.Max(p => p.SortOrder))
+                                                                    {
+                                                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownProperty(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>                                    
+                                                                    }
+                                                                </div>
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditProperty(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteProperty(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                
+                                                            </div>
+                                                        }
+                                                    }
+                                                </GridCommandColumn>
+                                            </GridColumns>
+                                        </TelerikGrid>
+                                    </div>
+                                </TabStripTab>
+                                @if (Data.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+                                {
+                                    <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_EVENTS")">
+                                        <div class="form-group form-tab">
+                                            <TelerikGrid Data="@Events.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false" 
+                                                        ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+                                                <GridToolBarTemplate>
+                                                    <GridCommandButton OnClick="@AddEvent" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                                </GridToolBarTemplate>
+                                                <GridColumns>
+                                                    <GridColumn Field="@nameof(FORM_Definition_Event.Title)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_EVENT_TABLE_TITLE")"></GridColumn>
+                                                    <GridColumn Field="@nameof(FORM_Definition_Event.FromDate)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_EVENT_TABLE_FROM")" DisplayFormat="{0:dd.MM.yyyy HH:mm}"></GridColumn>
+                                                    <GridColumn Field="@nameof(FORM_Definition_Event.ToDate)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_EVENT_TABLE_TO")" DisplayFormat="{0:dd.MM.yyyy HH:mm}"></GridColumn>
+                                                    <GridCommandColumn Context="eventContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                                        @{
+                                                            FORM_Definition_Event item = eventContext as FORM_Definition_Event;
+
+                                                            if (item != null)
+                                                            {
+                                                        <div class="table-toolbar">
+                                                            <div class="table-sorter-buttons">
+                                                                @if (item.SortOrder != Events.Min(p => p.SortOrder))
+                                                                        {
+                                                                    <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpEvent(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>
+                                                                        }
+                                                                @if (item.SortOrder != Events.Max(p => p.SortOrder))
+                                                                        {
+                                                                    <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownEvent(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>
+                                                                        }
+                                                            </div>
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditEvent(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteEvent(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                    
+                                                        </div>
+                                                            }
+                                                        }
+                                                    </GridCommandColumn>
+                                                </GridColumns>
+                                            </TelerikGrid>
+                                        </div>
+                                    </TabStripTab>
+                                }
+                                <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_RESSOURCES")">
+                                    <div class="form-group form-tab">
+                                        <TelerikGrid Data="@Ressources.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false" 
+                                                        ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+                                            <GridToolBarTemplate>
+                                                <GridCommandButton OnClick="@AddRessource" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                            </GridToolBarTemplate>
+                                            <GridColumns>
+                                                <GridColumn Field="@nameof(FORM_Definition_Ressources.Description)"  Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_RESSOURCES_DESCRIPTION")"></GridColumn>
+                                                <GridCommandColumn Context="ressourceContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                                    @{
+                                                        FORM_Definition_Ressources item = ressourceContext as FORM_Definition_Ressources;
+
+                                                        if (item != null)
+                                                        {
+                                                            <div class="table-toolbar">
+                                                                <div class="table-sorter-buttons">
+                                                                    @if(item.SortOrder != Ressources.Min(p => p.SortOrder))
+                                                                    {
+                                                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpRessources(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>                                    
+                                                                    }
+                                                                    @if(item.SortOrder != Ressources.Max(p => p.SortOrder))
+                                                                    {
+                                                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownRessources(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>                                    
+                                                                    }
+                                                                </div>
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditRessource(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteRessource(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                            
+                                                            </div>                        
+                                                        }
+                                                    }
+                                                </GridCommandColumn>
+                                            </GridColumns>
+                                        </TelerikGrid>
+                                    </div>
+                                </TabStripTab>
+                                @if(Data.FORM_Definition_Category_ID != FORMCategories.Maintenance)
+                                {
+                                    <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_ADDITIONAL_FORMS")">
+                                        <div class="form-group form-tab">
+                                            <TelerikGrid Data="@AdditionalForms" Pageable="false" Sortable="false" Resizable="false" 
+                                                            ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" > 
+                                                <GridToolBarTemplate>
+                                                    <GridCommandButton OnClick="@AddAdditionalForm" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                                </GridToolBarTemplate>
+                                                <GridColumns>
+                                                    <GridColumn Field="@nameof(FORM_Definition_Additional_FORM.DefintionName)"  Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_ADDITION_FORM_DESCRIPTION")"></GridColumn>
+                                                    <GridCommandColumn Context="ressourceContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                                                        @{
+                                                            FORM_Definition_Additional_FORM item = ressourceContext as FORM_Definition_Additional_FORM;
+
+                                                            if (item != null)
+                                                            {
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditAdditionalForm(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteAdditionalForm(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                
+                                                            }
+                                                        }
+                                                    </GridCommandColumn>
+                                                </GridColumns>
+                                            </TelerikGrid>
+                                        </div>
+                                    </TabStripTab>
+                                }
+                            </TelerikTabStrip>
+                        </div>
+                    </Content>
+                </WizardStep>
+                <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DEFINITION_FORM_TITLE")" OnChange="OnFormStepChanged" Icon="@("fas fa-file-signature")">
+                    <Content>    
+                        <div class="form-group form-relative">
+                            <CustomLoader Visible="@(IsTabBusy)"
+                                                Text="@null" Class="initial-data-loader">
+                            </CustomLoader>
+                            <TelerikTabStrip @bind-ActiveTabIndex="AktiveFormTabIndex" PersistTabContent="true">
+                                @if (Data.FORM_Definition_Category_ID != FORMCategories.Maintenance && Data.HasTemplate != true)
+                                {
+                                    <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_FORM")">   @*FORMRENDERER*@
+                                        <div class="form-group-edit-toolbar">
+                                            <div class="btn btn-primary" @onclick="ShowFormEditor">@TextProvider.Get("BACKEND_FORMBUILDER_EDIT")</div>
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>   
+                                        <div class="form-group form-tab">
+                                            @if(PreviewApplication != null && IsFormRendererBusy == false)
+                                            {
+                                                <EditForm Model="@Data">
+                                                    <ICWebApp.Components.FormRenderer.Container Application="@PreviewApplication" Definition="@Data">
+                                                    </ICWebApp.Components.FormRenderer.Container>
+                                                </EditForm>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-renderer-busy-indicator">
+                                                    <CustomLoader Visible="@true" Text="@null" Class="initial-data-loader">
+                                                    </CustomLoader>
+                                                </div>
+                                            }
+                                        </div>
+                                    </TabStripTab>
+                                    <TelerikWindow @bind-Visible="@ShowFormEditorPreview" Centered="true" Modal="true" Draggable="false" Class="form-edit-window"> @*FORMBUILDER*@
+                                        <WindowTitle>
+                                                @TextProvider.Get("BACKEND_FORMBUILDER_EDIT")
+                                        </WindowTitle>
+                                        <WindowContent>
+                                            <div class="formbuilder-language-picker">
+                                                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                                                <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                                    <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                                                    <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                                                </TelerikButtonGroup>             
+                                            </div>
+                                            <div class="extra-small-element-separator"></div>  
+                                            <div class="form-builder-editor">
+                                                <ICWebApp.Components.Formbuilder.Container @ref="FormBuilderContainer" Definition="@Data" CurrentLanguage="@CurrentLanguage"></ICWebApp.Components.Formbuilder.Container>
+                                            </div>
+                                        </WindowContent>
+                                        <WindowActions>
+                                            <WindowAction Name="Close" OnClick="HideFormEditor" />
+                                        </WindowActions>
+                                    </TelerikWindow>
+                                    <TelerikDialog @bind-Visible="SaveChangesDialogVisibility">
+                                        <DialogContent>
+                                            <div class="save-changes-container">@TextProvider.Get("UNSAVED_CHANGES_PROMPT")</div>
+                                        </DialogContent>
+                                        <DialogButtons>
+                                            <TelerikButton OnClick="@DiscardChanges" ThemeColor="Secondary" Class="btn btn-secondary">@TextProvider.Get("UNSAVED_CHANGES_DISCARD")</TelerikButton>
+                                            <TelerikButton OnClick="@SaveChanges" ThemeColor="Primary" Class="btn btn-primary">@TextProvider.Get("UNSAVED_CHANGES_SAVE")</TelerikButton>
+                                        </DialogButtons>
+                                    </TelerikDialog>
+                                }
+                                <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_UPLOAD")"> @*UPLOAD FOR USER*@
+                                    <div class="form-group form-tab">                     
+                                        <TelerikGrid Data="@Uploads.OrderBy(p => p.SortOrder)" Pageable="false" Sortable="false" Resizable="false" 
+                                                        ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+                                            <GridToolBarTemplate>
+                                                <GridCommandButton OnClick="@AddUpload" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                            </GridToolBarTemplate>
+                                            <GridColumns>
+                                                <GridColumn Field="@nameof(FORM_Definition_Upload.Description)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_TABLE_DESCRIPTION")"></GridColumn>
+                                                <GridColumn Field="@nameof(FORM_Definition_Upload.AlloweTypesParsed)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_TABLE_ALLOWED_TYPES")"></GridColumn>
+                                                <GridColumn Field="@nameof(FORM_Definition_Upload.Required)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_TABLE_REQUIRED")">
+                                                    <Template Context="requiredColumnContext">
+                                                    @{
+                                                            FORM_Definition_Upload item = requiredColumnContext as FORM_Definition_Upload;
+
+                                                            @if (item.Required)
+                                                            {
+                                                                <div class="required-cell">
+                                                                    @TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_TABLE_REQUIRED")
+                                                                </div>
+                                                            }
+                                                    }
+                                                    </Template>
+                                                </GridColumn>
+                                                <GridCommandColumn Context="uploadContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                                    @{
+                                                        FORM_Definition_Upload item = uploadContext as FORM_Definition_Upload;
+
+                                                        if (item != null)
+                                                        {
+                                                            <div class="table-toolbar">
+                                                                <div class="table-sorter-buttons">
+                                                                    @if(item.SortOrder != Uploads.Min(p => p.SortOrder))
+                                                                    {
+                                                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpUpload(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>                                    
+                                                                    }
+                                                                    @if(item.SortOrder != Uploads.Max(p => p.SortOrder))
+                                                                    {
+                                                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownUpload(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>                                    
+                                                                    }
+                                                                </div>
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditUpload(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteUpload(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                  
+                                                            </div>                           
+                                                        }
+                                                    }
+                                                </GridCommandColumn>
+                                            </GridColumns>
+                                        </TelerikGrid>
+                                    </div>
+                                </TabStripTab>
+                            </TelerikTabStrip>
+                        </div>
+                    </Content>
+                </WizardStep>                
+                <WizardStep Label="@TextProvider.Get("BACKEND_FORM_DEFINITION_MUNIIPAL_TASKS_TITLE")" OnChange="OnStepChanged" Icon="@("fas fa-tasks")">
+                    <Content>    
+                        <div class="form-group form-relative">
+                            <CustomLoader Visible="@(IsTabBusy)"
+                                                Text="@null" Class="initial-data-loader">
+                            </CustomLoader>
+                            <TelerikTabStrip @bind-ActiveTabIndex="AktiveMunicipalTasksTabIndex" PersistTabContent="true">
+                                <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_DEADLINES")">
+                                    <div class="form-group form-tab">
+                                            <TelerikGrid Data="@Deadlines" Pageable="false" Sortable="false" Resizable="false" 
+                                                        ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+                                            <GridToolBarTemplate>
+                                                <GridCommandButton OnClick="@AddDeadline" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                            </GridToolBarTemplate>
+                                            <GridColumns>
+                                                <GridColumn Field="@nameof(FORM_Definition_Deadlines.AdditionalDays)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_DEADLINE_DAYS")"></GridColumn>
+                                                <GridColumn Field="@nameof(FORM_Definition_Deadlines.TimeType)"  Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_DEADLINE_TYPE")"></GridColumn>
+                                                <GridCommandColumn Context="taskContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                                                    @{
+                                                        FORM_Definition_Deadlines item = taskContext as FORM_Definition_Deadlines;
+
+                                                        if (item != null)
+                                                        {
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditDeadline(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteDeadline(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                
+                                                        }
+                                                    }
+                                                </GridCommandColumn>
+                                            </GridColumns>
+                                        </TelerikGrid>
+                                    </div>
+                                </TabStripTab>
+                                <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_MUNICIPAL_FIELDS")">
+                                    <div class="form-group form-tab">
+                                        <TelerikGrid Data="@MunFields.OrderBy(p => p.SortOrder).ToList()" Pageable="false" Sortable="false" Resizable="false" 
+                                                        ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+                                            <GridToolBarTemplate>
+                                                <GridCommandButton OnClick="@AddMunField" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                            </GridToolBarTemplate>
+                                            <GridColumns>
+                                                <GridColumn Field="@nameof(V_FORM_Definition_Municipal_Field.Description)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_MUN_FIELD_DESCRIPTION")"></GridColumn>
+                                                <GridColumn Field="@nameof(V_FORM_Definition_Municipal_Field.Type)"  Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_MUN_FIELD_TYPE")"></GridColumn>
+                                                <GridCommandColumn Context="taskContext" Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                                                    @{
+                                                        V_FORM_Definition_Municipal_Field item = taskContext as V_FORM_Definition_Municipal_Field;
+
+                                                        if (item != null)
+                                                        {
+                                                            <div class="table-toolbar">
+                                                                <div class="table-sorter-buttons">
+                                                                    @if(item.SortOrder != MunFields.Min(p => p.SortOrder))
+                                                                    {
+                                                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpMunField(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>                                    
+                                                                    }
+                                                                    @if(item.SortOrder != MunFields.Max(p => p.SortOrder))
+                                                                    {
+                                                                        <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownMunField(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>                                    
+                                                                    }
+                                                                </div>
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditMunField(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteMunField(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                               
+                                                            </div>                            
+                                                        }
+                                                    }
+                                                </GridCommandColumn>
+                                            </GridColumns>
+                                        </TelerikGrid>
+                                    </div>
+                                </TabStripTab>
+                                @if (Data.HasTasks)
+                                {
+                                    <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_TASKS")">
+                                        <div class="form-group form-tab">
+                                            <TelerikGrid Data="@Tasks" Pageable="false" Sortable="false" Resizable="false" 
+                                                            ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+                                                <GridToolBarTemplate>
+                                                    <GridCommandButton OnClick="@AddTask" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                                </GridToolBarTemplate>
+                                                <GridColumns>
+                                                    <GridColumn Field="@nameof(FORM_Definition_Tasks.Description)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_EVENT_TABLE_DESCRIPTION")"></GridColumn>
+                                                    <GridColumn Field="@nameof(FORM_Definition_Tasks.DeadlineDays)" Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TASKS_TABLE_DATE")" Width="250px"></GridColumn>
+                                                    <GridCommandColumn Context="taskContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                                                        @{
+                                                            FORM_Definition_Tasks item = taskContext as FORM_Definition_Tasks;
+
+                                                            if (item != null)
+                                                            {
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditTask(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteTask(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                
+                                                            }
+                                                        }
+                                                    </GridCommandColumn>
+                                                </GridColumns>
+                                            </TelerikGrid>
+                                        </div>
+                                    </TabStripTab>
+                                }
+                                @if(Data.FORM_Definition_Category_ID == Guid.Parse("93efca6b-c191-473d-b49a-4d6e4d2117e5"))
+                                {
+                                    <TabStripTab Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_TITLE_REMINDER")">
+                                        <div class="form-group form-tab">
+                                            <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_REMINDER_DETAILS")</label>
+                                            <div class="extra-small-element-separator"></div>   
+                                            <TelerikGrid Data="@Reminder" Pageable="false" Sortable="false" Resizable="false" 
+                                                            ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+                                                <GridToolBarTemplate>
+                                                    <GridCommandButton OnClick="@AddReminder" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+                                                </GridToolBarTemplate>
+                                                <GridColumns>
+                                                    <GridColumn Field="@nameof(FORM_Definition_Reminder.AdditionalDays)"  Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_REMINDER_DAYS")"></GridColumn>
+                                                    <GridColumn Field="@nameof(FORM_Definition_Reminder.Type)"  Title="@TextProvider.Get("BACKEND_FORM_DEFINITION_REMINDER_TYPE")"></GridColumn>
+                                                    <GridCommandColumn Context="ressourceContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                                                        @{
+                                                            FORM_Definition_Reminder item = ressourceContext as FORM_Definition_Reminder;
+
+                                                            if (item != null)
+                                                            {
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => EditReminder(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>                                    
+                                                                <GridCommandButton Class="btn btn-secondary" OnClick="@(() => DeleteReminder(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>                                
+                                                            }
+                                                        }
+                                                    </GridCommandColumn>
+                                                </GridColumns>
+                                            </TelerikGrid>
+                                        </div>
+                                    </TabStripTab>
+                                }
+                            </TelerikTabStrip>
+                        </div>
+                    </Content>
+                </WizardStep>
+            </WizardSteps>
+             <WizardButtons>
+            </WizardButtons>
+            <WizardSettings>
+                <WizardStepperSettings Linear="false" />
+            </WizardSettings>
+        </TelerikWizard>
+        <div class="segment-button-toolbar">
+            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                            OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                            OnClick="@(() => SaveForm(true))">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+        </div>
+    </div>       
+}

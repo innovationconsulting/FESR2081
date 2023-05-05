@@ -1,0 +1,776 @@
+﻿@page "/Organization/Application"
+
+@layout FrontendLayout
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-lg-3 mb-4 border-col hide-max-576">
+                    <AnchorList></AnchorList>
+                </div>
+                <div class="col-lg-8 offset-lg-1">
+                    <div class="org-container it-page-sections-container">
+                        <CustomLoader Visible="@(IsDataBusy)"
+                                      Text="@null" Class="initial-data-loader">
+                        </CustomLoader>
+
+                        @if (!NewOrganization)
+                        {
+                            @if (ORG_Request_Parameter != null)
+                            {                                
+                                <Anchor Title="@(TextProvider.Get("ORG_REQUEST_NEW_TITLE"))" IsCard="true" ID="@(TextProvider.Get("ORG_REQUEST_NEW_TITLE"))" Order="1">
+                                    <div class="font-normal">
+                                        @{
+                                            var desciription = (MarkupString)TextProvider.Get("ORG_REQUEST_DESCRIPTION");
+                                        }
+                                        @desciription
+                                    </div>
+                                    <div class="small-element-separator"></div>
+                                    <div class="first-step-container">
+                                        <EditForm Model="@ORG_Request_Parameter" OnValidSubmit="CheckFiscalNumber" Context="FiscalContext">
+                                            <div class="font-normal custom-color-primary">
+                                                @TextProvider.Get("ORG_REQUEST_FISCAL_CODE")
+                                            </div>
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="form-group-multicolumn">
+                                                <InputText @bind-Value="@ORG_Request_Parameter.FiscalCode" class="form-control"></InputText>
+                                                <button class="btn btn-primary" @onclick="CheckFiscalNumber">@TextProvider.Get("ORG_REQUEST_CHECK_FISCAL_CODE")</button>
+                                            </div>
+                                        </EditForm>
+                                    </div>
+                                    @if (FiscalCodeChecked == true)
+                                    {
+                                        <div class="element-separator"></div>
+                                        <div class="next-step-container" @onclick="ShowNewOrganisation">
+                                            @TextProvider.Get("ORG_REQUEST_CREATE_NEW")
+                                        </div>
+                                    }
+                                </Anchor>                                
+                                @if (OrganizationList != null && OrganizationList.Count() > 0 && FiscalCodeChecked)
+                                {
+                                    <Anchor Title="@(TextProvider.Get("ORG_REQUEST_FOUND_ORGS"))" ID="@(TextProvider.Get("ORG_REQUEST_FOUND_ORGS"))" Order="2">
+                                        <div class="org-list">
+                                            @foreach (var org in OrganizationList)
+                                            {
+                                                <div class="existing-org-container" @onclick="@(() => ApplyForOrg(org))">
+                                                    <h5 class="org-name custom-color-primary">
+                                                        @org.FirstName @org.LastName
+                                                    </h5>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    @if (org.FiscalNumber != null)
+                                                    {
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <div class="org-value">
+                                                            @org.FiscalNumber
+                                                        </div>
+                                                    }
+                                                    @if (org.VatNumber != null)
+                                                    {
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <div class="org-value">
+                                                            @org.VatNumber
+                                                        </div>
+                                                    }
+                                                    @if (org.RequestMessage != null)
+                                                    {
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <div class="org-success">
+                                                            @org.RequestMessage
+                                                        </div>
+                                                    }
+                                                    @if (org.RequestErrorMessage != null)
+                                                    {
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <div class="org-error">
+                                                            @org.RequestErrorMessage
+                                                        </div>
+                                                    }
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="button-container">
+                                                        <button class="btn btn-secondary" type="button" @onclick="@(() => ApplyForOrg(org))" @onclick:stopPropagation="true">@TextProvider.Get("BUTTON_APPLY")</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </Anchor>                           
+                                }
+                                <div class="element-separator"></div>
+                                <div class="button-container">
+                                    <button class="btn btn-secondary" @onclick="ReturnToDashboard">@TextProvider.Get("BUTTON_BACK")</button>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="new-org-container">
+                                <EditForm EditContext="@editContext" Context="NewOrgContext">
+                                    <ICWebApp.Classes.Validation.CustomValidation @ref="customValidation"></ICWebApp.Classes.Validation.CustomValidation>
+                                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                                    <Anchor Title="@(TextProvider.Get("ORG_REQUEST_ORG_DATA"))" IsCard="true" ID="@(TextProvider.Get("ORG_REQUEST_ORG_DATA"))" Order="1">
+                                        <div class="form-group">
+                                            <label for="@NewOrgRequest.AUTH_Company_Type_IDReq" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_TYPE")</label>
+                                            <TelerikDropDownList Data="@CompanyTypeList" TextField="Text" ValueField="ID"
+                                                             @bind-Value="@NewOrgRequest.AUTH_Company_Type_IDReq" OnChange="CompanyInputChanged"></TelerikDropDownList>
+                                            <CustomValidationMessage For="@(() => NewOrgRequest.AUTH_Company_Type_IDReq)" TextCode="ORG_REQUEST_ORG_TYPE" />
+                                        </div>
+                                        @if (SelectedCompanyType != null && SelectedCompanyType.HasLegalForm == true && CompanyLegalFormList != null && CompanyLegalFormList.Count() > 0)
+                                        {
+                                            <div class="small-element-separator"></div>
+                                            <div class="form-group">
+                                                @if (SelectedCompanyType.IsAssociation == true || SelectedCompanyType.IsOnulus == true || SelectedCompanyType.IsSport == true)
+                                                {
+                                                    <label for="@NewOrgRequest.AUTH_Company_LegalForm_IDReq" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_LEGAL_FORM")</label>
+                                                }
+                                                else
+                                                {
+                                                    <label for="@NewOrgRequest.AUTH_Company_LegalForm_IDReq" class="form-label">@TextProvider.Get("ORG_REQUEST_ORG_REPRESENTATION_FORM")</label>
+                                                }
+                                                <TelerikDropDownList Data="@CompanyLegalFormList.OrderBy(p => p.Text)" TextField="Text" ValueField="ID" OnChange="LegalFormInputChanged"
+                                                             @bind-Value="@NewOrgRequest.AUTH_Company_LegalForm_IDReq" Filterable="true" FilterOperator="@StringFilterOperator.Contains"></TelerikDropDownList>
+                                                <CustomValidationMessage For="@(() => NewOrgRequest.AUTH_Company_LegalForm_IDReq)" TextCode="ORG_REQUEST_ORG_LEGAL_FORM" />
+                                            </div>
+                                        }
+                                    </Anchor>
+                                    @if (SelectedCompanyType != null && CompanyTypeList != null && (SelectedCompanyType.HasLegalForm == false || SelectedCompanyLegalForm != null))
+                                    {
+                                        string Title = "";
+                                        
+                                        @if (SelectedCompanyType.IsAssociation == true)
+                                        {
+                                            Title = TextProvider.Get("ORG_DATA_ASSOCIATION");
+                                        }
+                                        else if (SelectedCompanyType.IsOnulus == true || SelectedCompanyType.IsSport == true)
+                                        {
+                                            Title = TextProvider.Get("ORG_DATA_VEREIN");
+                                        }
+                                        else
+                                        {
+                                            @if(SelectedCompanyType.ID == Guid.Parse("505f2b86-4301-4c55-8dbe-3ee494e5569d")) //Sachwalterschaft
+                                            {
+                                                Title = TextProvider.Get("ORG_ANAGRAFIC_DATA_SACHWALTERSCHAFT");
+                                            }
+                                            else
+                                            {
+                                                Title = @TextProvider.Get("ORG_ANAGRAFIC_DATA");
+                                            }
+                                        }
+                                        
+                                        <Anchor Title="@Title" IsCard="true" ID="@Title" Order="2">
+                                            @if (SelectedCompanyType.IsPrivate == true && SelectedCompanyType.ID == Guid.Parse("505f2b86-4301-4c55-8dbe-3ee494e5569d"))
+                                            {
+                                                <div class="form-group-multicolumn">
+                                                    <div class="form-group flex-full">
+                                                        <label for="@NewOrgRequest.FirstnameReq" class="form-label">@TextProvider.Get("ORG_REQUEST_FIRSTNAME")</label>
+                                                        <InputText @bind-Value="NewOrgRequest.FirstnameReq" class="form-control"></InputText>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.FirstnameReq)" TextCode="ORG_REQUEST_FIRSTNAME" />
+                                                    </div>
+                                                    <div class="form-group flex-full">
+                                                        <label for="@NewOrgRequest.LastnameReq" class="form-label">@TextProvider.Get("ORG_REQUEST_LASTNAME")</label>
+                                                        <InputText @bind-Value="NewOrgRequest.LastnameReq" class="form-control"></InputText>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.LastnameReq)" TextCode="ORG_REQUEST_LASTNAME" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group-multicolumn">
+                                                    <div class="form-group flex-full">
+                                                        <label for="@NewOrgRequest.FiscalNumberReq" class="form-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                                                        <InputText @bind-Value="NewOrgRequest.FiscalNumberReq" class="form-control"></InputText>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.FiscalNumberReq)" TextCode="ORG_REQUEST_FISCAL_NUMBER" />
+                                                    </div>
+
+                                                    @if (SelectedCompanyLegalForm != null && SelectedCompanyLegalForm.ID == Guid.Parse("fc0a0e03-9685-4ddb-9f5c-61b9fe08bb11"))
+                                                    {
+                                                        <div class="form-group flex-full">
+                                                            <label for="@NewOrgRequest.VatNumberVal" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                                                            <InputText @bind-Value="NewOrgRequest.VatNumberVal" class="form-control"></InputText>
+                                                            <CustomValidationMessage For="@(() => NewOrgRequest.VatNumberVal)" TextCode="ORG_REQUEST_VAT_NUMBER" />
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group">
+                                                    <label for="@NewOrgRequest.FirstnameReq" class="form-label">@TextProvider.Get("ORG_REQUEST_DENOMINATION")</label>
+                                                    <InputText @bind-Value="NewOrgRequest.FirstnameReq" class="form-control"></InputText>
+                                                    <CustomValidationMessage For="@(() => NewOrgRequest.FirstnameReq)" TextCode="ORG_REQUEST_DENOMINATION" />
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label for="@NewOrgRequest.FiscalNumberReq" class="form-label">@TextProvider.Get("ORG_REQUEST_FISCAL_NUMBER")</label>
+                                                    <InputText @bind-Value="NewOrgRequest.FiscalNumberReq" class="form-control"></InputText>
+                                                    <CustomValidationMessage For="@(() => NewOrgRequest.FiscalNumberReq)" TextCode="ORG_REQUEST_FISCAL_NUMBER" />
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group-multicolumn">
+                                                    @if (SelectedCompanyType.IsAssociation == true)
+                                                    {
+                                                        <div class="form-group flex-full">
+                                                            <label for="@NewOrgRequest.VatNumberReq" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                                                            <InputText @bind-Value="NewOrgRequest.VatNumberReq" class="form-control"></InputText>
+                                                            <CustomValidationMessage For="@(() => NewOrgRequest.VatNumberReq)" TextCode="ORG_REQUEST_VAT_NUMBER" />
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="form-group flex-full">
+                                                            <label for="@NewOrgRequest.VatNumber" class="form-label">@TextProvider.Get("ORG_REQUEST_VAT_NUMBER")</label>
+                                                            <InputText @bind-Value="NewOrgRequest.VatNumber" class="form-control"></InputText>
+                                                            <CustomValidationMessage For="@(() => NewOrgRequest.VatNumber)" TextCode="ORG_REQUEST_VAT_NUMBER" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                                @if (SelectedCompanyType.IsAssociation == true || SelectedCompanyType.IsSport == true || SelectedCompanyType.IsOnulus == true)
+                                                {
+                                                    @if (SelectedCompanyType.IsAssociation == true)
+                                                    {
+                                                        <div class="small-element-separator"></div>
+                                                        <div class="form-group">
+                                                            <label for="@NewOrgRequest.PECEmailReq" class="form-label">@TextProvider.Get("ORG_REQUEST_PEC_EMAIL")</label>
+                                                            <InputText @bind-Value="NewOrgRequest.PECEmailReq" class="form-control"></InputText>
+                                                            <CustomValidationMessage For="@(() => NewOrgRequest.PECEmailReq)" TextCode="ORG_REQUEST_PEC_EMAIL" />
+                                                        </div>
+                                                        <div class="small-element-separator"></div>
+                                                        <div class="form-group-multicolumn">
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.CodiceDestinatarioReq" class="form-label">@TextProvider.Get("ORG_REQUEST_CODICE_DESTINATARIO")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.CodiceDestinatarioReq" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.CodiceDestinatarioReq)" TextCode="ORG_REQUEST_CODICE_DESTINATARIO" />
+                                                            </div>
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.HandelskammerEintragungReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_HANDELSKAMMER")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.HandelskammerEintragungReq" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.HandelskammerEintragungReq)" TextCode="ORG_REQUEST_EINTRAGUNG_HANDELSKAMMER" />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="small-element-separator"></div>
+                                                        <div class="form-group">
+                                                            <label for="@NewOrgRequest.PECEmail" class="form-label">@TextProvider.Get("ORG_REQUEST_PEC_EMAIL")</label>
+                                                            <InputText @bind-Value="NewOrgRequest.PECEmail" class="form-control"></InputText>
+                                                            <CustomValidationMessage For="@(() => NewOrgRequest.PECEmail)" TextCode="ORG_REQUEST_PEC_EMAIL" />
+                                                        </div>
+                                                        <div class="small-element-separator"></div>
+                                                        <div class="form-group-multicolumn">
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.CodiceDestinatario" class="form-label">@TextProvider.Get("ORG_REQUEST_CODICE_DESTINATARIO")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.CodiceDestinatario" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.CodiceDestinatario)" TextCode="ORG_REQUEST_CODICE_DESTINATARIO" />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    @if (SelectedCompanyType.IsOnulus && CompanyTypes.GetRecognizedAssociationLegalFormIds().Contains(SelectedCompanyLegalForm.ID) && NewOrgRequest.AUTH_BolloFree_Reason_ID == Guid.Parse("01146256-0697-49AE-9DC1-810C1E1D53D3"))
+                                                    {
+                                                        <div class="small-element-separator"></div>
+                                                        <label for="@NewOrgRequest.EintragungNrReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_TITLE")</label>
+                                                        <div class="form-group-multicolumn">
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.EintragungNrReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_NR")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.EintragungNrReq" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.EintragungNrReq)" TextCode="ORG_REQUEST_EINTRAGUNG_NR" />
+                                                            </div>
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.EintragungDatumReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_DATUM")</label>
+                                                                <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="NewOrgRequest.EintragungDatumReq" class="form-control"></TelerikDatePicker>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.EintragungDatumReq)" TextCode="ORG_REQUEST_EINTRAGUNG_DATUM" />
+                                                            </div>
+                                                        </div>
+                                                    } else if (SelectedCompanyType.IsOnulus && CompanyTypes.GetRecognizedAssociationLegalFormIds().Contains(SelectedCompanyLegalForm.ID))
+                                                    {
+                                                        <div class="small-element-separator"></div>
+                                                        <label for="@NewOrgRequest.EintragungNrReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_TITLE")</label>
+                                                        <div class="form-group-multicolumn">
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.EintragungNr" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_NR")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.EintragungNr" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.EintragungNr)" TextCode="ORG_REQUEST_EINTRAGUNG_NR" />
+                                                            </div>
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.EintragungDatum" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_DATUM")</label>
+                                                                <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="NewOrgRequest.EintragungDatum" class="form-control"></TelerikDatePicker>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.EintragungDatum)" TextCode="ORG_REQUEST_EINTRAGUNG_DATUM" />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else if (SelectedCompanyType.IsSport && CompanyTypes.GetRecognizedAssociationLegalFormIds().Contains(SelectedCompanyLegalForm.ID) && NewOrgRequest.AUTH_BolloFree_Reason_ID == Guid.Parse("01146256-0697-49AE-9DC1-810C1E1D53D3"))
+                                                    {
+                                                        <div class="small-element-separator"></div>
+                                                        <label for="@NewOrgRequest.EintragungNrReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_TITLE")</label>
+                                                        <div class="form-group-multicolumn">
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.EintragungNrReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_NR")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.EintragungNrReq" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.EintragungNrReq)" TextCode="ORG_REQUEST_EINTRAGUNG_NR" />
+                                                            </div>
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.EintragungDatumReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_DATUM")</label>
+                                                                <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="NewOrgRequest.EintragungDatumReq" class="form-control"></TelerikDatePicker>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.EintragungDatumReq)" TextCode="ORG_REQUEST_EINTRAGUNG_DATUM" />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else if (SelectedCompanyType.IsSport && CompanyTypes.GetRecognizedAssociationLegalFormIds().Contains(SelectedCompanyLegalForm.ID))
+                                                    {
+                                                        <div class="small-element-separator"></div>
+                                                        <label for="@NewOrgRequest.EintragungNrReq" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_TITLE")</label>
+                                                        <div class="form-group-multicolumn">
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.EintragungNr" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_NR")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.EintragungNr" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.EintragungNr)" TextCode="ORG_REQUEST_EINTRAGUNG_NR" />
+                                                            </div>
+                                                            <div class="form-group full-width">
+                                                                <label for="@NewOrgRequest.EintragungDatum" class="form-label">@TextProvider.Get("ORG_REQUEST_EINTRAGUNG_DATUM")</label>
+                                                                <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="NewOrgRequest.EintragungDatum" class="form-control"></TelerikDatePicker>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.EintragungDatum)" TextCode="ORG_REQUEST_EINTRAGUNG_DATUM" />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="form-group-multicolumn">
+                                                        <div class="form-group full-width">
+                                                            <label class="form-label">@TextProvider.Get("ORG_NEW_ORG_REQUEST_SWITCH_MAIN")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div>
+                                                                <TelerikSwitch @bind-Value="NewOrgRequest.IsNewOrgRequestInverted" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                                               Class="list-item-switch"></TelerikSwitch>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group full-width">
+                                                            <label class="form-label">@TextProvider.Get("ORG_NEW_ORG_REQUEST_SWITCH")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div>
+                                                                <TelerikSwitch @bind-Value="NewOrgRequest.IsNewOrgRequest" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                                               Class="list-item-switch"></TelerikSwitch>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </Anchor>
+                                        @if ((SelectedCompanyType != null && SelectedCompanyType.CanBeBolloFree == true) || (SelectedCompanyLegalForm != null && SelectedCompanyLegalForm.CanBeBolloFree == true))
+                                        {
+                                            <Anchor Title="@(TextProvider.Get("ORG_BOLLO"))" IsCard="true" ID="@(TextProvider.Get("ORG_BOLLO"))" Order="3">
+                                                <div class="form-group">
+                                                    <label class="form-label">@TextProvider.Get("ORG_BOLLO_FREE")</label>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div>
+                                                        <TelerikSwitch @bind-Value="NewOrgRequest.BolloFree" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                                           Class="list-item-switch" OnChange="@BolloFreeChangedHandler"></TelerikSwitch>
+                                                    </div>
+                                                </div>
+                                                @if (BolloFreeReasons != null && BolloFreeReasons.Count() > 0 && NewOrgRequest.BolloFree == true)
+                                                {
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="form-group">
+                                                        <label for="@NewOrgRequest.AUTH_BolloFree_Reason_ID" class="form-label">@TextProvider.Get("ORG_BOLLO_REASON")</label>
+                                                        <TelerikDropDownList Data="@BolloFreeReasons.OrderBy(p => p.SortOrder).ToList()" TextField="Text" ValueField="ID"
+                                                             @bind-Value="@NewOrgRequest.AUTH_BolloFree_Reason_ID" OnChange="CompanyInputChanged"></TelerikDropDownList>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.AUTH_BolloFree_Reason_ID)" TextCode="ORG_REQUEST_ORG_TYPE" />
+                                                    </div>
+                                                    @if (CurrentReason != null && CurrentReason.ID == Guid.Parse("C93266FF-D027-4D8B-8A08-7D7025172AC8") /*Sonstige*/)
+                                                    {
+                                                        <div class="small-element-separator"></div>
+                                                        <TelerikTextArea @bind-Value="@NewOrgRequest.BolloFreeCustomReasonDesc"
+                                                     Placeholder="@TextProvider.Get("BOLLO_FREE_REASON_DESCRIPTION_PLACEHOLDER")"
+                                                     AutoSize="true">
+
+                                                        </TelerikTextArea>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.BolloFreeCustomReasonDesc)" TextCode="ORG_BOLLO_REASON" />
+                                                    }
+                                                }
+                                            </Anchor>
+                                        }
+                                        <Anchor Title="@(TextProvider.Get("ORG_DATA_ADDRESS"))" IsCard="true" ID="@(TextProvider.Get("ORG_DATA_ADDRESS"))" Order="4">
+                                            @if (AddressNotFound == false)
+                                            {
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label class="form-label">@TextProvider.Get("REGISTRATION_SEARCH_MUNICIPALITY")</label>
+                                                    <TelerikComboBox Data="@MunicipalitiesList"
+                                                         TextField="@nameof(META_IstatComuni.NameDE)"
+                                                         ValueField="@nameof(META_IstatComuni.ID)"
+                                                         @bind-Value="@SelectedMunicipality"
+                                                         ScrollMode="@DropDownScrollMode.Virtual"
+                                                         ItemHeight="30" PageSize="15"
+                                                         Filterable="true"
+                                                         Class="address-search-box"
+                                                         FilterOperator="@StringFilterOperator.Contains">
+                                                        <ComboBoxSettings>
+                                                            <ComboBoxPopupSettings Height="200px" />
+                                                        </ComboBoxSettings>
+                                                    </TelerikComboBox>
+                                                    <CustomValidationMessage For="@(() => NewOrgRequest.DomicileStreetAddressReq)" TextCode="REGISTRATION_ADDRESS" />
+                                                </div>
+                                                @if (SelectedMunicipality != Guid.Empty)
+                                                {
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="form-group">
+                                                        <label class="form-label">@TextProvider.Get("ORG_ADDRESS")</label>
+                                                        <InputText @bind-Value="NewOrgRequest.DomicileStreetAddressReq" class="form-control"></InputText>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.DomicileStreetAddressReq)" TextCode="REGISTRATION_ADDRESS" />
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="form-group-multicolumn">
+                                                        <div class="form-group flex-half">
+                                                            <label class="form-label">@TextProvider.Get("ORG_POSTAL_CODE")</label>
+                                                            <label class="form-label-value">@NewOrgRequest.DomicilePostalCodeReq</label>
+                                                        </div>
+                                                        <div class="form-group flex-full">
+                                                            <label class="form-label">@TextProvider.Get("ORG_MUNICIPALITY")</label>
+                                                            <label class="form-label-value">@NewOrgRequest.DomicileMunicipalityReq</label>
+                                                        </div>
+                                                        <div class="form-group flex-half">
+                                                            <label class="form-label">@TextProvider.Get("ORG_PROVINCE")</label>
+                                                            <label class="form-label-value">@NewOrgRequest.DomicileProvinceReq</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="address-not-found-container font-small custom-color-primary" @onclick="AddressNotFoundClick">
+                                                    @TextProvider.Get("REGISTRATION_ADDRESS_NOT_FOUND")
+                                                </div>
+                                            }
+                                            else if (AddressNotFound == true)
+                                            {
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label class="form-label">@TextProvider.Get("ORG_ADDRESS")</label>
+                                                    <InputText @bind-Value="NewOrgRequest.DomicileStreetAddressReq" class="form-control"></InputText>
+                                                    <CustomValidationMessage For="@(() => NewOrgRequest.DomicileStreetAddressReq)" TextCode="ORG_ADDRESS" />
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group-multicolumn">
+                                                    <div class="form-group flex-half">
+                                                        <label class="form-label">@TextProvider.Get("ORG_POSTAL_CODE")</label>
+                                                        <InputText @bind-Value="NewOrgRequest.DomicilePostalCodeReq" class="form-control"></InputText>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.DomicilePostalCodeReq)" TextCode="ORG_POSTAL_CODE" />
+                                                    </div>
+                                                    <div class="form-group flex-full">
+                                                        <label class="form-label">@TextProvider.Get("ORG_MUNICIPALITY")</label>
+                                                        <InputText @bind-Value="NewOrgRequest.DomicileMunicipalityReq" class="form-control"></InputText>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.DomicileMunicipalityReq)" TextCode="ORG_MUNICIPALITY" />
+                                                    </div>
+                                                    <div class="form-group flex-half">
+                                                        <label class="form-label">@TextProvider.Get("ORG_PROVINCE")</label>
+                                                        <InputText @bind-Value="NewOrgRequest.DomicileProvinceReq" class="form-control"></InputText>
+                                                        <CustomValidationMessage For="@(() => NewOrgRequest.DomicileProvinceReq)" TextCode="ORG_PROVINCE" />
+                                                    </div>
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label class="form-label">@TextProvider.Get("ORG_NATION")</label>
+                                                    <InputText @bind-Value="NewOrgRequest.DomicileNationReq" class="form-control"></InputText>
+                                                    <CustomValidationMessage For="@(() => NewOrgRequest.DomicileNationReq)" TextCode="ORG_NATION" />
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="address-not-found-container font-small custom-color-primary" @onclick="SearchAddressClick">
+                                                    @TextProvider.Get("REGISTRATION_ADDRESS_SEARCH")
+                                                </div>
+                                            }
+                                        </Anchor>
+                                        <Anchor Title="@(TextProvider.Get("ORG_KONTAKT_DATA"))" IsCard="true" ID="@(TextProvider.Get("ORG_KONTAKT_DATA"))" Order="5">                                        
+                                            <div class="form-group">
+                                                <label class="form-label">@TextProvider.Get("ORG_EMAIL")</label>
+                                                <InputText @bind-Value="NewOrgRequest.EmailReq" type="email" class="form-control"></InputText>
+                                                <CustomValidationMessage For="@(() => NewOrgRequest.EmailReq)" TextCode="ORG_EMAIL" />
+                                            </div>
+                                            <div class="small-element-separator"></div>
+                                            <div class="form-group">
+                                                <label class="form-label">@TextProvider.Get("ORG_MOBILE_PHONE")</label>
+                                                <CustomPhone @bind-Value="@NewOrgRequest.MobilePhone"></CustomPhone>
+                                                <CustomValidationMessage For="@(() => NewOrgRequest.MobilePhone)" TextCode="ORG_MOBILE_PHONE" />
+                                            </div>
+                                            <div class="small-element-separator"></div>
+                                            <div class="form-group">
+                                                <label class="form-label">@TextProvider.Get("ORG_PHONE")</label>
+                                                <CustomPhone @bind-Value="@NewOrgRequest.Phone"></CustomPhone>
+                                                <CustomValidationMessage For="@(() => NewOrgRequest.Phone)" TextCode="ORG_PHONE" />
+                                            </div>
+                                        </Anchor>
+                                        @if (SelectedCompanyType.IsAssociation == true || SelectedCompanyType.IsSport == true || SelectedCompanyType.IsOnulus == true)
+                                        {
+                                            <Anchor Title="@(TextProvider.Get("ORG_BANC_DATA"))" IsCard="true" ID="@(TextProvider.Get("ORG_BANC_DATA"))" Order="6">            
+                                                <div class="form-group">
+                                                    <label class="form-label">@TextProvider.Get("ORG_KONTOINHABER")</label>
+                                                    <InputText @bind-Value="NewOrgRequest.KontoInhaberReq" class="form-control"></InputText>
+                                                    <CustomValidationMessage For="@(() => NewOrgRequest.KontoInhaberReq)" TextCode="ORG_KONTOINHABER" />
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label class="form-label">@TextProvider.Get("ORG_BANKNAME")</label>
+                                                    <InputText @bind-Value="NewOrgRequest.BanknameReq" class="form-control"></InputText>
+                                                    <CustomValidationMessage For="@(() => NewOrgRequest.BanknameReq)" TextCode="ORG_BANKNAME" />
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label class="form-label">@TextProvider.Get("ORG_IBAN")</label>
+                                                    <InputText @bind-Value="NewOrgRequest.IBANReq" class="form-control"></InputText>
+                                                    <CustomValidationMessage For="@(() => NewOrgRequest.IBANReq)" TextCode="ORG_IBAN" />
+                                                </div>
+                                            </Anchor>
+                                        }
+                                        @if (SelectedCompanyType != null && SelectedCompanyType.IsPrivate != true)
+                                        {
+                                            <Anchor Title="@(TextProvider.Get("ORG_GESETZLICHER_VERTRETER"))" IsCard="true" ID="@(TextProvider.Get("ORG_GESETZLICHER_VERTRETER"))" Order="7">   
+                                                <div class="form-group">
+                                                    <label class="form-label">@TextProvider.Get("ORG_GV_IS_USER")</label>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div>
+                                                        <TelerikSwitch @bind-Value="NewOrgRequest.GVEqualsUser" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                                           Class="list-item-switch"></TelerikSwitch>
+                                                    </div>
+                                                </div>
+                                                <div class="small-element-separator"></div>
+                                                @if (NewOrgRequest.GVEqualsUser != true)
+                                                {
+                                                    <div class="gesetzlicher-vertreter-container">
+                                                        <div class="registration-data-container">
+                                                            <h5>
+                                                                @TextProvider.Get("REGISTRATION_ANAGRAFIC_DATA") - @TextProvider.Get("ORG_GESETZLICHER_VERTRETER")
+                                                            </h5>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="form-group-multicolumn">
+                                                                <div class="form-group flex-full">
+                                                                    <label for="@NewOrgRequest.GV_FirstnameReq" class="form-label">@TextProvider.Get("REGISTRATION_FIRSTNAME")</label>
+                                                                    <InputText @bind-Value="NewOrgRequest.GV_FirstnameReq" class="form-control"></InputText>
+                                                                    <CustomValidationMessage For="@(() => NewOrgRequest.GV_FirstnameReq)" TextCode="REGISTRATION_FIRSTNAME" />
+                                                                </div>
+                                                                <div class="form-group flex-full">
+                                                                    <label class="form-label">@TextProvider.Get("REGISTRATION_LASTNAME")</label>
+                                                                    <InputText @bind-Value="NewOrgRequest.GV_LastnameReq" class="form-control"></InputText>
+                                                                    <CustomValidationMessage For="@(() => NewOrgRequest.GV_LastnameReq)" TextCode="REGISTRATION_LASTNAME" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("REGISTRATION_GENDER")</label>
+                                                                <div class="extra-small-element-separator"></div>
+                                                                <div class="form-group-multicolumn">
+                                                                    <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                                                        <ButtonGroupToggleButton @bind-Selected="@MaleSelected">@TextProvider.Get("REGISTRATION_GENDER_MALE")</ButtonGroupToggleButton>
+                                                                        <ButtonGroupToggleButton @bind-Selected="@FemaleSelected">@TextProvider.Get("REGISTRATION_GENDER_FEMALE")</ButtonGroupToggleButton>
+                                                                    </TelerikButtonGroup>
+                                                                </div>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.GV_GenderReq)" TextCode="REGISTRATION_GENDER" />
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("REGISTRATION_COUNTY_OF_BIRTH")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.GV_CountyOfBirthReq" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.GV_CountyOfBirthReq)" TextCode="REGISTRATION_COUNTY_OF_BIRTH" />
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("REGISTRATION_PLACE_OF_BIRTH")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.GV_PlaceOfBirthReq" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.GV_PlaceOfBirthReq)" TextCode="REGISTRATION_PLACE_OF_BIRTH" />
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("REGISTRATION_DATE_OF_BIRHT")</label>
+                                                                <TelerikDatePicker Format="dd.MM.yyyy" Min="DateTime.Now.AddYears(-120)" Max="DateTime.Now.AddYears(-18)" @bind-Value="NewOrgRequest.GV_DateOfBirthReq" class="form-control"></TelerikDatePicker>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.GV_DateOfBirthReq)" TextCode="REGISTRATION_DATE_OF_BIRHT" />
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("REGISTRATION_FISCAL_NUMBER")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.GV_FiscalNumberReq" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.GV_FiscalNumberReq)" TextCode="REGISTRATION_FISCAL_NUMBER" />
+                                                            </div>
+                                                            <div class="element-separator"></div>
+                                                            <h5>
+                                                                @TextProvider.Get("REGISTRATION_DOMICILE_DATA")
+                                                            </h5>
+                                                            @*#####################*@
+                                                            @if (GV_AddressNotFound == false)
+                                                            {
+                                                                <div class="small-element-separator"></div>
+                                                                <div class="form-group">
+                                                                    <label class="form-label">@TextProvider.Get("REGISTRATION_SEARCH_MUNICIPALITY")</label>
+                                                                    <TelerikComboBox Data="@MunicipalitiesList"
+                                                                 TextField="@nameof(META_IstatComuni.NameDE)"
+                                                                 ValueField="@nameof(META_IstatComuni.ID)"
+                                                                 @bind-Value="@GV_SelectedMunicipality"
+                                                                 ScrollMode="@DropDownScrollMode.Virtual"
+                                                                 ItemHeight="30" PageSize="15"
+                                                                 Filterable="true"
+                                                                 Class="address-search-box"
+                                                                 FilterOperator="@StringFilterOperator.Contains">
+                                                                        <ComboBoxSettings>
+                                                                            <ComboBoxPopupSettings Height="200px" />
+                                                                        </ComboBoxSettings>
+                                                                    </TelerikComboBox>
+                                                                    <CustomValidationMessage For="@(() => NewOrgRequest.GV_DomicileStreetAddressReq)" TextCode="REGISTRATION_ADDRESS" />
+                                                                </div>
+                                                                @if (GV_SelectedMunicipality != Guid.Empty)
+                                                                {
+                                                                    <div class="small-element-separator"></div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">@TextProvider.Get("ORG_ADDRESS")</label>
+                                                                        <InputText @bind-Value="NewOrgRequest.GV_DomicileStreetAddressReq" class="form-control"></InputText>
+                                                                        <CustomValidationMessage For="@(() => NewOrgRequest.GV_DomicileStreetAddressReq)" TextCode="REGISTRATION_ADDRESS" />
+                                                                    </div>
+                                                                    <div class="small-element-separator"></div>
+                                                                    <div class="form-group-multicolumn">
+                                                                        <div class="form-group flex-half">
+                                                                            <label class="form-label">@TextProvider.Get("ORG_POSTAL_CODE")</label>
+                                                                            <label class="form-label-value">@NewOrgRequest.GV_DomicilePostalCodeReq</label>
+                                                                        </div>
+                                                                        <div class="form-group flex-full">
+                                                                            <label class="form-label">@TextProvider.Get("ORG_MUNICIPALITY")</label>
+                                                                            <label class="form-label-value">@NewOrgRequest.GV_DomicileMunicipalityReq</label>
+                                                                        </div>
+                                                                        <div class="form-group flex-half">
+                                                                            <label class="form-label">@TextProvider.Get("ORG_PROVINCE")</label>
+                                                                            <label class="form-label-value">@NewOrgRequest.GV_DomicileProvinceReq</label>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                                <div class="extra-small-element-separator"></div>
+                                                                <div class="address-not-found-container font-small custom-color-primary" @onclick="GV_AddressNotFoundClick">
+                                                                    @TextProvider.Get("REGISTRATION_ADDRESS_NOT_FOUND")
+                                                                </div>
+                                                            }
+                                                            else if (GV_AddressNotFound == true)
+                                                            {
+                                                                <div class="small-element-separator"></div>
+                                                                <div class="form-group">
+                                                                    <label class="form-label">@TextProvider.Get("REGISTRATION_ADDRESS")</label>
+                                                                    <InputText @bind-Value="NewOrgRequest.GV_DomicileStreetAddressReq" class="form-control"></InputText>
+                                                                    <CustomValidationMessage For="@(() => NewOrgRequest.GV_DomicileStreetAddressReq)" TextCode="REGISTRATION_ADDRESS" />
+                                                                </div>
+                                                                <div class="small-element-separator"></div>
+                                                                <div class="form-group-multicolumn">
+                                                                    <div class="form-group flex-half">
+                                                                        <label class="form-label">@TextProvider.Get("REGISTRATION_POSTAL_CODE")</label>
+                                                                        <InputText @bind-Value="NewOrgRequest.GV_DomicilePostalCodeReq" class="form-control"></InputText>
+                                                                        <CustomValidationMessage For="@(() => NewOrgRequest.GV_DomicilePostalCodeReq)" TextCode="REGISTRATION_POSTAL_CODE" />
+                                                                    </div>
+                                                                    <div class="form-group flex-full">
+                                                                        <label class="form-label">@TextProvider.Get("REGISTRATION_MUNICIPALITY")</label>
+                                                                        <InputText @bind-Value="NewOrgRequest.GV_DomicileMunicipalityReq" class="form-control"></InputText>
+                                                                        <CustomValidationMessage For="@(() => NewOrgRequest.GV_DomicileMunicipalityReq)" TextCode="REGISTRATION_MUNICIPALITY" />
+                                                                    </div>
+                                                                    <div class="form-group flex-half">
+                                                                        <label class="form-label">@TextProvider.Get("REGISTRATION_PROVINCE")</label>
+                                                                        <InputText @bind-Value="NewOrgRequest.GV_DomicileProvinceReq" class="form-control"></InputText>
+                                                                        <CustomValidationMessage For="@(() => NewOrgRequest.GV_DomicileProvinceReq)" TextCode="REGISTRATION_PROVINCE" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="small-element-separator"></div>
+                                                                <div class="form-group">
+                                                                    <label class="form-label">@TextProvider.Get("REGISTRATION_NATION")</label>
+                                                                    <InputText @bind-Value="NewOrgRequest.GV_DomicileNationReq" class="form-control"></InputText>
+                                                                    <CustomValidationMessage For="@(() => NewOrgRequest.GV_DomicileNationReq)" TextCode="REGISTRATION_NATION" />
+                                                                </div>
+                                                                <div class="extra-small-element-separator"></div>
+                                                                <div class="address-not-found-container font-small custom-color-primary" @onclick="GV_SearchAddressClick">
+                                                                    @TextProvider.Get("REGISTRATION_ADDRESS_SEARCH")
+                                                                </div>
+                                                            }
+                                                            <div class="element-separator"></div>
+                                                            <h5>
+                                                                @TextProvider.Get("REGISTRATION_KONTAKT_DATA")
+                                                            </h5>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("REGISTRATION_EMAIL")</label>
+                                                                <InputText @bind-Value="NewOrgRequest.GV_EmailReq" type="email" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.GV_EmailReq)" TextCode="REGISTRATION_EMAIL" />
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("REGISTRATION_MOBILE_PHONE")</label>
+                                                                <CustomPhone @bind-Value="@NewOrgRequest.GV_PhoneReq"></CustomPhone>
+                                                                <CustomValidationMessage For="@(() => NewOrgRequest.GV_PhoneReq)" TextCode="REGISTRATION_PHONE" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </Anchor>
+                                        }
+
+                                        <Anchor Title="@(TextProvider.Get("ORG_DOCUMENT_OF_PROOF"))" IsCard="true" ID="@(TextProvider.Get("ORG_DOCUMENT_OF_PROOF"))" Order="8">                                     
+                                            <div class="font-normal">
+                                                @{
+                                                    var desciriptionDoc = (MarkupString)TextProvider.Get("ORG_DOCUMENT_OF_PROOF_DESCRIPTION");
+
+                                                    string ErrorCSS = "";
+
+                                                    @if (!string.IsNullOrEmpty(DocumentsOfProofError))
+                                                    {
+                                                        ErrorCSS = "upload-error";
+                                                    }
+                                                }
+                                                @desciriptionDoc
+                                            </div>
+                                            <div class="small-element-separator"></div>
+                                            <div class="upload-container @ErrorCSS">
+                                                <UploadComponent FileInfoList="DocumentsOfProof" Multiple="false" OnUpload="UploadChanged"></UploadComponent>
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(DocumentsOfProofError))
+                                            {
+                                                <div class="container-error">
+                                                    @DocumentsOfProofError
+                                                </div>
+                                            }
+                                        </Anchor>
+                                    }
+
+
+                                    @if (NewOrgRequest != null && Privacy != null)
+                                    {
+                                        <Anchor Title="@Privacy.Title" SubTitle="@Privacy.Description" IsCard="true" ID="@Privacy.Title" Order="9">      
+                                            @TextProvider.Get("PRIVACY_RED_AND_UNDERSTOOD")
+                                            <div class="extra-small-element-separator"></div>
+                                            <div class="privacy-switch">     
+                                                <TelerikSwitch @bind-Value="@NewOrgRequest.PrivacyConfirmed" OnLabel=" " OffLabel=" " Width="65px" OnChange="PrivacyChanged"
+                                                        Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                                </TelerikSwitch>
+                                            </div>                    
+                                            @if(!string.IsNullOrEmpty(PrivacyErrorCSS))
+                                            {
+                                                <div class="element-separator"></div>
+                                                <div class="container-error">
+                                                    @TextProvider.Get("PRIVACY_BOOL_ERROR")
+                                                </div>
+                                            }
+                                        </Anchor>
+                                    }
+
+                                    @if (FormError == true || !string.IsNullOrEmpty(DocumentsOfProofError) || !string.IsNullOrEmpty(PrivacyErrorCSS))
+                                    {
+                                        <div class="element-separator"></div>
+                                        <div class="container-error">
+                                            @TextProvider.Get("FORM_APPLICATION_ERROR")
+                                        </div>
+                                    }
+                                </EditForm>
+                                <div class="element-separator"></div>
+                                <div class="button-container">
+                                    <button class="btn btn-secondary" @onclick="HideNewOrganisation">@TextProvider.Get("BUTTON_BACK")</button>
+                                    @if (SelectedCompanyType != null && CompanyTypeList != null)
+                                    {
+                                        <button class="btn btn-primary" @onclick="SubmitRequest">@TextProvider.Get("BUTTON_COMMIT")</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary" disabled>@TextProvider.Get("BUTTON_COMMIT")</button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

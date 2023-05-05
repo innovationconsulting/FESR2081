@@ -1,0 +1,78 @@
+﻿.backend-form-selection
+{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.backend-form-selection div{
+    flex: 1;
+}
+
+.backend-step-container{
+    min-height: 500px;
+}
+
+.previous-selection-container {
+    display: flex;
+    gap: 100px;
+    justify-content: flex-start;
+    border-bottom: 1px solid #0F7173;
+    padding-bottom: 20px;
+    flex-wrap: wrap;
+}
+.map-container {
+    width: 100%;
+    /*max-width: 600px;*/
+    height: 600px;
+    border: 3px solid #0F7173 !important;
+}
+.authority-tag {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+
+.mantainance-priority {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.responsible-quickadd-container {
+    position: absolute;
+    bottom: 1px;
+    width: 100%;
+    margin-left: 1px;
+    background-color: white;
+}
+
+.responsible-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1px;
+    padding: 5px;
+    min-height: 38px;
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    cursor: pointer;
+    flex-wrap: wrap;
+}
+
+    .responsible-container:hover {
+        border: 1px solid #0F7173;
+        color: #0F7173;
+    }
+
+.responsible-relative {
+    position: relative;
+}
+
+.responsible-placeholder {
+    margin: auto;
+}

@@ -1,0 +1,59 @@
+﻿@if(DefinitionField != null && ApplicationField != null 
+  && FormRendererHelper.GetApplicationFields() != null && FormRendererHelper.GetApplicationFields().Count() > 0
+ && FormRendererHelper.GetDefinitionFields() != null && FormRendererHelper.GetDefinitionFields().Count() > 0)
+{
+    @if (ReferenceCheck && HasMunicipalViewDisplayedElements())
+    {
+        string BorderCSS = "";
+
+        if (DefinitionField != null && (DefinitionField.HasBorder == true))
+        {
+            BorderCSS = "element-basecontainer-border";
+        }
+        <div class="elementContainer-basecontainer @BorderCSS">    
+            @for (int i = 0; i < DefinitionField.ColumnCount; i++)
+            {
+                var colPos = i;
+
+                var subDefinitionFields = FormRendererHelper.GetDefinitionFields().Where(p => p.ColumnPos == colPos && p.FORM_Definition_Field_Parent_ID == DefinitionField.ID).ToList();
+                var subFields = FormRendererHelper.GetApplicationFields().Where(p => p.FORM_Definition_Field_ID != null && p.RepetitionCount == 1 && p.RepetitionParentID == ApplicationField.ID && subDefinitionFields.Select(p => p.ID).Contains(p.FORM_Definition_Field_ID.Value)).ToList();
+
+                <div class="elementContainer-column">
+                    @foreach (var f in subFields.OrderBy(p => p.SortOrder))
+                    {
+                        var defintionField =  FormRendererHelper.GetDefinitionFields().FirstOrDefault(x => x.ID == f.FORM_Definition_Field_ID);
+
+                        if (defintionField != null && defintionField.FORM_Definition_Fields_Type_ID != null)
+                        {
+                            var type = FormDefinitionProvider.GetDefinitionFieldType(defintionField.FORM_Definition_Fields_Type_ID.Value);
+
+                            @if (type != null && type.IsContainer)
+                            {
+                                var repetitions = FormRendererHelper.GetApplicationFields().Where(p => p.RepetitionParentID == ApplicationField.ID && p.FORM_Definition_Field_ID == f.FORM_Definition_Field_ID).ToList();
+
+                                int repCount = 1;
+
+                                foreach (var rep in repetitions.OrderBy(p => p.RepetitionCount).OrderBy(p => p.SortOrder))
+                                {
+                                    <ICWebApp.Components.FormRendererMunicipal.ElementContainer ApplicationField="@rep" DefinitionField="@defintionField" RepetitionItem="@rep.RepetitionCount"
+                                                           ReferenceList="@ReferenceList" Definition="@Definition">
+                                    </ICWebApp.Components.FormRendererMunicipal.ElementContainer>
+
+                                    repCount++;
+                                }
+                            }
+                            else
+                            {
+                                if (defintionField.ShowOnMunicipalSite)
+                                {
+                                    <ICWebApp.Components.FormRendererMunicipal.Element ApplicationField="@f" DefinitionField="@defintionField" ReferenceList="@ReferenceList" Definition="@Definition"></ICWebApp.Components.FormRendererMunicipal.Element>
+                                    <div class="default-space"></div>                                    
+                                }
+                            }
+                        }
+                    }
+                </div>
+            }   
+        </div>
+    }
+}

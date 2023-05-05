@@ -1,0 +1,10 @@
+.k-checkbox[b-z3f9bbx7h3] {
+    min-height: 16px;
+    min-width: 16px;
+}
+
+.button-container[b-z3f9bbx7h3]{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}

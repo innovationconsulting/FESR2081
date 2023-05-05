@@ -1,0 +1,56 @@
+﻿
+@media (max-width: 680px) {
+
+    .email-data-container {
+        max-height: unset !important;
+        overflow: unset !important;
+        height: auto;
+    }
+
+    .email-footer {
+        position: unset !important;
+        bottom: unset !important;
+        left: unset !important;
+        border-top: 0px !important;
+    }
+
+    .email-header {
+        position: unset !important;
+        border-bottom: 0px !important;
+    }
+
+    .email-title {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+
+.email-row {
+    display: flex;
+}
+
+.email-row-left {
+    justify-content: left;
+}
+
+.email-row-right {
+    justify-content: right;
+    margin-left: 15px;
+}
+
+.email-edit-container{
+    display: flex;
+    gap: 10px;
+}
+.email-edit-icon {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 18px !important;
+    padding: 3px;
+}
+.email-edit-text {
+    line-height: 30px;
+}
+#veriff-root{
+    height: auto !important;
+}

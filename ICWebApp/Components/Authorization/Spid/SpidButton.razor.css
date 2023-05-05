@@ -1,0 +1,59 @@
+﻿.button-spid {
+    background-color: #06C;
+    color: #FFF;
+}
+
+.italia-it-button-size-m {
+    font-size: 15px;
+    width: 220px;
+}
+
+.italia-it-button {
+    display: inline-block;
+    position: relative;
+    padding: 0;
+    color: #FFF;
+    font-family: "Titillium Web",HelveticaNeue,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+    font-weight: 600;
+    line-height: 1em;
+    text-decoration: none;
+    border: 0;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.italia-it-button-icon {
+    margin: 0 -.4em 0 0;
+    padding: 0.6em .8em .5em;
+    border-right: rgba(255,255,255,0.1) 0.1em solid;
+}
+
+.italia-it-button-icon, .italia-it-button-text {
+    display: block;
+    float: left;
+}
+
+.italia-it-button-size-m > span img {
+    width: 29px;
+    height: 29px;
+    border: 0;
+}
+.italia-it-button-text {
+    padding: .95em 1em .85em 1em;
+    font-size: 1.15em;
+    text-align: center;
+}
+
+.italia-it-button-icon, .italia-it-button-text {
+    display: block;
+    float: left;
+}
+.button-spid:hover {
+    background-color: #036;
+    color: #FFF;
+}
+.button-spid:active {
+    background-color: #83BEED;
+    color: #036;
+}

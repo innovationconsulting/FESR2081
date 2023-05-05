@@ -1,0 +1,45 @@
+﻿@page "/Organization/Backend/Management/List"
+
+@layout MainLayout
+
+<div class="element-separator"></div>
+<div class="segment-container custom-background-default">
+    <div class="filter-search-first-row"> 
+        <div class="filter-search-input">
+            <EditForm Model="@Filter" OnValidSubmit="@(() => FilterSearch())">
+                <div class="filter-searchbar">
+                    <input type="text" @bind-value="@Filter.Text" onfocus="this.select();" placeholder="@TextProvider.Get("SEARCH_KEYWORD_PLACEHOLDER")"></input>  
+                    <button class="btn btn-primary searchbar-button" type="submit" @onclick:stopPropagation="true">
+                        <TelerikIcon Icon="@("fad fa-search")"></TelerikIcon>
+                    </button>                    
+                </div>
+            </EditForm>
+        </div>
+    </div>
+    <div class="small-element-separator"></div>
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikGrid Data="@Organizations" Pageable="false" Sortable="false" Resizable="false" OnRowClick="OnRowClick"
+                        ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false" >
+            <GridColumns>
+                <GridColumn Field="@nameof(V_AUTH_Organizations.Fullname)" Title="@TextProvider.Get("BACKEND_SUB_MANAGEMENT_TABLE_FULLNAME")"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Organizations.FiscalNumber)" Title="@TextProvider.Get("BACKEND_SUB_MANAGEMENT_TABLE_FISCALNR")"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Organizations.VatNumber)" Title="@TextProvider.Get("BACKEND_SUB_MANAGEMENT_TABLE_VATNUMBER")"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Organizations.CompanyType)" Title="@TextProvider.Get("BACKEND_SUB_MANAGEMENT_TABLE_COMPANYTYPE")"></GridColumn>
+                <GridColumn Field="@nameof(V_AUTH_Organizations.LegalForm)" Title="@TextProvider.Get("BACKEND_SUB_MANAGEMENT_TABLE_LEGALFORM")"></GridColumn>
+                <GridCommandColumn Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        V_AUTH_Organizations item = context as V_AUTH_Organizations;
+
+                        if (item != null)
+                        {
+                            <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => ShowDetail(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_SHOW")"></GridCommandButton>
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>    

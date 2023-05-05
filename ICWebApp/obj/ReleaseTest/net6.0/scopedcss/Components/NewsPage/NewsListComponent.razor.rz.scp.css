@@ -1,0 +1,105 @@
+.news-preview-container[b-0exrvxm0hv] {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    min-height: 300px;
+    gap: 30px;
+}
+
+    .news-preview-container[b-0exrvxm0hv]::after {
+        content: "";
+        flex: auto;
+    }
+
+.news-item-container[b-0exrvxm0hv] {
+    width: 23.5%;
+    overflow: hidden;
+    background-color: #F2F2F2;
+    border: 1px solid #F2F2F2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+@media(max-width: 1000px) {
+    .news-preview-container[b-0exrvxm0hv] {
+        flex-wrap: wrap;
+    }
+
+    .news-item-container[b-0exrvxm0hv] {
+        width: 100%;
+    }
+}
+
+.news-item-container:hover[b-0exrvxm0hv] {
+    border: 1px solid #0F7173;
+}
+
+.news-selected[b-0exrvxm0hv] {
+    border: 1px solid #0F7173;
+    background-color: #A5C8C938 !important;
+}
+
+.news-image[b-0exrvxm0hv] {
+    height: 200px;
+    overflow: hidden;
+}
+
+    .news-image img[b-0exrvxm0hv] {
+        width: 100%;
+    }
+
+.news-data-column[b-0exrvxm0hv] {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.news-title[b-0exrvxm0hv] {
+}
+
+.news-preview[b-0exrvxm0hv] {
+    height: 100%;
+}
+
+.news-item-buttons[b-0exrvxm0hv] {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.news-button-container[b-0exrvxm0hv] {
+    display: flex;
+    justify-content: flex-end;
+}
+.news-button-container[b-0exrvxm0hv] {
+    margin-right: 5px;
+}
+
+.news-date[b-0exrvxm0hv] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.news-button-container[b-0exrvxm0hv] {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.news-button[b-0exrvxm0hv] {
+    color: #0F7173;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    line-height: 30px;
+    height: 30px;
+}
+
+    .news-button:hover[b-0exrvxm0hv] {
+        text-decoration: underline;
+        color: #1DA2AF;
+    }

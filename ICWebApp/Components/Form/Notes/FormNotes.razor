@@ -1,0 +1,111 @@
+﻿@if (Definition != null && Application != null && FormApplicationNoteMessages != null && SessionWrapper.CurrentUser != null)
+{
+    <div class="chat-main-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <div class="chat-pannel" @onclick="HideDocuments">
+            <div class="scroll-container">
+                @if (FormApplicationNoteMessages.Count() > 0)
+                {
+                    @foreach (var message in FormApplicationNoteMessages.OrderBy(p => p.SendDate))
+                    {
+                        <div class="chat-message-container">
+                            <div class="chat-message-element chat-message-container">
+                                <div class="chat-message-first-row font-detail">
+                                    <div class="chat-message-user">
+                                        @message.Firstname @message.Lastname
+                                    </div>
+                                    <div class="chat-message-date">
+                                        @if (message.SendDate != null)
+                                        {
+                                            @message.SendDate.Value.ToString("dd.MM.yyyy HH:mm");
+                                        }
+                                    </div>
+                                </div>
+                                <div class="chat-message-second-row font-normal">
+                                    @if (!string.IsNullOrEmpty(message.Message))
+                                    {
+                                        <div class="chat-message-text">
+                                            @{
+                                                var text = (MarkupString)message.Message;
+                                            }
+                                            @text
+                                        </div>
+                                    }
+                                    @if (FormApplicationNoteDokuments != null)
+                                    {
+                                        var documents = FormApplicationNoteDokuments.Where(p => p.FORM_Application_Note_ID == message.ID).ToList();
+
+                                        @if (documents.Count > 0)
+                                        {
+                                            @if (!string.IsNullOrEmpty(message.Message))
+                                            {
+                                                <div class="small-element-separator"></div>
+                                            }
+
+                                            @foreach (var doc in documents)
+                                            {
+                                                @if (doc.FILE_FileInfo_ID != null)
+                                                {
+                                                    <div class="chat-message-document">
+                                                        <div class="document-detail-download" @onclick="@(() => DownloadRessource(doc.FILE_FileInfo_ID.Value, doc.FileName))">
+                                                            <div class="document-detail-download-icon">
+                                                                <TelerikIcon Icon="@("fas fa-file-download")"></TelerikIcon>
+                                                            </div>
+                                                            <div class="document-detail-download-description">
+                                                                @doc.FileName (@(doc.Size/1024) kb)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="chat-no-messages-container">
+                        @TextProvider.Get("FORM_APPLICATION_NOTE_NO_MESSAGES")
+                    </div>
+                }
+                <div id="chat-bottom-element">
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="chat-input-bar">
+            @if (NoteToSend != null)
+            {
+                @if (ShowFileUploadContainer)
+                {
+                    <div class="chat-input-document-uplaod-container">
+                        @if (FileInfoUploadList != null)
+                        {
+                            <UploadComponent Multiple="true" FileInfoList="@FileInfoUploadList" OnRemove="@RemoveFile" SmallStyle="true"></UploadComponent>
+                        }
+                    </div>
+                }
+                <div class="chat-input-message-container">
+                    <div class="chat-input-message">
+                        <EditForm Model="@NoteToSend" OnValidSubmit="SendMessage">
+                            <input @bind-value="@NoteToSend.Message" placeholder="@TextProvider.Get("FORM_APPLICATION_NOTE_PLACEHOLDER")" tpye="text" />
+                        </EditForm>
+                    </div>
+                    <div class="chat-input-document-button">
+                        <button @onclick="ToggleDocuments" @onclick:stopPropagation="true" class="btn btn-secondary">
+                            <TelerikIcon Icon="@("fa-regular fa-paperclip")"></TelerikIcon>
+                        </button>
+                    </div>
+                    <div class="chat-input-send-button">
+                        <button @onclick="SendMessage" @onclick:stopPropagation="true" class="btn btn-primary" style="height: 100%">@TextProvider.Get("FORM_APPLICATION_NOTE_SEND_BUTTON")</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

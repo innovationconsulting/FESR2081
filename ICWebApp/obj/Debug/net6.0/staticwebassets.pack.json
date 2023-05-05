@@ -1,0 +1,797 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\ICWebApp.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ICWebApp.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\Ubuntu-Bold.ttf",
+      "PackagePath": "staticwebassets\\Fonts\\Ubuntu-Bold.ttf"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\Ubuntu-Bold.woff",
+      "PackagePath": "staticwebassets\\Fonts\\Ubuntu-Bold.woff"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\Ubuntu-Light.ttf",
+      "PackagePath": "staticwebassets\\Fonts\\Ubuntu-Light.ttf"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\Ubuntu-Light.woff",
+      "PackagePath": "staticwebassets\\Fonts\\Ubuntu-Light.woff"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\Ubuntu-Medium.ttf",
+      "PackagePath": "staticwebassets\\Fonts\\Ubuntu-Medium.ttf"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\Ubuntu-Medium.woff",
+      "PackagePath": "staticwebassets\\Fonts\\Ubuntu-Medium.woff"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\Ubuntu.ttf",
+      "PackagePath": "staticwebassets\\Fonts\\Ubuntu.ttf"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\Ubuntu.woff",
+      "PackagePath": "staticwebassets\\Fonts\\Ubuntu.woff"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\fira-sans-v11-latin-regular.eot",
+      "PackagePath": "staticwebassets\\Fonts\\fira-sans-v11-latin-regular.eot"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\fira-sans-v11-latin-regular.ttf",
+      "PackagePath": "staticwebassets\\Fonts\\fira-sans-v11-latin-regular.ttf"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\fira-sans-v11-latin-regular.woff",
+      "PackagePath": "staticwebassets\\Fonts\\fira-sans-v11-latin-regular.woff"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Fonts\\fira-sans-v11-latin-regular.woff2",
+      "PackagePath": "staticwebassets\\Fonts\\fira-sans-v11-latin-regular.woff2"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Gifs\\ticket.gif",
+      "PackagePath": "staticwebassets\\Gifs\\ticket.gif"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\AUTH\\Background.jpg",
+      "PackagePath": "staticwebassets\\Images\\AUTH\\Background.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\AUTH\\Logo-inverted.png",
+      "PackagePath": "staticwebassets\\Images\\AUTH\\Logo-inverted.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\AUTH\\Logo.png",
+      "PackagePath": "staticwebassets\\Images\\AUTH\\Logo.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Backend\\Logo_512x512.png",
+      "PackagePath": "staticwebassets\\Images\\Backend\\Logo_512x512.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\BusyIndicator\\Spinner.gif",
+      "PackagePath": "staticwebassets\\Images\\BusyIndicator\\Spinner.gif"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\BusyIndicator\\Spinner_Inverted.gif",
+      "PackagePath": "staticwebassets\\Images\\BusyIndicator\\Spinner_Inverted.gif"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\BusyIndicator\\loader.png",
+      "PackagePath": "staticwebassets\\Images\\BusyIndicator\\loader.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\ConnectionLost\\Icon.png",
+      "PackagePath": "staticwebassets\\Images\\ConnectionLost\\Icon.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\ConnectionLost\\Icon_Inverted.png",
+      "PackagePath": "staticwebassets\\Images\\ConnectionLost\\Icon_Inverted.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Customer\\LogoGais.jpg",
+      "PackagePath": "staticwebassets\\Images\\Customer\\LogoGais.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\FESR_EFRE\\FESR_EFRE_Logo_FullWidth.jpg",
+      "PackagePath": "staticwebassets\\Images\\FESR_EFRE\\FESR_EFRE_Logo_FullWidth.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\FESR_EFRE\\FESR_EFRE_Logo_Mobile.jpg",
+      "PackagePath": "staticwebassets\\Images\\FESR_EFRE\\FESR_EFRE_Logo_Mobile.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Frontend\\poweredBy.png",
+      "PackagePath": "staticwebassets\\Images\\Frontend\\poweredBy.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Main\\Logo-inverted.png",
+      "PackagePath": "staticwebassets\\Images\\Main\\Logo-inverted.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Main\\Logo-small-inverted.png",
+      "PackagePath": "staticwebassets\\Images\\Main\\Logo-small-inverted.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Main\\Logo.png",
+      "PackagePath": "staticwebassets\\Images\\Main\\Logo.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\News\\Background.webp",
+      "PackagePath": "staticwebassets\\Images\\News\\Background.webp"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Reporting\\checked.jpg",
+      "PackagePath": "staticwebassets\\Images\\Reporting\\checked.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Reporting\\unchecked.jpg",
+      "PackagePath": "staticwebassets\\Images\\Reporting\\unchecked.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Bürgersaal Gebäude.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Bürgersaal Gebäude.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Bürgersaal Küche.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Bürgersaal Küche.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Bürgersaal Mansarde.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Bürgersaal Mansarde.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Bürgersaal großer Saal 2.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Bürgersaal großer Saal 2.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Bürgersaal großer Saal.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Bürgersaal großer Saal.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Bürgersaal kleiner Saal.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Bürgersaal kleiner Saal.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Herrenhaus Gebäude.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Herrenhaus Gebäude.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Herrenhof Gebäude.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Herrenhof Gebäude.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Herrenhof Innenhof.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Herrenhof Innenhof.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Herrenhof Keller.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Herrenhof Keller.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Herrenhof großer Saal 2.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Herrenhof großer Saal 2.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Herrenhof großer Saal.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Herrenhof großer Saal.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Rooms\\Herrenhof kleiner Saal.jpg",
+      "PackagePath": "staticwebassets\\Images\\Rooms\\Herrenhof kleiner Saal.jpg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Spid\\agid-logo-lb.svg",
+      "PackagePath": "staticwebassets\\Images\\Spid\\agid-logo-lb.svg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Spid\\spid-ico-circle-bb.svg",
+      "PackagePath": "staticwebassets\\Images\\Spid\\spid-ico-circle-bb.svg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Spid\\spid-logo-b-lb.svg",
+      "PackagePath": "staticwebassets\\Images\\Spid\\spid-logo-b-lb.svg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Status\\green.png",
+      "PackagePath": "staticwebassets\\Images\\Status\\green.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Status\\red.png",
+      "PackagePath": "staticwebassets\\Images\\Status\\red.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Status\\yellow.png",
+      "PackagePath": "staticwebassets\\Images\\Status\\yellow.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\Telerik\\TelerikDash.png",
+      "PackagePath": "staticwebassets\\Images\\Telerik\\TelerikDash.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\intlTel\\flags.png",
+      "PackagePath": "staticwebassets\\Images\\intlTel\\flags.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\Images\\intlTel\\flags@2x.png",
+      "PackagePath": "staticwebassets\\Images\\intlTel\\flags@2x.png"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\Layout\\Frontend\\FrontendLayout.css",
+      "PackagePath": "staticwebassets\\css\\Layout\\Frontend\\FrontendLayout.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\Webext\\external.css",
+      "PackagePath": "staticwebassets\\css\\Webext\\external.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\colors.css",
+      "PackagePath": "staticwebassets\\css\\colors.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\connectionLost.css",
+      "PackagePath": "staticwebassets\\css\\connectionLost.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\intlTel\\intlTelInput.css",
+      "PackagePath": "staticwebassets\\css\\intlTel\\intlTelInput.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\intlTel\\intlTelInput.min.css",
+      "PackagePath": "staticwebassets\\css\\intlTel\\intlTelInput.min.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\responsive\\site-800px.css",
+      "PackagePath": "staticwebassets\\css\\responsive\\site-800px.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\spid.css",
+      "PackagePath": "staticwebassets\\css\\spid.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\bootstrap5.css",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\bootstrap5.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\bootstrap5.min.css",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\bootstrap5.min.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\bootstrap5.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\bootstrap5.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\base\\base.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\base\\base.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\buttons\\button.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\buttons\\button.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\buttons\\check-box.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\buttons\\check-box.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\buttons\\chips.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\buttons\\chips.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\buttons\\floating-action-button.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\buttons\\floating-action-button.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\buttons\\radio-button.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\buttons\\radio-button.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\buttons\\speed-dial.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\buttons\\speed-dial.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\buttons\\switch.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\buttons\\switch.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\calendars\\calendar.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\calendars\\calendar.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\calendars\\datepicker.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\calendars\\datepicker.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\calendars\\daterangepicker.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\calendars\\daterangepicker.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\calendars\\datetimepicker.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\calendars\\datetimepicker.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\calendars\\timepicker.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\calendars\\timepicker.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\documenteditor\\document-editor-container.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\documenteditor\\document-editor-container.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\documenteditor\\document-editor.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\documenteditor\\document-editor.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\dropdowns\\auto-complete.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\dropdowns\\auto-complete.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\dropdowns\\combo-box.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\dropdowns\\combo-box.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\dropdowns\\drop-down-base.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\dropdowns\\drop-down-base.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\dropdowns\\drop-down-list.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\dropdowns\\drop-down-list.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\dropdowns\\drop-down-tree.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\dropdowns\\drop-down-tree.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\dropdowns\\list-box.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\dropdowns\\list-box.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\dropdowns\\mention.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\dropdowns\\mention.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\dropdowns\\multi-select.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\dropdowns\\multi-select.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\filemanager\\file-manager.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\filemanager\\file-manager.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\gantt\\gantt.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\gantt\\gantt.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\grids\\excel-filter.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\grids\\excel-filter.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\grids\\grid.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\grids\\grid.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\inplace-editor\\inplace-editor.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\inplace-editor\\inplace-editor.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\inputs\\color-picker.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\inputs\\color-picker.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\inputs\\input.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\inputs\\input.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\inputs\\maskedtextbox.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\inputs\\maskedtextbox.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\inputs\\numerictextbox.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\inputs\\numerictextbox.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\inputs\\slider.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\inputs\\slider.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\inputs\\textbox.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\inputs\\textbox.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\inputs\\uploader.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\inputs\\uploader.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\kanban\\kanban.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\kanban\\kanban.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\layouts\\avatar.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\layouts\\avatar.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\layouts\\card.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\layouts\\card.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\layouts\\dashboard-layout.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\layouts\\dashboard-layout.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\layouts\\splitter.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\layouts\\splitter.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\lists\\list-view.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\lists\\list-view.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\lists\\sortable.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\lists\\sortable.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\accordion.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\accordion.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\appbar.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\appbar.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\breadcrumb.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\breadcrumb.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\carousel.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\carousel.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\context-menu.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\context-menu.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\h-scroll.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\h-scroll.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\menu.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\menu.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\pager.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\pager.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\sidebar.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\sidebar.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\tab.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\tab.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\toolbar.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\toolbar.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\treeview.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\treeview.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\navigations\\v-scroll.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\navigations\\v-scroll.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\notifications\\badge.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\notifications\\badge.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\notifications\\message.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\notifications\\message.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\notifications\\skeleton.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\notifications\\skeleton.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\notifications\\toast.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\notifications\\toast.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\pdfviewer\\pdfviewer.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\pdfviewer\\pdfviewer.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\pivotview\\pivotfieldlist.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\pivotview\\pivotfieldlist.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\pivotview\\pivotview.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\pivotview\\pivotview.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\popups\\dialog.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\popups\\dialog.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\popups\\popup.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\popups\\popup.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\popups\\spinner.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\popups\\spinner.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\popups\\tooltip.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\popups\\tooltip.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\querybuilder\\query-builder.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\querybuilder\\query-builder.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\richtexteditor\\rich-text-editor.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\richtexteditor\\rich-text-editor.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\schedule\\recurrence-editor.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\schedule\\recurrence-editor.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\schedule\\schedule.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\schedule\\schedule.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\splitbuttons\\button-group.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\splitbuttons\\button-group.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\splitbuttons\\drop-down-button.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\splitbuttons\\drop-down-button.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\splitbuttons\\progress-button.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\splitbuttons\\progress-button.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\splitbuttons\\split-button.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\splitbuttons\\split-button.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\individual-scss\\treegrid\\treegrid.scss",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\individual-scss\\treegrid\\treegrid.scss"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\syncfusion\\settings.json",
+      "PackagePath": "staticwebassets\\css\\syncfusion\\settings.json"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\telerik\\ComunixTheme.css",
+      "PackagePath": "staticwebassets\\css\\telerik\\ComunixTheme.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\css\\telerik\\custom.css",
+      "PackagePath": "staticwebassets\\css\\telerik\\custom.css"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\CodeInputComponent\\CodeInputComponent.js",
+      "PackagePath": "staticwebassets\\js\\CodeInputComponent\\CodeInputComponent.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Formbuilder\\formbuilder.js",
+      "PackagePath": "staticwebassets\\js\\Formbuilder\\formbuilder.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Geo\\Geo.js",
+      "PackagePath": "staticwebassets\\js\\Geo\\Geo.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Mobile\\mobileHelper.js",
+      "PackagePath": "staticwebassets\\js\\Mobile\\mobileHelper.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\NavMenu\\NavMenu_Mobile.js",
+      "PackagePath": "staticwebassets\\js\\NavMenu\\NavMenu_Mobile.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\News\\LatestNews.js",
+      "PackagePath": "staticwebassets\\js\\News\\LatestNews.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\SFRichTextEditor\\Custom.js",
+      "PackagePath": "staticwebassets\\js\\SFRichTextEditor\\Custom.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Services\\anchorHelper.js",
+      "PackagePath": "staticwebassets\\js\\Services\\anchorHelper.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Services\\enviromentHelper.js",
+      "PackagePath": "staticwebassets\\js\\Services\\enviromentHelper.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Services\\pasteInteropHelper.js",
+      "PackagePath": "staticwebassets\\js\\Services\\pasteInteropHelper.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Services\\spidHelper.js",
+      "PackagePath": "staticwebassets\\js\\Services\\spidHelper.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Signing\\Signing.js",
+      "PackagePath": "staticwebassets\\js\\Signing\\Signing.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\UploadComponent\\upload-component.js",
+      "PackagePath": "staticwebassets\\js\\UploadComponent\\upload-component.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\Veriff\\veriffHelper.js",
+      "PackagePath": "staticwebassets\\js\\Veriff\\veriffHelper.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\intlTel\\data.js",
+      "PackagePath": "staticwebassets\\js\\intlTel\\data.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\intlTel\\intlTelInput.js",
+      "PackagePath": "staticwebassets\\js\\intlTel\\intlTelInput.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\intlTel\\intlTelInputInterop.js",
+      "PackagePath": "staticwebassets\\js\\intlTel\\intlTelInputInterop.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\intlTel\\utils.js",
+      "PackagePath": "staticwebassets\\js\\intlTel\\utils.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\jquery\\jquery_3_3_1.js",
+      "PackagePath": "staticwebassets\\js\\jquery\\jquery_3_3_1.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\localizationHelper.js",
+      "PackagePath": "staticwebassets\\js\\localizationHelper.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\spid\\spid.js",
+      "PackagePath": "staticwebassets\\js\\spid\\spid.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\js\\telerik\\calendar\\tr_calendar_helper.js",
+      "PackagePath": "staticwebassets\\js\\telerik\\calendar\\tr_calendar_helper.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\service-worker.js",
+      "PackagePath": "staticwebassets\\service-worker.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\service-worker.published.js",
+      "PackagePath": "staticwebassets\\service-worker.published.js"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\spid\\SelfCreatedCertificateConf.txt",
+      "PackagePath": "staticwebassets\\spid\\SelfCreatedCertificateConf.txt"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\spid\\idp_metadata.xml",
+      "PackagePath": "staticwebassets\\spid\\idp_metadata.xml"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\spid\\metadata.xml",
+      "PackagePath": "staticwebassets\\spid\\metadata.xml"
+    },
+    {
+      "Id": "C:\\VisualStudioProjects\\Comunix\\ICWebApp\\wwwroot\\spid\\myspidcertificate.pfx",
+      "PackagePath": "staticwebassets\\spid\\myspidcertificate.pfx"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.ICWebApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.ICWebApp.props",
+      "PackagePath": "build\\ICWebApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.ICWebApp.props",
+      "PackagePath": "buildMultiTargeting\\ICWebApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.ICWebApp.props",
+      "PackagePath": "buildTransitive\\ICWebApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,82 @@
+﻿.eskalation-item-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    cursor: pointer;
+}
+    .eskalation-item-container:hover {
+        color: #0F7173 !important;
+    }
+.eskalation-responsible{
+    flex: 1;
+}
+.eskalation-date{
+    margin: auto;
+}
+
+.eskalation-item-add-container {
+    border: 1px dashed #d9d9d9;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+    .eskalation-item-add-container:hover {
+        border-color: #0F7173;
+        color: #0F7173;
+    }
+.eskalation-date{
+    width: 220px;
+}
+.button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+.eskalation-edit-responsible{
+    height: 250px;
+}
+.eskalation-responsible-container{
+    display: flex;
+    gap: 5px;
+    justify-content: flex-start;
+    flex: 1;
+}
+.eskalation-data-container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.eskalation-responsible-item {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.eskalation-title-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+.check-description-buttons {
+    width: 38px;
+    height: 38px;
+    border: 2px solid #0F7173;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: white;
+}
+
+    .check-description-buttons:hover {
+        background-color: #0F717355;
+    }
+
+.check-button {
+    text-align: center;
+    line-height: 34px;
+    color: #0F7173;
+}
+.check-description-buttons svg {
+    margin: auto;
+}
+.check-description-buttons i {
+    margin: auto;
+}

@@ -1,0 +1,48 @@
+﻿.telerik-report-container {
+    height: 100%;
+    padding-bottom: 30px;
+}
+
+@media(min-width: 926px){
+    .telerik-report-container {
+        padding-bottom: 60px;
+    }
+}
+
+.telerik-report-toolbar{
+    margin-bottom: 10px;
+}
+
+.telerik-report-viewer {
+    height: 100%;
+}
+.telerik-image-viewer{
+    height: 100%;
+    overflow: auto;
+}
+.telerik-image-viewer img {
+    width: 100%;
+}
+.form-detail-download {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+    .form-detail-download:hover {
+        color: #0F7173;
+    }
+
+        .form-detail-download:hover .form-detail-download-icon {
+            color: #0F7173 !important;
+        }
+
+.form-detail-download-icon {
+    font-size: 24px;
+    color: #808080;
+}
+
+.form-detail-download-description {
+    line-height: 34px;
+}

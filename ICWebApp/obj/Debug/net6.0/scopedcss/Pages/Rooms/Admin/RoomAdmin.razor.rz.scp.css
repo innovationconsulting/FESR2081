@@ -1,0 +1,35 @@
+.k-grid .k-link[b-4u0jjg1xup] {
+    color: white !important;
+}
+
+.roomsearchfilters[b-4u0jjg1xup] {
+    text-align: center;
+    margin: 0 0 30px;
+    width: 100%;
+    min-height: 50px;
+    display: inline-block;
+}
+
+.roomsearchfilters .form-group[b-4u0jjg1xup] {
+    margin-bottom: 8px;
+}
+
+@media (min-width: 768px) .form-inline .form-group {
+                              display: inline-block;
+                              margin-bottom: 0;
+                              vertical-align: middle;[b-4u0jjg1xup]
+                          }
+
+
+.hide[b-4u0jjg1xup] {
+    display: none !important;
+}
+
+.form-group[b-4u0jjg1xup] {
+    float: left;
+    margin: 5px;
+}
+
+.btn[b-4u0jjg1xup] {
+    width: 250px;
+}

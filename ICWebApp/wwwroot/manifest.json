@@ -1,0 +1,22 @@
+{
+  "name": "Comunix",
+  "short_name": "Comunix",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0F7173",
+  "scope": "../../",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "Logo_512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "Logo_192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+﻿.form-subcontainer
+{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+    .form-subcontainer .form-group{
+        width: 100%;
+    }
+    .form-spacer{
+        width: 100%;
+    }
+
+.task-add-container {
+    min-height: 65vh !important;
+}
+.task-loader-container {
+    height: 65vh !important;
+    position: relative;
+}
+.task-form-wizard-page{
+    max-height: 49vh;
+}
+.task-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    height: 60vh;
+    overflow: auto;
+}
+.container-left{
+    flex: 1;
+}
+.container-right {
+    flex: 1;
+}

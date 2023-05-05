@@ -1,0 +1,227 @@
+.room-container[b-i5y3dz3c66] {
+    border: 0px solid #dfdfdf;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+}
+
+.login-element[b-i5y3dz3c66] {
+    background-color: #f2f2f2;
+    padding: 30px;
+    width: 100%;
+    flex: 1;
+    text-align: center;
+}
+
+
+.k-tooltip[b-i5y3dz3c66] {
+    border-radius: 20px;
+    margin: 0;
+    padding: 4px 80px;
+}
+
+.k-tooltip-button .k-icon[b-i5y3dz3c66] {
+    color: inherit;
+    vertical-align: top;
+}
+
+.login-element[b-i5y3dz3c66] {
+    background-color: #f2f2f2;
+    padding: 30px;
+    width: 100%;
+    flex: 1;
+    text-align: center;
+}
+
+.roomHeaderSection[b-i5y3dz3c66] {
+    text-align: center;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.room-image-gallery[b-i5y3dz3c66] {
+    height: 100%;
+}
+
+.Room-Detail-Content[b-i5y3dz3c66] {
+    height: -moz-calc(100vh - 420px);
+    height: -webkit-calc(100vh - 420px);
+    height: -o-calc(100vh - 420px);
+    overflow: auto;
+}
+
+.Room-Detail-Row-Container[b-i5y3dz3c66] {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.RoomCards-Overview-Right-Container[b-i5y3dz3c66] {
+    width: 70%;
+    padding: 16px;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    gap: 5px;
+}
+
+.RoomGroup-Overview-Left-Container[b-i5y3dz3c66] {
+    flex: 40%;
+    height: 100%;
+    overflow: auto;
+    margin: unset;
+    border: unset;
+    padding-right: 10px;
+}
+
+.RoomCards-Detail-Container[b-i5y3dz3c66] {
+    margin: unset;
+    padding: unset;
+    border: unset;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.Room-Detail-Left-Column[b-i5y3dz3c66] {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+    .Room-Detail-Left-Column h3[b-i5y3dz3c66] {
+        margin-top: 15px;
+        margin-bottom: unset;
+    }
+
+.Room-Detail-Right-Column[b-i5y3dz3c66] {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+    .Room-Detail-Right-Column h3[b-i5y3dz3c66] {
+        margin-top: 15px;
+        margin-bottom: unset;
+    }
+
+.One-Column-List-Container[b-i5y3dz3c66] {
+    margin-top: 10px;
+    padding: 0px 20px;
+    text-align: start;
+}
+
+    .One-Column-List-Container li[b-i5y3dz3c66] {
+        margin-bottom: 5px;
+    }
+
+.Room-Detail-Textfield[b-i5y3dz3c66] {
+    padding: 0px 20px;
+    text-align: justify;
+}
+
+.Two-Column-List-Container[b-i5y3dz3c66] {
+    margin-top: 10px;
+    padding: 0px 20px;
+    text-align: start;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+    .Two-Column-List-Container li[b-i5y3dz3c66] {
+        margin-bottom: 5px;
+    }
+.List-Container-Left-Column[b-i5y3dz3c66] {
+    width: 50%;
+    margin: unset;
+    padding: unset;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+    .List-Container-Left-Column.Price-Colum-With[b-i5y3dz3c66] {
+        width: 70%
+    }
+
+.List-Container-Right-Column[b-i5y3dz3c66] {
+    width: 50%;
+    margin: unset;
+    padding: unset;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+    .List-Container-Right-Column.Price-Colum-With[b-i5y3dz3c66] {
+        width: 30%;
+        text-align: end;
+    }
+
+.Border-Top-Summe[b-i5y3dz3c66] {
+    border-top: 1px solid #0c5152;
+    padding-top: 10px;
+}
+
+.Margin-Summe[b-i5y3dz3c66] {
+    margin-top: unset;
+    padding-bottom: 10px;
+}
+
+.little-ul-margin ul[b-i5y3dz3c66] {
+    margin-bottom: 5px;
+}
+
+.accesoires-Container[b-i5y3dz3c66] {
+    margin: unset;
+    padding: unset;
+    border: unset;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.CheckBox-Container[b-i5y3dz3c66] {
+    width: 5%;
+    margin: unset;
+    padding: unset;
+    border: unset;
+    vertical-align: top;
+    justify-content: left;
+    text-align: left;
+}
+
+.Info-Container[b-i5y3dz3c66] {
+    width: 96%;
+    margin: unset;
+    padding: unset;
+    padding-top: 2px;
+    border: unset;
+    vertical-align: top;
+    justify-content: left;
+    text-align: left;
+}
+
+    .Info-Container li[b-i5y3dz3c66] {
+        margin-bottom: unset;
+    }
+
+.RoomCards-Overview-Container[b-i5y3dz3c66] {
+    width: 100%;
+}
+
+.RoomCards-Overview-Left-Container[b-i5y3dz3c66] {
+    width: 100%;
+
+}
+
+.segment-button-toolbar[b-i5y3dz3c66] {
+    text-align: right;
+}

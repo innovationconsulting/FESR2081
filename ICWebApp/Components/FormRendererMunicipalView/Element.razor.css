@@ -1,0 +1,27 @@
+﻿.element-checkbox
+{
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.element-checkbox-switch{
+    width: 65px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.element-checkbox-text{
+    /*width: 100%;*/
+}
+.element-error-style{
+    border:1px solid red;
+}
+
+.element-error {
+    color: red;
+}
+
+.element-difference{
+
+}

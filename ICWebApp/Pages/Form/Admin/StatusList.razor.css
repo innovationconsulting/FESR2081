@@ -1,0 +1,21 @@
+﻿.status-list-container{
+    max-width: 1000px !important;
+}
+
+.status-card {
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.status-list-row-item {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.status-list-description-container{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}

@@ -1,0 +1,34 @@
+﻿.segment-listview {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.segment-listview-item-container {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+    .segment-listview-item-container:hover {
+        color: #0F7173;
+    }
+
+.segment-listview li {
+    list-style-type: disclosure-closed;
+}
+
+.listview-item-bullet {
+    line-height: 100%;
+}
+
+.segment-title {
+    display: flex;
+    gap: 10px;
+}
+
+.segment-icon {
+    width: 25px;
+}

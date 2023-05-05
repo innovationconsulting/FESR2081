@@ -1,0 +1,952 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ICWebApp
+build_property.RootNamespace = ICWebApp
+build_property.ProjectDir = C:\VisualStudioProjects\Comunix\ICWebApp\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\VisualStudioProjects\Comunix\ICWebApp
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Anchor/Anchor.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBbmNob3JcQW5jaG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/LogoutComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXExvZ291dENvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Global/CustomValidationMessage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xHbG9iYWxcQ3VzdG9tVmFsaWRhdGlvbk1lc3NhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Global/PageTitleBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xHbG9iYWxcUGFnZVRpdGxlQm94LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/InfoPage/InfoTemplateEditComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbmZvUGFnZVxJbmZvVGVtcGxhdGVFZGl0Q29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Layout/Frontend/Title.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRnJvbnRlbmRcVGl0bGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Layout/Frontend/TopRow.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRnJvbnRlbmRcVG9wUm93LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/MainMenu/Backend/Mobile/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNYWluTWVudVxCYWNrZW5kXE1vYmlsZVxOYXZNZW51LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/MainMenu/Frontend/Desktop/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNYWluTWVudVxGcm9udGVuZFxEZXNrdG9wXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/MainMenu/Frontend/Mobile/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNYWluTWVudVxGcm9udGVuZFxNb2JpbGVcTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Admin/AdditionalRoomsComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xBZG1pblxBZGRpdGlvbmFsUm9vbXNDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/RoomBookingListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xSb29tQm9va2luZ0xpc3RDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/RoomGalerieListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xSb29tR2FsZXJpZUxpc3RDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/RoomOptionsListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xSb29tT3B0aW9uc0xpc3RDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/RoomPriceListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xSb29tUHJpY2VMaXN0Q29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/RoomReservationComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xSb29tUmVzZXJ2YXRpb25Db21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/RoomStepperComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xSb29tU3RlcHBlckNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/RoomSubRoomListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xSb29tU3ViUm9vbUxpc3RDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Search/SearchAppointmentListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xTZWFyY2hcU2VhcmNoQXBwb2ludG1lbnRMaXN0Q29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Search/SearchRoomListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xTZWFyY2hcU2VhcmNoUm9vbUxpc3RDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/External/LoginExternalMunicipalRedirect.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxFeHRlcm5hbFxMb2dpbkV4dGVybmFsTXVuaWNpcGFsUmVkaXJlY3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/External/LoginExternalRedirect.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxFeHRlcm5hbFxMb2dpbkV4dGVybmFsUmVkaXJlY3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/MunicipalitySetter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxNdW5pY2lwYWxpdHlTZXR0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SubPages/PropertyAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTdWJQYWdlc1xQcm9wZXJ0eUFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SubPages/RessourcesAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTdWJQYWdlc1xSZXNzb3VyY2VzQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SubPages/SchoolsAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTdWJQYWdlc1xTY2hvb2xzQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SubPages/SchoolyearEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTdWJQYWdlc1xTY2hvb2x5ZWFyRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Backend/CanteenList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxCYWNrZW5kXENhbnRlZW5MaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/GetRestAmount.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxHZXRSZXN0QW1vdW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/SignSubscriptions.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxTaWduU3Vic2NyaXB0aW9ucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/DefinitionAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxEZWZpbml0aW9uQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/DefinitionList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxEZWZpbml0aW9uTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/AdditionalFormAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xBZGRpdGlvbmFsRm9ybUFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/DeadlineAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xEZWFkbGluZUFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/EventAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xFdmVudEFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/MunicipalFieldAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xNdW5pY2lwYWxGaWVsZEFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/PaymentAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xQYXltZW50QWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/PropertyAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xQcm9wZXJ0eUFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/ReminderAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xSZW1pbmRlckFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/RessourcesAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xSZXNzb3VyY2VzQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/SigningAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xTaWduaW5nQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/TasksAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xUYXNrc0FkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/SubPages/UploadAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdWJQYWdlc1xVcGxvYWRBZGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Backend/SubPages/TasksAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxCYWNrZW5kXFN1YlBhZ2VzXFRhc2tzQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/InfoPage/Admin/InfoPageEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5mb1BhZ2VcQWRtaW5cSW5mb1BhZ2VFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/InfoPage/Admin/InfoTemplateEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5mb1BhZ2VcQWRtaW5cSW5mb1RlbXBsYXRlRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Legal/Accessibility.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVnYWxcQWNjZXNzaWJpbGl0eS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Legal/Cookies.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVnYWxcQ29va2llcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Legal/LegalNote.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVnYWxcTGVnYWxOb3RlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Legal/Privacy.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVnYWxcUHJpdmFjeS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/NewsPage/NewsPageList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1BhZ2VcTmV3c1BhZ2VMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Payment/Frontend/Payment.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5bWVudFxGcm9udGVuZFxQYXltZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Payment/Frontend/PaymentError.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5bWVudFxGcm9udGVuZFxQYXltZW50RXJyb3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Payment/Frontend/PaymentSuccess.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5bWVudFxGcm9udGVuZFxQYXltZW50U3VjY2Vzcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/SignBooking.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcU2lnbkJvb2tpbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Translation/Developer/Translation.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhbnNsYXRpb25cRGV2ZWxvcGVyXFRyYW5zbGF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/UserManagement/Admin/EmployeeList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlck1hbmFnZW1lbnRcQWRtaW5cRW1wbG95ZWVMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Shared/Redirect/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFJlZGlyZWN0XFJlZGlyZWN0VG9Mb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Anchor/AnchorList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBbmNob3JcQW5jaG9yTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-0ofyt59i8p
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/ChangePasswordComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXENoYW5nZVBhc3N3b3JkQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-1fgiqu6wig
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/LoginComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXExvZ2luQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-tslks9913c
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/RegistrationComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFJlZ2lzdHJhdGlvbkNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-jvvq70dr17
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/RegistrationDetailComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFJlZ2lzdHJhdGlvbkRldGFpbENvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-1eldo9e191
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/RegistrationEditComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFJlZ2lzdHJhdGlvbkVkaXRDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-9ntsdzmj44
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/ResetPasswordComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFJlc2V0UGFzc3dvcmRDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-4n2zxingyo
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/Spid/SpidButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFNwaWRcU3BpZEJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-2jhzj96fl6
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/UserSelectionComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFVzZXJTZWxlY3Rpb25Db21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-663462p8sl
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/VerifiedEmailComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFZlcmlmaWVkRW1haWxDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-uujb967fve
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/VerifyEmailComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFZlcmlmeUVtYWlsQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-dzeduakxbl
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/VerifyPhoneComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFZlcmlmeVBob25lQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-lf2b0s9y7j
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/VerifyVeriffComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFZlcmlmeVZlcmlmZkNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-n2b8n3d1b3
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Authorization/VerifyVeriffResultComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRob3JpemF0aW9uXFZlcmlmeVZlcmlmZlJlc3VsdENvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-jmeeac2agz
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Breadcrumb/Frontend/Breadcrumb.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCcmVhZGNydW1iXEZyb250ZW5kXEJyZWFkY3J1bWIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ksfnwjwhcg
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Canteen/CanteenCalendarComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDYW50ZWVuXENhbnRlZW5DYWxlbmRhckNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-8632j43zfs
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Canteen/CanteenFilterComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDYW50ZWVuXENhbnRlZW5GaWx0ZXJDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-fw90tgdpdo
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Canteen/SubscriptionDetailComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDYW50ZWVuXFN1YnNjcmlwdGlvbkRldGFpbENvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-pzqtpuckjd
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Canteen/SubscriptionElementComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDYW50ZWVuXFN1YnNjcmlwdGlvbkVsZW1lbnRDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-8gh1dwec23
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Canteen/UploadMedicalFileComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDYW50ZWVuXFVwbG9hZE1lZGljYWxGaWxlQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-oj6kuhfftg
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/CodeInput/CodeInputComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb2RlSW5wdXRcQ29kZUlucHV0Q29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-71g924wijo
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Collapsible/Collapsible.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb2xsYXBzaWJsZVxDb2xsYXBzaWJsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-f97xenp16z
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Dashboard/AuthorityContainer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEYXNoYm9hcmRcQXV0aG9yaXR5Q29udGFpbmVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-tnobbu30kn
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Dashboard/CanteenContainer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEYXNoYm9hcmRcQ2FudGVlbkNvbnRhaW5lci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-hgc18f7n56
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Dashboard/RoomContainer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEYXNoYm9hcmRcUm9vbUNvbnRhaW5lci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-22cjrwzahq
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/File/PDFViewer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGaWxlXFBERlZpZXdlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-iie0dy04gb
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/File/UploadComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGaWxlXFVwbG9hZENvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-dxi7z1ixxp
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Formbuilder/Container.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtYnVpbGRlclxDb250YWluZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-eohbb6hfb3
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Formbuilder/Element.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtYnVpbGRlclxFbGVtZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-xjrokqquv5
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Formbuilder/ElementContainer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtYnVpbGRlclxFbGVtZW50Q29udGFpbmVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ujmxaoij71
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Formbuilder/ElementReference.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtYnVpbGRlclxFbGVtZW50UmVmZXJlbmNlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-f306e2gskk
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/FormRendererMunicipalView/Container.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtUmVuZGVyZXJNdW5pY2lwYWxWaWV3XENvbnRhaW5lci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-2rf054wtek
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/FormRendererMunicipalView/Element.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtUmVuZGVyZXJNdW5pY2lwYWxWaWV3XEVsZW1lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-w4uvg5g4j1
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/FormRenderer/Components/ListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtUmVuZGVyZXJcQ29tcG9uZW50c1xMaXN0Q29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-5yz7cstgbe
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/FormRenderer/Container.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtUmVuZGVyZXJcQ29udGFpbmVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-m949gaowg8
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/FormRenderer/Element.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtUmVuZGVyZXJcRWxlbWVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-fnjo9nbxfb
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/FormRenderer/ElementContainer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtUmVuZGVyZXJcRWxlbWVudENvbnRhaW5lci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-mq9zz2b2sm
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Form/Chat/FormChat.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtXENoYXRcRm9ybUNoYXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-fc33wor0c4
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Form/Filter/FilterComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtXEZpbHRlclxGaWx0ZXJDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ajnzqe8w4r
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Form/Notes/FormNotes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtXE5vdGVzXEZvcm1Ob3Rlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-tv25jj5sa1
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Form/Notes/NoteField.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3JtXE5vdGVzXE5vdGVGaWVsZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-hks7sym6a8
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Global/BusyIndicator.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xHbG9iYWxcQnVzeUluZGljYXRvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-7ir0vxovhn
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Global/CustomLoader.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xHbG9iYWxcQ3VzdG9tTG9hZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-08tz9f6yhv
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Global/ModalWindow.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xHbG9iYWxcTW9kYWxXaW5kb3cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-53pmkr95kj
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/InfoPage/InfoPageComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbmZvUGFnZVxJbmZvUGFnZUNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-bo3bu5d96x
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Layout/Frontend/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRnJvbnRlbmRcRm9vdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-8492mpfpvy
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Localization/Backend/LanguageComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMb2NhbGl6YXRpb25cQmFja2VuZFxMYW5ndWFnZUNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-dl2oljpsg5
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Localization/Frontend/LanguageComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMb2NhbGl6YXRpb25cRnJvbnRlbmRcTGFuZ3VhZ2VDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-4onu4jrb5n
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/MainMenu/Backend/Desktop/NavLinkComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNYWluTWVudVxCYWNrZW5kXERlc2t0b3BcTmF2TGlua0NvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-4y0zx2i7ot
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/MainMenu/Backend/Desktop/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNYWluTWVudVxCYWNrZW5kXERlc2t0b3BcTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-dikytun0e9
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/MainMenu/Backend/Mobile/NavLinkComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNYWluTWVudVxCYWNrZW5kXE1vYmlsZVxOYXZMaW5rQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-0flwi3h6wo
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/MainMenu/Frontend/Desktop/NavLinkComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNYWluTWVudVxGcm9udGVuZFxEZXNrdG9wXE5hdkxpbmtDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ore2oqxkjt
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/MainMenu/Frontend/Mobile/NavLinkComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNYWluTWVudVxGcm9udGVuZFxNb2JpbGVcTmF2TGlua0NvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-6nt3a0o4eq
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Messaging/SystemMessageComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNZXNzYWdpbmdcU3lzdGVtTWVzc2FnZUNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-2z5ca13vfm
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Messaging/SystemNotificationComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNZXNzYWdpbmdcU3lzdGVtTm90aWZpY2F0aW9uQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-8ppnxjpenm
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/NewsPage/NewsCarouselBoxComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOZXdzUGFnZVxOZXdzQ2Fyb3VzZWxCb3hDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-qdjzhjat74
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/NewsPage/NewsListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOZXdzUGFnZVxOZXdzTGlzdENvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-0exrvxm0hv
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Organization/EditOrganization.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xPcmdhbml6YXRpb25cRWRpdE9yZ2FuaXphdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-mjhlzvvrgu
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Organization/Filter/FilterComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xPcmdhbml6YXRpb25cRmlsdGVyXEZpbHRlckNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-xgdd6shvnm
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Payments/PaymentList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYXltZW50c1xQYXltZW50TGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-c8eab7oohm
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Payments/PaymentPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYXltZW50c1xQYXltZW50UGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-l3nr9lqk8l
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Payments/UserPaymentList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYXltZW50c1xVc2VyUGF5bWVudExpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-svr7n2plgg
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Reporting/Viewer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSZXBvcnRpbmdcVmlld2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-klf7ha99yz
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Calendar/CalendarComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xDYWxlbmRhclxDYWxlbmRhckNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-1ak2ozno73
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Filter/FilterComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xGaWx0ZXJcRmlsdGVyQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-95qwey95yr
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Inventory/InventoryPositions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xJbnZlbnRvcnlcSW52ZW50b3J5UG9zaXRpb25zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-8wj5kr1699
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/RoomDetailComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xSb29tRGV0YWlsQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-6nbvx5qgs3
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Search/AppointmentEditor.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xTZWFyY2hcQXBwb2ludG1lbnRFZGl0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-qnw9qra3w1
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Search/AppointmentEditorBackend.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xTZWFyY2hcQXBwb2ludG1lbnRFZGl0b3JCYWNrZW5kLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-z3f9bbx7h3
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Search/AppointmentEditorRecurrence.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xTZWFyY2hcQXBwb2ludG1lbnRFZGl0b3JSZWN1cnJlbmNlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-js2688n892
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Rooms/Search/RoomSearchBarComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb29tc1xTZWFyY2hcUm9vbVNlYXJjaEJhckNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-tebnpeqx3k
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Search/Frontend/Searchbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTZWFyY2hcRnJvbnRlbmRcU2VhcmNoYmFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-8lep6msnhr
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/Signing/Signing.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaWduaW5nXFNpZ25pbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-0yyxj233hc
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/User/Backend/UserNotificationComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVc2VyXEJhY2tlbmRcVXNlck5vdGlmaWNhdGlvbkNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-3xvrwjcywm
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/User/Backend/UserProfileComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVc2VyXEJhY2tlbmRcVXNlclByb2ZpbGVDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-4ujs3e2p7l
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/User/Backend/UserSupportComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVc2VyXEJhY2tlbmRcVXNlclN1cHBvcnRDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-f78lg945t0
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/User/Frontend/Desktop/UserNotificationComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVc2VyXEZyb250ZW5kXERlc2t0b3BcVXNlck5vdGlmaWNhdGlvbkNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-h3didinqhg
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/User/Frontend/Mobile/UserNotificationComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVc2VyXEZyb250ZW5kXE1vYmlsZVxVc2VyTm90aWZpY2F0aW9uQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-uokgc6fdnx
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Components/User/Frontend/UserProfileComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVc2VyXEZyb250ZW5kXFVzZXJQcm9maWxlQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-mtfd80pq9k
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authority/Backend/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXR5XEJhY2tlbmRcRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-iyyr3hyuwr
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/External/LoginExternalError.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxFeHRlcm5hbFxMb2dpbkV4dGVybmFsRXJyb3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-qqpp4dijot
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Bollo/Developer/BolloPay.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9sbG9cRGV2ZWxvcGVyXEJvbGxvUGF5LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-pa1ywmrq4p
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/CanteenDetailPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxDYW50ZWVuRGV0YWlsUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-09iaunnw1d
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/CanteenManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxDYW50ZWVuTWFuYWdlbWVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-cw96zsnqfn
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/CanteenSettings.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxDYW50ZWVuU2V0dGluZ3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-sg33mlis87
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SchoolManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTY2hvb2xNYW5hZ2VtZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-27m45gg4u0
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SchoolyearManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTY2hvb2x5ZWFyTWFuYWdlbWVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-w3vua0vdd5
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SubPages/CanteenAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTdWJQYWdlc1xDYW50ZWVuQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-q8x7sze9n8
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SubPages/CanteenPeriod.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTdWJQYWdlc1xDYW50ZWVuUGVyaW9kLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ad4gua3rts
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Admin/SubPages/SchoolPeriod.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxBZG1pblxTdWJQYWdlc1xTY2hvb2xQZXJpb2QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-hio3iwjhql
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Backend/AccountBalanceList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxCYWNrZW5kXEFjY291bnRCYWxhbmNlTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-36hhei6yk0
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Backend/AccountDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxCYWNrZW5kXEFjY291bnREZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ovk9zse848
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Backend/CanteenDailyStudentList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxCYWNrZW5kXENhbnRlZW5EYWlseVN0dWRlbnRMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-utq0qeopnb
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Backend/CanteenStudentList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxCYWNrZW5kXENhbnRlZW5TdHVkZW50TGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-za7xahshep
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Backend/CreateSubscriptionsBackend.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxCYWNrZW5kXENyZWF0ZVN1YnNjcmlwdGlvbnNCYWNrZW5kLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-zow3g8s37i
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Backend/StudentList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxCYWNrZW5kXFN0dWRlbnRMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ui58lgh2wq
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Backend/SubscriptionsManagementList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxCYWNrZW5kXFN1YnNjcmlwdGlvbnNNYW5hZ2VtZW50TGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-zg82xuft9w
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/AbsenceManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxBYnNlbmNlTWFuYWdlbWVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-yeobk579bo
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/CreateSubscriptions.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxDcmVhdGVTdWJzY3JpcHRpb25zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-3kp0tt8vf6
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxEYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-z2linx8rbh
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/LandingPageCanteen.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxMYW5kaW5nUGFnZUNhbnRlZW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-4e5jlt9h4t
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/MovementList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxNb3ZlbWVudExpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-kgx8tf2yqa
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/RechargeAmount.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxSZWNoYXJnZUFtb3VudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ojsrmszue1
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Canteen/Frontend/SubscriptionList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FudGVlblxGcm9udGVuZFxTdWJzY3JpcHRpb25MaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-y7iv4aclfd
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Admin/StatusList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxBZG1pblxTdGF0dXNMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-4d12kgr25x
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Backend/Administration.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxCYWNrZW5kXEFkbWluaXN0cmF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-xpcks69hnq
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Backend/Application.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxCYWNrZW5kXEFwcGxpY2F0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-vd4bhbtm1j
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Backend/Detail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxCYWNrZW5kXERldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ej9gzvo6k0
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Backend/Mantainance.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxCYWNrZW5kXE1hbnRhaW5hbmNlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-kydtw8gha3
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/Application.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxBcHBsaWNhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-2y9f2cugdp
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/Application_ComittedView.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxBcHBsaWNhdGlvbl9Db21pdHRlZFZpZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ktv0elemx7
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/Application_Preview.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxBcHBsaWNhdGlvbl9QcmV2aWV3LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-62t4bs1bxk
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/AuthorityList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxBdXRob3JpdHlMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ept8sn9d19
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/Detail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxEZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-odqgt0wt5d
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/FormList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxGb3JtTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-bu18jjgscu
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/Mantainance/Mantainance.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxNYW50YWluYW5jZVxNYW50YWluYW5jZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-6120ijtm1s
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/Mantainance/MantainanceList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxNYW50YWluYW5jZVxNYW50YWluYW5jZUxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-9xq2dx2uad
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/Mantainance/Mantainance_ComittedView.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxNYW50YWluYW5jZVxNYW50YWluYW5jZV9Db21pdHRlZFZpZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-acakilxai5
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/UserApplicationList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxVc2VyQXBwbGljYXRpb25MaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-cvadp4gmp1
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Form/Frontend/UserDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybVxGcm9udGVuZFxVc2VyRGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-jwcrz20jrh
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/InfoPage/Admin/InfoTemplateList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5mb1BhZ2VcQWRtaW5cSW5mb1RlbXBsYXRlTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-11zlrycqnv
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Landing/Backend/Landing.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGFuZGluZ1xCYWNrZW5kXExhbmRpbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-bjeltpgnsb
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Landing/Frontend/Landing.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGFuZGluZ1xGcm9udGVuZFxMYW5kaW5nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-apoqhdo0sb
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Messages/MessageBackendList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWVzc2FnZXNcTWVzc2FnZUJhY2tlbmRMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-4bnokfpprx
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Messages/MessageList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWVzc2FnZXNcTWVzc2FnZUxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-aj48bjhoxv
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Municipality/PrivacySettings.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXVuaWNpcGFsaXR5XFByaXZhY3lTZXR0aW5ncy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-z7gavphwj0
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/NewsPage/Admin/NewsDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1BhZ2VcQWRtaW5cTmV3c0RldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-zxkp9mjrri
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/NewsPage/Admin/NewsList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1BhZ2VcQWRtaW5cTmV3c0xpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-r4uaeaffkp
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/NewsPage/NewsPageDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1BhZ2VcTmV3c1BhZ2VEZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-0f7lirw8b9
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Backend/ApplicationList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEJhY2tlbmRcQXBwbGljYXRpb25MaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-k20xqmcg21
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Backend/Detail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEJhY2tlbmRcRGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-vhfbmls53u
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Backend/ManagementDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEJhY2tlbmRcTWFuYWdlbWVudERldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-tqcp0zv27b
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Backend/ManagementList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEJhY2tlbmRcTWFuYWdlbWVudExpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-txpg6yynab
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Frontend/Application.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEZyb250ZW5kXEFwcGxpY2F0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-pm1zfevn1i
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Frontend/Application_ComittedView.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEZyb250ZW5kXEFwcGxpY2F0aW9uX0NvbWl0dGVkVmlldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-hbobztvybr
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Frontend/Application_Detail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEZyb250ZW5kXEFwcGxpY2F0aW9uX0RldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-nv3jxq8g7s
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Frontend/Application_Sign.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEZyb250ZW5kXEFwcGxpY2F0aW9uX1NpZ24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-isy1nt8z0z
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Frontend/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEZyb250ZW5kXERhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ok789cc9s2
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Organziation/Frontend/Organization_Management.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW56aWF0aW9uXEZyb250ZW5kXE9yZ2FuaXphdGlvbl9NYW5hZ2VtZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-v5z6ylt9u0
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Admin/RoomAdmin.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQWRtaW5cUm9vbUFkbWluLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-4u0jjg1xup
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Admin/RoomSettings.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQWRtaW5cUm9vbVNldHRpbmdzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-k37c98mwd9
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Admin/Subpages/RoomEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQWRtaW5cU3VicGFnZXNcUm9vbUVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-vtnxqpvtp4
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Admin/Subpages/RoomPersonsEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQWRtaW5cU3VicGFnZXNcUm9vbVBlcnNvbnNFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-qsegwpakoh
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Backend/RoomBookingCalendar.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQmFja2VuZFxSb29tQm9va2luZ0NhbGVuZGFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-5ieeocj16c
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Backend/RoomBookingDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQmFja2VuZFxSb29tQm9va2luZ0RldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-d7g801u6bm
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Backend/RoomBookingManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQmFja2VuZFxSb29tQm9va2luZ01hbmFnZW1lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-10c0rak4j1
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/PayBooking.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUGF5Qm9va2luZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-9690ibxluy
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomBooking.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbUJvb2tpbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-heegstcj80
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomBookingGroup.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbUJvb2tpbmdHcm91cC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ts6tue316r
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomBookingShowRequestPDF.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbUJvb2tpbmdTaG93UmVxdWVzdFBERi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-dlbu5a8l7l
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomBookingUserDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbUJvb2tpbmdVc2VyRGV0YWlscy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-v2gsttwtvj
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbURldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-i5y3dz3c66
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomLandingpage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbUxhbmRpbmdwYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-v8m2k2r8z4
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomSearchDate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbVNlYXJjaERhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-xybr4mgp61
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomSearchResult.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbVNlYXJjaFJlc3VsdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-uslf80hq75
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Rooms/Frontend/RoomSearchRoom.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcRnJvbnRlbmRcUm9vbVNlYXJjaFJvb20ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-yg97n0nx9g
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Signing/Developer/InitializeAdobeSign.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2lnbmluZ1xEZXZlbG9wZXJcSW5pdGlhbGl6ZUFkb2JlU2lnbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-xx5nbriymi
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/UserManagement/Admin/EmployeeAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlck1hbmFnZW1lbnRcQWRtaW5cRW1wbG95ZWVBZGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-kp5sb411g9
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/UserManagement/Admin/RegistrationAdminDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlck1hbmFnZW1lbnRcQWRtaW5cUmVnaXN0cmF0aW9uQWRtaW5EYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ljsqc9o41k
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/UserManagement/Frontend/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlck1hbmFnZW1lbnRcRnJvbnRlbmRcRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-l6f4usdb72
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Shared/Layout/FrontendLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExheW91dFxGcm9udGVuZExheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-lfb8d0tiv3
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Shared/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExheW91dFxNYWluTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-te2lr5wmnz
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/App/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/App/Partial/_ConnectionLost.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwXFBhcnRpYWxcX0Nvbm5lY3Rpb25Mb3N0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/App/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwXF9Ib3N0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/App/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-xwe6n4ofr1
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/Registration.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxSZWdpc3RyYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-smnix1c67q
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-p3556ksg3r
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/VeriffResult.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxWZXJpZmZSZXN1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-y15or4s2ug
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/VerifiedEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxWZXJpZmllZEVtYWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-skfki1862e
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/VerifyEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxWZXJpZnlFbWFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-u8q19i3zd7
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/VerifyPhone.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxWZXJpZnlQaG9uZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-gr1fkgxnt4
+
+[C:/VisualStudioProjects/Comunix/ICWebApp/Pages/Authorization/VerifyVeriff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvblxWZXJpZnlWZXJpZmYuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-hcl23zdvfm

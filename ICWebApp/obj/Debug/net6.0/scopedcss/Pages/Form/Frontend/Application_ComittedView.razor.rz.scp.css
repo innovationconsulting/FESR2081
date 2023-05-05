@@ -1,0 +1,101 @@
+.segment-container[b-ktv0elemx7] {
+    width: 100%;
+}
+
+.additional-forms-container[b-ktv0elemx7] {
+    display: flex;
+    gap: 30px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+@media(max-width: 1000px) {
+    .segment-listview-item-container[b-ktv0elemx7] {
+        width: 100% !important;
+    }
+}
+
+.segment-listview-item-container[b-ktv0elemx7] {
+    cursor: pointer;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 65px;
+    background-color: white;
+    border: 1px solid #f2f2f2;
+    border-left: 5px solid #f2f2f2;
+    border-radius: 3px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    width: 48%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    position: relative;
+}
+
+    .segment-listview-item-container:hover[b-ktv0elemx7] {
+        color: #0F7173;
+        border-color: #0F7173;
+    }
+
+        .segment-listview-item-container:hover .listview-item-button[b-ktv0elemx7] {
+            color: white !important;
+            background-color: #0F7173;
+        }
+
+.segment-listview-item-data-container[b-ktv0elemx7] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    flex: 1;
+}
+
+.listview-item-data[b-ktv0elemx7] {
+    display: flex;
+    flex-direction: column;
+}
+
+.segment-listview-item-title[b-ktv0elemx7] {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.listview-item-bullet[b-ktv0elemx7] {
+    font-size: 36px;
+    width: 50px;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    color: #808080;
+}
+
+.segment-title[b-ktv0elemx7] {
+    display: flex;
+    gap: 10px;
+}
+
+.segment-icon[b-ktv0elemx7] {
+    width: 25px;
+}
+
+.listview-item-button[b-ktv0elemx7] {
+    position: absolute;
+    margin-top: auto;
+    right: 0px;
+    top: 0px;
+    margin-bottom: auto;
+    width: 50px;
+    height: 100%;
+    background-color: #f2f2f2;
+    color: #808080;
+}
+
+.listview-item-button-container[b-ktv0elemx7] {
+    height: 100%;
+    display: flex;
+}
+
+.listview-item-button-icon[b-ktv0elemx7] {
+    margin: auto;
+    font-size: 18px;
+}

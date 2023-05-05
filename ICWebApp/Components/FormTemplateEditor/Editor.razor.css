@@ -1,0 +1,8 @@
+﻿.pdf-editor-container-large
+{
+    height: 92.5vh;
+}
+.pdf-editor-container{
+    position: relative;
+    clear: both;
+}

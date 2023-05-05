@@ -1,0 +1,35 @@
+﻿.k-grid .k-link {
+    color: white !important;
+}
+
+.roomsearchfilters {
+    text-align: center;
+    margin: 0 0 30px;
+    width: 100%;
+    min-height: 50px;
+    display: inline-block;
+}
+
+.roomsearchfilters .form-group {
+    margin-bottom: 8px;
+}
+
+@media (min-width: 768px) .form-inline .form-group {
+                              display: inline-block;
+                              margin-bottom: 0;
+                              vertical-align: middle;
+                          }
+
+
+.hide {
+    display: none !important;
+}
+
+.form-group {
+    float: left;
+    margin: 5px;
+}
+
+.btn {
+    width: 250px;
+}

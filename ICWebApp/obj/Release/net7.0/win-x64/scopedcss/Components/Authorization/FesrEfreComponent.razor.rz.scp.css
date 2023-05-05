@@ -1,0 +1,55 @@
+.FESR_EFRE-container[b-lu0ns7ordo] {
+    text-align: center;
+    width: 100%;
+    padding: 0px 10px;
+    margin-bottom: 20px;
+}
+.FESR_EFRE-container p[b-lu0ns7ordo] {
+    width: 65%;
+    font-family: Ubuntu;
+    margin: 0 auto;
+    text-align: justify;
+    text-align-last: center;
+    font-size: 10px;
+}
+
+    .FESR_EFRE-container .FESR_EFRE-logo[b-lu0ns7ordo] {
+        width: 65%;
+    }
+
+        .FESR_EFRE-container .FESR_EFRE-logo.Mobile-View[b-lu0ns7ordo] {
+            width: 60%;
+            display: none;
+        }
+
+@media (min-width: 800px) and (max-width: 1200px) {
+
+    .FESR_EFRE-container .FESR_EFRE-logo[b-lu0ns7ordo] {
+        width: 80%;
+    }
+    .FESR_EFRE-container p[b-lu0ns7ordo] {
+        width: 80%;
+    }
+}
+
+@media(max-width: 800px) {
+    .FESR_EFRE-container .FESR_EFRE-logo.Standard-View[b-lu0ns7ordo] {
+        display: none;
+    }
+
+    .FESR_EFRE-container .FESR_EFRE-logo.Mobile-View[b-lu0ns7ordo] {
+        display: unset;
+    }
+    .FESR_EFRE-container p[b-lu0ns7ordo] {
+        width: 60%;
+    }
+}
+@media(max-width: 650px) {
+
+    .FESR_EFRE-container .FESR_EFRE-logo.Mobile-View[b-lu0ns7ordo] {
+        width: 80%;
+    }
+    .FESR_EFRE-container p[b-lu0ns7ordo] {
+        width: 80%;
+    }
+}

@@ -1,0 +1,203 @@
+﻿@media(max-width: 800px) {
+    /* width */
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .navbar-container-frontend {
+        height: auto;
+        flex-direction: column;
+    }
+
+    .nav-item-frontend {
+        height: 40px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-left: 4px solid white;
+        width: 100%;
+    }
+
+    .nav-item-frontend-active {
+        border-bottom: 0px !important;
+        border-left: 4px solid #0F7173;
+        background-color: #0F71731F;
+    }
+
+    .nav-link-text {
+        color: #0F7173;
+        font-size: 16px !important;
+    }
+
+    .segment-element-container {
+        gap: 10px !important;
+    }
+
+    .segment-element {
+        width: 100% !important;
+    }
+
+    .spid-idp-button {
+        background-color: transparent !important;
+        height: 100% !important;
+        left: 0px !important;
+        margin: 0px !important;
+        position: fixed !important;
+        top: 0px !important;
+        width: 100% !important;
+        height: 100% !important;
+        left: 0px !important;
+        background-color: transparent !important;
+        margin: 0px !important;
+    }
+
+        .spid-idp-button ul {
+            width: 230px !important;
+            margin: auto !important;
+            margin-top: 40px !important;
+        }
+
+    .flex-full {
+        flex: unset !important;
+        width: 100%;
+    }
+
+    .flex-half {
+        flex: unset !important;
+        width: 100%;
+    }
+
+    .form-group-small {
+        width: 100% !important;
+    }
+
+    .filter-second-row .filter-element {
+        flex: unset !important;
+    }
+
+    .mantainance-container {
+        gap: 10px !important;
+    }
+
+    .mantainance-element {
+        width: 100% !important;
+    }
+
+    #notification-head {
+        margin-top: 4px;
+        font-size: 12px;
+    }
+
+    .frontend-user-container svg {
+        font-size: 22px !important;
+    }
+
+    .landing-news-container img {
+        width: 100%;
+        margin: unset !important;
+    }
+
+    .balance-container {
+        min-width: unset !important;
+        width: 100% !important;
+    }
+
+    .k-button-group.telerik-blazor {
+        display: flex;
+        margin-top: 5px;
+        gap: 5px !important;
+        margin-top: 5px;
+    }
+
+    .week-day-selector .k-toggle-button {
+        margin: 0px !important;
+        flex: 1;
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+    }
+
+    .segment-header {
+        line-height: 14px;
+    }
+
+    .segment-header-icon {
+        font-size: 18px !important;
+        width: auto !important;
+        margin-top: 0px !important;
+    }
+
+    .segment-mobile-separator {
+        border-bottom: 1px solid #d9d9d9;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .icon-Container {
+        margin-right: 0px !important;
+        margin-top: 1px;
+    }
+
+    .k-wizard {
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+
+        .k-wizard .k-step-indicator {
+            height: 32px !important;
+            width: 32px !important;
+        }
+
+        .k-wizard .k-step-text {
+            font-size: 12px !important;
+        }
+
+
+    .form-control {
+        height: 30px !important;
+        font-size: 12px !important;
+    }
+
+        .form-control .k-input-inner, .k-combobox .k-input-inner, .form-control input {
+            /*height: 30px !important;*/
+        }
+
+        .form-control input {
+            font-size: 12px !important;
+        }
+
+    .k-list-md {
+        font-size: 12px !important;
+    }
+
+    /*.form-password button {
+        height: 30px !important;
+        width: 30px !important;
+    }*/
+
+    .k-dropdownlist {
+        /*height: 30px !important;*/
+        font-size: 12px !important;
+    }
+
+    .k-combobox {
+        /*height: 30px !important;*/
+        font-size: 12px !important;
+    }
+
+    .k-window-content {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    /*.login-label{
+        font-size: 12px !important;
+    }*/
+    .news-detail-container{
+        width: 100%;
+    }
+    .news-detail-container img {
+        width: 100px;
+        margin-left: 10px;
+    }
+}

@@ -1,0 +1,22 @@
+﻿
+<div class="pageTitleBox">
+    <cmxheading size="H3" text="@TitleSub">
+                <h3 class="heading ng-star-inserted" style="display: inline-block; margin-left: 0px;">@((MarkupString)(TitleSub))</h3>
+    </cmxheading>
+    <br />
+    <cmxheading size="H1" text="@TitleMain">
+                <h1 class="headingdark" style="display: inline-block; margin-right: 1rem;">@TitleMain</h1>
+    </cmxheading>
+    
+  
+</div>
+<div class="element-separator"></div>
+
+
+@code {
+    [Parameter]
+    public String TitleMain { get; set; }
+
+    [Parameter]
+    public String TitleSub { get; set; }
+}

@@ -1,0 +1,21 @@
+.status-list-container[b-4d12kgr25x]{
+    max-width: 1000px !important;
+}
+
+.status-card[b-4d12kgr25x] {
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.status-list-row-item[b-4d12kgr25x] {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.status-list-description-container[b-4d12kgr25x]{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}

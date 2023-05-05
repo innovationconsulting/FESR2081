@@ -1,0 +1,32 @@
+h5[b-36hhei6yk0], .h5[b-36hhei6yk0] {
+    color: #0f7173;
+}
+.balance-warning[b-36hhei6yk0] {
+    color: #d9a30f !important;
+}
+.balance-danger[b-36hhei6yk0] {
+    color: red !important;
+}
+.filter-authorities[b-36hhei6yk0] {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.authority-tag[b-36hhei6yk0] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+
+.button-group[b-36hhei6yk0]{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}

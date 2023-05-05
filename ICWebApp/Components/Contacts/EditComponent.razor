@@ -1,0 +1,40 @@
+﻿@if (Data != null)
+{
+    <div class="edit-container">
+        <EditForm Model="Data" OnValidSubmit="Save" autocomplete="none">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_USER_MANAGEMENT_GENERAL_DATA")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_FIRSTNAME")</label>
+                <InputText @bind-Value="Data.FirstNameReq" class="form-control" autocomplete="none"></InputText>
+                <CustomValidationMessage For="@(() => Data.FirstNameReq)" TextCode="BACKEND_USER_MANAGEMENT_FIRSTNAME" />
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_LASTNAME")</label>
+                <InputText @bind-Value="Data.LastNameReq" class="form-control" autocomplete="none"></InputText>
+                <CustomValidationMessage For="@(() => Data.LastNameReq)" TextCode="BACKEND_USER_MANAGEMENT_LASTNAME" />
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_PHONE")</label>
+                <CustomPhone @bind-Value="@Data.Phone"></CustomPhone>
+                <CustomValidationMessage For="@(() => Data.Phone)" TextCode="BACKEND_USER_MANAGEMENT_PHONE" />
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group">
+                <label class="form-label">@TextProvider.Get("BACKEND_USER_MANAGEMENT_EMAIL")</label>
+                <InputText @bind-Value="Data.EMail" type="email" class="form-control" autocomplete="none"></InputText>
+                <CustomValidationMessage For="@(() => Data.EMail)" TextCode="BACKEND_USER_MANAGEMENT_EMAIL" />
+            </div>
+            <div class="element-separator"></div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button" OnClick="@Cancel">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Submit" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

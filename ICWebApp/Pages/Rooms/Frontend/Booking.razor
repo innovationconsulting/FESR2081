@@ -1,0 +1,404 @@
+﻿@page "/Rooms"
+@page "/Rooms/{SessionKey}"
+
+@layout FrontendLayout
+
+<div class="container">
+    <div class="row mt-lg-80 mt-3 mb-4">
+        <div class="col-lg-3 mb-4 border-col hide-max-576">
+            <ICWebApp.Components.Rooms.Frontend.SideBarComponent></ICWebApp.Components.Rooms.Frontend.SideBarComponent>
+        </div>
+        <div class="col-lg-8 offset-lg-1">
+            <div class="booking-container">
+                <CustomLoader Visible="@(IsDataBusy)" Text="@null" Class="initial-data-loader">
+                </CustomLoader>
+                @if (FirstStep == true)
+                {
+                    <div class="booking-first-step">
+                        <Anchor Title="@TextProvider.Get("FRONTEND_BOOKING_TIME_STEP")" ID="@TextProvider.Get("FRONTEND_BOOKING_TIME_STEP")" IsCard="true">
+                            <ICWebApp.Components.Rooms.Frontend.TimeFilterComponent Filter="@RoomBookingHelper.TimeFilter" OnSearch="OnSearch"></ICWebApp.Components.Rooms.Frontend.TimeFilterComponent>
+                        </Anchor>
+                        <Anchor Title="@TextProvider.Get("FRONTEND_BOOKING_ROOM_STEP")" ID="@TextProvider.Get("FRONTEND_BOOKING_ROOM_STEP")">
+                            <ICWebApp.Components.Rooms.Frontend.RoomFilterComponent Filter="@RoomBookingHelper.TimeFilter" OnSearch="OnSearch"></ICWebApp.Components.Rooms.Frontend.RoomFilterComponent>
+                        </Anchor>
+                        <div class="booking-action-container">
+                            <div class="btn-placeholder"></div>
+                            @if (SessionWrapper.CurrentUser != null)
+                            {
+                                @if (RoomBookingHelper.RoomList != null && RoomBookingHelper.RoomList.Where(p => p.IsSelected == true).Count() > 0 && RoomBookingHelper.TimeFilter != null)
+                                {
+                                    <div class="btn btn-primary" @onclick="GoToSecondStep">@TextProvider.Get("FRONTEND_BOOKING_CONTINUE")</div>
+                                }
+                                else
+                                {
+                                    <div class="btn btn-primary btn-disabled" disabled>@TextProvider.Get("FRONTEND_BOOKING_CONTINUE")</div>
+                                }
+                            }
+                            else
+                            {
+                                @if (RoomBookingHelper.RoomList != null && RoomBookingHelper.RoomList.Where(p => p.IsSelected == true).Count() > 0 && RoomBookingHelper.TimeFilter != null)
+                                {
+                                    <div class="btn btn-primary" @onclick="SaveSessionAndLogin">@TextProvider.Get("FRONTEND_BOOKING_LOGIN")</div>
+                                }
+                                else
+                                {
+                                    <div class="btn btn-primary btn-disabled" disabled>@TextProvider.Get("FRONTEND_BOOKING_LOGIN")</div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <AuthorizeView>
+                        <Authorized>
+                            <div class="booking-second-step">
+                                @if (BookingErrorList != null && BookingErrorList.Count() > 0)
+                                {
+                                    <div class="booking-recap-container">
+                                        <div class="booking-error-list">
+                                            @foreach (var error in BookingErrorList)
+                                            {
+                                                <div class="booking-error-item">
+                                                    <i class="fa-regular fa-calendar-exclamation"></i>
+                                                    <span>@((MarkupString)error)</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <Anchor Title="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_DETAIL")" ID="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_DETAIL")" IsCard="true">
+                                <div class="booking-details-container">
+                                    <EditForm Model="@CurrentBooking" Context="bookingContext">
+                                        <DataAnnotationsValidator></DataAnnotationsValidator>
+                                        <div class="form-group">
+                                            <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_BOOKING_TITLE")</label>
+                                            <InputText @bind-Value="CurrentBooking.Title" class="form-control"></InputText>
+                                            <CustomValidationMessage For="@(() => CurrentBooking.Title)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                                        </div>
+                                        <div class="extra-small-element-separator"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_BOOKING_DESCRIPTION")</label>
+                                            <InputTextArea @bind-Value="CurrentBooking.Description" class="form-control form-text-area form-text-area-small"></InputTextArea>
+                                            <CustomValidationMessage For="@(() => CurrentBooking.Description)" TextCode="FRONTEND_BOOKING_BOOKING_DESCRIPTION" />
+                                        </div>
+                                    </EditForm>
+                                </div>
+                            </Anchor>
+                            @if (RoomBookingHelper.RoomList.Where(p => p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).ToList() != null)
+                            {
+                                @if (RoomOptionsList != null && RoomOptionsList.Count() > 0)
+                                {
+                                    <Anchor Title="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_OPTIONS")" ID="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_OPTIONS")" IsCard="true">
+                                            <div class="booking-option-container">
+                                                <div class="room-option-list">
+                                                    @foreach (var building in RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == null &&
+                                                   ((p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)) ||
+                                                   RoomBookingHelper.RoomList.Where(x => x.IsSelected == true && x.RoomGroupFamilyID == p.ID && BookingPrices.Select(z => z.ROOM_Room_ID).Contains(x.ID)).Any())).OrderBy(p => p.Name).ToList())
+                                                    {
+                                                        if (RoomOptionsList.Where(p => RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == building.ID && p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).ToList().Select(p => p.ID).Contains(p.ROOM_Room_ID)).Any())
+                                                        {
+                                                            <div class="room-building-title">
+                                                                @building.Name
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                            <div class="room-building-subcontainer">
+                                                                @foreach (var room in RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == building.ID && p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).OrderBy(p => p.BuildingName).ThenBy(p => p.Name).ToList())
+                                                                {
+                                                                    if (RoomOptionsList.Where(p => p.ROOM_Room_ID == room.ID).Any())
+                                                                    {
+                                                                        <div class="room-option-title">
+                                                                            @room.Name
+                                                                        </div>
+                                                                        <div class="small-element-separator"></div>
+                                                                        <div class="room-bookable-options-container">
+                                                                            @foreach (var opt in RoomOptionsList.Where(p => p.ROOM_Room_ID == room.ID).OrderBy(p => p.Pos).ToList())
+                                                                            {
+                                                                                <div class="room-option-item">
+                                                                                    <div class="element-checkbox">
+                                                                                        <div class="element-checkbox-switch">
+                                                                                            <TelerikSwitch @bind-Value="@opt.IsSelected" OnChange="@(() => OnOptionSelectionChanged(opt))" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                                                                            </TelerikSwitch>
+                                                                                        </div>
+                                                                                        <div class="element-checkbox-text font-normal">
+                                                                                            @opt.Name
+                                                                                        </div>
+                                                                                        @if (opt.BasePrice != null && opt.BasePrice != 0)
+                                                                                        {
+                                                                                            <div class="element-check-box-additional-charge font-bold">
+                                                                                                (@opt.BasePrice.Value.ToString("C"))
+                                                                                            </div>
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="extra-small-element-separator"></div>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                            <div class="small-element-separator"></div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                    </Anchor>
+                                }
+                                @if (RoomBookingHelper.RoomList != null && RoomBookingHelper.RoomList.Where(p => p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).Any() && 
+                                     BookingPrices.Sum(p => p.Price) > 0)
+                                {
+                                    <Anchor Title="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_COSTS")" ID="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_COSTS")">
+                                        <div class="booking-cost-container">
+                                                @foreach (var building in RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == null &&
+                                               ((p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)) ||
+                                               RoomBookingHelper.RoomList.Where(x => x.IsSelected == true && x.RoomGroupFamilyID == p.ID && BookingPrices.Select(z => z.ROOM_Room_ID).Contains(x.ID)).Any())).OrderBy(p => p.Name).ToList())
+                                                {
+
+                                                    <div class="room-building-title">
+                                                        <div class="room-title">@building.Name</div>
+                                                        <div class="room-value">
+                                                            @BookingPrices.Where(x => RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == building.ID && p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).ToList().Select(p => p.ID).Contains(x.ROOM_Room_ID)).ToList().Sum(p => p.Price).ToString("C")
+                                                        </div>
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="room-building-subcontainer">
+                                                        @foreach (var room in RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == building.ID && p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).OrderBy(p => p.BuildingName).ThenBy(p => p.Name).ToList())
+                                                        {
+                                                            if (BookingPrices != null && BookingPrices.Any())
+                                                            {
+                                                                <div class="room-price-title">
+                                                                    <div class="room-title">@room.Name</div>
+                                                                    <div class="room-value">
+                                                                        @BookingPrices.Where(p => p.ROOM_Room_ID == room.ID).ToList().Sum(p => p.Price).ToString("C")
+                                                                    </div>
+                                                                </div>
+                                                                <div class="extra-small-element-separator"></div>
+                                                                @if (room.HasDirectPay != true)
+                                                                {
+                                                                    <div class="room-price-later-detail font-detail">
+                                                                        @(TextProvider.Get("FRONTEND_BOOKING_PAYMENT_LATER").Replace("{0}", room.Name))
+                                                                    </div>
+                                                                    <div class="extra-small-element-separator"></div>
+                                                                }
+                                                                <div class="room-prices-container">
+                                                                    @foreach (var pos in BookingPrices.Where(p => p.ROOM_Room_ID == room.ID).OrderByDescending(p => p.StartDate.HasValue).ThenBy(p => p.StartDate).ThenBy(p => p.Description).ToList())
+                                                                    {
+                                                                        <div class="room-price-item font-small">
+                                                                            <div class="room-sub-date">
+                                                                                @if (pos.StartDate != null && pos.EndDate != null)
+                                                                                {
+                                                                                    @if (pos.StartDate.Value.DayOfYear == pos.EndDate.Value.DayOfYear && pos.StartDate.Value.Year == pos.EndDate.Value.Year)
+                                                                                    {
+                                                                                        @(pos.StartDate.Value.ToString("dd.MM.yyyy HH:mm") + " - " + pos.EndDate.Value.ToString("HH:mm"))
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        @(pos.StartDate.Value.ToString("dd.MM.yyyy HH:mm") + " - " + pos.EndDate.Value.ToString("dd.MM.yyyy HH:mm"))
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    @pos.Description
+                                                                                }
+                                                                            </div>
+                                                                            <div class="room-sub-value">
+                                                                                @pos.Price.ToString("C")
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                                <div class="small-element-separator"></div>
+                                                            }
+                                                        }
+                                                        @foreach (var pos in BookingPrices.Where(p => p.ROOM_Room_ID == building.ID).OrderByDescending(p => p.StartDate.HasValue).ThenBy(p => p.StartDate).ThenBy(p => p.Description).ToList())
+                                                        {
+                                                            <div class="room-price-item font-small">
+                                                                <div class="room-sub-date">
+                                                                    @if (pos.StartDate != null && pos.EndDate != null)
+                                                                    {
+                                                                        @if (pos.StartDate.Value.DayOfYear == pos.EndDate.Value.DayOfYear && pos.StartDate.Value.Year == pos.EndDate.Value.Year)
+                                                                        {
+                                                                            @(pos.StartDate.Value.ToString("dd.MM.yyyy HH:mm") + " - " + pos.EndDate.Value.ToString("HH:mm"))
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @(pos.StartDate.Value.ToString("dd.MM.yyyy HH:mm") + " - " + pos.EndDate.Value.ToString("dd.MM.yyyy HH:mm"))
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @pos.Description
+                                                                    }
+                                                                </div>
+                                                                <div class="room-sub-value">
+                                                                    @pos.Price.ToString("C")
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                }
+                                            <div class="sum-container h5">
+                                                <div class="sum-value">
+                                                    @BookingPrices.Sum(p => p.Price).ToString("C")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Anchor>
+                                }
+                                @if (RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == null && ((p.IsSelected == true && p.HasDirectPay == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)) ||
+                               RoomBookingHelper.RoomList.Where(x => x.IsSelected == true && x.HasDirectPay == true && x.RoomGroupFamilyID == p.ID && BookingPrices.Select(z => z.ROOM_Room_ID).Contains(x.ID)).Any())).OrderBy(p => p.Name).ToList().Any())
+                                {
+                                    <Anchor Title="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_COSTS_DIRECT_PAY")" ID="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_COSTS_DIRECT_PAY")">
+                                        <div class="booking-cost-container">
+                                            @if (RoomBookingHelper.RoomList != null && RoomBookingHelper.RoomList.Where(p => p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).Any())
+                                            {
+                                                @foreach (var building in RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == null &&
+                                               ((p.IsSelected == true && p.HasDirectPay == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)) ||
+                                               RoomBookingHelper.RoomList.Where(x => x.IsSelected == true && x.HasDirectPay == true && x.RoomGroupFamilyID == p.ID && BookingPrices.Select(z => z.ROOM_Room_ID).Contains(x.ID)).Any())).OrderBy(p => p.Name).ToList())
+                                                {
+
+                                                    <div class="room-building-title">
+                                                        <div class="room-title">@building.Name</div>
+                                                        <div class="room-value">
+                                                            @BookingPrices.Where(x => RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == building.ID && p.HasDirectPay == true && p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).ToList().Select(p => p.ID).Contains(x.ROOM_Room_ID)).ToList().Sum(p => p.Price).ToString("C")
+                                                        </div>
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="room-building-subcontainer">
+                                                        @foreach (var room in RoomBookingHelper.RoomList.Where(p => p.RoomGroupFamilyID == building.ID && p.HasDirectPay == true && p.IsSelected == true && BookingPrices.Select(x => x.ROOM_Room_ID).Contains(p.ID)).OrderBy(p => p.BuildingName).ThenBy(p => p.Name).ToList())
+                                                        {
+                                                            if (BookingPrices != null && BookingPrices.Any())
+                                                            {
+                                                                <div class="room-price-title">
+                                                                    <div class="room-title">@room.Name</div>
+                                                                    <div class="room-value">
+                                                                        @BookingPrices.Where(p => p.ROOM_Room_ID == room.ID && RoomBookingHelper.RoomList.Where(x => x.HasDirectPay == true).Select(x => x.ID).Contains(p.ROOM_Room_ID)).ToList().Sum(p => p.Price).ToString("C")
+                                                                    </div>
+                                                                </div>
+                                                                <div class="extra-small-element-separator"></div>
+                                                                <div class="room-prices-container">
+                                                                    @foreach (var pos in BookingPrices.Where(p => p.ROOM_Room_ID == room.ID).OrderByDescending(p => p.StartDate.HasValue).ThenBy(p => p.StartDate).ThenBy(p => p.Description).ToList())
+                                                                    {
+                                                                        <div class="room-price-item font-small">
+                                                                            <div class="room-sub-date">
+                                                                                @if (pos.StartDate != null && pos.EndDate != null)
+                                                                                {
+                                                                                    @if (pos.StartDate.Value.DayOfYear == pos.EndDate.Value.DayOfYear && pos.StartDate.Value.Year == pos.EndDate.Value.Year)
+                                                                                    {
+                                                                                        @(pos.StartDate.Value.ToString("dd.MM.yyyy HH:mm") + " - " + pos.EndDate.Value.ToString("HH:mm"))
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        @(pos.StartDate.Value.ToString("dd.MM.yyyy HH:mm") + " - " + pos.EndDate.Value.ToString("dd.MM.yyyy HH:mm"))
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    @pos.Description
+                                                                                }
+                                                                            </div>
+                                                                            <div class="room-sub-value">
+                                                                                @pos.Price.ToString("C")
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                                <div class="small-element-separator"></div>
+                                                            }
+                                                        }
+                                                        @foreach (var pos in BookingPrices.Where(p => p.ROOM_Room_ID == building.ID).OrderByDescending(p => p.StartDate.HasValue).ThenBy(p => p.StartDate).ThenBy(p => p.Description).ToList())
+                                                        {
+                                                            <div class="room-price-item font-small">
+                                                                <div class="room-sub-date">
+                                                                    @if (pos.StartDate != null && pos.EndDate != null)
+                                                                    {
+                                                                        @if (pos.StartDate.Value.DayOfYear == pos.EndDate.Value.DayOfYear && pos.StartDate.Value.Year == pos.EndDate.Value.Year)
+                                                                        {
+                                                                            @(pos.StartDate.Value.ToString("dd.MM.yyyy HH:mm") + " - " + pos.EndDate.Value.ToString("HH:mm"))
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @(pos.StartDate.Value.ToString("dd.MM.yyyy HH:mm") + " - " + pos.EndDate.Value.ToString("dd.MM.yyyy HH:mm"))
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @pos.Description
+                                                                    }
+                                                                </div>
+                                                                <div class="room-sub-value">
+                                                                    @pos.Price.ToString("C")
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                }
+                                            }
+                                            @if (RoomBookingHelper.RoomList != null)
+                                            {
+                                                <div class="sum-container h5">
+                                                    <div class="sum-value">
+                                                        @BookingPrices.Where(p => RoomBookingHelper.RoomList.Where(x => x.HasDirectPay == true).Select(x => x.ID).Contains(p.ROOM_Room_ID)).Sum(p => p.Price).ToString("C")
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </Anchor>
+                                }
+                            }
+                            @if (Privacy != null)
+                            {
+                                <Anchor Title="@Privacy.Title" IsCard="true" SubTitle="@Privacy.Description" ID="@Privacy.Title" Order="99">
+                                    @TextProvider.Get("PRIVACY_RED_AND_UNDERSTOOD")
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="privacy-switch">
+                                        <TelerikSwitch @bind-Value="@CurrentBooking.PrivacyBool" OnChange="PrivacyChanged" OnLabel=" " OffLabel=" " Width="65px" Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small">
+                                        </TelerikSwitch>
+                                    </div>
+                                    @if (Privacy.PrivacyErrorCSS != null)
+                                    {
+                                        <div class="element-separator"></div>
+                                        <div class="container-error">
+                                            @TextProvider.Get("PRIVACY_BOOL_ERROR")
+                                        </div>
+                                    }
+                                </Anchor>
+                            }
+                            <div class="element-separator"></div>
+                            <div class="booking-action-container">
+                                <div class="btn btn-secondary" @onclick="ReturnToFirstStep">@TextProvider.Get("FRONTEND_BOOKING_RETURN")</div>
+                                @if (CurrentBooking != null && !string.IsNullOrEmpty(CurrentBooking.Title) && IsValid == true && BookingPrices.Any())
+                                {
+                                    <div class="btn btn-primary" @onclick="Commit">@TextProvider.Get("FRONTEND_BOOKING_COMMIT")</div>
+                                }
+                                else
+                                {
+                                    <div class="btn btn-primary btn-disabled" disabled>@TextProvider.Get("FRONTEND_BOOKING_COMMIT")</div>
+                                }
+                            </div>
+                            <br />
+                        </Authorized>
+                        <NotAuthorized>
+                            <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<TelerikDialog @bind-Visible="@ShowBookingWarning" Title="@TextProvider.Get("WARNING")" ShowCloseButton="false">
+    <DialogContent>
+        <div class="booking-warning">
+            @((MarkupString)(TextProvider.Get("FRONTEND_BOOKING_SELECTION_HAS_ERRORS")))
+        </div>
+    </DialogContent>
+    <DialogButtons>
+        <TelerikButton OnClick="@CancelSwitch" ThemeColor="Secondary" Class="btn btn-secondary">@TextProvider.Get("FRONTEND_BOOKING_CANCEL")</TelerikButton>
+        <TelerikButton OnClick="@FirstStepOk" ThemeColor="Primary" Class="btn btn-primary">@TextProvider.Get("FRONTEND_BOOKING_OK")</TelerikButton>
+    </DialogButtons>
+</TelerikDialog>

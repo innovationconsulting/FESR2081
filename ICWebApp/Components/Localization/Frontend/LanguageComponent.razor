@@ -1,0 +1,42 @@
+﻿@using System.Globalization
+@using ICWebApp.Application.Settings
+
+<div class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true">
+        @if(CurrentLanguage != null && CurrentLanguage.ID == LanguageSettings.Italian)
+        {
+            <span>Italiano</span>
+        }
+        else
+        {
+            <span>Deutsch</span>
+        }
+        <svg class="icon d-none d-lg-block"><use xlink:href="css/bootstrap-italia/svg/sprites.svg#it-expand"></use></svg>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <div class="row">
+            <div class="col-12">
+                <div class="link-list-wrapper">
+                    <ul class="link-list">
+                        @if (CurrentLanguage.ID != LanguageSettings.Italian)
+                        {
+                            <li>
+                                <a @onclick="@(async () => await SetLanguage("it-IT"))" title="Italiano" class="list-item text-nowrap">
+                                    <span lang="de">Italiano</span>
+                                </a>
+                            </li>
+                        }
+                        @if (CurrentLanguage.ID != LanguageSettings.German)
+                        {
+                            <li>
+                                <a @onclick="@(async () => await SetLanguage("de-DE"))" title="Deutsch" class="list-item text-nowrap">
+                                    <span lang="de">Deutsch</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

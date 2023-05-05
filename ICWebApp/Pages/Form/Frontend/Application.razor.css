@@ -1,0 +1,48 @@
+﻿.segment-listview {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.segment-listview-item-container {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+    .segment-listview-item-container:hover {
+        color: #0F7173;
+    }
+.segment-listview li {
+    list-style-type: disclosure-closed;
+}
+.listview-item-bullet{
+    line-height: 100%;
+}
+
+.container-error{
+    color: red;
+}
+
+.application-upload-container-error {
+    color: red;
+}
+
+.form-application-document-upload-container{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.form-application-document-element{
+    width: 48%;
+}
+
+.privacy-check-container .element-checkbox {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+}
+.form-application-container{
+    position: relative;
+}

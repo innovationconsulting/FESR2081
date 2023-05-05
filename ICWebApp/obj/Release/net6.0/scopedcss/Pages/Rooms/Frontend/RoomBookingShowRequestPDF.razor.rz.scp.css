@@ -1,0 +1,32 @@
+.room-container[b-dlbu5a8l7l] {
+    border: 0px solid #dfdfdf; 
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+}
+
+h5[b-dlbu5a8l7l], .h5[b-dlbu5a8l7l] {
+    color: #0f7173;
+}
+
+.preview-container[b-dlbu5a8l7l] {
+    height: 500px;
+    /*height: calc(100% - 45px) !important;
+    height: -moz-calc(100% - 45px) !important;
+    height: -webkit-calc(100% - 45px) !important;
+    height: -o-calc(100% - 45px) !important;*/
+}
+
+.preview-url-container[b-dlbu5a8l7l] {
+    height: 100%;
+}
+
+.viewerobject[b-dlbu5a8l7l] {
+    min-height: 800px;
+}
+
+.mensa-change-container[b-dlbu5a8l7l] {
+    display: flex;
+    gap: 10px;
+}

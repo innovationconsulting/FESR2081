@@ -1,0 +1,28 @@
+.code-input-container[b-71g924wijo]
+{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.code-input-field[b-71g924wijo] {
+    width: 40px;
+    height: 40px;
+}
+
+    .code-input-field input[b-71g924wijo] {
+        width: 40px;
+        height: 40px;
+        border-radius: 0px;
+        border: 1px solid black;
+        text-align: center;
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+    }
+
+        .code-input-field input[b-71g924wijo]::-webkit-outer-spin-button,
+        .code-input-field input[b-71g924wijo]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }

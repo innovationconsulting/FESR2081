@@ -1,0 +1,33 @@
+﻿.tasklist-detail-container {
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    padding-bottom: 200px;
+}
+
+.small-task-wrapper {
+    min-width: 400px;
+    max-width: 400px;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,0.4);
+    margin: 10px;
+    display: flex;
+    align-items: stretch;
+}
+
+.show-finished-menu{
+    border: 1px rgba(0,0,0,0.3) dashed;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    cursor: pointer;
+    padding: 7px 5px;
+    margin: 0 10px;
+}
+.show-finished-menu:hover{
+    color: #808080;
+}
+.show-finished-menu-description {
+    flex: 1;
+}

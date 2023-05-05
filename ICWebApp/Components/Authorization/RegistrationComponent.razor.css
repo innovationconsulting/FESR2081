@@ -1,0 +1,143 @@
+﻿.registration-container {
+    position: relative;
+}
+
+@media (max-width: 680px) {
+    .registration-container {
+  /*      position: absolute;
+        border-radius: 0px;
+        width: 100%;
+        margin-left: 0%;
+        top: 0;
+        height: 100%;
+        overflow: auto;*/
+    }
+    .registration-logo {
+        display: none;
+    }
+    .registration-data-container {
+        max-height: unset !important;
+        overflow: unset !important;
+        height: auto;
+    }
+    .registration-footer{
+        position: unset !important;
+        bottom: unset !important;
+        left: unset !important;
+        border-top: 0px !important;
+    }
+    .registration-header {
+        position: unset !important;
+        border-bottom: 0px !important;
+    }
+    .registration-title {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+
+.registration-title {
+    margin-top: 20px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.registration-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+ /*   padding-bottom: 5px;
+    border-bottom: 1px solid #d9d9d9;*/
+}
+
+.registration-footer {
+    /*border-top: 1px solid #d9d9d9;*/
+}
+
+
+.password-quality-bar {
+    
+}
+
+.password-quality-bar-background {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.Blank {
+    background: white !important;
+    color: white;
+}
+
+.VeryWeak {
+    background: #c41a0e !important;
+    color: white !important;
+    flex: 0.25;
+}
+
+
+
+.Weak {
+    background: #f2ac16 !important;
+    color: white !important;
+    flex: 0.5;
+}
+
+
+
+.Medium {
+    background: #f2ac16 !important;
+    flex: 0.5;
+}
+
+
+
+.Strong {
+    color: white !important;
+    background: #0F7173 !important;
+    flex: 0.75;
+}
+
+
+
+.VeryStrong {
+    color: white !important;
+    background: #0c5152 !important;
+    flex: 1;
+}
+
+.address-not-found-container{
+    cursor: pointer;
+}
+
+.address-not-found-container:hover {
+    color: #25CCDB !important;
+    text-decoration: underline !important;
+}
+
+
+
+
+.iti__flag-container {
+    height: 38px !important;
+    width: 100%;
+}
+
+.iti {
+    height: 38px !important;
+    border-radius: 0px;
+    color: #707070 !important;
+    width:100%;
+}
+
+    .iti input, .iti input[type=text], .iti input[type=tel] {
+        height: 38px;
+        width: 100%;
+    }
+.iti--allow-dropdown input, .iti--allow-dropdown input[type=text], .iti--allow-dropdown input[type=tel], .iti--separate-dial-code input, .iti--separate-dial-code input[type=text], .iti--separate-dial-code input[type=tel] {
+    height: 38px !important;
+    width: 100%;
+}

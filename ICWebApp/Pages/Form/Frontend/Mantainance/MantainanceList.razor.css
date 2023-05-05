@@ -1,0 +1,81 @@
+﻿.mantainance-container {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.mantainance-element {
+    cursor: pointer;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 65px;
+    background-color: white;
+    border: 1px solid #f2f2f2;
+    border-left: 5px solid #f2f2f2;
+    border-radius: 3px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    width: 31%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    position: relative;
+}
+    .mantainance-element:hover {
+        border-color: #0F7173;
+    }
+.mantainance-element-bullet {
+    font-size: 20px;
+    width: 30px;
+}
+.mantainance-element-title {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.mantainance-element-data {
+    display: flex;
+    flex-direction:column;
+    justify-content: space-evenly;
+}
+.segment-button-container{
+    display: flex;
+    justify-content: flex-end;
+}
+.mantainance-first-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    flex: 1;
+}
+
+.mantainance-element-bullet {
+    font-size: 36px;
+    width: 50px;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    color: #808080;
+}
+
+.listview-item-button {
+    position: absolute;
+    margin-top: auto;
+    right: 0px;
+    top: 0px;
+    margin-bottom: auto;
+    width: 50px;
+    height: 100%;
+    background-color: #f2f2f2;
+    color: #808080;
+}
+
+.listview-item-button-container {
+    height: 100%;
+    display: flex;
+}
+
+.listview-item-button-icon {
+    margin: auto;
+    font-size: 18px;
+}

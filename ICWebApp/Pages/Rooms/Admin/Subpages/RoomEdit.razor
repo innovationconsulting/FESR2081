@@ -1,0 +1,878 @@
+﻿@page "/RoomEditAdmin/{RoomID}/{AktiveIndex}"
+@page "/RoomEditAdmin/{RoomID}/{AktiveIndex}/{PreviousAktiveIndex}/{ParentID}"
+
+@using ICWebApp.Components.Rooms
+@using ICWebApp.Components.Rooms.Admin
+@layout MainLayout
+
+@if (Data != null)
+{
+    <div class="segment-container custom-background-default form-wizard">
+        <TelerikWizard @bind-Value="@CurrentTab" ShowPager="false">
+            <WizardSteps>
+                <WizardStep Label="@TextProvider.Get("BACKEND_ROOM_GENERAL_DATA")" OnChange="OnWizardChanged" Icon="@("fas fa-stream")">
+                    <Content>
+                        <div class="data-container">
+                            <EditForm Model="@Data">
+                                <TelerikTileLayout Columns="2" ColumnWidth="100%" ColumnSpacing="30px" RowHeight="50px" Resizable="false" Reorderable="false">
+                                    <TileLayoutItems>
+                                        <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_ROOM_GENERAL_DATA")" RowSpan="8">
+                                            <Content>
+                                                <div class="formbuilder-language-picker">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                                                    <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                                        <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                                                        <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                                                    </TelerikButtonGroup>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="form-group">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_NAME")</label>
+                                                    @if (Data.ROOM_Rooms_Extended != null && Data.ROOM_Rooms_Extended.Count() > 0 && CurrentLanguage != null)
+                                                    {
+                                                        <label class="font-detail">@Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID != CurrentLanguage).Name</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <InputText @bind-Value="Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" class="form-control"></InputText>
+                                                    }
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="form-group form-group-small">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_DESCRIPTION")</label>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="form-group">
+                                                    @if (Data.ROOM_Rooms_Extended != null && Data.ROOM_Rooms_Extended.Count() > 0 && CurrentLanguage != null)
+                                                    {
+                                                        @if (string.IsNullOrEmpty(Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Description))
+                                                        {
+                                                            Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Description = Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID != CurrentLanguage).Description;
+                                                        }
+
+                                                        <TelerikEditor @bind-Value="Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Description"
+                                                               Tools="@Tools"
+                                                               EditMode="@EditorEditMode.Div"
+                                                               Class="font-normal"
+                                                               Height="200px">
+                                                            <EditorSettings>
+                                                                <EditorPasteSettings ConvertMsLists="true"
+                                                                             RemoveMsClasses="true"
+                                                                             RemoveMsStyles="true"
+                                                                             RemoveHtmlComments="true"
+                                                                             RemoveAllAttributes="true"
+                                                                             StripTags="@StripTags"
+                                                                             RemoveAttributes="@RemoveAttributes">
+                                                                </EditorPasteSettings>
+                                                            </EditorSettings>
+                                                        </TelerikEditor>
+                                                    }
+                                                </div>
+                                            </Content>
+                                        </TileLayoutItem>
+                                        <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_ROOM_PROPERTIES")" RowSpan="9">
+                                            <Content>
+                                                @if (Data.HasRooms != true)
+                                                {
+                                                    <div class="form-group group-flex">
+                                                        <div class="group-left">
+                                                            <label for="@Data.HasSeating" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_PROPERTY_HAS_SEATING")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div>
+                                                                <TelerikSwitch @bind-Value="Data.HasSeating" OnLabel=" " OffLabel=" " Width="65px"
+                                                                           Class="list-item-switch"></TelerikSwitch>
+                                                            </div>
+                                                           </div>                                                        
+                                                           @if(Data.HasSeating != true)
+                                                           {
+                                                                <div class="group-right"> 
+                                                                    <label for="@Data.MaxCapacity" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_CAPACITY")</label>
+                                                                    <div class="extra-small-element-separator"></div>
+                                                                    <InputNumber @bind-Value="Data.MaxCapacity" class="form-control"></InputNumber>                                                        
+                                                                </div>
+                                                            }
+                                                    </div>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div class="form-group">
+                                                        <label for="@Data.SurfaceM2" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_SURFACE")</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <InputNumber @bind-Value="Data.SurfaceM2" class="form-control"></InputNumber>
+                                                    </div>
+                                                    <div class="extra-small-element-separator"></div>                                               
+                                                    <div class="form-group">
+                                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_CALENDAR_COLOR")</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <TelerikColorPicker @bind-Value="@Data.RoomColor" FillMode="@ThemeConstants.ColorPicker.FillMode.Outline"
+                                                                        Size="@ThemeConstants.ColorPicker.Size.Medium" ValueFormat="@ColorFormat.Hex"></TelerikColorPicker>
+                                                    </div>
+                                                }
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="form-group group-flex">
+                                                    <div class="group-left">
+                                                        <label for="@Data.HasDirectPay" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_HAS_DIREKT_PAYMENT")</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <div>
+                                                            <TelerikSwitch @bind-Value="Data.HasDirectPay" OnLabel=" " OffLabel=" " Width="65px"
+                                                                       Class="list-item-switch"></TelerikSwitch>
+                                                        </div>
+                                                    </div>
+                                                    <div class="group-right">
+                                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_HAS_SIGNING")</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <TelerikSwitch @bind-Value="Data.HasSigning" OnLabel=" " OffLabel=" " Width="65px"
+                                                                   Class="list-item-switch"></TelerikSwitch>
+                                                    </div>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <div class="form-group group-flex">
+                                                    <div class="group-left">
+                                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_ENABLED")</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <TelerikSwitch @bind-Value="Data.Enabled" OnLabel=" " OffLabel=" " Width="65px"
+                                                                   Class="list-item-switch"></TelerikSwitch>
+                                                    </div>
+                                                    @if(string.IsNullOrEmpty(ParentID))
+                                                    {
+                                                        <div class="group-right">
+                                                            <label for="@Data.HasRooms" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_HAS_ROOMS")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div>
+                                                                <TelerikSwitch @bind-Value="Data.HasRooms" OnLabel=" " OffLabel=" " Width="65px"
+                                                                           Class="list-item-switch"></TelerikSwitch>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div> 
+                                                @if (Data.HasRooms != true)
+                                                {
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div class="form-group">
+                                                        <label for="@Data.SurfaceM2" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_BUFFER_TIME")</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <InputNumber @bind-Value="Data.BufferTime" class="form-control"></InputNumber>
+                                                    </div>
+                                                }
+                                            </Content>
+                                        </TileLayoutItem>
+                                        @if (Data.HasSeating == true)
+                                        {
+                                            <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_ROOM_HAS_SEATING")" RowSpan="6">
+                                                <Content>
+                                                    <div class="seating-container">
+                                                        <div class="seating-item">
+                                                            <label for="@Data.MaxCapacity" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_SEATING_THEATRE")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <img src="/Images/Rooms/Seatings/Seating_Theatre.png">
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <InputNumber @bind-Value="Data.Seating_Theatre" class="form-control"></InputNumber>
+                                                        </div>  
+                                                        <div class="seating-item">
+                                                            <label for="@Data.MaxCapacity" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_SEATING_CONCERT")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <img src="/Images/Rooms/Seatings/Seating_Concert.png">
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <InputNumber @bind-Value="Data.Seating_Concert" class="form-control"></InputNumber>
+                                                        </div>  
+                                                        <div class="seating-item">
+                                                            <label for="@Data.MaxCapacity" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_SEATING_BANQUET_ROUND")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <img src="/Images/Rooms/Seatings/Seating_Banquet_round.png">
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <InputNumber @bind-Value="Data.Seating_Banquet_Round" class="form-control"></InputNumber>
+                                                        </div>  
+                                                        <div class="seating-item">
+                                                            <label for="@Data.MaxCapacity" class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_SEATING_BANQUET_SQUARE")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <img src="/Images/Rooms/Seatings/Seating_Banquet_sqaure.png">
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <InputNumber @bind-Value="Data.Seating_Banquet_Square" class="form-control"></InputNumber>
+                                                        </div>  
+                                                    </div>
+                                                </Content>
+                                            </TileLayoutItem>
+                                        }
+                                    </TileLayoutItems>
+                                </TelerikTileLayout>
+                            </EditForm>
+                        </div>
+                    </Content>
+                </WizardStep>
+                <WizardStep Label="@TextProvider.Get("BACKEND_ROOM_GALLERIE")"  OnChange="OnWizardChanged" Icon="@("fa-regular fa-panorama")">
+                    <Content>
+                        <div class="image-container">
+                            <TelerikWindow Modal="true" @bind-Visible="@ShowGalerieWindow" Width="600px">
+                                <WindowTitle>
+                                    @TextProvider.Get("BACKEND_ROOM_GALLERIE_IMAGE_ADD")
+                                </WindowTitle>
+                                <WindowContent>
+                                    <div class="galerie-popup-container">
+                                        @if (RoomGalerieItem != null)
+                                        {
+                                            <EditForm Model="@RoomGalerieItem">
+                                                <div class="form-group">
+                                                    <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_IMAGE_COPYRIGHT")</label>
+                                                    <InputText @bind-Value="RoomGalerieItem.Copyright" class="form-control"></InputText>
+                                                </div>
+                                                <div class="extra-small-element-separator"></div>
+                                                <UploadComponent FileInfoList="@FileList" Multiple="true" SmallStyle="true"></UploadComponent>
+                                                <div class="small-element-separator"></div>
+                                                <div class="segment-button-toolbar flex-end">
+                                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                                           OnClick="@CloseGalerieWindow">@TextProvider.GetOrCreate("BUTTON_CANCEL")</TelerikButton>
+                                                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                                           OnClick="@SaveGalerie">@TextProvider.GetOrCreate("BUTTON_SAVE")</TelerikButton>
+                                                </div>
+                                            </EditForm>
+                                        }
+                                    </div>
+                                </WindowContent>
+                            </TelerikWindow>
+                            <CustomLoader Visible="@(IsDataBusy)"
+                                                Text="@null" Class="initial-data-loader">
+                            </CustomLoader>
+
+                            <TelerikGrid Data="@RoomGalerieList.OrderBy(p => p.Pos)"
+                                     Pageable="false"
+                                     Sortable="true"
+                                     Resizable="false"
+                                     ScrollMode="@GridScrollMode.Scrollable"
+                                     Groupable="false"
+                                     Reorderable="false">
+                                    <GridToolBarTemplate>
+                                        <GridCommandButton Command="MyAddCommand" OnClick="@AddGalerieImage" Icon="SvgIcon.Plus">@TextProvider.GetOrCreate("ADD")</GridCommandButton>
+                                    </GridToolBarTemplate>
+                                    <GridColumns>
+                                    <GridColumn Field="@nameof(ROOM_RoomGalerie.FirstImage)" Title="@TextProvider.GetOrCreate("BACKEND_IMAGE_TITLEIMAGE")" Width="120px">
+                                        <Template>
+                                            @{
+                                                ROOM_RoomGalerie item = context as ROOM_RoomGalerie;
+
+                                                if (item != null)
+                                                {
+                                                    <TelerikSwitch @bind-Value="@item.FirstImage" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                                }
+                                            }
+                                        </Template>
+                                    </GridColumn>
+                                    <GridColumn Field="@nameof(ROOM_RoomGalerie.FileName)" Title="@TextProvider.GetOrCreate("BACKEND_IMAGE_PREVIEW")" Width="200px">
+                                        <Template>
+                                            @{
+                                                ROOM_RoomGalerie item = context as ROOM_RoomGalerie;
+
+                                                if(item != null)
+                                                {
+                                                    var path = RoomGalerieHelper.GetImagePath(item.ID);
+
+                                                    <span class="room-galerie-image">
+                                                        <img class="rounded" src="@path" alt="@item.FileName" />
+                                                    </span>
+                                                }
+                                            }
+                                        </Template>
+                                    </GridColumn>
+                                    <GridColumn Field="@nameof(ROOM_RoomGalerie.FileName)" Title="@TextProvider.GetOrCreate("BACKEND_IMAGE_NAME")" Width="auto"></GridColumn>
+                                    <GridColumn Field="@nameof(ROOM_RoomGalerie.Copyright)" Title="@TextProvider.GetOrCreate("BACKEND_IMAGE_COPYRIGHT")" Width="auto"></GridColumn>
+                                    <GridCommandColumn Width="220px" Title="@TextProvider.Get("ACTIONS")">
+                                        @{
+                                            ROOM_RoomGalerie item = context as ROOM_RoomGalerie;
+
+                                            if (item != null)
+                                            {
+                                                <div class="table-toolbar">
+                                                    <div class="table-sorter-buttons">
+                                                        @if (item.Pos != RoomGalerieList.Min(p => p.Pos))
+                                                        {
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpImage(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>
+                                                        }
+                                                        @if (item.Pos != RoomGalerieList.Max(p => p.Pos))
+                                                        {
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownImage(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>
+                                                        }
+                                                    </div>
+                                                    @if (item.FirstImage != true)
+                                                    {
+                                                            <GridCommandButton Command="MyPrimaryCommand" Class="btn btn-secondary" OnClick="@(() => SetFirstImage(item))" Icon="SvgIcon.ImageExport" title="@TextProvider.GetOrCreate("TOOLTIP_TITLEIMAGE")"></GridCommandButton>
+                                                    }
+                                                    <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditGalerieImage(item))" Icon="SvgIcon.Pencil" title="@TextProvider.GetOrCreate("TOOLTIP_EDIT")"></GridCommandButton>
+                                                    <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => DeleteImage(item))" Icon="SvgIcon.Trash" title="@TextProvider.GetOrCreate("TOOLTIP_DELETE")"></GridCommandButton>
+                                                </div>
+                                            }
+                                        }
+                                    </GridCommandColumn>
+                                </GridColumns>
+                            </TelerikGrid>
+                        </div>
+                    </Content>
+                </WizardStep>
+                @if(Data.HasRooms != true)
+                {
+                    <WizardStep Label="@TextProvider.Get("BACKEND_ROOM_OPTIONS")" OnChange="OnWizardChanged" Icon="@("fa-regular fa-list-check")">
+                        <Content>
+                            <div class="image-container">
+                                <TelerikWindow Modal="true" Resizable="false" @bind-Visible="@ShowRoomOptionImport" Width="1200px">
+                                    <WindowTitle>
+                                        @TextProvider.Get("BACKEND_ROOM_OPTIONS_IMPORT")
+                                    </WindowTitle>
+                                    <WindowContent>
+                                        <div class="room-options-container">
+                                            <TelerikGrid Data="@ImportableOptions.OrderBy(p => p.Pos).ToList()" Sortable="false" Resizable="false" 
+                                                     SelectionMode="GridSelectionMode.Multiple" @bind-SelectedItems="@SelectedImportableOptions" Groupable="false" Reorderable="false">
+                                            <GridColumns>
+                                                <GridCheckboxColumn SelectAll="true"></GridCheckboxColumn>
+                                                <GridColumn Field="@nameof(ROOM_RoomOptions.Enabled)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_VISIBLE")" Width="auto">
+                                                     <Template>
+                                                        @{
+                                                            ROOM_RoomOptions item = context as ROOM_RoomOptions;
+
+                                                            <TelerikSwitch @bind-Value="@item.Enabled" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                                        }
+                                                    </Template>
+                                                </GridColumn>
+                                                <GridColumn Field="@nameof(V_ROOM_RoomOptions.Name)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_NAME")" Width="auto">
+                                                      <Template>
+                                                        @{
+                                                            ROOM_RoomOptions subscriber = context as ROOM_RoomOptions;
+                                                            if (subscriber.ROOM_RoomOptions_Extended != null && subscriber.ROOM_RoomOptions_Extended.Count() > 0)
+                                                            {
+                                                                <div>
+                                                                    @subscriber.ROOM_RoomOptions_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Name
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </Template>
+                                                </GridColumn>
+                                                <GridColumn Field="@nameof(ROOM_RoomOptions.ROOM_RoomOptions_Category_ID)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_CATEGORY")" Width="auto">
+                                                      <Template>
+                                                        @{
+                                                            ROOM_RoomOptions subscriber = context as ROOM_RoomOptions;
+                                                            if (subscriber.ROOM_RoomOptions_Category_ID != null)
+                                                            {
+                                                                var opt = OptionCategoryList.FirstOrDefault(p => p.ID == subscriber.ROOM_RoomOptions_Category_ID);
+
+                                                                if(opt != null)
+                                                                {
+                                                                    <div>
+                                                                        @opt.Description
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        }
+                                                    </Template>
+                                                </GridColumn>
+                                                <GridColumn Field="@nameof(ROOM_RoomOptions.Quantity)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_QUANTITY")" Width="auto"></GridColumn>
+                                                <GridColumn Field="@nameof(ROOM_RoomOptions.BasePrice)" DisplayFormat="{0:C}" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_PRICE")" Width="auto"></GridColumn>                                                                                            
+                                            </GridColumns>
+                                        </TelerikGrid>
+                                        <div class="element-separator"></div>
+                                        <div class="segment-button-toolbar">
+                                            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                                       OnClick="@HideImporter">@TextProvider.GetOrCreate("BUTTON_CANCEL")</TelerikButton>
+                                            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                                       OnClick="@ImportSelectedOptions">@TextProvider.GetOrCreate("BUTTON_SAVE")</TelerikButton>
+                                        </div>
+                                            <div class="element-separator"></div>
+                                        </div>
+                                    </WindowContent>
+                                    <WindowActions>
+                                        <WindowAction Name="Close" OnClick="HideImporter" />
+                                    </WindowActions>
+                                </TelerikWindow>
+                                <TelerikWindow Modal="true" Resizable="false" @bind-Visible="@ShowRoomInventoryPositions" Width="800px">
+                                    <WindowTitle>
+                                        @TextProvider.Get("BACKEND_ROOM_INVENTORY_ADD")
+                                    </WindowTitle>
+                                    <WindowContent>
+                                        <div class="inventory-popup-container">
+                                            <ICWebApp.Components.Rooms.Inventory.InventoryPositions ROOM_RoomOptions_ID="@RoomOptionID" OnCancel="CloseInventoryPositionsWindow"></ICWebApp.Components.Rooms.Inventory.InventoryPositions>
+                                        </div>
+                                    </WindowContent>
+                                    <WindowActions>
+                                        <WindowAction Name="Close" OnClick="CloseInventoryPositionsWindow" />
+                                    </WindowActions>
+                                </TelerikWindow>
+                                <TelerikWindow Modal="true" Resizable="false" @bind-Visible="@ShowRoomOptionWindow" Width="1200px">
+                                    <WindowTitle>
+                                        @TextProvider.Get("BACKEND_ROOM_OPTIONS_ADD")
+                                    </WindowTitle>
+                                    <WindowContent>
+                                        <div class="room-options-container">
+                                            @if (RoomOptionItem != null)
+                                            {
+                                                <EditForm Model="@RoomOptionItem">   
+                                                    <h3>
+                                                        @TextProvider.Get("ROOM_OPTIONS_GENERAL")
+                                                    </h3>
+                                                    <div class="small-element-separator"></div>   
+                                                    <div class="form-group">
+                                                        <label class="form-label">@TextProvider.Get("ROOM_OPTIONS_CATEGORIES")</label>
+                                                        <div class="extra-small-element-separator"></div>
+                                                        <SfDropDownList DataSource="@OptionCategoryList" @bind-Value="@RoomOptionItem.ROOM_RoomOptions_Category_ID" TValue="Guid?" TItem="@V_ROOM_RoomOptionsCategory" 
+                                                                        Placeholder="@TextProvider.Get("ROOM_OPTIONS_CATEGORIES_PLACEHOLDER")">
+                                                            <DropDownListFieldSettings Text="Description" Value="ID"></DropDownListFieldSettings>
+                                                        </SfDropDownList>
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="formbuilder-language-picker">
+                                                        <label class="form-label">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                                                        <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                                            <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                                                            <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                                                        </TelerikButtonGroup>
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="form-group">
+                                                        <label class="form-label">@TextProvider.Get("BACKEND_ROOM_OPTION_NAME")</label>
+                                                        @if (RoomOptionItem.ROOM_RoomOptions_Extended != null && RoomOptionItem.ROOM_RoomOptions_Extended.Count() > 0 && CurrentLanguage != null)
+                                                        {
+                                                            <label class="font-detail">@RoomOptionItem.ROOM_RoomOptions_Extended.FirstOrDefault(p => p.LANG_Language_ID != CurrentLanguage).Name</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <InputText @bind-Value="RoomOptionItem.ROOM_RoomOptions_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Name" class="form-control"></InputText>
+                                                        }
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="form-group form-group-small">
+                                                        <label class="form-label">@TextProvider.Get("BACKEND_ROOM_DESCRIPTION")</label>
+                                                    </div>
+                                                    <div class="extra-small-element-separator"></div>
+                                                    <div class="form-group">
+                                                        @if (RoomOptionItem.ROOM_RoomOptions_Extended != null && RoomOptionItem.ROOM_RoomOptions_Extended.Count() > 0 && CurrentLanguage != null)
+                                                        {
+
+                                                            @if (string.IsNullOrEmpty(RoomOptionItem.ROOM_RoomOptions_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Description))
+                                                            {
+                                                                RoomOptionItem.ROOM_RoomOptions_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Description = RoomOptionItem.ROOM_RoomOptions_Extended.FirstOrDefault(p => p.LANG_Language_ID != CurrentLanguage).Description;
+                                                            }
+
+                                                            <TelerikEditor @bind-Value="RoomOptionItem.ROOM_RoomOptions_Extended.FirstOrDefault(p => p.LANG_Language_ID == CurrentLanguage).Description"
+                                                                   Tools="@Tools"
+                                                                   EditMode="@EditorEditMode.Div"
+                                                                   Class="font-normal"
+                                                                   Height="200px">
+                                                                <EditorSettings>
+                                                                    <EditorPasteSettings ConvertMsLists="true"
+                                                                                 RemoveMsClasses="true"
+                                                                                 RemoveMsStyles="true"
+                                                                                 RemoveHtmlComments="true"
+                                                                                 RemoveAllAttributes="true"
+                                                                                 StripTags="@StripTags"
+                                                                                 RemoveAttributes="@RemoveAttributes">
+                                                                    </EditorPasteSettings>
+                                                                </EditorSettings>
+                                                            </TelerikEditor>
+                                                        }
+                                                    </div>
+                                                    <div class="small-element-separator"></div>
+                                                     <div class="form-group">
+                                                        <label class="form-label">@TextProvider.Get("ROOM_OPTIONS_VISIBILITY")</label>
+                                                        <div class="extra-small-element-separator"></div>                                                        
+                                                        <TelerikSwitch @bind-Value="RoomOptionItem.Enabled" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                                    </div>
+                                                    <div class="element-separator"></div>     
+                                                    @if (RoomOptionItem.ROOM_RoomOptions_Category_ID == ROOMOptionCategory.Chargable)
+                                                    {
+                                                        <h3>
+                                                            @TextProvider.Get("ROOM_OPTIONS_SETTINGS")
+                                                        </h3>
+                                                        <div class="small-element-separator"></div>                                         
+                                                        <div class="form-group">
+                                                            <label class="form-label">@TextProvider.Get("BACKEND_ROOM_OPTION_PRICE")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <InputNumber @bind-Value="RoomOptionItem.BasePrice" Min="0" class="form-control"></InputNumber>
+                                                        </div>
+                                                        <div class="small-element-separator"></div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">@TextProvider.Get("ROOM_TABLE_OPTIONS_DAILY_PAYMENT")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <TelerikSwitch @bind-Value="@RoomOptionItem.DailyPayment" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                                        </div>
+                                                        <div class="small-element-separator"></div>                                         
+                                                        <div class="form-group">
+                                                            <label class="form-label">@TextProvider.Get("BACKEND_ROOM_OPTION_CONTACTPERSONS")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <ICWebApp.Components.Rooms.Admin.Options.OptionContactsComponent Contacts="RoomOptionItem.Contacts" OptionID="RoomOptionItem.ID">
+                                                            </ICWebApp.Components.Rooms.Admin.Options.OptionContactsComponent>
+                                                        </div>    
+                                                        <div class="element-separator"></div>
+                                                    }
+                                                    else if(RoomOptionItem.ROOM_RoomOptions_Category_ID == ROOMOptionCategory.Inventory)
+                                                    {  
+                                                        <h3>
+                                                            @TextProvider.Get("ROOM_OPTIONS_SETTINGS")
+                                                        </h3>
+                                                        <div class="small-element-separator"></div>                                         
+                                                        <div class="form-group">
+                                                            <label class="form-label">@TextProvider.Get("ROOM_OPTIONS_QUANTITY")</label>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <InputNumber @bind-Value="RoomOptionItem.Quantity" class="form-control"></InputNumber>
+                                                            @if(!string.IsNullOrEmpty(InventoryMinValueError))
+                                                            {
+                                                                <div style="color: red;">
+                                                                    @InventoryMinValueError
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <div class="element-separator"></div>
+                                                    }
+                                                    <div class="segment-button-toolbar">
+                                                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                                               OnClick="@CloseOptionWindow">@TextProvider.GetOrCreate("BUTTON_CANCEL")</TelerikButton>
+                                                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                                               OnClick="@SaveOption">@TextProvider.GetOrCreate("BUTTON_SAVE")</TelerikButton>
+                                                    </div>
+                                                    <div class="element-separator"></div>
+                                                </EditForm>
+                                            }
+                                        </div>
+                                    </WindowContent>
+                                    <WindowActions>
+                                        <WindowAction Name="Close" OnClick="CloseOption" />
+                                    </WindowActions>
+                                </TelerikWindow>          
+                                <TelerikWindow Modal="true" Resizable="false" @bind-Visible="@ShowRoomInventoryPositionsList" Width="1000px">
+                                    <WindowTitle>
+                                        @TextProvider.Get("BUTTON_INVETORY")
+                                    </WindowTitle>
+                                    <WindowContent>
+                                        <div class="inventory-list-popup-container">
+                                            <TelerikGrid Data="@RoomInventoryList.OrderBy(p => p.Pos)"
+                                                 Pageable="false"
+                                                 Sortable="true"
+                                                 Resizable="false"
+                                                 ScrollMode="@GridScrollMode.Scrollable"
+                                                 Groupable="false"
+                                                 Reorderable="false">
+                                                <GridColumns>
+                                                    <GridColumn Field="@nameof(V_ROOM_RoomOptions.Name)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_NAME")" Width="auto"></GridColumn>
+                                                    <GridColumn Field="@nameof(V_ROOM_RoomOptions.LastInvetory)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_LAST_INVENTORY")" Width="auto"></GridColumn>
+                                                    <GridColumn Field="@nameof(V_ROOM_RoomOptions.Quantity)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_QUANTITY")" Width="auto"></GridColumn>
+                                                    <GridCommandColumn Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                                                    @{
+                                                        V_ROOM_RoomOptions item = context as V_ROOM_RoomOptions;
+
+                                                        if (item != null)
+                                                        {
+                                                                <GridCommandButton Command="MyPrimaryCommand" Class="btn btn-secondary" OnClick="@(() => SetNewInventoryValue(item))" Icon="@("fa-light fa-pen")" title="@TextProvider.GetOrCreate("TOOLTIP_INVENTORY")"></GridCommandButton>                                                         
+                                                        }
+                                                    }
+                                                    </GridCommandColumn>
+                                                </GridColumns>
+                                            </TelerikGrid>
+                                        </div>
+                                    </WindowContent>
+                                    <WindowActions>
+                                        <WindowAction Name="Close" OnClick="HideRoomInventoryPositionList" />
+                                    </WindowActions>
+                                </TelerikWindow>  
+                                <TelerikWindow Modal="true" @bind-Visible="@ShowRoomInventoryPositionsQuickAdd" Width="300px">
+                                    <WindowTitle>
+                                        @TextProvider.Get("BACKEND_ROOM_INVENTORY_POSITION_ADD")
+                                    </WindowTitle>
+                                    <WindowContent>
+                                        <div class="galerie-popup-container">
+                                            @if (NewInventoryPosition != null)
+                                            {
+                                                <EditForm Model="@NewInventoryPosition">                                                
+                                                    <div class="form-group">
+                                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_INVENTORY_NEW_QUANTITY")</label>
+                                                        <InputNumber min="0" @bind-Value="NewInventoryPosition.Quantity" class="form-control"></InputNumber>
+                                                        @if (!string.IsNullOrEmpty(InventoryMinValueError))
+                                                        {
+                                                            <div style="color: red;">
+                                                                @InventoryMinValueError
+                                                            </div>
+                                                        }
+                                                    </div>                                                    
+                                                    <div class="small-element-separator"></div>
+                                                    <div class="segment-button-toolbar">
+                                                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                                                OnClick="@HideInventoryValue">@TextProvider.GetOrCreate("BUTTON_CANCEL")</TelerikButton>
+                                                        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                                                OnClick="@SaveInventoryValue">@TextProvider.GetOrCreate("BUTTON_SAVE")</TelerikButton>
+                                                    </div>
+                                                </EditForm>
+                                            }
+                                        </div>
+                                    </WindowContent>
+                                    <WindowActions>
+                                        <WindowAction Name="Close" OnClick="HideInventoryValue" />
+                                    </WindowActions>
+                                </TelerikWindow>
+                                <CustomLoader Visible="@(IsDataBusy)"
+                                                    Text="@null" Class="initial-data-loader">
+                                </CustomLoader>
+                                <TelerikGrid Data="@RoomOptionList.OrderBy(p => p.Pos)"
+                                         Pageable="true"
+                                         Sortable="false"
+                                         Resizable="false"
+                                         ScrollMode="@GridScrollMode.Scrollable"
+                                         Groupable="false"
+                                         Reorderable="false">
+                                        <GridToolBarTemplate>
+                                            <GridCommandButton Command="MyAddCommand" OnClick="@AddOption" Icon="SvgIcon.Plus">@TextProvider.GetOrCreate("ADD")</GridCommandButton>
+                                            <GridCommandButton Command="MyInventoryCommand" OnClick="@OnShowRoomInventoryPositionsList" Icon="@("fa-light fa-table-list")">@TextProvider.GetOrCreate("BUTTON_INVETORY")</GridCommandButton>                                            
+                                            @if(ImportableOptions != null && ImportableOptions.Count() > 0)
+                                            {
+                                                <GridCommandButton Command="MyImportCommand" OnClick="@ImportOptions" Icon="SvgIcon.Plus">@TextProvider.GetOrCreate("IMPORT")</GridCommandButton>
+                                            }
+                                        </GridToolBarTemplate>
+                                        <GridColumns>
+                                        <GridColumn Field="@nameof(V_ROOM_RoomOptions.Enabled)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_VISIBLE")" Width="auto">
+                                             <Template>
+                                                @{
+                                                    V_ROOM_RoomOptions item = context as V_ROOM_RoomOptions;
+
+                                                                <TelerikSwitch @bind-Value="@item.Enabled" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                                }
+                                            </Template>
+                                        </GridColumn>
+                                        <GridColumn Field="@nameof(V_ROOM_RoomOptions.Name)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_NAME")" Width="auto"></GridColumn>
+                                        <GridColumn Field="@nameof(V_ROOM_RoomOptions.Category)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_CATEGORY")" Width="auto"></GridColumn>
+                                        <GridColumn Field="@nameof(V_ROOM_RoomOptions.Quantity)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_QUANTITY")" Width="auto"></GridColumn>
+                                        <GridColumn Field="@nameof(V_ROOM_RoomOptions.BasePrice)" DisplayFormat="{0:C}" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_PRICE")" Width="auto"></GridColumn>
+                                        <GridColumn Field="@nameof(V_ROOM_RoomOptions.DailyPayment)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_DAILY_PAYMENT")" Width="auto">
+                                                <Template>
+                                                @{
+                                                    V_ROOM_RoomOptions item = context as V_ROOM_RoomOptions;
+
+                                                    <TelerikSwitch @bind-Value="@item.DailyPayment" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                                }
+                                            </Template>
+                                        </GridColumn>  
+                                        <GridColumn Field="@nameof(V_ROOM_RoomOptions.CountContacts)" Title="@TextProvider.GetOrCreate("ROOM_TABLE_OPTIONS_COUNT_CONTACTS")" Width="auto"></GridColumn>
+                                        <GridCommandColumn Width="220px" Title="@TextProvider.Get("ACTIONS")">
+                                        @{
+                                            V_ROOM_RoomOptions item = context as V_ROOM_RoomOptions;
+
+                                            if (item != null)
+                                            {
+                                                <div class="table-toolbar">
+                                                    <div class="table-sorter-buttons">
+                                                        @if (item.Pos != RoomOptionList.Min(p => p.Pos))
+                                                        {
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveUpOption(item))" Icon="SvgIcon.ChevronUp"></GridCommandButton>
+                                                        }
+                                                        @if (item.Pos != RoomOptionList.Max(p => p.Pos))
+                                                        {
+                                                            <GridCommandButton Class="btn btn-secondary" OnClick="@(() => MoveDownOption(item))" Icon="SvgIcon.ChevronDown"></GridCommandButton>
+                                                        }
+                                                    </div>
+                                                    @if (item.ROOM_RoomOptions_Category_ID == ROOMOptionCategory.Inventory)
+                                                    {
+                                                        <GridCommandButton Command="MyPrimaryCommand" Class="btn btn-secondary" OnClick="@(() => ShowInventory(item))" Icon="@("fa-light fa-table-list")" title="@TextProvider.GetOrCreate("TOOLTIP_INVENTORY")"></GridCommandButton>
+                                                    }
+                                                    <GridCommandButton Command="MyPrimaryCommand" Class="btn btn-secondary" OnClick="@(() => EditOption(item))" Icon="SvgIcon.Pencil" title="@TextProvider.GetOrCreate("TOOLTIP_EDIT")"></GridCommandButton>
+                                                    <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => DeleteOption(item))" Icon="SvgIcon.Trash" title="@TextProvider.GetOrCreate("TOOLTIP_DELETE")"></GridCommandButton>
+                                                </div>
+                                            }
+                                        }
+                                        </GridCommandColumn>
+                                    </GridColumns>
+                                </TelerikGrid>
+                            </div>
+                        </Content>
+                    </WizardStep>                 
+                }
+                @if (Data.HasRooms != true)
+                {
+                    <WizardStep Label="@TextProvider.Get("BACKEND_ROOM_PRICING")" OnChange="OnWizardChanged" Icon="@("fa-regular fa-euro-sign")">
+                        <Content>
+                            <div class="price-container">
+                                <EditForm Model="@Data">
+                                    <div class="font-normal">
+                                        @TextProvider.Get("BACKEND_PRICING_DESCRIPTION")
+                                    </div>
+                                    <div>
+                                        <div class="pricing-type-picker">
+                                            <div class="extra-small-element-separator"></div>
+                                            <TelerikDropDownList Data="@PricingType.OrderBy(p => p.SortOrder)" TextField="Text" ValueField="ID" @bind-Value="@Data.PricingType" OnChange="@(() => RoomPricingTypeChanged())">
+                                            </TelerikDropDownList>
+                                        </div>
+                                    </div>
+                                    <div class="small-element-separator"></div>
+                                    <table class="price-table">
+                                        <tr classs="price-row">
+                                            <th class="price-header">@TextProvider.Get("BACKEND_PRICING_COMPANYTYPE")</th>
+                                            @if (Data.PricingType != null && Data.PricingType.Value == Guid.Parse("2561759a-083c-4281-a401-650223cf6470"))
+                                            {
+                                                <th class="price-header">@TextProvider.Get("BACKEND_PRICING_HOURPRICE")</th>
+                                                <th class="price-header">@TextProvider.Get("BACKEND_PRICING_MINPRICE")</th>
+                                                <th class="price-header">@TextProvider.Get("BACKEND_PRICING_MAXPRICE")</th>
+                                            }
+                                            else if(Data.PricingType != null && Data.PricingType.Value == Guid.Parse("cc78621e-c084-469f-ba73-594eca519f94"))
+                                            {
+                                                <th class="price-header">@TextProvider.Get("BACKEND_PRICING_HALFDAY")</th>
+                                                <th class="price-header">@TextProvider.Get("BACKEND_PRICING_FULLDAY")</th>
+                                                <th class="price-header">@TextProvider.Get("BACKEND_PRICING_HALFDAY_HOUR_LIMIT")</th>
+                                            }
+                                            <th class="price-header">@TextProvider.Get("BACKEND_PRICING_DEFAULT")</th>
+                                        </tr>
+                                        @foreach(var price in RoomPricing.OrderBy(p => p.AUTH_Company_Type_ID))
+                                        {
+                                            var company = CompanyTypeList.FirstOrDefault(p => p.ID == price.AUTH_Company_Type_ID);
+
+                                            @if(company != null)
+                                            {
+                                                <tr class="price-row">
+                                                    <td class="price-row-header">@company.Text</td>
+                                                     @if (Data.PricingType != null && Data.PricingType.Value == Guid.Parse("2561759a-083c-4281-a401-650223cf6470"))
+                                                    {
+                                                        <td class="price-cell">
+                                                            <TelerikNumericTextBox Arrows="false" Decimals="2" Format="C" @bind-Value="price.HourPrice" class="form-control"></TelerikNumericTextBox>
+                                                        </td>
+                                                        <td class="price-cell">
+                                                            <TelerikNumericTextBox Arrows="false" Decimals="2" Format="C" @bind-Value="price.MinPrice" class="form-control"></TelerikNumericTextBox>
+                                                        </td>
+                                                        <td class="price-cell">
+                                                            <TelerikNumericTextBox Arrows="false" Decimals="2" Format="C" @bind-Value="price.MaxPrice" class="form-control"></TelerikNumericTextBox>
+                                                        </td>
+                                                    }
+                                                    else if(Data.PricingType != null && Data.PricingType.Value == Guid.Parse("cc78621e-c084-469f-ba73-594eca519f94"))
+                                                    {
+                                                        <td class="price-cell">
+                                                            <TelerikNumericTextBox Arrows="false" Decimals="2" Format="C" @bind-Value="price.HalfDayPrice" class="form-control"></TelerikNumericTextBox>
+                                                        </td>
+                                                        <td class="price-cell">
+                                                            <TelerikNumericTextBox Arrows="false" Decimals="2" Format="C" @bind-Value="price.FullDayPrice" class="form-control"></TelerikNumericTextBox>
+                                                        </td>
+                                                        <td class="price-cell">
+                                                            <TelerikNumericTextBox Arrows="false" Decimals="2" @bind-Value="price.HalfDayHourLimit" class="form-control"></TelerikNumericTextBox>
+                                                        </td>
+                                                    }
+                                                    <td class="price-cell">
+                                                         <TelerikSwitch @bind-Value="@price.Default" OnChange="@(() => OnPriceDefaultChanged(price))" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </EditForm>
+                            </div>
+                        </Content>
+                    </WizardStep>
+                }                
+                @if(Data.RoomGroupFamilyID == null)
+                {
+                    <WizardStep Label="@TextProvider.Get("BACKEND_ROOM_PERSONS")"  OnChange="OnWizardChanged" Icon="@("fa-regular fa-address-book")">
+                        <Content>
+                            <div class="persons-container">
+                                <ICWebApp.Components.Rooms.Admin.Persons.ContactsComponent Contacts="RoomContacts" RoomID="Data.ID" OnContactChanged="RoomContactsChanged">
+                                </ICWebApp.Components.Rooms.Admin.Persons.ContactsComponent>                           
+                            </div>
+                        </Content>
+                    </WizardStep>
+                    <WizardStep Label="@TextProvider.Get("BACKEND_ROOM_MAP")"  OnChange="OnWizardChanged" Icon="@("fa-regular fa-map-location-dot")">
+                        <Content>
+                            <div class="data-container">
+                                <EditForm Model="@Data" Context="MapContext">                                    
+                                    <div class="formbuilder-language-picker">
+                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                                        <div class="extra-small-element-separator"></div>
+                                        <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                                            <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                                            <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                                        </TelerikButtonGroup>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="form-group">
+                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_ADDRESS")</label>
+                                        @if (Data.ROOM_Rooms_Extended != null && Data.ROOM_Rooms_Extended.Count() > 0 && CurrentLanguage != null)
+                                        {
+                                            <label class="font-detail">@Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID != CurrentLanguage).Address</label>
+                                            <InputText @bind-Value="Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Address" class="form-control"></InputText>
+                                        }
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="form-group">
+                                        <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_ROOM_LOCATION")</label>
+                                        @if (Data.ROOM_Rooms_Extended != null && Data.ROOM_Rooms_Extended.Count() > 0 && CurrentLanguage != null)
+                                        {
+                                            <label class="font-detail">@Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID != CurrentLanguage).Location</label>
+                                            <InputText @bind-Value="Data.ROOM_Rooms_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Location" class="form-control"></InputText>
+                                        }
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="form-group">
+                                        <div class="btn btn-secondary" @onclick="SetGeoLocation">@TextProvider.Get("SEARCH_ON_MAP")</div>
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="map-container">
+                                        @if (Data != null && MapLocation != null) 
+                                        {
+                                            <TelerikMap @ref="Map" MaxZoom="19" MinZoom="12" Zoom="15" OnClick="MapClicked" Height="100%" Center="@(new double[]{StartLat, StartLan})">
+                                                <MapLayers>
+                                                    <MapLayer Type="@MapLayersType.Tile" Subdomains="@Subdomains" UrlTemplate="@UrlTemplate">
+                                                    </MapLayer>
+                                                    <MapLayer Type="@MapLayersType.Marker" Data="@MapLocation" LocationField="@nameof(MapLocationItem.LatLan)">
+                                                    </MapLayer>                                                    
+                                                </MapLayers>
+                                            </TelerikMap>
+                                        }
+                                    </div>
+                                </EditForm>
+                            </div>
+                        </Content>
+                    </WizardStep>
+                }
+                @if (Data.HasRooms == true)
+                {
+                    <WizardStep Label="@TextProvider.Get("BACKEND_ROOM_ADDITIONAL_ROOMS")" OnChange="OnWizardChanged" Icon="@("fa-regular fa-apartment")">
+                        <Content>
+                            <div class="additional-room-container">
+                                <TelerikGrid Data="@AdditionalRoomList.OrderBy(p => p.Name)"
+                                     Pageable="false"
+                                     Sortable="true"
+                                     Resizable="false"
+                                     ScrollMode="@GridScrollMode.Scrollable"
+                                     Groupable="false"
+                                     Reorderable="false">
+                                    <GridToolBarTemplate>
+                                        <GridCommandButton Command="MyAddCommand" OnClick="@AddAdditionalRoom" Icon="SvgIcon.Plus">@TextProvider.GetOrCreate("ADD")</GridCommandButton>
+                                    </GridToolBarTemplate>                                 
+                                    <GridColumns>
+                                    <GridColumn Field="@nameof(V_ROOM_Rooms.Enabled)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_ENABLED")" Width="120px">
+                                        <Template>
+                                            @{
+                                                V_ROOM_Rooms item = context as V_ROOM_Rooms;
+
+                                                if (item != null)
+                                                {
+                                                            <TelerikSwitch @bind-Value="@item.Enabled" Enabled="false" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                                }
+                                            }
+                                        </Template>
+                                    </GridColumn>
+                                    <GridColumn Field="@nameof(V_ROOM_Rooms.Name)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_BOOKING_ROOMNAME")" Width="120px"></GridColumn>
+                                    <GridColumn Field="@nameof(V_ROOM_Rooms.MaxCapacity)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_CAPACITY")" Width="auto"></GridColumn>
+                                    <GridColumn Field="@nameof(V_ROOM_Rooms.SurfaceM2)" Title="@TextProvider.GetOrCreate("BACKEND_ROOM_SURFACE")" Width="auto"></GridColumn>
+                                    <GridCommandColumn Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                                    @{
+                                            V_ROOM_Rooms item = context as V_ROOM_Rooms;
+
+                                            if (item != null)
+                                            {
+                                                <div class="table-toolbar">
+                                                    <GridCommandButton Command="MyPrimaryCommand" Class="btn btn-secondary" OnClick="@(() => EditAdditionalRoom(item))" Icon="SvgIcon.Pencil" title="@TextProvider.GetOrCreate("TOOLTIP_EDIT")"></GridCommandButton>
+                                                    <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => DeleteAdditionalRoom(item))" Icon="SvgIcon.Trash" title="@TextProvider.GetOrCreate("TOOLTIP_DELETE")"></GridCommandButton>                                                    
+                                                </div>
+                                            }
+                                    }
+                                    </GridCommandColumn>
+                                </GridColumns>
+                            </TelerikGrid>
+                            </div>
+                        </Content>
+                    </WizardStep>
+                }
+            </WizardSteps>
+            <WizardButtons>
+            </WizardButtons>
+            <WizardSettings>
+                <WizardStepperSettings Linear="false" />
+            </WizardSettings>
+        </TelerikWizard>
+    </div>
+    <div class="segment-button-toolbar">
+        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                   OnClick="@ReturnToPreviousPage">@TextProvider.GetOrCreate("BUTTON_CANCEL")</TelerikButton>
+        <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                   OnClick="@SaveForm">@TextProvider.GetOrCreate("BUTTON_SAVE")</TelerikButton>
+    </div>
+}

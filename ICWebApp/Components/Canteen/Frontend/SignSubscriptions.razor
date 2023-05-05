@@ -1,0 +1,13 @@
+﻿<div class="container">
+    <div class="row mt-lg-80 mt-3 mb-4">
+        <div class="col-12">
+            <div class="segment-container custom-background-default">
+                @if (File_FileInfoID != null)
+                {
+                    <ICWebApp.Components.Signing.Signing File_FileInfoID="@File_FileInfoID" MultiSign="@false" OnBackToPrevious="BackToPrevious" ShowBackButton="true"
+                                                     OnDocumentSigned="DocumentSigned"></ICWebApp.Components.Signing.Signing>
+                }
+            </div>
+        </div>
+    </div>
+</div>

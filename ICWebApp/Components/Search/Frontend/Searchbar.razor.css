@@ -1,0 +1,78 @@
+﻿.searchbar-container {
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 400px;
+    margin: auto;
+}
+
+    .searchbar-container .form-control {
+        background-color: white;
+    }
+
+.search-input-container {
+    display: flex;
+}
+.search-input-container-show {
+    animation: reveal 0.2s forwards;
+}
+.search-input-container-hide {
+    animation: hide 0.2s forwards;
+}
+
+@keyframes reveal {
+    from {
+        clip-path: inset(0 0 0 100%);
+    }
+
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes hide {
+    from {
+        clip-path: inset(0 0 0 0);
+    }
+
+    to {
+        clip-path: inset(0 0 0 100%);
+    }
+}
+.search-toggler-show {
+    animation: revealWidth 0.1s forwards;
+}
+
+.search-toggler-hide {
+    animation: hideWidth 0.1s forwards;
+}
+
+@keyframes revealWidth {
+    from {
+        width: 0px;
+        opacity: 0;
+    }
+
+    to {
+        width: 40px;
+        opacity: 1;
+    }
+}
+
+@keyframes hideWidth {
+    from {
+        width: 40px;
+        opacity: 1;
+    }
+
+    to {
+        width: 0px;
+        opacity: 0;
+    }
+}
+
+
+.card{
+    margin-bottom: 30px;
+}

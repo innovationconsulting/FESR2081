@@ -1,0 +1,83 @@
+﻿@page "/Form/List/{ID}"
+
+@layout FrontendLayout
+
+@if(Data != null)
+{
+    <div class="bg-grey-card">
+        <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-12">
+                    <h2 class="mb-0 mt-5 mb-lg-10">@TextProvider.Get("FORMS_FRONTEND_EXPLORE_SERVICES_IN")</h2>
+                </div>
+                <div class="col-12 col-lg-8 pt-lg-50 pb-lg-50">
+                    <div class="cmp-input-search">
+                        <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
+                            <div class="input-group">
+                                <label for="autocomplete-autocomplete-three" class="visually-hidden">@TextProvider.Get("FORMS_FRONTEND_SEARCH_BY_KEYWORD")</label>
+                                <input @bind-value="Keyword" type="search" class="autocomplete form-control" placeholder="@TextProvider.Get("FORMS_FRONTEND_SEARCH_BY_KEYWORD")" id="autocomplete-autocomplete-three" name="autocomplete-three">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" id="button-3">@TextProvider.Get("FORMS_FRONTEND_SEARCH_BUTTON")</button>
+                                </div>
+
+                                <span class="autocomplete-icon" aria-hidden="true">
+                                    <svg class="icon icon-sm icon-primary">
+                                        <use href="css/bootstrap-italia/svg/sprites.svg#it-search"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @{
+                        var count = DefinitionList.Where(p => string.IsNullOrEmpty(Keyword) || (p.FORM_Name != null && p.FORM_Name.ToLower().Contains(Keyword.ToLower())) || (p.AmtName != null && p.AmtName.ToLower().Contains(Keyword.ToLower()))).Count();
+                        if (count > 1)
+                        {
+                            <p class="mb-4"><strong>@count</strong>@TextProvider.Get("FORMS_FRONTEND_SERVICES_IN_ALPHABETIC_ORDER")</p>
+                        }
+                    }
+                    @foreach (var service in DefinitionList.Where(p => string.IsNullOrEmpty(Keyword) || (p.FORM_Name != null && p.FORM_Name.ToLower().Contains(Keyword.ToLower())) || (p.AmtName != null && p.AmtName.ToLower().Contains(Keyword.ToLower()))).OrderBy(p => p.FORM_Name).Take(ShowCount).ToList())
+                    {
+                        <div class="cmp-card-latest-messages mb-3 mb-30" data-bs-toggle="modal">
+                            <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
+                                <span class="visually-hidden">@TextProvider.Get("FORMS_FRONTEND_CARD_CATEGORY")</span>
+                                <div class="card-header border-0 p-0 t-primary">
+                                    <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" @onclick="@ScrollToTop">@service.AmtName</a>
+                                </div>
+                                <div class="card-body p-0 my-2">
+                                    <h3 class="green-title-big t-primary mb-8"><a @onclick="@(() => NavigateTo("/Form/Detail/" + service.ID))" class="text-decoration-none" data-element="service-link">@service.FORM_Name</a></h3>
+                                    <p class="text-paragraph">
+                                        @service.ShortText
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (ShowCount < DefinitionList.Where(p => string.IsNullOrEmpty(Keyword) || (p.FORM_Name != null && p.FORM_Name.ToLower().Contains(Keyword.ToLower())) || (p.AmtName != null && p.AmtName.ToLower().Contains(Keyword.ToLower()))).Count())
+                    {
+                        <button type="button" class="btn btn-outline-primary pt-15 pb-15 pl-90 pr-90 mb-30 mt-3 mb-lg-50 full-mb text-button" data-focus-mouse="false" @onclick="IncreaseShowCount">
+                            <span class="">@TextProvider.Get("FORMS_FRONTEND_LOAD_MORE")</span>
+                        </button>
+                    }
+                </div>
+                <div class="col-12 col-lg-4 pt-30 pt-lg-5 ps-lg-5 order-first order-md-last hide-max-992">
+                    <div class="link-list-wrap">
+                        <h2 class="title-xsmall-semi-bold uppercase"><span>@TextProvider.Get("FORMS_FRONTEND_HIGHLIGHTED_SERVICES")</span></h2>
+                        <ul class="link-list t-primary">
+                            @foreach (var service in DefinitionListAll.Where(p => p.Highlight == true).Take(10).ToList())
+                            {
+                                <li class="mb-3 mt-3">
+                                    <a class="list-item ps-0 title-medium" @onclick="@(() => NavigateTo("/Form/Detail/" + service.ID))">
+                                        <span>
+                                            @service.FORM_Name
+                                        </span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,260 @@
+﻿@page "/Canteen/Admin/School/Period/{SchoolID}"
+@using DocumentFormat.OpenXml.Drawing
+@using ICWebApp.Components.Canteen
+@layout MainLayout
+
+
+<div class="element-separator"></div>
+@if (Data != null)
+{
+    if (SchoolClassList != null && SchoolClassList.Count() > 1)
+    {
+        <div class="filter-element filter-authorities">
+            @if (CurrentSchoolClass != null)
+            {
+                <div class="btn btn-secondary authority-tag" @onclick="@(() => SchoolClassChanged(null))" @onclick:stopPropagation="true">
+                    <span>
+                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                        @TextProvider.Get("STATUS_TAG_FILTER_ALL")
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="btn btn-primary authority-tag" @onclick:stopPropagation="true">
+                    <span>
+                        <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                        @TextProvider.Get("STATUS_TAG_FILTER_ALL")
+                    </span>
+                </div>
+            }
+
+            @foreach (var auth in SchoolClassList.OrderBy(p => p.Name))
+            {
+                string buttonCSS = "btn-secondary";
+
+                if (CurrentSchoolClass == auth.ID)
+                {
+                    buttonCSS = "btn-primary";
+                }
+
+                <div class="btn @buttonCSS authority-tag" @onclick="@(() => SchoolClassChanged(auth.ID))" @onclick:stopPropagation="true">
+                    <span>
+                        @TextProvider.Get(auth.TEXT_SystemText_Code)
+                    </span>
+                </div>
+            }
+        </div>
+    }
+    <div class="element-separator"></div>
+    <h4 class="custom-color-primary">@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_HOLLIDAYS")</h4> 
+    <div class="form-inline">
+        <div class="show-previous" @onclick="Prior">
+            <TelerikIcon Icon="@("fal fa-angle-left")"></TelerikIcon>
+        </div>
+        <h5 style="float: left;">@actualYear</h5>
+        <div class="show-next" @onclick="Next">
+            <TelerikIcon Icon="@("fal fa-angle-right")"></TelerikIcon>
+        </div> 
+    </div>
+    <div class="element-separator"></div>
+    <div class="row calendar-container">
+        <CustomLoader Visible="@IsDataBusy"></CustomLoader>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate1">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate2">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate3">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate4">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate5">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate6">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate7">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate8">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate9">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate10">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate11">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+        <div class="col-md-2">
+            <div class="calender-container">
+                <TelerikCalendar Views="1"
+                                 Class="CanteenCal"
+                                 SelectionMode="@CalendarSelectionMode.Single"
+                                 DisabledDates="@DisabledDatesList"
+                                 ValueChanged="@SingleSelectionChangeHandler"
+                                 Date="@startDate12">
+                    <MonthCellTemplate>
+                        <span class="@GetDayStatusClass(context.Date)">
+                            @context.Date.Day
+                        </span>
+                    </MonthCellTemplate>
+                </TelerikCalendar>
+                </div>
+        </div>
+    </div>
+    <div class="element-separator"></div>
+    <div class="button-container">
+        <button class="btn btn-secondary" @onclick="ReturnToPreviousPage">@TextProvider.Get("BUTTON_BACK")</button>
+    </div>
+}

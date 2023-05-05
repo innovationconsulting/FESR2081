@@ -1,0 +1,18 @@
+﻿
+.link-button {
+    color: #0F7173;
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+    .link-button i {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .link-button:hover {
+        text-decoration: underline;
+        color: #1DA2AF;
+    }

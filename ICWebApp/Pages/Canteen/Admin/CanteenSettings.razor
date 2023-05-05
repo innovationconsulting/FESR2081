@@ -1,0 +1,54 @@
+﻿@page "/Admin/Canteen/Settings"
+
+@layout MainLayout
+
+<div class="element-separator"></div>
+@if(Configuration != null)
+{
+ <div class="segment-container custom-background-default">
+        <EditForm Model="@Configuration">
+            <DataAnnotationsValidator />
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("CANTEEN_BACKEND_BALANCE")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_BACKEND_BALANCE_LOW_WARNING")</label>
+                <TelerikNumericTextBox @bind-Value="Configuration.BalanceLowWarning" class="form-control" Format="C"></TelerikNumericTextBox>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_BACKEND_NOTIFICATION_INTERVAL")</label>
+                <InputNumber @bind-Value="Configuration.ReminderIntervallDays" class="form-control"></InputNumber>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_BACKEND_RECHARGE_MIN_AMOUNT")</label>
+                <TelerikNumericTextBox @bind-Value="Configuration.RechargeMinAmount" class="form-control" Format="C"></TelerikNumericTextBox>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.GetOrCreate("CANTEEN_BACKEND_ENABLE_SERVICE_STOP")</label>
+                <TelerikSwitch @bind-Value="Configuration.ServiceStopEnabled"></TelerikSwitch>
+            </div>
+            @if (Configuration.ServiceStopEnabled)
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group form-group-small">
+                    <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_BACKEND_BALANCE_SERVICE_STOP")</label>
+                    <TelerikNumericTextBox @bind-Value="Configuration.BalanceLowServiceStop" class="form-control" Format="C"></TelerikNumericTextBox>
+                </div>
+                <div class="extra-small-element-separator"></div>   
+                <div class="form-group form-group-small">
+                    <label class="form-label custom-color-primary">@TextProvider.GetOrCreate("CANTEEN_BACKEND_ENABLE_DEREGISTRATIONS")</label>
+                    <TelerikSwitch @bind-Value="Configuration.AllowCanteenDeregistrationIfServiceStopEnabled"></TelerikSwitch>
+                </div>
+            }
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                OnClick="@SaveConfig">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

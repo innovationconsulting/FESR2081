@@ -1,0 +1,123 @@
+﻿.upload-file-container {
+    border: 1px solid #dfdfdf;
+    padding: 10px;
+    width: 300px;
+    cursor: pointer;
+    z-index: 10;
+    overflow: hidden;
+}
+
+    .upload-file-container:hover {
+        border-color: #0F7173;
+    }
+
+        .upload-file-container:hover .upload-file-footer-actions {
+            background-color: #0F7173;
+            color: white;
+        }
+
+.upload-file-actions{
+    display: flex;
+    justify-content: space-between;
+    margin-top: -11px;
+    margin-left: -11px;
+    margin-right: -11px;
+    background-color: #0F7173;
+    color: white;
+    padding-bottom: 3px;
+}
+.upload-file-preview{
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100px;
+}
+
+.upload-file-footer-actions {
+    text-align: center;
+    margin-bottom: -10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    color: #707070;
+    background-color: #dfdfdf;
+}
+.upload-file-name {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-right: 10px;
+    overflow: hidden;
+    height: 30px;
+}
+
+.upload-file-list-container {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    border: 1px dashed #0F7173;
+    padding: 10px;
+    position: relative;
+}
+.upload-file-empty {
+    color: #0F7173;
+    width: 100%;
+    text-align: center;
+    margin: auto;
+}
+
+.dropzone-drag{
+    border: 1px solid #0F7173 !important;
+    background-color: #dfdfdf;
+}
+
+.drop-zone {
+    padding: 20px;
+    width: 100%;
+    min-height: 100px;
+    border: 1px dashed #0F7173;
+    border-radius: 5px;
+}
+
+    .drop-zone.hover {
+        border-style: solid;
+    }
+
+.upload-file-image {
+    height: 80px;
+}
+
+.upload-error{
+    color: red !important;
+}
+
+.small-style .upload-file-list-container {
+    gap: 5px !important;
+    max-height: 230px;
+    overflow: auto;
+    
+}
+.small-style .drop-zone{
+    min-height: unset !important;
+    padding: 10px;
+}
+.small-style .upload-file-container{
+    max-height: 100px;
+    max-width: 100px;
+    overflow: hidden;
+}
+.small-style .upload-file-preview {
+    line-height: 60px !important;
+}
+.small-style .upload-file-footer-actions{
+    display: none !important;
+}
+
+.small-style .upload-file-image {
+    height: 50px;
+}
+.upload-file-actions .btn{
+    width: 25px !important;
+    height: 30px !important;
+    padding: 1px !important;
+    line-height: 15px !important;
+}

@@ -1,0 +1,243 @@
+﻿@page "/Backend/Canteen/Subscribe"
+@using Microsoft.EntityFrameworkCore.Infrastructure.Internal
+@layout MainLayout
+
+<div class="segment-container custom-background-default">
+<div class="segment-title custom-color-primary">
+    <h3 class="custom-color-primary">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TITLE")</h3>
+</div>
+<div class="small-element-separator"></div>
+<div class="segment-separator custom-border-primary"></div>
+<div class="small-element-separator"></div>
+<div class="segment-loader-container">
+<CustomLoader Visible="@(IsDataBusy)"
+                        Text="@null" Class="initial-data-loader">
+</CustomLoader>
+@{
+    int count = 1;
+}
+@foreach (var subscriber in Subscribers)
+{
+    string TextToShow = TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_CONTAINER_TITLE");
+    TextToShow += " " + count.ToString();
+
+    <EditForm @ref="@subscriber.HTMLReference" Model="subscriber" class="subscriber-container">
+    <DataAnnotationsValidator />
+    <div class="segment-line subscriber-container-title">
+        <div class="segment-line-left segment-title">@TextToShow</div>
+        <div class="segment-line-right">
+            <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.Trash" Class="k-square-button"
+                           OnClick="@(() => RemoveSubscriber(subscriber))"></TelerikButton>
+        </div>
+    </div>
+    @if (UserSelectionEnabled)
+    {
+        <div class="font-normal custom-color-primary">
+            <UserSelectionComponent AUTH_Users_ID="@subscriber.AUTH_Users_ID" OnSelection="UserSelected"></UserSelectionComponent>
+        </div>
+        <div class="small-element-separator"></div>
+    }
+    <div class="small-element-separator"></div>
+    <div class="row">
+        <div class="col-md-6"><div class="segment-line-left">
+                <div class="segment-line">
+                    <div class="segment-line-left segment-title">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_ANAGRAFIC_DATA") @TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_Student")</div>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label for="@subscriber.FirstNameReq" class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_FIRSTNAME")</label>
+                    <InputText @bind-Value="subscriber.FirstNameReq" class="form-control"></InputText>
+                    <CustomValidationMessage For="@(() => subscriber.FirstNameReq)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_FIRSTNAME" />
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label for="@subscriber.LastNameReq" class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_LASTNAME")</label>
+                    <InputText @bind-Value="subscriber.LastNameReq" class="form-control"></InputText>
+                    <CustomValidationMessage For="@(() => subscriber.LastNameReq)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_LASTNAME" />
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label for="@subscriber.TaxNumberReq" class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TAXNUMBER")</label>
+                    <InputText @bind-Value="subscriber.TaxNumberReq" class="form-control"></InputText>
+                    <CustomValidationMessage For="@(() => subscriber.TaxNumberReq)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_TAXNUMBER" />
+                    @if(!string.IsNullOrEmpty(subscriber.TaxNumberError)){
+                        <div style="color: red;">@subscriber.TaxNumberError</div>
+                    }
+                </div>
+            </div>
+                    
+            <div class="segment-line-left">
+                <div class="small-element-separator"></div>
+                <div class="segment-line">
+                    <div class="segment-line-left segment-title">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_CRITERIA")</div>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label for="@subscriber.DistanceFromSchoolValidated" class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_DISTANCE_TO_SCHOOL")</label>
+                    <InputNumber @bind-Value="subscriber.DistanceFromSchoolValidated" min="0" class="form-control"></InputNumber>
+                    <CustomValidationMessage For="@(() => subscriber.DistanceFromSchoolValidated)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_DISTANCE_TO_SCHOOL"/>
+                </div>
+                          
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label for="@subscriber.IsBothParentEmployed" class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_WORKING_PARENTS")</label>
+                    <div>
+                        <TelerikSwitch @bind-Value="subscriber.IsBothParentEmployed" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                       Class="list-item-switch"></TelerikSwitch>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="segment-line-right">
+                <div class="segment-line">
+                    <div class="segment-line-left segment-title custom-color-primary">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_GENERAL_DATA")</div>
+                </div>
+                            
+                @*     <div class="extra-small-element-separator"></div>
+                            <div class="form-group">
+                                <label class="form-label custom-color-primary">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_SCHOOLYEAR")</label>
+                                <TelerikDropDownList Data="@SchoolyearList" TextField="DisplayText" ValueField="id" @bind-Value="@subscriber.SchoolyearID"></TelerikDropDownList>
+                                <CustomValidationMessage For="@(() => subscriber.SchoolyearDescription)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_SCHOOLYEAR" />
+                            </div>*@
+
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_SCHOOL")</label>
+                    <TelerikDropDownList Data="@Schools" TextField="Name" ValueField="ID" @bind-Value="@subscriber.CANTEEN_School_IDReq" OnChange="@(() => SchoolChanged(subscriber))"></TelerikDropDownList>
+                    <CustomValidationMessage For="@(() => subscriber.CANTEEN_School_IDReq)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_SCHOOL" />
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_SCHOOLCLASS")</label>
+                    <TelerikDropDownList Data="@SchoolClassList" TextField="Name" ValueField="id" @bind-Value="@subscriber.SchoolClassID" Context="dropdownContext">
+                        <ValueTemplate>
+                            @(TextProvider.Get((dropdownContext as CANTEEN_SchoolClass).TEXT_SystemText_Code))
+                        </ValueTemplate>
+                        <ItemTemplate>
+                            @(TextProvider.Get((dropdownContext as CANTEEN_SchoolClass).TEXT_SystemText_Code))
+                        </ItemTemplate>
+                    </TelerikDropDownList>
+                    <CustomValidationMessage For="@(() => subscriber.SchoolClassID)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_SCHOOLCLASS" />
+                    @if(!string.IsNullOrEmpty(subscriber.SchoolClassError)){
+                        <div style="color: red;">@subscriber.SchoolClassError</div>
+                    }
+                </div>
+                     
+
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_CANTEEN")</label>
+                    <TelerikDropDownList Data="@Canteens" TextField="CanteenDisplaylName" ValueField="ID" @bind-Value="@subscriber.CANTEEN_Canteen_IDReq" OnChange="@(() => CanteenChanged(subscriber))">
+                    </TelerikDropDownList>
+                    <CustomValidationMessage For="@(() => subscriber.CANTEEN_Canteen_IDReq)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_CANTEEN" />
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="form-group">
+                    <label class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_PERIOD")</label>
+                    <div class="week-day-selector">
+                        <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Multiple">
+                            <ButtonGroupToggleButton @bind-Selected="@subscriber.DayMo" Enabled="subscriber.EnableDayMo" >@TextProvider.Get("MONDAY_SHORT")</ButtonGroupToggleButton>
+                            <ButtonGroupToggleButton @bind-Selected="@subscriber.DayTue" Enabled="subscriber.EnableDayTue">@TextProvider.Get("TUESDAY_SHORT")</ButtonGroupToggleButton>
+                            <ButtonGroupToggleButton @bind-Selected="@subscriber.DayWed" Enabled="subscriber.EnableDayWed">@TextProvider.Get("WEDNESDAY_SHORT")</ButtonGroupToggleButton>
+                            <ButtonGroupToggleButton @bind-Selected="@subscriber.DayThu" Enabled="subscriber.EnableDayThu">@TextProvider.Get("THURSDAY_SHORT")</ButtonGroupToggleButton>
+                            <ButtonGroupToggleButton @bind-Selected="@subscriber.DayFri" Enabled="subscriber.EnableDayFri">@TextProvider.Get("FRIDAY_SHORT")</ButtonGroupToggleButton>
+                        </TelerikButtonGroup>
+                    </div>
+                    @if(!string.IsNullOrEmpty(subscriber.DaySelectionError)){
+                        <div style="color: red;">@subscriber.DaySelectionError</div>
+                    }
+                </div>
+            </div>
+            <div class="segment-line-right">
+                <div class="small-element-separator"></div>
+                <div class="segment-line">
+                    <div class="segment-line-left segment-title custom-color-primary">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_MENUWISHES")</div>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="segment-line">
+                    <div class="form-group">
+                        <label for="@subscriber.CanteenMenuID" class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_MENUSELECT")</label>
+                        <div>
+                            <TelerikDropDownList Data="@MealList" TextField="Name" ValueField="id" @bind-Value="@subscriber.CanteenMenuID" OnChange="@(() => MealChanged(subscriber))" Context="contextDropdown">
+                                     
+                                <ValueTemplate>
+                                    @(TextProvider.Get((contextDropdown as CANTEEN_MealMenu).TEXT_SystemTexts_Code))
+                                </ValueTemplate>
+                                <ItemTemplate>
+                                    @(TextProvider.Get((contextDropdown as CANTEEN_MealMenu).TEXT_SystemTexts_Code))
+                                </ItemTemplate>
+                            </TelerikDropDownList>
+                                       
+                        </div>
+                    </div>
+                </div>
+
+                            @if (subscriber.CanteenMenuID != null && MealList != null && MealList.FirstOrDefault(p => p.ID == subscriber.CanteenMenuID) != null && MealList.FirstOrDefault(p => p.ID == subscriber.CanteenMenuID).Special == true)
+                {
+                    <div class="small-element-separator"></div>
+                    <div class="segment-line">
+                        <div class="segment-line-left segment-title custom-color-primary">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_ALLEGIES")</div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="segment-line">
+                        <div class="form-group">
+                            <label for="@subscriber.IsLactoseIntolerance" class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_LACTOSE")</label>
+                            <div>
+                                <TelerikSwitch @bind-Value="subscriber.IsLactoseIntolerance" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                               Class="list-item-switch"></TelerikSwitch>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="@subscriber.IsGlutenIntolerance" class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_GLUTEN")</label>
+                            <div>
+                                <TelerikSwitch @bind-Value="subscriber.IsGlutenIntolerance" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px"
+                                               Class="list-item-switch"></TelerikSwitch>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_ADDITIONAL")</label>
+                        <InputText @bind-Value="subscriber.AdditionalIntolerance" class="form-control"></InputText>
+                        <CustomValidationMessage For="@(() => subscriber.AdditionalIntolerance)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_ADDITIONAL"/>
+                    </div>
+
+
+                    <div class="small-element-separator"></div>
+                    <div class="form-group">
+                        <label class="form-label">@TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_MEDICAL_ATTEST")</label>
+                        <UploadComponent FileInfoList="subscriber.MedicalFiles" Multiple="false" Accept=".jpg, .png, .pdf" OnRemove="OnRemoveFile"></UploadComponent>
+                        <CustomValidationMessage For="@(() => subscriber.AdditionalIntolerance)" TextCode="CANTEEN_CREATE_SUBSCRIPTION_ADDITIONAL"/>
+                        @if(!string.IsNullOrEmpty(subscriber.MedicalFileError)){
+                            <div style="color: red;">@subscriber.MedicalFileError</div>
+                        }
+                    </div>
+                                    
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="small-element-separator"></div>
+    <div class="segment-line">
+    </div>
+    </EditForm>
+
+    count++;
+}
+<div class="subscriber-container-add custom-color-primary" @onclick="AddSubscriber">
+    @TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_ADD")
+</div>
+<div class="segment-button-toolbar">
+    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                   OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                   OnClick="@ContinueToSecondStep">@TextProvider.Get("BUTTON_NEXT")</TelerikButton>
+</div>
+</div>
+</div>
+

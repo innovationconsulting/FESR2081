@@ -1,0 +1,202 @@
+﻿@page "/Backend/Form/Application/{ID}"
+
+@layout MainLayout
+
+<TelerikWizard @bind-Value="@CurrentTab" ShowPager="false">
+    <WizardSteps>
+        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_APPLICATION_STEP_CHOOSE_FORM")" Icon="@("fas fa-stream")" Disabled="true">
+            <Content>
+                <div class="backend-step-container backend-first-step-container">
+                    <div class="backend-form-selection">
+                        <div class="form-group">
+                            <div class="font-normal custom-color-primary">
+                                @TextProvider.Get("BACKEND_FORM_APPLICATION_AUTHORITY_SELECTION")
+                            </div>
+                            <div class="element-dropdown">
+                                <TelerikDropDownList Data="@AuthorityList" TextField="Description" ValueField="ID"
+                                                     @bind-Value="@AuthorityID" OnChange="AuthorityChanged"></TelerikDropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="font-normal custom-color-primary">
+                                @TextProvider.Get("BACKEND_FORM_APPLICATION_DEFINITION_SELECTION")
+                            </div>
+                            <div class="element-dropdown">
+                                <TelerikDropDownList Data="@DefinitionList.Where(p => p.AUTH_Authority_ID == AuthorityID).ToList()" TextField="FORM_Name" ValueField="ID"
+                                                     @bind-Value="@DefinitionID" OnChange="DefinitionChanged"></TelerikDropDownList>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="element-user-selection">
+                        <UserSelectionComponent AUTH_Users_ID="@SelectedUserID" OnSelection="UserSelected"></UserSelectionComponent>
+                    </div>
+                </div>
+            </Content>
+        </WizardStep>
+        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_APPLICATION_STEP_INPUT_FORM")" Icon="@("fa-light fa-file-lines")" Disabled="true">
+            <Content>
+                <div class="backend-step-container form-application-container">
+                    <div class="previous-selection-container">
+                        <div class="form-group">
+                            <div class="font-normal custom-color-primary">
+                                @TextProvider.Get("BACKEND_FORM_APPLICATION_AUTHORITY_SELECTION")
+                            </div>
+                            <div class="element-dropdown">
+                                @{
+                                    var selectedAuthority = AuthorityList.FirstOrDefault(p => p.ID == AuthorityID);
+                                }
+                                @if(selectedAuthority != null)
+                                {
+                                    <div class="font-normal">
+                                        @selectedAuthority.Name
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="font-normal custom-color-primary">
+                                @TextProvider.Get("BACKEND_FORM_APPLICATION_DEFINITION_SELECTION")
+                            </div>
+                            <div class="element-dropdown">
+                                @if(Definition != null)
+                                {
+                                    <div class="font-normal">
+                                        @Definition.FORM_Name
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="font-normal custom-color-primary">
+                                @TextProvider.Get("BACKEND_FORM_APPLICATION_USER_SELECTION")
+                            </div>
+                            <div class="element-dropdown">
+                                @if(Data != null)
+                                {
+                                    <div class="font-normal">
+                                        @Data.FirstName @Data.LastName
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="backend-application-report-container">
+                        @if (Data != null)
+                        {
+                            <EditForm Model="@Data" Context="FormContext">
+                                <ICWebApp.Components.FormRenderer.Container @ref="@FormContainer" Application="@Data"
+                                                                        OnContainerInitialized="@OnContainerInitialized">
+                                </ICWebApp.Components.FormRenderer.Container>
+                            </EditForm>
+                        }
+                        @if (!IsInitializing)
+                        {
+                            @if (UploadElements != null && UploadFilesDefinitions != null && UploadFilesDefinitions.Count() > 0)
+                            {
+                                <div class="element-separator"></div>
+                                <Anchor Title="@(TextProvider.Get("FORM_APPLICATION_UPLOADS"))" CSS="font-bold custom-color-primary" ID="@(TextProvider.Get("FORM_APPLICATION_UPLOADS"))" Order="98"></Anchor>
+                                <div class="extra-small-element-separator"></div>
+
+                                @foreach (var ele in UploadElements)
+                                {
+                                    var def = UploadFilesDefinitions.FirstOrDefault(p => p.ID == ele.FORM_Definition_Upload_ID);
+
+                                    if (def != null)
+                                    {
+                                        string ErrorCSS = "";
+
+                                        @if (!string.IsNullOrEmpty(ele.ERROR_CODE))
+                                        {
+                                            ErrorCSS = "application-upload-container-error-style";
+                                        }
+
+                                        <div class="application-upload-container @ErrorCSS">
+                                            <div class="font-normal">
+                                                @def.Description
+                                            </div>
+                                            <div class="font-extra-small">
+                                                @def.AlloweTypesParsed
+                                            </div>
+                                            <div class="extra-small-element-separator"></div>
+                                            <UploadComponent FileInfoList="ele.CACH_UploadFiles" Multiple="@def.Multiupload" OnRemove="OnRemove" ID="@(ele.ID.ToString())"></UploadComponent>
+                                        </div>
+                                        <div class="application-upload-container-error font-normal">
+                                            @if (!string.IsNullOrEmpty(def.Description) && ele.ERROR_CODE != null)
+                                            {
+                                                @TextProvider.Get(ele.ERROR_CODE).Replace("{0}", def.Description)
+                                            }
+                                        </div>
+                                        <div class="small-element-separator"></div>
+                                    }
+                                }
+                            }
+
+                            @if (!IsValid)
+                            {
+                                <div class="element-separator"></div>
+                                <div class="container-error">
+                                    @TextProvider.Get("FORM_APPLICATION_ERROR")
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </Content>
+        </WizardStep>
+        <WizardStep Label="@TextProvider.Get("BACKEND_FORM_APPLICATION_STEP_SIGN_FORM")" Icon="@("fa-duotone fa-pen-fancy")" Disabled="true">
+            <Content>
+                <div class="backend-step-container">
+                    @if (File_FileInfoID == null)
+                    {
+   
+                    }
+                    else
+                    {
+                        <div class="segment-container">
+                            <div class="segment-url-container">
+
+                                @{
+                                    var RedirectUrl = "/Backend/Form/Administration";
+                                }
+                                @if (Definition != null)
+                                {
+                                    <ICWebApp.Components.Signing.Signing File_FileInfoID="@File_FileInfoID" NeededSigns="Signings" MultiSign="@Definition.HasMultiSigning" RedirectURL="@RedirectUrl"></ICWebApp.Components.Signing.Signing>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </Content>
+        </WizardStep>
+    </WizardSteps>
+    <WizardButtons>
+        @{
+            if (CurrentTab == 0)
+            {
+                if (SelectedUserID != null && DefinitionID != null)
+                {
+                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="@(ThemeConstants.Button.ThemeColor.Primary)" OnClick="@(() => OnFirstStepChanged())">@TextProvider.Get("WIZARD_NEXT")</TelerikButton>
+                }
+                else
+                {
+                    <TelerikButton ButtonType="ButtonType.Button" Enabled="false" ThemeColor="@(ThemeConstants.Button.ThemeColor.Secondary)">@TextProvider.Get("WIZARD_NEXT")</TelerikButton>
+                }
+            }
+            else if (CurrentTab == 1)
+            {
+                @if (ID == "New")
+                {
+                    <TelerikButton ButtonType="ButtonType.Button" ThemeColor="@(ThemeConstants.Button.ThemeColor.Secondary)" OnClick="@(() => ReturnToFirstStep())">@TextProvider.Get("WIZARD_PREVIOUS")</TelerikButton>
+                }
+
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="@(ThemeConstants.Button.ThemeColor.Primary)" OnClick="@(() => Commit())">@TextProvider.Get("WIZARD_NEXT")</TelerikButton>
+            }
+            else if (CurrentTab == 2)
+            {
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="@(ThemeConstants.Button.ThemeColor.Primary)" OnClick="@(() => SendToSign())">@TextProvider.Get("WIZARD_SIGN")</TelerikButton>
+            }
+        }
+    </WizardButtons>
+</TelerikWizard>

@@ -1,0 +1,242 @@
+﻿@if (DefinitionField != null && ApplicationField != null)
+{
+    string ErrorCSS = "";
+
+    @if (!string.IsNullOrEmpty(ApplicationField.ERROR_CODE))
+    {
+        ErrorCSS = "element-error-style";
+    }
+
+    <div class="element-description">
+        @if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Textbox)   
+        {
+            @if (!string.IsNullOrEmpty(DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name))
+            {
+                <div>@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+            }
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Textarea)    //TEXTAREA
+        {
+            @if (!string.IsNullOrEmpty(DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name))
+            {
+                <div>@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+            }
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Title) //TITLE
+        {
+            @if (DefinitionField.IsAnchor)
+            {
+                <Anchor Title="@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" HasParagraph="false" SectionSpace="false"
+                        ID="@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" Order="@FormRendererHelper.AnchorOrderID"></Anchor>
+            }
+            else
+            {
+                <h2 class="mb-3">@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</h2>
+            }
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.SubTitle) //SUBTITLE
+        {
+            @if (DefinitionField.IsAnchor)
+            {
+                <Anchor Title="@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" HasParagraph="false" IsSmallTitle="true" SectionSpace="false"
+                        ID="@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name" Order="@FormRendererHelper.AnchorOrderID"></Anchor>
+            }
+            else
+            {
+                <h4>@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</h4>
+            }
+
+            FormRendererHelper.AnchorOrderID++;
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Spacer) //SPACER
+        {
+            <div class="segment-spacer"></div>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.SmallSpacer) //SMALL SPACER
+        {
+            <div class="small-segment-spacer"></div>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Checkbox)  //CHECKBOX HAS TITLE INSIDE ELEMENT
+        {
+
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Difference)  //DIFFERENCE HAS TITLE INSIDE ELEMENT
+        {  
+
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Details) //DETAILS
+        {
+            <div class="font-extra-small">@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Bullet) //BULLET
+        {
+            <div class="element-bullet">
+                <div class="element-bullet-icon">
+                    <TelerikIcon Icon="SvgIcon.Circle"></TelerikIcon>
+                </div>
+                <div class="element-bullet-text">
+                    @DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name
+                </div>
+            </div>
+        }
+        else if(DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Signature)
+        {
+            <div>@TextProvider.Get("FORM_RENDERER_SIGNATURE_TITLE") @DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+        }
+        else //ALL ROW TITLES
+        {
+            <div>@DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name</div>
+        }
+    </div>
+    <div class="element-value @ErrorCSS">
+        @if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Textbox)   
+        {
+            string SubTypeString = "text";
+
+            if (DefinitionField.FORM_Definition_Fields_SubType_ID != null && SubType != null && SubType.HTMLTypeValue != null)
+            {
+                SubTypeString = SubType.HTMLTypeValue;
+            }
+
+            <InputText @bind-Value="ApplicationField.Value" type="@SubTypeString" class="form-control" disabled="@true"/>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Textarea)  //TEXTAREA
+        {
+            <InputTextArea @bind-Value="ApplicationField.Value" class="form-control form-text-area" resizable="false" disabled="@true"/>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Number)    //NUMBER
+        {
+            <InputNumber @bind-Value="ApplicationField.IntValue" class="form-control" disabled="@true" />
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Money)    //MONEY
+        {
+            <TelerikNumericTextBox @bind-Value="ApplicationField.DecimalValue" class="form-control" Format="C" Enabled="false"></TelerikNumericTextBox>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == Guid.Parse("7b0916b1-a860-4c6d-8f52-fe02ac650717"))    //DATEPICKER
+        {
+            <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="ApplicationField.DateValue" class="form-control" Enabled="false"></TelerikDatePicker>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Timepicker)    //TIMEPICKER
+        {
+            <TelerikTimePicker Format="HH:mm" @bind-Value="ApplicationField.DateValue" class="form-control" Enabled="false"></TelerikTimePicker>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Checkbox)    //CHECKBOX
+        {
+            <div class="element-checkbox">
+                <div class="element-checkbox-switch">
+                    <TelerikSwitch @bind-Value="@CheckBoxValue" OnLabel=" " OffLabel=" " Width="65px"
+                           Class="list-item-switch" Size="@ThemeConstants.Switch.Size.Small" Enabled="false">
+                    </TelerikSwitch>
+                </div>
+                <div class="element-checkbox-text">
+                    @DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name
+                </div>
+                @if (DefinitionField.HasAdditionalCharge == true && Definition != null && Definition.HasPayment)
+                {
+                    <div class="element-check-box-additional-charge font-bold">
+                        (@DefinitionField.AdditionalCharge.ToString("C"))
+                    </div>
+                }
+            </div>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Radiobutton)    //RADIO
+        {
+            <InputRadioGroup @bind-Value="GuidReferenceValue">
+                @foreach(var opt in FieldOptions.OrderBy(p => p.SortOrder))
+                {
+                    <div class="element-radio-button">
+                        <InputRadio Value="@opt.ID" disabled="@true"></InputRadio>
+                        @opt.Description
+                        @if (Definition!.HasPayment && DefinitionField.HasAdditionalCharge && opt.AdditionalCharge > 0)
+                        {
+                            <b>@("  (" + opt.AdditionalCharge.ToString("C") + ")")</b>
+                        }
+                    </div>
+                }
+            </InputRadioGroup>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Dropdown)    //DROPDOWN
+        {
+            <SfDropDownList DataSource="@FieldOptions.OrderBy(p => p.SortOrder)" @bind-Value="@GuidReferenceValue" TValue="Guid?" TItem="@FORM_Definition_Field_Option" Enabled="false">
+                <DropDownListFieldSettings Text="Description" Value="ID"></DropDownListFieldSettings>
+                <DropDownListTemplates TItem="FORM_Definition_Field_Option">
+                    <ItemTemplate>
+                        @{
+                            var item = context as FORM_Definition_Field_Option;
+                        }
+                        <div class="form-dropdown-item-container">
+                            <div class="form-dropdown-item-description">
+                                @item.Description
+                            </div>
+                            @if (DefinitionField.HasAdditionalCharge == true && Definition != null && Definition.HasPayment)
+                            {
+                                <div class="form-dropdown-item-charge">
+                                    @("(" + item.AdditionalCharge.ToString("C") + ")")
+                                </div>
+                            }
+                        </div>
+                    </ItemTemplate>
+                    <ValueTemplate>
+                        @{
+                            var item = context as FORM_Definition_Field_Option;
+                        }
+                        <div class="form-dropdown-item-value-container">
+                            <div class="form-dropdown-item-description">
+                                @item.Description
+                            </div>
+                            @if (DefinitionField.HasAdditionalCharge == true && Definition != null && Definition.HasPayment)
+                            {
+                                <div class="form-dropdown-item-charge">
+                                    @("(" + item.AdditionalCharge.ToString("C") + ")")
+                                </div>
+                            }
+                        </div>
+                    </ValueTemplate>
+                </DropDownListTemplates>
+            </SfDropDownList>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.List)     //LIST
+        {
+            <ICWebApp.Components.FormRendererMunicipal.Components.ListComponent Field="ApplicationField"></ICWebApp.Components.FormRendererMunicipal.Components.ListComponent>
+        }
+        else if (DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Difference)     //DIFFERENCE
+        {
+            <div class="element-difference">
+                <div class="element-difference-text">
+                    @DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name
+                </div>
+                @if (ApplicationField.DecimalValue != null && DefinitionField.DecimalReferenceValueLimit != null)
+                {
+                    <div class="element-difference-value">
+                        @(ApplicationField.DecimalValue.Value.ToString("C"))/@(DefinitionField.DecimalReferenceValueLimit.Value.ToString("C"))
+                    </div>
+                }
+                else if(ApplicationField.DecimalValue != null)
+                {
+                    <div class="element-difference-value">
+                        @(ApplicationField.DecimalValue.Value.ToString("C"))
+                    </div>
+                }
+            </div>
+        }        
+        else if(DefinitionField.FORM_Definition_Fields_Type_ID == FORMElements.Signature)
+        {
+            <div class="signature-container">
+                <div class="signature-first-row">
+                    <div class="signature-detail font-detail">
+                        @TextProvider.Get("FORM_ELEMENT_SIGNATURE_DETAIL")
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(ApplicationField.ERROR_CODE))
+    {
+        <div class="element-error">
+            @if (!string.IsNullOrEmpty(DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name))
+            {
+                @TextProvider.Get(ApplicationField.ERROR_CODE).Replace("{0}", DefinitionField.FORM_Definition_Field_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Name)
+            }
+        </div>
+    }
+}

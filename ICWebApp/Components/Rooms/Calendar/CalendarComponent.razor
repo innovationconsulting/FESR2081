@@ -1,0 +1,434 @@
+﻿
+<div class="rooms-main-container">
+    <h5 class="custom-color-primary">@TextProvider.Get("BACKEND_ROOM_CALENDER_TAG_TITLE")</h5>
+    <div class="small-element-separator"></div>
+    <div class="rooms-calender-tag-container">
+        @if (RoomList != null && RoomList.Count() > 0)
+        {
+            <div class="filter-element filter-authorities">
+                @if (SelectedRoomList != null && SelectedRoomList.Count() > 0)
+                {
+                    <div class="btn btn-secondary authority-tag" @onclick="@(() => ClearTagFilter())" @onclick:stopPropagation="true">
+                        <span>
+                            <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                            @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn btn-primary authority-tag" @onclick:stopPropagation="true">
+                        <span>
+                            <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                            @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                        </span>
+                    </div>
+                }
+
+                @foreach (var room in RoomList.OrderBy(p => p.BuildingName).ThenBy(p => p.Name).ToList())
+                {
+                    string buttonCSS = "btn-secondary";
+
+                    if (SelectedRoomList != null && SelectedRoomList.Contains(room.ID))
+                    {
+                        buttonCSS = "btn-primary authority-tag-selected";
+                    }
+
+                    <div class="btn @buttonCSS authority-tag" style="border-color: @room.RoomColor !important;" @onclick="@(() => AddFilter(room.ID))" @onclick:stopPropagation="true">
+                        <span>
+                            @room.BuildingName @room.Name
+                        </span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="extra-small-element-separator"></div>    
+    <div class="rooms-type-filter">
+        @if (SelectedBookingTypeList != null && SelectedBookingTypeList.Count() > 0)
+        {
+            <div class="btn btn-secondary authority-tag" @onclick="@(() => ClearTypeTagFilter())" @onclick:stopPropagation="true">
+                <span>
+                    <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                    @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                </span>
+            </div>
+        }
+        else
+        {
+            <div class="btn btn-primary authority-tag" @onclick:stopPropagation="true">
+                <span>
+                    <TelerikIcon Icon="@("fa-duotone fa-filter-slash")"></TelerikIcon>
+                    @TextProvider.Get("AUTHORITY_TAG_FILTER_ALL")
+                </span>
+            </div>
+        }
+
+        @foreach (var type in RoomBookingTypeList.OrderBy(p => p.SortOrder).ToList())
+        {
+            string buttonCSS = "btn-secondary";
+
+            if (SelectedBookingTypeList != null && SelectedBookingTypeList.Contains(type.ID))
+            {
+                buttonCSS = "btn-primary type-tag-selected";
+            }
+
+            <div class="btn @buttonCSS authority-tag" @onclick="@(() => AddTypeFilter(type.ID))" @onclick:stopPropagation="true">
+                <span>
+                    @type.Text
+                </span>
+            </div>
+        }
+    </div>
+    <div class="element-separator"></div>    
+    <div class="rooms-icon-legend-container">
+        <div class="legend-item">
+            <i class="fa-solid fa-lock"></i>
+            <span class="legend-item-text">@TextProvider.Get("ROOM_LEGEND_BLOCKED")</span>
+        </div>
+        <div class="legend-item">
+            <i class="fa-regular fa-building-columns"></i>
+            <span class="legend-item-text">@TextProvider.Get("ROOM_LEGEND_MANUAL_INPUT")</span>
+        </div>
+        <div class="legend-item">
+            <i class="fa-solid fa-hourglass-start"></i>
+            <span class="legend-item-text">@TextProvider.Get("ROOM_LEGEND_REQUEST")</span>
+        </div>
+        <div class="legend-item">
+            <i class="fa-regular fa-credit-card"></i>
+            <span class="legend-item-text">@TextProvider.Get("ROOM_LEGEND_TO_PAY")</span>
+        </div>
+        <div class="legend-item">
+            <i class="fa-regular fa-file-signature"></i>
+            <span class="legend-item-text">@TextProvider.Get("ROOM_LEGEND_TO_SIGN")</span>
+        </div>
+    </div>
+    <div class="element-separator"></div>    
+    <div class="rooms-calendar-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                      Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <SfSchedule @ref="ScheduleRef" TValue="AppointmentData" @bind-SelectedDate="@CurrentDate"
+                    @bind-CurrentView="@CurrentView" MaxDate="@MaxDate" Height="100%" FirstDayOfWeek="1" 
+                    WorkDays="@WorkingDays" EnableAutoRowHeight="true">
+            <ScheduleResources>
+                <ScheduleResource TItem="ResourceData" TValue="int" DataSource="@Resources" Field="OwnerID" Title="Owner" 
+                                  Name="OwnerName" TextField="Text" IdField="ID" ColorField="Color" CssClassField="CSS" AllowMultiple="false"></ScheduleResource>
+            </ScheduleResources>
+            <ScheduleEventSettings DataSource="@ExistingAppointments" AllowDeleting="false" AllowEditing="true">
+            </ScheduleEventSettings>
+            <ScheduleQuickInfoTemplates>
+                <HeaderTemplate></HeaderTemplate>
+                <ContentTemplate>
+                    @{
+                        var data = context as AppointmentData;
+
+                        var status = StatusList.FirstOrDefault(p => p.ID == data.StatusID);
+                    }
+                    @if(data != null)
+                    {
+                        <div class="font-normal">
+                            <div class="small-element-separator"></div>
+                            <div class="h3 custom-color-primary">@(data.Subject)</div>
+                            @if (status != null)
+                            {
+                                <div class="small-element-separator"></div>
+                                <div class="status-container">
+                                    <div class="status-icon">
+                                        <i class="@status.IconCSS"></i>
+                                    </div>
+                                    <div class="status-data">
+                                        @TextProvider.Get(status.TEXT_SystemTextsCode)
+                                    </div>
+                                </div>
+                            }
+                            <div class="extra-small-element-separator"></div>
+                            <div class="appointment-container">
+                                <div class="appointment-icon">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </div>
+                                <div class="appointment-data">
+                                    @data.AppointmentString
+                                </div>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="room-container">
+                                <div class="room-icon">
+                                    <i class="fa-regular fa-house"></i>
+                                </div>
+                                <div class="room-data">
+                                    @data.RoomName
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </ContentTemplate>
+                <FooterTemplate>
+                    @{
+                        var data = context as AppointmentData;
+                    }
+                    @if (data != null && data.EndTime > MinDate)
+                    {
+                        <div class="footer-container">     
+                            @if(data.StatusID == ROOMStatus.Accepted || data.StatusID == ROOMStatus.AcceptedWithChanges)
+                            {
+                                <div class="group-link remove-link" @onclick="@(() => RemoveBooking(data.ExternalID))">
+                                    <i class="fa-regular fa-xmark"></i>
+                                    <div class="group-link-button">@TextProvider.Get("ROOM_BACKEND_BOOKING_CANCEL")</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="group-link remove-link">
+                                </div>
+                            }
+                            <div class="group-link edit-link" @onclick="@(() => EditEvent(data))">
+                                <i class="fa-regular fa-pen"></i>
+                                <div class="group-link-button">@TextProvider.Get("ROOM_BACKEND_BOOKING_EDIT")</div>
+                            </div>
+                            @if (data.ExternalGroupID != null)
+                            {
+                                <div class="group-link" @onclick="@(() => GoToBooking(data.ExternalGroupID.Value))">
+                                    <div class="group-link-button">@TextProvider.Get("ROOM_BACKEND_BOOKING_LINK")</div>
+                                    <i class="fa-regular fa-arrow-right"></i>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="group-link remove-link">
+                                </div>
+                            }
+                        </div>
+                    }
+                </FooterTemplate>
+            </ScheduleQuickInfoTemplates>
+            <ScheduleEvents TValue="AppointmentData" OnCellClick="OnCellClick" OnPopupOpen="OnActionBegin" OnRenderCell="OnRenderCell">
+            </ScheduleEvents>
+            <ScheduleViews>
+                <ScheduleView Option="View.Month">
+                    <EventTemplate>
+                        @{
+                            var data = context as AppointmentData;
+
+                            string comittedCSS = "";
+
+                            if(data.Accepted != true)
+                            {
+                                comittedCSS = "cell-not-accepted";
+                            }
+                        }
+                        <div class="cell-item @comittedCSS">
+                            @if (data.ROOMBookingTypeID == ROOMBookingType.Blocked)
+                            {
+                                <div class="cell-icon">
+                                    <i class="fa-solid fa-lock"></i>
+                                </div>
+                            }
+                            else if(data.ManualInput == true)
+                            {
+                                <div class="cell-icon">
+                                    <i class="fa-regular fa-building-columns"></i>
+                                </div>
+                            }
+                            else if(data.Accepted != true)
+                            {
+                                <div class="cell-icon">
+                                    <i class="fa-solid fa-hourglass-start"></i>
+                                </div>
+                            }
+                            else if(data.ToPay != true)
+                            {
+                                <div class="cell-icon">
+                                    <i class="fa-regular fa-credit-card"></i>
+                                </div>
+                            }
+                            else if(data.ToSign != true)
+                            {
+                                <div class="cell-icon">
+                                    <i class="fa-regular fa-file-signature"></i>
+                                </div>
+                            }
+                            
+                            @if (data.StartTime.DayOfYear == data.EndTime.DayOfYear)
+                            {
+                                <div class="cell-time">@data.AppointmentString</div>
+                            }
+                            else
+                            {
+                                <div class="cell-time-start">@data.StartTime.ToString("dd.MM.yyyy HH:mm")</div>
+                            }
+                            <div class="cell-description">@data.Subject</div>
+                            @if (data.StartTime.DayOfYear != data.EndTime.DayOfYear)
+                            {
+                                <div class="cell-time-start">@data.EndTime.ToString("dd.MM.yyyy HH:mm")</div>
+                            }
+                        </div>
+                    </EventTemplate>
+                </ScheduleView>
+                <ScheduleView Option="View.MonthAgenda"></ScheduleView>
+            </ScheduleViews>
+            <ScheduleTemplates>
+                <EditorTemplate>
+                    @{
+                        var data = context as AppointmentData;
+                    }
+                    <EditForm @ref="editform" Model="@data" Context="editContext" class="room-backend-booking-container">
+                        <DataAnnotationsValidator></DataAnnotationsValidator>
+                        <div class="form-group">
+                            <label class="form-label">@TextProvider.Get("BACKEND_BOOKING_TYPE")</label>
+                            <SfDropDownList DataSource="RoomBookingTypeList.OrderBy(p => p.SortOrder)" @bind-Value="@(data.ROOMBookingTypeID)" TValue="Guid?" TItem="@V_ROOM_Booking_Type" Placeholder="@TextProvider.Get("BACKEND_BOOKING_TYPE_PLACEHOLDER")">
+                                <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                            <CustomValidationMessage For="@(() => data.ROOMBookingTypeID)" TextCode="BACKEND_BOOKING_TYPE" />
+                        </div>
+                        @if (data.ROOMBookingTypeID != null)
+                        {
+                            @if (data.ROOMBookingTypeID != ROOMBookingType.Blocked)
+                            {
+                                <div class="extra-small-element-separator"></div>
+                                <div class="form-group">
+                                    <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_BOOKING_TITLE")</label>
+                                    <InputText @bind-Value="data.Subject" class="form-control"></InputText>
+                                    <CustomValidationMessage For="@(() => data.Subject)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                                </div>
+                            }
+                            @if (data.IsWholeDay == true)
+                            {
+                                <div class="extra-small-element-separator"></div>
+                                <div class="form-group">
+                                    <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_MEETING_FROM")</label>
+                                    <TelerikDatePicker @bind-Value="data.StartTime" Width="100%" Min="@MinDate" Max="@MaxDate"></TelerikDatePicker>
+                                    <CustomValidationMessage For="@(() => data.StartTime)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="form-group">
+                                    <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_MEETING_TO")</label>
+                                    <TelerikDatePicker @bind-Value="data.EndTime" Width="100%" Min="@MinDate" Max="@MaxDate"></TelerikDatePicker>
+                                    <CustomValidationMessage For="@(() => data.EndTime)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="extra-small-element-separator"></div>
+                                <div class="form-group">
+                                    <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_MEETING_FROM")</label>
+                                    <TelerikDateTimePicker @bind-Value="data.StartTime" Width="100%" Min="@MinDate" Max="@MaxDate" Format="dd.MM.yyyy HH:mm"></TelerikDateTimePicker>
+                                    <CustomValidationMessage For="@(() => data.StartTime)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <div class="form-group">
+                                    <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_MEETING_TO")</label>
+                                    <TelerikDateTimePicker @bind-Value="data.EndTime" Width="100%" Min="@MinDate" Max="@MaxDate" Format="dd.MM.yyyy HH:mm">                      
+                                    </TelerikDateTimePicker>
+                                    <CustomValidationMessage For="@(() => data.EndTime)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                                </div>
+                            }
+                            @if (data.ROOMBookingTypeID == ROOMBookingType.Blocked)
+                            {
+                                <div class="extra-small-element-separator"></div>
+                                <div class="form-group">
+                                    <label class="form-label">@TextProvider.Get("BACKEND_BOOKING_WHOLE_DAY")</label>
+                                    <TelerikSwitch @bind-Value="data.IsWholeDay" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" Class="list-item-switch"></TelerikSwitch>
+                                    <CustomValidationMessage For="@(() => data.IsWholeDay)" TextCode="BACKEND_BOOKING_WHOLE_DAY" />
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(WrongDatesError))
+                            {
+                                <div class="extra-small-element-separator"></div>
+                                <div style="color: red;">
+                                    @WrongDatesError
+                                </div>
+                            }
+                            <div class="extra-small-element-separator"></div> 
+                            <div class="form-group">
+                                <label class="form-label">@TextProvider.Get("BACKEND_BOOKING_BOOKING_ROOM")</label>
+                                <SfDropDownList DataSource="@RoomList.OrderBy(p => p.BuildingName).ThenBy(p => p.Name)" @bind-Value="@(data.RoomID)" TValue="Guid?" TItem="@V_ROOM_Rooms" Placeholder="@TextProvider.Get("BACKEND_BOOKING_BOOKING_ROOM_PLACEHOLDER")">
+                                    <DropDownListFieldSettings Text="CombinedName" Value="ID"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <CustomValidationMessage For="@(() => data.RoomID)" TextCode="BACKEND_BOOKING_BOOKING_ROOM" />
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="form-group">
+                                <label class="form-label">@TextProvider.Get("FRONTEND_BOOKING_BOOKING_DESCRIPTION")</label>
+                                <InputTextArea @bind-Value="data.Description" class="form-control form-text-area form-text-area-small"></InputTextArea>
+                                <CustomValidationMessage For="@(() => data.Description)" TextCode="FRONTEND_BOOKING_BOOKING_TITLE" />
+                            </div>
+                            @if (data.ROOMBookingTypeID != ROOMBookingType.Blocked)
+                            {
+                                @if (data.ROOMBookingTypeID == ROOMBookingType.External)
+                                {
+                                    @if (data.ExternalGroupID == null)
+                                    {
+                                        <div class="extra-small-element-separator"></div>
+                                        <TelerikWizard StepperPosition="@WizardStepperPosition.Top" ShowPager="false" Context="wizardContext" @bind-Value="ExternalInputType">
+                                            <WizardSteps>
+                                                <WizardStep Label="@TextProvider.Get("BACKEND_BOOKING_EXTERNAL_USER")" Icon="@("fa-solid fa-user")">
+                                                    <Content>
+                                                        <div class="form-group">
+                                                            <div class="element-user-selection">
+                                                                <UserSelectionComponent AUTH_Users_ID="@data.AUTH_User_ID" ShowTitle="false" OnSelection="@((AuthUserID) => UserSelected(AuthUserID, data))"></UserSelectionComponent>
+                                                            </div>
+                                                        </div>
+                                                    </Content>
+                                                </WizardStep>
+                                                <WizardStep Label="@TextProvider.Get("BACKEND_BOOKING_EXTERNAL_ORG")" Icon="@("fa-regular fa-user-group")">
+                                                    <Content>
+                                                        <div class="form-group">
+                                                            <div class="element-user-selection">
+                                                                <UserSelectionComponent AUTH_Users_ID="@data.AUTH_User_ID" ShowTitle="false" OnSelection="@((AuthUserID) => UserSelected(AuthUserID, data))" IsUser="false"></UserSelectionComponent>
+                                                            </div>
+                                                        </div>
+                                                    </Content>
+                                                </WizardStep>
+                                                <WizardStep Label="@TextProvider.Get("FRONTEND_BOOKING_BOOKING_CUSTOM")" Icon="@("fa-regular fa-user-tag")">
+                                                    <Content>
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("BACKEND_BOOKING_EXTERNAL_FIRSTNAME")</label>
+                                                                <InputText @bind-Value="data.FirstName" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => data.FirstName)" TextCode="BACKEND_BOOKING_EXTERNAL_FIRSTNAME" />
+                                                            </div>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("BACKEND_BOOKING_EXTERNAL_LASTNAME")</label>
+                                                                <InputText @bind-Value="data.LastName" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => data.LastName)" TextCode="BACKEND_BOOKING_EXTERNAL_LASTNAME" />
+                                                            </div>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("BACKEND_BOOKING_EXTERNAL_EMAIL")</label>
+                                                                <InputText @bind-Value="data.Email" class="form-control"></InputText>
+                                                                <CustomValidationMessage For="@(() => data.Email)" TextCode="BACKEND_BOOKING_EXTERNAL_EMAIL" />
+                                                            </div>
+                                                            <div class="extra-small-element-separator"></div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">@TextProvider.Get("BACKEND_BOOKING_EXTERNAL_PHONE")</label>
+                                                                <CustomPhone @bind-Value="@data.MobilePhone"></CustomPhone>
+                                                                <CustomValidationMessage For="@(() => data.MobilePhone)" TextCode="BACKEND_BOOKING_EXTERNAL_PHONE" />
+                                                            </div>
+                                                        </div>
+                                                    </Content>
+                                                </WizardStep>
+                                            </WizardSteps>
+                                            <WizardButtons>
+                                            </WizardButtons>
+                                            <WizardSettings>
+                                                <WizardStepperSettings Linear="false" />
+                                            </WizardSettings>
+                                        </TelerikWizard>
+
+                                    }
+                                }
+                            }
+                        }
+                        <div class="small-element-separator"></div>
+                        <div class="scheduler-appointment-editor-footer">
+                            <div class="btn btn-secondary" @onclick="@HideAppointmentEditWindow">@TextProvider.Get("BUTTON_CANCEL")</div>
+                            <div class="btn btn-primary" @onclick="@(() => OnActionCompleted(data))">@TextProvider.Get("BUTTON_SAVE")</div>
+                        </div>
+                    </EditForm>
+                </EditorTemplate>
+            </ScheduleTemplates>
+        </SfSchedule>
+    </div>
+</div>

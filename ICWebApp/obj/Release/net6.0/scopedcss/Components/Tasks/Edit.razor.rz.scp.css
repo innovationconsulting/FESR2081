@@ -1,0 +1,35 @@
+.form-subcontainer[b-538albegij]
+{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+    .form-subcontainer .form-group[b-538albegij]{
+        width: 100%;
+    }
+    .form-spacer[b-538albegij]{
+        width: 100%;
+    }
+
+.task-add-container[b-538albegij] {
+    min-height: 65vh !important;
+}
+.task-loader-container[b-538albegij] {
+    height: 65vh !important;
+    position: relative;
+}
+.task-form-wizard-page[b-538albegij]{
+    max-height: 49vh;
+}
+.task-container[b-538albegij]{
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    height: 60vh;
+}
+.container-left[b-538albegij]{
+    flex: 1;
+}
+.container-right[b-538albegij] {
+    flex: 1;
+}

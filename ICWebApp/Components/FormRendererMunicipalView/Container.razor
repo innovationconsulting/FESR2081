@@ -1,0 +1,18 @@
+﻿@if (Application != null && Fields != null && DefinitionFields != null)
+{
+    <div class="form-renderer-container">
+        <EditForm Model="Application">
+            @foreach (var f in Fields)
+            {
+                var defintionField = DefinitionFields.FirstOrDefault(x => x.ID == f.FORM_Definition_Field_ID);
+   
+                <ICWebApp.Components.FormRendererMunicipalView.Element ApplicationField="@f" DefinitionField="@defintionField"></ICWebApp.Components.FormRendererMunicipalView.Element>
+                <div class="default-space"></div>            
+            }
+        </EditForm>
+    </div>
+}
+else
+{
+    <CustomLoader Text="@TextProvider.Get("FORM_RENDERER_PREPARING")"></CustomLoader>
+}

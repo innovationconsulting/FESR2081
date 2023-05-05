@@ -1,0 +1,210 @@
+﻿@using Syncfusion.Drawing
+@if (Task != null)
+{
+    <div class="small-task-container font-small" @onclick="EditTask" @onclick:stopPropagation="true">
+        <div class="small-task-remove-container" @onclick="DeleteTask" @onclick:stopPropagation="true">
+            <i class="fa-regular fa-trash-can"></i>
+        </div>
+        <div>
+            @if (DisplayContext)
+            {
+                string contextName = "";
+                if (_contextSystemTextCode != null)
+                {
+                    contextName = TextProvider.Get(_contextSystemTextCode);
+                }
+                @if (!string.IsNullOrEmpty(contextName))
+                {
+                    <div class="context-display">
+                        @contextName - @Task.ContextName
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                }
+            }
+
+            <div class="title-container">
+                @if (Task.CompletedAt == null)
+                {
+                    <div class="check-element" @onclick="@(() => CheckCheckItem())" @onclick:stopPropagation="true">
+                    </div>
+                }
+                else
+                {
+                    <div class="check-element check-element-aktive" @onclick="@(() => UnCheckCheckItem())" @onclick:stopPropagation="true">
+                    </div>
+                }
+                <div class="title-element font-normal">
+                    @Task.Title
+                </div>
+            </div>
+            @if (HasCheckItems)
+            {
+                <div class="extra-small-element-separator"></div>
+                <div class="checkitems-container font-small">
+                    <ICWebApp.Components.Tasks.Checklist.Control List="TaskCheckItemsList" ReadOnly="true" ItemEdited="CheckItemEdited"
+                                                                 ItemChecked="CheckItemChecked" ItemUnchecked="CheckItemUnchecked" TaskID="Task.ID" SmallStyle="true">
+                    </ICWebApp.Components.Tasks.Checklist.Control>
+                </div>
+            }
+
+        </div>
+        <div class="bottom-container">
+            @if (HasTags)
+            {
+                <div class="small-element-separator"></div>
+                <div class="tag-container font-small" @onclick="@(() => ShowTagSelection())" @onclick:stopPropagation="true">
+                    @foreach (var item in TaskTagList.OrderBy(p => p.SortOrder))
+                    {
+                        if (item != null)
+                        {
+                            var tag = TagList.FirstOrDefault(p => p.ID == item.TASK_Tag_ID);
+
+                            if (tag != null)
+                            {
+                                <div class="tag-item" style="background-color: @(tag.Color + "aa") !important; border-color: @(tag.Color) !important">
+                                    <div class="font-small" style="color: @CalculateTagTextColor(tag.Color)">
+                                        @tag.Description
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                @if (TagSelectionVisible)
+                {
+                    <div class="tag-quickadd-container">
+                        <ICWebApp.Components.Tasks.Tag.Control TaskID="@Task.ID" TagList="@TaskTagList" ShowInputField="false"
+                                                               ItemAdded="TagQuickAdd" ItemRemoved="TagQuickRemove" OverlayClicked="TagOverlayClicked" TaskContextId="@Task.TASK_Context_ID">
+                        </ICWebApp.Components.Tasks.Tag.Control>
+                    </div>
+                }
+            }
+            @if (HasComments || HasFiles || Task.TASK_Priority_ID != null || Task.TASK_Status_ID != null)
+            {
+                <div class="extra-small-element-separator"></div>
+                @if (ShowPriorityList || ShowStatusList)
+                {
+                    <div class="overlay-container" @onclick="CloseallPopups" @onclick:stopPropagation="true"></div>
+                }
+                <div class="properties-container">
+                    @if (Task.TASK_Priority_ID != null && PriorityList != null)
+                    {
+                        var priority = PriorityList.FirstOrDefault(p => p.ID == Task.TASK_Priority_ID);
+
+                        if (priority != null)
+                        {
+                            <div class="properties-icon" title="@priority.Description" @onclick="OnShowPriorityList" @onclick:stopPropagation="true">
+                                <i class="@priority.Icon"></i>
+                            </div>
+                            @if (ShowPriorityList)
+                            {
+                                <div class="priority-dropdown">
+                                    <div class="priority-container">
+                                        @foreach (var prio in PriorityList.Where(p => p.ID != Task.TASK_Priority_ID))
+                                        {
+                                            <div class="priority-item" @onclick="@(() => SelectPriority(prio))" @onclick:stopPropagation="true">
+                                                <i class="@prio.Icon"></i>
+                                                @prio.Description
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    @if (Task.TASK_Status_ID != null && StatusList != null)
+                    {
+                        var status = StatusList.FirstOrDefault(p => p.ID == Task.TASK_Status_ID);
+
+                        if (status != null)
+                        {
+                            <div class="properties-icon" title="@status.Description" @onclick="OnShowStatusList" @onclick:stopPropagation="true">
+                                <i class="@status.Icon"></i>
+                            </div>
+                            @if (ShowStatusList)
+                            {
+                                <div class="priority-dropdown">
+                                    <div class="priority-container">
+                                        @foreach (var prio in StatusList.Where(p => p.ID != Task.TASK_Status_ID))
+                                        {
+                                            <div class="priority-item" @onclick="@(() => SelectStatus(prio))" @onclick:stopPropagation="true">
+                                                <i class="@prio.Icon"></i>
+                                                @prio.Description
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    @if (HasComments)
+                    {
+                        <div class="properties-icon" title="@TextProvider.Get("TASKS_ADD_COMMENTS")" @onclick="EditTask" @onclick:stopPropagation="true">
+                            <i class="fa-regular fa-comment"></i>
+                        </div>
+                    }
+                    @if (HasFiles)
+                    {
+                        <div class="properties-icon" title="@TextProvider.Get("TASKS_ADD_FILES")" @onclick="EditTask" @onclick:stopPropagation="true">
+                            <i class="fa-regular fa-paperclip"></i>
+                        </div>
+                    }
+                    @if (HasEskalation)
+                    {
+                        <div class="properties-icon" title="@TextProvider.Get("TASKS_ADD_ESKALATION")" @onclick="EditTask" @onclick:stopPropagation="true">
+                            <i class="fa-regular fa-light-emergency-on"></i>
+                        </div>
+                    }
+                </div>
+            }
+            @if (HasResponsible || Task.Deadline != null)
+            {
+                <div class="footer-container font-small">
+                    <div class="deadline-container" @onclick="() => { ShowCalendar = !ShowCalendar; }" @onclick:stopPropagation="true">
+                        @if (Task.Deadline != null)
+                        {
+                            <div class="deadline-icon custom-color-primary">
+                                <i class="fa-regular fa-calendar-day"></i>
+                            </div>
+                            <div class="deadline-date">
+                                @Task.Deadline.Value.ToString("dd.MM.yyyy")
+                            </div>
+                        }
+                    </div>
+                    @if (HasResponsible)
+                    {
+                        <div class="responsible-container" @onclick="@(() => { /*ShowResponsibleSelection();*/ })" @onclick:stopPropagation="true">
+                            @foreach (var resp in TaskResponsibleList.OrderBy(p => p.SortDesc))
+                            {
+                                var user = AUTHProvider.GetUserSync(resp.AUTH_Users_ID.Value);
+
+                                <UserCard SmallStyle="true" User="@user"></UserCard>
+                            }
+                        </div>
+                        @if (ResponsibleSelectionVisibile)
+                        {
+                            <div class="responsible-quickadd-container">
+                                <ICWebApp.Components.Tasks.Responsible.Control TaskID="@Task.ID" ResponsibleList="@TaskResponsibleList" ShowInputField="false"
+                                                                               ItemAdded="ResponsibleQuickAdd" ItemRemoved="ResponsibleQuickRemove" OverlayClicked="ResponsibleOverlayClicked">
+                                </ICWebApp.Components.Tasks.Responsible.Control>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    <TelerikWindow @bind-Visible="ShowCalendar" Modal="true">
+        <WindowContent>
+            <div class="calendar-window-content">
+                <TelerikCalendar Min="@DateTime.Today" ValueChanged="@DueDateChanged" Value="@(pickedDate ?? DateTime.Today)">
+                </TelerikCalendar>
+                <div class="small-element-separator"></div>
+                <div class="calendar-window-buttons">
+                    <button class="btn btn-secondary" @onclick="() => { ShowCalendar = false; }">@TextProvider.Get("BUTTON_CANCEL")</button>
+                    <button class="btn btn-primary" @onclick="SaveDate">@TextProvider.Get("BUTTON_SAVE")</button>
+                </div>
+            </div>
+        </WindowContent>
+    </TelerikWindow>
+}

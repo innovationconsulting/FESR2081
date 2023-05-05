@@ -1,0 +1,30 @@
+.schedule-container[b-3mvegdhelv] {
+    height: calc(100% - 45px) !important;
+    height: -moz-calc(100% - 45px) !important;
+    height: -webkit-calc(100% - 45px) !important;
+    height: -o-calc(100% - 45px) !important;
+}
+
+.scheduler-legend-container[b-3mvegdhelv] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+}
+
+.scheduler-legend-dash[b-3mvegdhelv] {
+    height: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 60px;
+}
+
+.scheduler-legend-item[b-3mvegdhelv] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.scheduler-appointment-editor-footer[b-3mvegdhelv] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}

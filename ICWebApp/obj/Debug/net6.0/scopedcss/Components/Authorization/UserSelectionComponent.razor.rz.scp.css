@@ -1,0 +1,16 @@
+.user-selection-content[b-663462p8sl]
+{
+    display: flex;
+    gap: 10px;
+}
+.user-selection-dropdown[b-663462p8sl]{
+    width: 100%;
+}
+
+.user-selection-actions[b-663462p8sl]{
+
+}
+.user-add-button[b-663462p8sl]{
+    width: 38px !important;
+    height: 38px;
+}

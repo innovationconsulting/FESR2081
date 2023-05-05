@@ -1,0 +1,42 @@
+﻿@page "/Admin/Canteen/SchoolyearManagement"
+
+@layout MainLayout
+
+<div class="segment-container custom-background-default">
+    <div class="segment-separator custom-border-primary"></div>
+    <div class="small-element-separator"></div>
+    <div class="grid-data-container segment-loader-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                            Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+        <TelerikGrid Data="@SchoolyearList" Pageable="false" Sortable="false" Resizable="false" 
+           EditMode="@GridEditMode.Popup"
+                     ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+            <GridToolBarTemplate>
+                <GridCommandButton Command="MyAddCommand" OnClick="@AddSchoolyear" Icon="SvgIcon.Plus">@TextProvider.Get("ADD")</GridCommandButton>
+            </GridToolBarTemplate>
+            <GridColumns>
+                <GridColumn Field="@nameof(V_CANTEEN_Schoolyear.DisplayText)" Title="@TextProvider.Get("MAINMENU_BACKEND_CANTEEN_SCHOOL_TABLE_NAME")" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_CANTEEN_Schoolyear.BeginDate)" Title="@TextProvider.Get("CANTEEN_SCHOOLYEAR_BEGIN_DATE")" DisplayFormat="{0:ddd, dd.MM.yyyy}" Width="auto"></GridColumn>
+                <GridColumn Field="@nameof(V_CANTEEN_Schoolyear.EndDate)" Title="@TextProvider.Get("CANTEEN_SCHOOLYEAR_END_DATE")" DisplayFormat="{0:ddd, dd.MM.yyyy}" Width="auto"></GridColumn>       
+                <GridCommandColumn Width="160px" Title="@TextProvider.Get("ACTIONS")">
+                    @{
+                        V_CANTEEN_Schoolyear item = context as V_CANTEEN_Schoolyear;
+
+                        if (item != null)
+                        {
+                            @if (item.EndDate >= DateTime.Now)
+                            {
+                                <GridCommandButton Command="MyEditCommand" Class="btn btn-secondary" OnClick="@(() => EditSchoolyear(item))" Icon="SvgIcon.Pencil" title="@TextProvider.Get("TOOLTIP_EDIT")"></GridCommandButton>
+                            }
+                            @if (item.SubscriberCount == 0)
+                            {
+                                <GridCommandButton Command="MyDeleteCommand" Class="btn btn-secondary" OnClick="@(() => RemoveSchoolyear(item))" Icon="SvgIcon.Trash" title="@TextProvider.Get("TOOLTIP_DELETE")"></GridCommandButton>
+                            }
+                        }
+                    }
+                </GridCommandColumn>
+            </GridColumns>
+        </TelerikGrid>
+    </div>
+</div>    

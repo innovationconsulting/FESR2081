@@ -1,0 +1,78 @@
+﻿@if (ArticleList != null && ArticleList.Count() > 0)
+{   
+    <div class="news-preview-container">
+        <CustomLoader Visible="@(IsDataBusy)"
+                    Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+            
+        @foreach (var news in ArticleList.OrderByDescending(p => p.PublishingDate))
+        {
+            <div class="news-item-container" @onclick="@(() => GoToNews(news.ID.ToString()))">
+                    <div class="news-title">
+                        @if (!string.IsNullOrEmpty(news.Title))
+                        {
+                            <h5 class="custom-color-primary">
+                                @((MarkupString)(news.Title))
+                            </h5>
+                        }
+                        else
+                        {
+                            <h5 class="custom-color-primary">
+                                @(TextProvider.Get("NEWS_DEFAULT_TITLE"))
+                            </h5>
+                        }
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="news-item-image">
+                        <div class="news-image">
+                            @if (news.Image != null)
+                            {
+                                var image = (MarkupString)(news.Image);
+
+                                @image
+                            }
+                            else
+                            {
+                                <img src="/Images/Backend/Logo_512x512.png" />
+                            }
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="news-data-column">
+                        <div class="news-preview">
+                            @if (!string.IsNullOrEmpty(news.ShortContent))
+                            {
+                                <div class="font-normal">
+                                    @news.ShortContent
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="font-normal">
+                                    @TextProvider.Get("NEWS_DEFAULT_SHORT_TEXT")
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="extra-small-element-separator"></div>
+                    <div class="news-date-container">
+                        <div class="news-date font-small">
+                            <div class="news-date-icon">
+                                <TelerikIcon Icon="@("fa-regular fa-calendar")"></TelerikIcon>
+                            </div>
+                            <div class="news-date-value">
+                                @if (news.PublishingDate != null)
+                                {
+                                    @news.PublishingDate.Value.ToString("dd.MM.yyyy")
+                                }
+                                else
+                                {
+                                    @DateTime.Now.ToString("dd.MM.yyyy")
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>                 
+        }
+    </div>
+}

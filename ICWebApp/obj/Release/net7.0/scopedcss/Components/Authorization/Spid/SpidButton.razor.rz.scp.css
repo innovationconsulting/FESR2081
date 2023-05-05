@@ -1,0 +1,59 @@
+.button-spid[b-2jhzj96fl6] {
+    background-color: #06C;
+    color: #FFF;
+}
+
+.italia-it-button-size-m[b-2jhzj96fl6] {
+    font-size: 15px;
+    width: 220px;
+}
+
+.italia-it-button[b-2jhzj96fl6] {
+    display: inline-block;
+    position: relative;
+    padding: 0;
+    color: #FFF;
+    font-family: "Titillium Web",HelveticaNeue,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+    font-weight: 600;
+    line-height: 1em;
+    text-decoration: none;
+    border: 0;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.italia-it-button-icon[b-2jhzj96fl6] {
+    margin: 0 -.4em 0 0;
+    padding: 0.6em .8em .5em;
+    border-right: rgba(255,255,255,0.1) 0.1em solid;
+}
+
+.italia-it-button-icon[b-2jhzj96fl6], .italia-it-button-text[b-2jhzj96fl6] {
+    display: block;
+    float: left;
+}
+
+.italia-it-button-size-m > span img[b-2jhzj96fl6] {
+    width: 29px;
+    height: 29px;
+    border: 0;
+}
+.italia-it-button-text[b-2jhzj96fl6] {
+    padding: .95em 1em .85em 1em;
+    font-size: 1.15em;
+    text-align: center;
+}
+
+.italia-it-button-icon[b-2jhzj96fl6], .italia-it-button-text[b-2jhzj96fl6] {
+    display: block;
+    float: left;
+}
+.button-spid:hover[b-2jhzj96fl6] {
+    background-color: #036;
+    color: #FFF;
+}
+.button-spid:active[b-2jhzj96fl6] {
+    background-color: #83BEED;
+    color: #036;
+}

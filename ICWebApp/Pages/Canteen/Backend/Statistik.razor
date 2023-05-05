@@ -1,0 +1,603 @@
+﻿@page "/Backend/Canteen/Statistik"
+
+@using ICWebApp.Components.Canteen
+@layout MainLayout
+
+<div class="element-separator"></div>
+
+<div class="statistik-wizard-container">
+    <CustomLoader Visible="@(IsDataBusy)" Text="@null" Class="initial-data-loader">
+    </CustomLoader>
+    <TelerikWizard StepperPosition="@WizardStepperPosition.Top" ShowPager="false" Context="wizardContext">
+        <WizardSteps>
+            <WizardStep Label="@TextProvider.Get("CANTEEN_STATISTIK_TITLE_MEALS")" Icon="@("fa-regular fa-pot-food")">
+                <Content>
+                    <div class="filter-container">
+                        <div class="filter-card">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_MEAL_TOOLBAR")
+                            </div>
+                            <div class="element-separator"></div>
+                            <div class="date-filter">                            
+                                <div class="date-container">
+                                    <div class="filter-date-label font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_MEAL_FROM")
+                                    </div>
+                                    <div class="filter-date-value">
+                                        <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="FromDate" class="form-control"></TelerikDatePicker>
+                                    </div>
+                                </div>
+                                <div class="date-container">
+                                    <div class="filter-date-label font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_MEAL_TO")
+                                    </div>
+                                    <div class="filter-date-value">
+                                        <TelerikDatePicker Format="dd.MM.yyyy" @bind-Value="ToDate" class="form-control"></TelerikDatePicker>
+                                    </div>
+                                </div>
+                                <div class="filter-tool-container">
+                                    <div class="excel-download-button btn btn-primary" @onclick="@DownloadMealRawData">
+                                        <i class="fa-solid fa-file-excel"></i>
+                                        @TextProvider.Get("BUTTON_EXPORT")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="table-container" id="mealstatistik">
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_NUMBERS")
+                            </div>
+                            <div class="element-separator"></div>
+                            <div class="numbers-container">
+                                <div class="number-item number-total">
+                                    <div class="value-container">
+                                        @(RawData.Count() + AdditionalMeals)
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_TOTAL")
+                                    </div>
+                                </div>
+                                <div class="number-item number-completed">
+                                    <div class="value-container">
+                                        @RawData.Where(p => p.CancelDate == null).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_COMPLETED")
+                                    </div>
+                                </div>
+                                <div class="number-item number-completed">
+                                    <div class="value-container">
+                                        @AdditionalMeals
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_SUPERVISOR")
+                                    </div>
+                                </div>
+                                <div class="number-item number-cancelled">
+                                    <div class="value-container">
+                                        @RawData.Where(p => p.CancelDate != null).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_CANCELLED")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_MEAL")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@MealData.OrderByDescending(p => p.Value).ThenByDescending(p => p.Category)"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(MealData, TextProvider.Get("CANTEEN_STATISTIK_MEAL")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_SCHOOL")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@SchoolData.OrderByDescending(p => p.Value).ThenByDescending(p => p.Category)"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(SchoolData, TextProvider.Get("CANTEEN_STATISTIK_SCHOOL")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                            <div class="small-element-separator"></div>
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_SCHOOL_CLASS")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@ClassData.OrderBy(p => p.Category).ToList()"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(ClassData, TextProvider.Get("CANTEEN_STATISTIK_SCHOOL_CLASS")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_DOMICILE")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">                                
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="500px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Bottom">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@DomicileData.OrderByDescending(p => p.Value).ThenByDescending(p => p.Category)"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartLegend Visible="true">
+                                            </ChartLegend>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(DomicileData, TextProvider.Get("CANTEEN_STATISTIK_DOMICILE")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_CANTEEN")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@CanteenData.OrderByDescending(p => p.Value).ThenByDescending(p => p.Category)"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(CanteenData, TextProvider.Get("CANTEEN_STATISTIK_CANTEEN")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Content>
+            </WizardStep>
+            <WizardStep Label="@TextProvider.Get("CANTEEN_STATISTIK_TITLE_SUBSCRIPTIONS")" Icon="@("fa-solid fa-children")">
+                <Content>
+                    <div class="filter-container">
+                        <div class="filter-card">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_MEAL_TOOLBAR")
+                            </div>
+                            <div class="element-separator"></div>
+                            <div class="date-filter date-statistik-filter">
+                                <div class="filter-element filter-authorities">
+                                    @foreach (var schoolyear in SchoolyearList.OrderBy(p => p.BeginDate))
+                                    {
+                                        string buttonCSS = "btn-secondary";
+
+                                        if (CurrentSchoolyear != null && CurrentSchoolyear.id == schoolyear.id)
+                                        {
+                                            buttonCSS = "btn-primary";
+                                        }
+
+                                        @if (schoolyear.BeginDate != null && schoolyear.EndDate != null)
+                                        {
+                                            <div class="btn @buttonCSS authority-tag" @onclick="@(() => SetCurrentSchoolYear(schoolyear))" @onclick:stopPropagation="true">
+                                                <span>
+                                                    @schoolyear.BeginDate.Value.ToString("dd.MM.yyyy") - @schoolyear.EndDate.Value.ToString("dd.MM.yyyy")
+                                                </span>
+                                            </div>
+                                        }
+                                    }
+                                </div>                                
+                                <div class="filter-tool-container">
+                                    <div class="excel-download-button btn btn-primary" @onclick="@DownloadSubscriptionRawData">
+                                        <i class="fa-solid fa-file-excel"></i>
+                                        @TextProvider.Get("BUTTON_EXPORT")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="element-separator"></div>
+                    <div class="table-container">
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_SUBSCRIBER_NUMBERS")
+                            </div>
+                            <div class="element-separator"></div>
+                            <div class="numbers-container">
+                                <div class="number-item number-total">
+                                    <div class="value-container">
+                                        @SubscriberRawData.Where(p => p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Accepted ||
+                                                                      p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Waitlist ||
+                                                                      p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Denied ||
+                                                                      p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Incomplete ||
+                                                                      p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Comitted ||
+                                                                      p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Archived).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_TOTAL")
+                                    </div>
+                                </div>
+                                <div class="number-item number-completed">
+                                    <div class="value-container">
+                                        @SubscriberRawData.Where(p => p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Accepted).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_STATUS_ACCEPTED")
+                                    </div>
+                                </div>
+                                <div class="number-item number-waitlist">
+                                    <div class="value-container">
+                                        @SubscriberRawData.Where(p => p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Waitlist).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_STATUS_WAITLIST")
+                                    </div>
+                                </div>
+                                <div class="number-item number-cancelled">
+                                    <div class="value-container">
+                                        @SubscriberRawData.Where(p => p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Denied).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_STATUS_DECLINED")
+                                    </div>
+                                </div>
+                                <div class="number-item number-incomplete">
+                                    <div class="value-container">
+                                        @SubscriberRawData.Where(p => p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Incomplete).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_STATUS_INCOMPLETE")
+                                    </div>
+                                </div>
+                                <div class="number-item number-total">
+                                    <div class="value-container">
+                                        @SubscriberRawData.Where(p => p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Comitted).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_STATUS_COMITTED")
+                                    </div>
+                                </div>
+                                <div class="number-item number-total">
+                                    <div class="value-container">
+                                        @SubscriberRawData.Where(p => p.CANTEEN_Subscriber_Status_ID == CanteenStatus.Archived).Count()
+                                    </div>
+                                    <div class="number-text font-small">
+                                        @TextProvider.Get("CANTEEN_STATISTIK_STATUS_ARCHIVED")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_MEAL")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@SubscriberMealData.OrderByDescending(p => p.Value).ThenByDescending(p => p.Category)"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(SubscriberMealData, TextProvider.Get("CANTEEN_STATISTIK_MEAL")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_SCHOOL")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@SubscriberSchoolData.OrderByDescending(p => p.Value).ThenByDescending(p => p.Category)"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(SubscriberSchoolData, TextProvider.Get("CANTEEN_STATISTIK_SCHOOL")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                            <div class="small-element-separator"></div>
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_SCHOOL_CLASS")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@SubscriberClassData.OrderBy(p => p.Category).ToList()"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(SubscriberClassData, TextProvider.Get("CANTEEN_STATISTIK_SCHOOL_CLASS")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_DOMICILE")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="500px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Bottom">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@SubscriberDomicileData.OrderByDescending(p => p.Value).ThenByDescending(p => p.Category)"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartLegend Visible="true">
+                                            </ChartLegend>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(SubscriberDomicileData, TextProvider.Get("CANTEEN_STATISTIK_DOMICILE")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_CANTEEN")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Bar"
+                                                     Data="@SubscriberCanteenData.OrderByDescending(p => p.Value).ThenByDescending(p => p.Category)"
+                                                     CategoryField="@nameof(StatistikData.Category)"
+                                                     Field="@nameof(StatistikData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @(item.Category): @item.FormattedValue
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadData(SubscriberCanteenData, TextProvider.Get("CANTEEN_STATISTIK_CANTEEN")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_SCHOOL_WEEK")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Heatmap"
+                                                     Data="@SubscriberWeekSchoolData.OrderByDescending(p => p.Value)"
+                                                     XField="@nameof(StatistikHeatmapData.CategoryX)"
+                                                     YField="@nameof(StatistikHeatmapData.CategoryY)"
+                                                     Field="@nameof(StatistikHeatmapData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @{ var dataItem = item.DataItem as StatistikHeatmapData; }
+                                                    
+                                                    <div>@($"{dataItem.CategoryY}, {dataItem.CategoryX}: {dataItem.Value}")</div>
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadHeatMapData(SubscriberWeekSchoolData, TextProvider.Get("CANTEEN_STATISTIK_SCHOOL_WEEK")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container domicile-container">
+                            <div class="h5 chart-title custom-color-primary">
+                                @TextProvider.Get("CANTEEN_STATISTIK_CANTEEN_WEEK")
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-data">
+                                <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                    <ChartLegend Visible="true" Position="ChartLegendPosition.Left">
+                                    </ChartLegend>
+                                    <ChartSeriesItems>
+                                        <ChartSeries Type="ChartSeriesType.Heatmap"
+                                                     Data="@SubscriberWeekCanteenData.OrderByDescending(p => p.Value)"
+                                                     XField="@nameof(StatistikHeatmapData.CategoryX)"
+                                                     YField="@nameof(StatistikHeatmapData.CategoryY)"
+                                                     Field="@nameof(StatistikHeatmapData.Value)">
+                                            <ChartSeriesTooltip Visible="true" Context="item">
+                                                <Template>
+                                                    @{
+                                                        var dataItem = item.DataItem as StatistikHeatmapData;
+                                                    }
+
+                                                    <div>@($"{dataItem.CategoryY}, {dataItem.CategoryX}: {dataItem.Value}")</div>
+                                                </Template>
+                                            </ChartSeriesTooltip>
+                                            <ChartSeriesLabels Visible="true"></ChartSeriesLabels>
+                                        </ChartSeries>
+                                    </ChartSeriesItems>
+                                </TelerikChart>
+                            </div>
+                            <div class="extra-small-element-separator"></div>
+                            <div class="chart-toolbar">
+                                <div class="excel-download-button btn btn-secondary" @onclick="@(() => DownloadHeatMapData(SubscriberWeekCanteenData, TextProvider.Get("CANTEEN_STATISTIK_CANTEEN_WEEK")))">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    @TextProvider.Get("BUTTON_EXPORT")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Content>
+            </WizardStep>
+        </WizardSteps>
+        <WizardButtons>
+        </WizardButtons>
+        <WizardSettings>
+            <WizardStepperSettings Linear="false" />
+        </WizardSettings>
+    </TelerikWizard>
+</div>

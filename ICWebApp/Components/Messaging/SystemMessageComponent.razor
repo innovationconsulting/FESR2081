@@ -1,0 +1,31 @@
+﻿@if(Message != null)
+{
+    @if(Message.MSG_SystemMessageTypesID == Guid.Parse("167A05D5-B17C-4797-BFF9-7CF0CC3DB579"))
+    {
+        <div class="system-message-container information">
+            <div class="system-message-title">@TextProvider.Get("MESSAGE_INFORMATION")</div>
+            <div class="system-message-text">@Message.Message</div>
+        </div>
+    }
+    else if(Message.MSG_SystemMessageTypesID == Guid.Parse("9574B88A-DAC4-4101-A27A-E5306224A6C0"))
+    {
+        <div class="system-message-container success">
+            <div class="system-message-title">@TextProvider.Get("MESSAGE_SUCCESS")</div>
+            <div class="system-message-text">@Message.Message</div>
+        </div>
+    }
+    else if(Message.MSG_SystemMessageTypesID == Guid.Parse("CAFDC016-4F6A-47D8-BCA4-4F6968F8F7C2"))
+    {
+        <div class="system-message-container warning">
+            <div class="system-message-title">@TextProvider.Get("MESSAGE_WARNING")</div>
+            <div class="system-message-text">@Message.Message</div>
+        </div>
+    }
+    else if(Message.MSG_SystemMessageTypesID == Guid.Parse("FAF152DF-BF5F-4FAD-A563-3E2851003D05"))
+    {
+        <div class="system-message-container error">
+            <div class="system-message-title">@TextProvider.Get("MESSAGE_ERROR")</div>
+            <div class="system-message-text">@Message.Message</div>
+        </div>
+    }
+}

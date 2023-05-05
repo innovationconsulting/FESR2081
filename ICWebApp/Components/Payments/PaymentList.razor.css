@@ -1,0 +1,10 @@
+﻿.table-toolbar {
+    display: flex;
+    gap: 8px;
+}
+
+.payment-buttons{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}

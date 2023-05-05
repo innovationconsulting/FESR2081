@@ -1,0 +1,31 @@
+.roomsearchfilters[b-tebnpeqx3k] {
+    text-align: center;
+    margin: 0 0 30px;
+    width: 100%;
+    min-height: 50px;
+    display: inline-block;
+}
+
+.roomsearchfilters .form-group[b-tebnpeqx3k] {
+        margin-bottom: 8px;
+}
+
+@media (min-width: 768px) .form-inline .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;[b-tebnpeqx3k]
+}
+
+
+.hide[b-tebnpeqx3k] {
+    display: none !important;
+}
+
+.form-group[b-tebnpeqx3k] {
+    float:left;
+    margin:5px;
+}
+
+.btn[b-tebnpeqx3k] {
+    width: 250px;
+}

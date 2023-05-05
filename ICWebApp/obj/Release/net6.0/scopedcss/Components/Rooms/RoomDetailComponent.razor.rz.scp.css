@@ -1,0 +1,122 @@
+.image-row-container[b-6nbvx5qgs3]
+{
+    min-width: 500px;
+    width: 80vw;
+}
+
+.room-detail-page-container[b-6nbvx5qgs3] {
+    height: 70vh;
+    width: 80vw;
+}
+.room-image-gallery[b-6nbvx5qgs3]{
+    height: 100%;
+}
+.image-container[b-6nbvx5qgs3] {
+    min-width: 500px;
+    width: 50%;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.first-row-container[b-6nbvx5qgs3]{
+    display: flex;
+    gap: 30px;
+}
+.footer-row-container[b-6nbvx5qgs3] {
+    display: flex;
+    gap: 30px;
+}
+.room-description[b-6nbvx5qgs3] {
+    max-width: 100%;
+}
+.room-detail-container[b-6nbvx5qgs3]{
+    width: 50%;
+}
+
+@media(max-width: 800px) {
+    .first-row-container[b-6nbvx5qgs3] {
+        flex-wrap: wrap;
+    }
+
+    .footer-row-container[b-6nbvx5qgs3] {
+        flex-wrap: wrap;
+    }
+
+    .kontakt-person-container[b-6nbvx5qgs3], .price-container[b-6nbvx5qgs3] {
+        width: 100%;
+    }
+}
+
+.property-container[b-6nbvx5qgs3] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.property-value[b-6nbvx5qgs3] {
+    width: 25px;
+    text-align: right;
+}
+.price-table[b-6nbvx5qgs3] {
+    /*border: 1px solid #d9d9d9;*/
+    width: 100%;
+}
+
+.price-header[b-6nbvx5qgs3] {
+    background-color: #0F7173;
+    color: white !important;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    border-bottom: 15px solid white;
+}
+
+.price-cell[b-6nbvx5qgs3] {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.price-row-header[b-6nbvx5qgs3] {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.kontakt-person-container[b-6nbvx5qgs3]{
+    width: 50%;
+}
+.fee-container[b-6nbvx5qgs3] {
+    width: 50%;
+}
+.price-container[b-6nbvx5qgs3]{
+    width: 100%;
+}
+.kontakt-container[b-6nbvx5qgs3]{
+    width: 50%;
+}
+.kontakt-person-container[b-6nbvx5qgs3] {
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+}
+.person-item-container[b-6nbvx5qgs3] {
+    padding-top: 5px;
+    width: auto;
+}
+.price-label[b-6nbvx5qgs3]{
+    height: 28px;
+    width: 70%;
+    text-align: end;
+}
+.desc-label[b-6nbvx5qgs3]{
+    height: 28px;
+}
+.header-desc-label[b-6nbvx5qgs3] {
+    width: 100%;
+    text-align: start;
+}

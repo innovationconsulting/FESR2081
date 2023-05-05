@@ -1,0 +1,98 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div class="upload-component @SmallStyleCSS">
+        <CustomLoader Visible="@(isLoading)"
+                                Text="@null" Class="initial-data-loader">
+        </CustomLoader>
+    <div class="upload-file-list-container drop-zone" @ref="dropZoneElement">
+        @if (FileInfoList != null && FileInfoList.Count() > 0 && !ReadOnly)
+        {
+            @foreach (var f in FileInfoList)
+            {
+                <div class="upload-file-container" @onclick="@(() => DownloadFile(f.ID))" @onclick:stopPropagation="true">
+                    <div class="upload-file-actions">
+                        <div class="upload-file-name">@(f.FileName + " " + f.FileExtension)</div>
+                        <button class="btn btn-primary" @onclick="@(() => RemoveFile(f.ID))" @onclick:stopPropagation="true">
+                            <TelerikIcon Icon="SvgIcon.X"></TelerikIcon>
+                        </button>
+                    </div>
+                    <div class="upload-file-preview">
+                        @if (f.FileExtension != null)
+                        {
+                            @if (f.FileExtension.ToLower().Contains(".pdf"))
+                            {
+                                <TelerikIcon Icon="SvgIcon.FilePdf"></TelerikIcon>
+                            }
+                            else if (f.FileExtension.ToLower().Contains(".docx"))
+                            {
+                                <TelerikIcon Icon="SvgIcon.FileWord"></TelerikIcon>
+                            }
+                            else if (f.FileExtension.ToLower().Contains(".xls"))
+                            {
+                                <TelerikIcon Icon="SvgIcon.FileExcel"></TelerikIcon>
+                            }
+                            else if (f.FileExtension.ToLower().Contains(".csv"))
+                            {
+                                <TelerikIcon Icon="SvgIcon.FileCsv"></TelerikIcon>
+                            }
+                            else if (f.FileExtension.ToLower().Contains(".jpg") || f.FileExtension.ToLower().Contains(".png"))
+                            {
+                                <img class="upload-file-image" src="@GetBase64Image(f)" />
+                            }
+                        }
+                    </div>
+                    <div class="upload-file-footer-actions">
+                        @TextProvider.Get("DOWNLOAD")
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="upload-file-empty">
+                @if (string.IsNullOrEmpty(ErrorMessage))
+                {
+                    @TextProvider.Get("NO_DOKUMENT_FOUND")
+                }
+                else
+                {
+                    <span class="upload-error">
+                        @ErrorMessage
+                    </span>
+                }
+            </div>
+        }
+        @{
+            var fileInputID = "fileInput-" + ID;
+        }
+
+        @if (!ReadOnly)
+        {
+            <label for="@fileInputID" id="fileInput-label-@ID" class="file-input-label"></label>
+            <InputFile @ref="InptuFileElement" OnChange="LoadFiles" type="file" multiple id="@fileInputID" class="file-input-label" accept="@Accept" title="" />
+        }
+    </div>
+    <div class="small-element-separator"></div>
+    @if(Multiple == false)
+    {
+        <div class="font-small">@TextProvider.Get("FILE_UPLOAD_SINGLE_DOC_DESC")</div>
+        <div class="extra-small-element-separator"></div>
+    }
+    <div class="upload-file-new">
+        @if (!ReadOnly)
+        {
+            <button type="button" class="telerik-blazor k-button k-button-solid k-rounded-md k-button-rectangle k-button-md k-button-solid-Primary" onclick="enviromentHelper_clickElement('@(fileInputID)')">
+                <span class="k-icon k-i-paperclip k-button-icon"></span>
+                @TextProvider.Get("UPLOAD")
+            </button>
+        }
+        else
+        {
+
+            <button type="button" class="telerik-blazor k-button k-button-solid k-rounded-md k-button-rectangle k-button-md k-button-solid-Primary" disabled>
+                <span class="k-icon k-i-paperclip k-button-icon"></span>
+                @TextProvider.Get("UPLOAD")
+            </button>
+        }
+    </div>
+</div>

@@ -1,0 +1,256 @@
+﻿.application-detail-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.application-detail-left {
+    width: 500px;
+    border-right: 1px solid #d9d9d9;
+    padding-right: 20px;
+    position: relative;
+}
+
+.application-detail-title{
+    font-weight: bold;
+}
+.application-list-title-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 3px;
+}
+.application-list-title {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #0F7173;
+    color: white;
+    flex: 1;
+    height: 38px;
+    line-height: 28px;
+}
+.application-detail-tab {
+    height: calc(100vh - 345px) !important;
+    height: -moz-calc(100vh - 345px) !important;
+    height: -webkit-calc(100vh - 345px) !important;
+    height: -o-calc(100vh - 345px) !important;
+    overflow: auto;
+    padding-right: 10px;
+}
+
+.application-detail-right {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.application-row{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.application-label {
+    font-weight: bold;
+    width: 200px;
+}
+.reason-title{
+    font-weight: bold;
+}
+
+.application-value{
+    margin: auto;
+}
+.application-edit-button{
+    flex: 1;
+}
+
+.application-status-edit {
+}
+
+.k-card {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /*margin-right: 5px;*/
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.k-card:last-of-type{
+    margin-bottom: 0px !important;
+}
+
+    .k-card:hover {
+        border-color: #0F7173;
+    }
+
+.card-aktive{
+    background-color: #0F717333 !important;
+}
+
+.applicant-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.applicant-group{
+    flex: 1;
+}
+
+.preview-container {
+    height: calc(100% - 45px) !important;
+    height: -moz-calc(100% - 45px) !important;
+    height: -webkit-calc(100% - 45px) !important;
+    height: -o-calc(100% - 45px) !important;
+}
+.preview-url-container{
+    height: 100%;
+    position: relative;
+}
+
+.application-button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.document-detail-download {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+    .document-detail-download:hover {
+        color: #0F7173;
+    }
+
+        .document-detail-download:hover .document-detail-download-icon {
+            color: #0F7173 !important;
+        }
+
+.document-detail-download-icon {
+    font-size: 24px;
+    color: #808080;
+}
+
+.document-detail-download-description {
+    line-height: 34px;
+}
+
+.application-status-edit-button {
+    width: 30px;
+    height: 30px;
+    line-height: 20px;
+}
+
+.change-status-buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+.map-container {
+    width: 100%;
+    /*max-width: 600px;*/
+    height: 500px;
+    border: 3px solid #0F7173 !important;
+}
+.document-detail-container{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.document-detail-download {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.document-detail-button .btn {
+    width: 38px !important;
+    height: 38px;
+}
+.document-detail-button-disabled .btn {
+    border-color: white !important;
+    background-color: white !important;
+    width: 38px !important;
+    height: 38px;
+}
+.btn-flex{
+    width: auto !important;
+}
+
+.payment-title-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 5px;
+}
+.payment-title-left, .payment-pos-left {
+    width: 65%;
+}
+.payment-title-right, .payment-pos-right {
+    width: 20%;
+}
+.payment-title-actionsm .payment-pos-actions {
+    width: 15%;
+}
+.form-pos {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.payment-add-position{
+    border: 1px dashed #d9d9d9;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+.payment-add-position:hover{
+    border-color: #0F7173;
+    color: #0F7173;
+}
+.payment-button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.responsible-quickadd-container {
+    position: absolute;
+    bottom: 1px;
+    width: 100%;
+    margin-left: 1px;
+    background-color: white;
+}
+.responsible-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1px;
+    padding: 5px;
+    min-height: 38px;
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    cursor: pointer;
+    flex-wrap: wrap;
+}
+    .responsible-container:hover {
+        border: 1px solid #0F7173;
+        color: #0F7173;
+    }
+
+.responsible-relative{
+    position: relative;
+}
+.responsible-placeholder{
+    margin: auto;
+}
+.manteinance-edit-button .btn{
+    width: 40px;
+}
+.manteinance-row{
+    display: flex;
+    gap: 30px;
+    justify-content: flex-start;
+    line-height: 32px;
+}

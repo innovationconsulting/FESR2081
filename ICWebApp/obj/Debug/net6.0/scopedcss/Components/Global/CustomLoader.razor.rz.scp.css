@@ -1,0 +1,23 @@
+.loader-container[b-08tz9f6yhv] {
+    position: absolute;
+    background-color: #FFFFFFAA;
+    width: 100%;
+    height: 100%;
+    z-index: 9998;
+    top: 0;
+}
+
+.logo-icon[b-08tz9f6yhv] {
+    height: 80px !important;
+    width: 80px !important;
+    margin: auto;
+}
+
+    .logo-icon img[b-08tz9f6yhv] {
+        height: 80px !important;
+        width: 80px !important;
+    }
+.logo-text[b-08tz9f6yhv]{
+    margin: auto;
+    text-align: center;
+}

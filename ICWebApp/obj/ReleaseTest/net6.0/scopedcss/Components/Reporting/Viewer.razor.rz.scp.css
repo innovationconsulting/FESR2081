@@ -1,0 +1,16 @@
+.telerik-report-container[b-klf7ha99yz] {
+    height: 100%;
+    padding-bottom: 30px;
+}
+
+.telerik-report-toolbar[b-klf7ha99yz]{
+    margin-bottom: 10px;
+}
+
+.telerik-report-viewer[b-klf7ha99yz] {
+    height: 100%;
+}
+
+.object.internal.viewerobject[b-klf7ha99yz] {
+    min-height: 500px;
+}

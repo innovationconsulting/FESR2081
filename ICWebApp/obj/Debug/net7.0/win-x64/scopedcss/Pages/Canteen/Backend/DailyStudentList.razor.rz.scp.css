@@ -1,0 +1,80 @@
+.send-list-button-container[b-eoafc865nb] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.filter-authorities[b-eoafc865nb] {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.authority-tag[b-eoafc865nb] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+    box-shadow: none !important;
+}
+.list-container[b-eoafc865nb]{
+    position: relative;
+}
+.dashboard-card[b-eoafc865nb] {
+    width: 100%;
+    text-align: center;
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    padding: 20px;
+}
+.numbers-container[b-eoafc865nb] {
+    display: flex;
+    justify-content: space-evenly;
+}
+.number-item[b-eoafc865nb] {
+    padding: 20px;
+    width: 23%;
+}
+
+    .number-item .value-container[b-eoafc865nb] {
+        font-size: 28px;
+        font-weight: bold;
+    }
+.number-total .value-container[b-eoafc865nb] {
+    color: #808080;
+}
+
+.number-default .value-container[b-eoafc865nb] {
+    color: #808080;
+}
+.school-filter-container[b-eoafc865nb], .canteen-filter-container[b-eoafc865nb] {
+    width: auto;
+}
+.dashboard-card-toolbar[b-eoafc865nb]{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.filter-group-container[b-eoafc865nb] {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    gap: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.day-picker[b-eoafc865nb]{
+    display: flex;
+    gap: 5px;
+}
+.day-picker .btn[b-eoafc865nb]{
+    width: 32px;
+}
+.date-field[b-eoafc865nb]{
+    height: 38px !important;
+}

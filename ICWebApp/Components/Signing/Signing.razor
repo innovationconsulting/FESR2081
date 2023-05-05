@@ -1,0 +1,83 @@
+﻿<ModalWindow IsVisible="@WindowVisible" Parameters="@WindowParameters">
+    <Content>
+            <div class="edit-popup-container">
+                @if (NeededSigns != null && NeededSigns.Count() > 0)
+                {
+                    <div class="font-normal">
+                        <EditForm Model="NeededSigns" OnValidSubmit="HandleSubmit">
+                            <DataAnnotationsValidator></DataAnnotationsValidator>
+
+                            @foreach(var signs in NeededSigns)
+                            {
+                                <div class="form-group">
+                                    <h5 class="custom-color-primary">
+                                        @signs.Description
+                                    </h5>
+                                    <div class="extra-small-element-separator"></div>
+                                    <label class="form-label">@TextProvider.Get("SIGNING_NAME")</label>
+                                    <InputText @bind-Value="signs.Name" class="form-control"></InputText>
+                                    <CustomValidationMessage For="@(() => signs.Name)" TextCode="SIGNING_NAME" />
+                                    <div class="extra-small-element-separator"></div>
+                                    <label class="form-label">@TextProvider.Get("SIGNING_EMAIL")</label>
+                                    <InputText @bind-Value="signs.Mail" type="email" class="form-control"></InputText>
+                                    <CustomValidationMessage For="@(() => signs.Mail)" TextCode="SIGNING_EMAIL" />
+                                </div>
+                                <div class="small-element-separator"></div>
+                            }
+                            <div class="element-separator"></div>
+                            <div class="registration-footer">
+                                <div class="small-element-separator"></div>
+                                <div class="form-group-container">
+                                    <button class="btn btn-secondary" type="button" @onclick="CloseWindow">@(TextProvider.Get("BUTTON_CANCEL"))</button>
+                                    <button class="btn btn-primary" type="submit">@(TextProvider.Get("SAVE"))</button>
+                                </div>
+                            </div>
+                        </EditForm>
+                    </div>
+                }
+            </div>
+        </Content>
+    </ModalWindow>
+@if (File_FileInfoID != null)
+{
+    <div class="signing-preview-container">
+        <PDFViewer FILE_FileInfoID="@File_FileInfoID" DisplayPreviewAnySize="@true"></PDFViewer>
+    </div>
+    <div class="element-separator"></div>
+    <div class="segment-button-container">
+        @if(!NotAllComitted)
+        {
+            @if (ShowBackButton)
+            {
+                <button class="btn btn-secondary" @onclick="BackToPrevious">@TextProvider.Get("BUTTON_RETURN")</button>
+            }
+            else
+            {
+                <div class="btn-placeholder"></div>
+            }
+
+            <button class="btn btn-primary" @onclick="@(() => ShowAgreement())">@TextProvider.Get("BUTTON_SIGN")</button>      
+        }        
+        @if (NotAllComitted)
+        {
+            <div class="font-normal">
+                @TextProvider.Get("SIGNING_NOT_ALL_COMITTED")
+            </div>
+        }
+    </div>
+
+    <TelerikWindow @bind-Visible="@SigningWindowVisible" Modal="true" Draggable="false" Class="telerik-signing-window">
+        <WindowContent>
+            <div class="signing-popup-window">
+                @if(!string.IsNullOrEmpty(SigningURL))
+                {
+                    <iframe src="@SigningURL" class="signing-window" id="signing-frame" allow="allow-same-origin">
+                    </iframe>
+                }
+            </div>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideSigningWindow" />
+        </WindowActions>
+    </TelerikWindow>
+}

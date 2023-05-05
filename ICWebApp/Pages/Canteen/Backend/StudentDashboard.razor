@@ -1,0 +1,132 @@
+﻿@page "/Admin/Students/Dashboard"
+@layout MainLayout
+
+<div class="element-separator"></div>
+<div class="dashboard-container">
+    <div class="dashboard-card dashboard-card-large">
+        <div class="h5 card-title custom-color-primary">
+            @TextProvider.Get("CANTEEN_STUDENTS_DASHBOARD_DAILY_ALL")
+        </div>
+        <div class="extra-small-element-separator"></div>
+        <div class="card-data">
+            <div class="numbers-container">
+                <div class="number-item number-total">
+                    <div class="value-container">
+                        @DailyMovements.Count()
+                    </div>
+                    <div class="number-text font-small">
+                        @TextProvider.Get("CANTEEN_STUDENTS_TOTAL")
+                    </div>
+                </div>
+                @if (MenuTypes != null && MenuTypes.Count() > 0) 
+                {
+                    @foreach (var menu in MenuTypes.OrderBy(p => p.SortOrder))
+                    {
+                        if (menu != null)
+                        {
+                            <div class="number-item number-default">
+                                <div class="value-container">
+                                    @DailyMovements.Where(p => p.CanteenMenuID == menu.ID).Count()
+                                </div>
+                                <div class="number-text font-small">
+                                    @TextProvider.Get(menu.TEXT_SystemTexts_Code)
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+        <div class="element-separator"></div>
+        <div class="dashboard-card-toolbar">
+            <div class="dashboard-button btn btn-secondary" @onclick="@(() => GoToDailyStudentList())">
+                @TextProvider.Get("BUTTON_STUDENTS_DAILY")
+            </div>
+            <div class="dashboard-button btn btn-secondary" @onclick="@(() => GoToStudentList())">
+                @TextProvider.Get("BUTTON_STUDENTS_COMPLETE")
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-card">
+        <div class="h5 card-title custom-color-primary">
+            @TextProvider.Get("CANTEEN_STUDENTS_DASHBOARD_CANTEEN")
+        </div>
+        <div class="small-element-separator"></div>
+        <div class="card-data">
+            <table class="list-container">
+                <tr>
+                    <th class="list-header-description">
+                        @TextProvider.Get("CANTEEN_STUDENTS_DASHBOARD_DESCRIPTION")
+                    </th>
+                    <th class="list-header-number">
+                        @TextProvider.Get("CANTEEN_STUDENTS_DASHBOARD_DAILY_ALL")
+                    </th>
+                    <th class="list-header-toolbar">
+                    </th>
+                </tr>
+                @foreach (var canteen in Canteens.OrderBy(p => p.Name))
+                {
+                    <tr class="list-container-item">
+                        <td class="list-description">
+                            @canteen.Name
+                        </td>
+                        <td class="list-number">
+                            @DailyMovements.Where(p => p.CANTEEN_Canteen_ID == canteen.ID).Count()
+                        </td>
+                        <td class="list-toolbar">
+                            <div class="list-buttons-toolbar">
+                                <div class="dashboard-button btn btn-secondary" @onclick="@(() => GoToDailyCanteenList(canteen.ID))">
+                                    @TextProvider.Get("BUTTON_STUDENTS_DAILY")
+                                </div>
+                                <div class="dashboard-button btn btn-secondary" @onclick="@(() => GoToCanteenList(canteen.ID))">
+                                    @TextProvider.Get("BUTTON_STUDENTS_COMPLETE")
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="dashboard-card">
+        <div class="h5 card-title custom-color-primary">
+            @TextProvider.Get("CANTEEN_STUDENTS_DASHBOARD_SCHOOL")
+        </div>
+        <div class="small-element-separator"></div>
+        <div class="card-data">
+            <table class="list-container">
+                <tr>
+                    <th class="list-header-description">
+                        @TextProvider.Get("CANTEEN_STUDENTS_DASHBOARD_DESCRIPTION")
+                    </th>
+                    <th class="list-header-number">
+                        @TextProvider.Get("CANTEEN_STUDENTS_DASHBOARD_DAILY_ALL")
+                    </th>
+                    <th class="list-header-toolbar">
+                    </th>
+                </tr>
+                @foreach (var school in Schools.OrderBy(p => p.Name))
+                {
+                    <tr class="list-container-item">
+                        <td class="list-description">
+                            @school.Name
+                        </td>
+                        <td class="list-number">
+                            @DailyMovements.Where(p => p.CANTEEN_School_ID == school.ID).Count()
+                        </td>
+                        <td class="list-toolbar">
+                            <div class="list-buttons-toolbar">
+                                <div class="dashboard-button btn btn-secondary" @onclick="@(() => GoToDailySchoolList(school.ID))">
+                                    @TextProvider.Get("BUTTON_STUDENTS_DAILY")
+                                </div>
+                                <div class="dashboard-button btn btn-secondary" @onclick="@(() => GoToSchoolList(school.ID))">
+                                    @TextProvider.Get("BUTTON_STUDENTS_COMPLETE")
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

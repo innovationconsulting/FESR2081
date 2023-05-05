@@ -1,0 +1,73 @@
+﻿@page "/Form/Definition/Upload/Add/{DefinitionID}/{ID}/{WizardIndex}/{ActiveIndex}"
+
+@layout MainLayout
+
+@if (Data != null)
+{
+
+    <div class="segment-container custom-background-default">
+        <EditForm Model="Data">
+            <DataAnnotationsValidator />
+            <div class="segment-title custom-color-primary">
+                @if (ID == "New")
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_TITLE_ADD")</h3>
+                }
+                else
+                {
+                    <h3 class="custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_TITLE_EDIT")</h3>
+                }
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="segment-separator custom-border-primary"></div>
+            <div class="small-element-separator"></div>
+            <div class="formbuilder-language-picker form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_LANGUAGE_PICKER")</label>
+                <TelerikButtonGroup SelectionMode="@ButtonGroupSelectionMode.Single">
+                    <ButtonGroupToggleButton @bind-Selected="@German">@TextProvider.Get("LANGUAGE_GERMAN")</ButtonGroupToggleButton>
+                    <ButtonGroupToggleButton @bind-Selected="@Italian">@TextProvider.Get("LANGUAGE_ITALIAN")</ButtonGroupToggleButton>
+                    </TelerikButtonGroup>             
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <div class="segment-title custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_TITLE_GENERAL")</div>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_DESCRIPTION")</label>
+                @if(Data.FORM_Definition_Upload_Extended != null && Data.FORM_Definition_Upload_Extended.Count() > 0 && CurrentLanguage != null){
+                    <label class="font-detail">@Data.FORM_Definition_Upload_Extended.FirstOrDefault(p => p.LANG_Languages_ID != CurrentLanguage).Description</label>
+                    <InputText @bind-Value="Data.FORM_Definition_Upload_Extended.FirstOrDefault(p => p.LANG_Languages_ID == CurrentLanguage).Description" class="form-control"></InputText>
+                }
+            </div> 
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_EXTENSIONS")</label>
+                <TelerikMultiSelect Data="@Extensions"
+                                @bind-Value="@SelectedExtensions"
+                                ValueField="@nameof(MultiSelectListItem.Value)"
+                                TextField="@nameof(MultiSelectListItem.Text)"
+                                Id="products-multiselect" Width="100%">
+                </TelerikMultiSelect>
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_UPLOAD_MULTI")</label>
+                <TelerikSwitch @bind-Value="Data.Multiupload" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" 
+                                Class="list-item-switch"></TelerikSwitch>  
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="form-group form-group-small">
+                <label class="form-label custom-color-primary">@TextProvider.Get("BACKEND_FORM_DEFINITION_REQUIRED")</label>
+                <TelerikSwitch @bind-Value="Data.Required" OnLabel="@TextProvider.Get("YES")" OffLabel="@TextProvider.Get("NO")" Width="65px" 
+                                Class="list-item-switch"></TelerikSwitch>  
+            </div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                                OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"
+                                OnClick="@SaveForm">@TextProvider.Get("BUTTON_SAVE")</TelerikButton>
+            </div>
+        </EditForm>
+    </div>
+}

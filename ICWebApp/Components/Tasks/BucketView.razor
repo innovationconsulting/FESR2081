@@ -1,0 +1,199 @@
+﻿@if(TaskList != null && BucketList != null)
+{
+    <div class="bucketview-container">
+        <CustomLoader Visible="@BusyIndicator"></CustomLoader>
+        <div class="bucketview-header">
+            <div class="bucketview-titel h3">
+                @if (!string.IsNullOrEmpty(TaskService.ContextName))
+                {
+                    string result = "";
+                    if(TaskService.Context != null)
+                    {
+                        result = TaskService.Context.Text + " ";
+                    }
+
+                    result += " - " + TaskService.ContextName;
+
+                    @result
+                }
+                else
+                {
+                    @TextProvider.Get("TASK_ADD_DEFAULT_CONEXT")
+                }
+            </div>
+            <div class="bucketview-filter">            
+                <div class="tag-filter">
+                    <ICWebApp.Components.Tasks.Filter.Tag.Control TagList="@Filter.TASK_Tags" ItemAdded="@(() => OnFilterChanged())" 
+                                                                          ItemRemoved="@(() => OnFilterChanged())">
+                    </ICWebApp.Components.Tasks.Filter.Tag.Control>
+                </div>           
+                <div class="responsible-filter">
+                    <ICWebApp.Components.Tasks.Filter.Responsible.Control AUTH_Users_List="@Filter.AUTH_Users" ItemAdded="@(() => OnFilterChanged())" 
+                                                                          ItemRemoved="@(() => OnFilterChanged())">
+                    </ICWebApp.Components.Tasks.Filter.Responsible.Control>
+                </div>   
+                <div class="status-filter">                    
+                    <TelerikDropDownList Data="@StatusList" TextField="Description" DefaultText="@TextProvider.Get("TASK_FILTER_STATUS_PLACEHOLDER")" OnChange="@(() => OnFilterChanged())" ValueField="ID" @bind-Value="@Filter.TASK_Status">
+                        <ItemTemplate Context="ItemContext">
+                            <span class="application-status-item">
+                                <TelerikIcon Icon="@ItemContext.Icon"></TelerikIcon>
+                                @ItemContext.Description
+                            </span>
+                        </ItemTemplate>
+                        <ValueTemplate Context="ValueContext">
+                            <span class="application-status-item">
+                                <TelerikIcon Icon="@ValueContext.Icon"></TelerikIcon>
+                                @ValueContext.Description
+                            </span>
+                        </ValueTemplate>
+                    </TelerikDropDownList>
+                </div>
+                <div class="priority-filter">            
+                    <TelerikDropDownList Data="@PriorityList" TextField="Description" ValueField="ID" DefaultText="@TextProvider.Get("TASK_FILTER_PRIORITY_PLACEHOLDER")" OnChange="@(() => OnFilterChanged())" @bind-Value="@Filter.TASK_Priorities">
+                        <ItemTemplate Context="ItemContext">
+                            <span class="application-status-item">
+                                <TelerikIcon Icon="@ItemContext.Icon"></TelerikIcon>
+                                @ItemContext.Description
+                            </span>
+                        </ItemTemplate>
+                        <ValueTemplate Context="ValueContext">
+                            <span class="application-status-item">
+                                <TelerikIcon Icon="@ValueContext.Icon"></TelerikIcon>
+                                @ValueContext.Description
+                            </span>
+                        </ValueTemplate>
+                    </TelerikDropDownList>
+                </div>
+                <div class="clear-filter">
+                    <div class="btn btn-secondary clear-button" @onclick="@(() => OnFilterCleared())">
+                        <TelerikIcon Icon="@("fa-regular fa-filter-slash")"></TelerikIcon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="small-element-separator"></div>
+        <div class="bucket-container">
+            @foreach(var bucket in BucketList.OrderBy(p => p.SortOrder).ToList())
+            {
+                <div class="bucket-item" @ondrop="@(() => DropHandler(bucket.ID, null, false))" ondragenter="formBuilder_setDraggableClass(this)" 
+                     ondragleave="formBuilder_removeDraggableClass(this)" ondragover="event.preventDefault();" @ondrop:stopPropagation="true">
+                    <div class="h5 bucket-title">
+                        <div class="bucket-title-icon">
+                            <i class="@bucket.Icon"></i>
+                        </div>
+                        <div class="bucket-title-description">
+                            @bucket.Description
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="card-container" @onclick="@(() => AddTask(bucket))">
+                        <div class="new-task-item custom-color-primary">
+                            <div class="new-task-item-icon">
+                                <i class="fa-regular fa-plus"></i>
+                            </div>
+                            <div class="new-task-item-description">
+                                @TextProvider.Get("BUCKET_TASK_ADD")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="small-element-separator"></div>
+                    <div class="bucket-task-container">
+                        <Virtualize Items="TaskList.Where(p => p.TASK_Bucket_ID == bucket.ID && p.CompletedAt == null).OrderBy(p => p.SortOrder).ToList()" Context="Task" OverscanCount="5">
+                            <div class="drag-container" draggable="true" @ondragstart="@(() => DragStart(Task))" @ondragend="@(() => DragEnd(Task))" @ondrop="@(() => DropHandler(bucket.ID, Task, false))" 
+                                @ondrop:stopPropagation="true" ondragenter="formBuilder_setDraggableClass(this)" ondragleave="formBuilder_removeDraggableClass(this)" ondragover="event.preventDefault();">
+                                    @if(Task != null)
+                                    {
+                                        string TaskAktiveCSS = "small-task-inaktive";
+
+                                        if(Task.Filtered == true)
+                                        {
+                                            TaskAktiveCSS = "small-task-aktive";
+                                        }
+                                        if(!BoardFiltered)
+                                        {
+                                            TaskAktiveCSS = "";
+                                        }
+
+                                        <div class="card-container bucket-small-task-container @TaskAktiveCSS">
+                                            <SmallTask Task="@Task" Edit="EditTask" Saved="TaskSaved" Removed="TaskRemoved" RefreshElement="@Task.Refresh"></SmallTask>
+                                        </div>
+                                    }
+                            </div>
+                        </Virtualize>
+                        @if (TaskList.Where(p => p.TASK_Bucket_ID == bucket.ID && p.CompletedAt != null).Count() > 0)
+                        {
+                            <div class="small-element-separator"></div>                        
+                            <div class="show-finished-task-item" @onclick="@(() => ToggleFinishedTasks(bucket))" @onclick:stopPropagation="true">
+                                <div class="show-finished-task-item-description">
+                                    @TextProvider.Get("BUCKET_VIEW_SHOW_DONE_TASKS")
+                                </div>
+                                <div class="show-finished-task-item-count">
+                                    @TaskList.Where(p => p.TASK_Bucket_ID == bucket.ID && p.CompletedAt != null).Count()
+                                </div>
+                                <div class="show-finished-task-item-icon">
+                                    @if (bucket.ShowCompleted)
+                                    {
+                                        <span>
+                                            <i class="fa-regular fa-angle-up"></i>
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            <i class="fa-regular fa-angle-down"></i>
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        @if(bucket.ShowCompleted && TaskList != null)
+                        {
+                            <div class="small-element-separator"></div>
+                            <Virtualize Items="TaskList.Where(p => p.TASK_Bucket_ID == bucket.ID && p.CompletedAt != null).OrderByDescending(p => p.CompletedAt).ToList()" Context="Task" OverscanCount="5">
+                                <div class="drag-container" draggable="true" @ondragstart="@(() => DragStart(Task))" @ondragend="@(() => DragEnd(Task))" @ondrop="@(() => DropHandler(bucket.ID, Task, true))" 
+                                    @ondrop:stopPropagation="true" ondragenter="formBuilder_setDraggableClass(this)" ondragleave="formBuilder_removeDraggableClass(this)" ondragover="event.preventDefault();">
+                                        @if(Task != null)
+                                        {
+                                            string TaskAktiveCSS = "small-task-inaktive";
+
+                                            if(Task.Filtered == true)
+                                            {
+                                                TaskAktiveCSS = "small-task-aktive";
+                                            }
+                                            if(!BoardFiltered)
+                                            {
+                                                TaskAktiveCSS = "";
+                                            }
+                                            <div class="card-container bucket-small-task-container">
+                                                <SmallTask Task="@Task" Edit="EditTask" Saved="TaskSaved" Removed="TaskRemoved" RefreshElement="@Task.Refresh"></SmallTask>
+                                            </div>
+                                        }
+                                </div>
+                            </Virtualize>
+                        }
+                    </div>
+                </div>
+            }            
+         </div>
+    </div>
+    
+    <TelerikWindow Modal="true" @bind-Visible="@EditVisibility" Width="1600px" Class="task-quickadd-window" Draggable="false">
+        <WindowTitle>
+            @if(string.IsNullOrEmpty(ItemToEditID))
+            {
+                @TextProvider.Get("TASK_QUICK_ADD_TITLE")
+            }
+            else
+            {
+                @TextProvider.Get("TASK_EDIT_TITLE")
+            }
+        </WindowTitle>
+        <WindowContent>
+            <ICWebApp.Components.Tasks.Edit ID="@ItemToEditID" BucketID="@BucketID" Cancelled="CloseTask" Saved="TaskSaved"></ICWebApp.Components.Tasks.Edit>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="CloseTask" />
+        </WindowActions>
+    </TelerikWindow>
+}

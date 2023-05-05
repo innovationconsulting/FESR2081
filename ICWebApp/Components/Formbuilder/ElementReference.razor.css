@@ -1,0 +1,60 @@
+﻿.row-tool-box {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.row-value-dropdown{
+    width: 99%;
+    max-width: 370px;
+}
+
+.row-value-switch {
+    min-width: 80px;
+}
+
+.row-text-start {
+    min-width: 150px;
+    text-align: right;
+}
+
+.row-text-ende{
+    min-width: 120px;
+}
+
+.row-value-dropdown, .row-value-switch, .row-text-start, .row-text-ende {
+    padding-top: 5px;
+}
+
+.field-container {
+    color: #0F7173;
+}
+
+.row-actions {
+    min-width: 120px !important;
+    margin: auto;
+}
+.element-sorter, .element-edit {
+    margin: auto;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+.row-value-dropdown{
+    max-width: 200px;
+    min-width: 150px;
+}
+
+.row-value-dropdown-container {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 5px !important;
+}
+.sign-reference-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.sign-name-reference-field, .sign-mail-reference-field {
+    flex: 1;
+}

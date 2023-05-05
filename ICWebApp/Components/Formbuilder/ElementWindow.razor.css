@@ -1,0 +1,275 @@
+﻿.element-container {
+    display: flex;
+    gap: 10px;
+    /*height: 100px;*/
+    overflow: hidden;
+}
+
+.element-content {
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.element-toolbar {
+    border-left: 1px solid #dfdfdf;
+    padding-left: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.element-edit {
+    margin: auto;
+}
+
+.element-sorter {
+    margin: auto;
+}
+.form-group label {
+    color: black !important;
+}
+.element-option-label label {
+    color: black !important;
+}
+.element-container label {
+    color: black !important;
+}
+
+.element-fieldname {
+    margin: auto;
+}
+    .element-fieldname label{
+        color: black !important;
+    }
+
+    .element-edit-toolbar {
+        display: flex;
+        justify-content: space-between;
+    }
+
+.element-multicolumn {
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+
+    .element-multicolumn .form-group {
+        width: 100%;
+    }
+
+.element-subtypeselector {
+    width: 200px;
+}
+
+.element-first-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.element-left {
+}
+
+.element-right {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.element-option-label {
+    margin-top: 15px;
+    font-size: 12px;
+}
+
+.element-option-selection {
+    padding: 5px;
+    border: 1px solid #F2F2F2;
+}
+
+.element-option-selection-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.element-option-selection-value {
+    width: 100%;
+}
+
+.element-option-selection-remove {
+    margin: auto;
+}
+
+.element-option-selection-add {
+    border: 1px dashed #dfdfdf;
+    text-align: center;
+    padding: 10px;
+    color: #0F7173;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+    .element-option-selection-add:hover {
+        border-color: #0F7173 !important;
+    }
+
+.element-toolbar-right {
+    display: flex;
+    gap: 10px;
+}
+
+.radio-element label {
+    margin-left: 20px;
+}
+
+.radio-element {
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.element-property-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.element-property-container label{
+    color: black !important;
+    /*width: 200px;*/
+}
+.elementContainer-basecontainer {
+    display: flex;
+    gap: 10px;
+    /*height: 200px !important;*/
+    overflow: auto;
+}
+
+    .elementContainer-basecontainer label {
+        color: #0F7173;
+    }
+
+.elementContainer-edit-content {
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.elementContainer-container {
+    width: 100%;
+    min-height: 40px;
+    border: 1px dashed #dfdfdf;
+    padding: 10px;
+    flex: 1;
+}
+
+.dropableContainer {
+    border-color: #0F7173 !important;
+}
+
+.form-element-container {
+    padding-top: 5px;
+    margin-top: 5px;
+}
+
+.form-element-empty {
+    height: 20px;
+}
+
+.form-element {
+    border: 1px solid #dfdfdf;
+    padding: 5px;
+}
+
+    .form-element:hover {
+        border-color: #0F7173 !important;
+    }
+
+.element-toolbar {
+    border-left: 1px solid #dfdfdf;
+    padding-left: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.element-edit {
+    margin: auto;
+}
+
+.element-sorter {
+    margin: auto;
+}
+.element-fieldname {
+    margin: auto;
+}
+
+.element-edit-toolbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.element-border {
+    height: 30px;
+}
+
+.element-selector {
+    width: 100%;
+}
+
+.element-basecontainer-border {
+    border: 1px solid #0F7173 !important;
+    padding: 2px;
+}
+
+.element-multicolumn {
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+
+    .element-multicolumn .form-group {
+        width: 100%;
+    }
+
+.dropable {
+    border-top: 3px solid #0F7173 !important;
+}
+
+.element-flex-container {
+    display: flex;
+    gap: 10px;
+}
+
+    .element-flex-container .form-group {
+        flex: 1;
+    }
+.element-property-multicolumn{
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+}
+.element-anchor, .element-required {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    line-height: 24px;
+}
+
+.element-property-first-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+    .element-property-first-row .element-dbname{
+        flex: 1;
+    }
+
+.element-option-selection-remove {
+    margin-top: 22px;
+}
+.element-sorter {
+    margin-top: 19px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-content: flex-start;
+}
+.sorter-button{
+    height: 16px !important;
+}

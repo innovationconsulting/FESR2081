@@ -1,0 +1,17 @@
+﻿@page "/Admin/ProtocolSettings"
+@layout MainLayout
+<div class="element-separator"></div>
+<div class="segment-container custom-background-default">
+    <EditForm Model="_model" OnValidSubmit="Save">
+        <DataAnnotationsValidator/>
+        <div class="form-group form-group-small">
+            <label class="form-label custom-color-primary">@TextProvider.Get("D3_SETTING_MAIL")</label>
+            <InputText @bind-Value="_model.Mail" class="form-control" type="email"></InputText>
+        </div>
+        <div class="segment-button-toolbar">
+            <TelerikButton ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button">
+                @TextProvider.Get("BUTTON_SAVE")
+            </TelerikButton>
+        </div>
+    </EditForm>
+</div>

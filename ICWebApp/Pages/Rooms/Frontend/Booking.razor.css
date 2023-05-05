@@ -1,0 +1,86 @@
+﻿.booking-container
+{
+    position: relative;
+}
+
+.booking-error-item {
+    color: #dc3545;
+}
+.booking-action-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.element-checkbox{
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+.room-bookable-options-container{
+    margin-left: 25px;
+}
+
+.container-error {
+    color: #dc3545;
+}
+.room-price-title{
+    display: flex;
+    gap: 50px;
+    justify-content: flex-start;
+}
+.room-price-item {
+    display: flex;
+    gap: 50px;
+    justify-content: flex-start;
+    margin-left: 20px;
+    color: #808080;
+}
+.room-title, .room-sub-date {
+    flex: 1;
+}
+.room-value, .room-sub-value{
+    width: 100px;
+    text-align: end;
+}
+.room-sub-value{
+}
+.room-building-subcontainer{
+    margin-left: 25px;
+}
+.room-building-title {
+    display: flex;
+    gap: 50px;
+    justify-content: flex-start;
+}
+    .room-building-title .room-title {
+        flex: 1;
+    }
+    .room-building-title .room-value{
+        font-weight: bold;
+    }
+
+.sum-container {
+    border-top: 1px solid #d9d9d9;
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+.room-price-later-detail {
+    color: #808080;
+    flex: 1;
+}
+.booking-payment-container{
+    display: flex; 
+    gap: 30px;
+    justify-content: space-between;
+}
+.booking-option-container{
+    flex: 1;
+}
+
+.booking-payment-sub-container {
+    width: 48%;
+}

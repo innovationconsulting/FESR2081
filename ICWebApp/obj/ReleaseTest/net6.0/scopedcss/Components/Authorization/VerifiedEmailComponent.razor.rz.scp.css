@@ -1,0 +1,78 @@
+.email-container[b-uujb967fve] {
+}
+
+@media (max-width: 680px) {
+    .email-container[b-uujb967fve] {
+    }
+
+    .email-logo[b-uujb967fve] {
+        display: none;
+    }
+
+    .email-data-container[b-uujb967fve] {
+        max-height: unset !important;
+        overflow: unset !important;
+        height: auto;
+    }
+
+    .email-footer[b-uujb967fve] {
+        position: unset !important;
+        bottom: unset !important;
+        left: unset !important;
+        border-top: 0px !important;
+    }
+
+    .email-header[b-uujb967fve] {
+        position: unset !important;
+        border-bottom: 0px !important;
+    }
+
+    .email-title[b-uujb967fve] {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+
+.email-logo[b-uujb967fve] {
+    width: 100%;
+}
+
+    .email-logo img[b-uujb967fve] {
+        width: 100%;
+    }
+
+.email-title[b-uujb967fve] {
+    margin-top: 20px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.email-header[b-uujb967fve] {
+    position: sticky;
+    top: 0;
+    left: 0;
+    /*   padding-bottom: 5px;
+    border-bottom: 1px solid #d9d9d9;*/
+}
+
+.email-footer[b-uujb967fve] {
+    position: sticky;
+    bottom: 0px;
+    left: 0px;
+}
+
+.email-row[b-uujb967fve] {
+    display: flex;
+}
+
+.email-row-left[b-uujb967fve] {
+    justify-content: left;
+}
+
+.email-row-right[b-uujb967fve] {
+    justify-content: right;
+    margin-left: 15px;
+}
+
+.btn[b-uujb967fve]{
+    width: 200px !important;
+}

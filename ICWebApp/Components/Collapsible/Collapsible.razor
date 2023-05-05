@@ -1,0 +1,40 @@
+﻿@{
+    string StartupStyle = "";
+    string StartupStyleInverted = "";
+
+    if (CollapsedAtStartup)
+    {
+        StartupStyle = "display: none;";
+    }
+    else
+    {
+        StartupStyleInverted = "display: none;";
+    }
+}
+
+<div class="collapsible-container">
+    <div class="collapsible-container-title-row" onclick="$('#@ID').toggle(100); $('#detail-button_down_@ID').toggle(0); $('#detail-button_up_@ID').toggle(0);">
+        <h2 class="collapsible-container-title">
+            @if (IsAnchor)
+            {
+                <Anchor Title="@Title" ID="@Title" Order="AnchorCount"></Anchor>
+            }
+            else
+            {
+                @Title
+            }
+        </h2>
+
+        <div class="detail-button">
+            <div id="detail-button_up_@ID" style="@StartupStyle">
+                <TelerikIcon Icon="@("fas fa-chevron-up")"></TelerikIcon>
+            </div>
+            <div id="detail-button_down_@ID" style="@StartupStyleInverted">
+                <TelerikIcon Icon="@("fas fa-chevron-down")"></TelerikIcon>
+            </div>
+        </div>
+    </div>
+    <div class="collapsible-container-content" style="@StartupStyle" id="@ID">
+        @ChildContent
+    </div>
+</div>

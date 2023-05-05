@@ -1,0 +1,375 @@
+﻿@page "/Backend/Landing"
+
+@layout MainLayout
+
+
+<div class="form-wizard">
+    <TelerikWizard ShowPager="false">
+        <WizardSteps>
+            <WizardStep Label="@TextProvider.Get("BACKEND_DASHBOARD_MY_TASKS")" Icon="@("fa-regular fa-gauge-low")">
+                <Content>
+                    <div class="dashboard-wizard-page">
+                        <div class="chart-page">
+                            <div class="dashboard-card dashboard-total-chart">
+                                @if (UserStatistikGeneralList != null && UserStatistikGeneralList.Count() > 0)
+                                {
+                                    <div class="h3 chart-title custom-color-primary">
+                                        @TextProvider.Get("DASHBOARD_TASK_STATISTIK_TOTAL")
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="chart-data">
+                                        <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                            <ChartLegend Visible="true" Position="ChartLegendPosition.Top">
+                                            </ChartLegend>
+                                            <ChartSeriesItems>
+                                                <ChartSeries Type="ChartSeriesType.Donut"
+                                                         Data="@UserStatistikGeneralList"
+                                                         HoleSize="45"
+                                                         Field="@nameof(V_TASK_Statistik_User_General.Count)"
+                                                         CategoryField="@nameof(V_TASK_Statistik_User_General.Category)">
+                                                    <ChartSeriesTooltip Visible="true" Context="item">
+                                                        <Template>
+                                                            @(item.Category): @item.FormattedValue
+                                                        </Template>
+                                                    </ChartSeriesTooltip>
+                                                </ChartSeries>
+                                            </ChartSeriesItems>
+                                        </TelerikChart>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="dashboard-no-data">
+                                        @TextProvider.Get("DASHBOARD_TASK_NO_DATA")
+                                    </div>
+                                }
+                            </div>
+                            <div class="dashboard-card dashboard-bucket-chart">
+                                @if (UserStatistikBucketList != null && UserStatistikBucketList.Count() > 0)
+                                {
+                                    <div class="h3 chart-title custom-color-primary">
+                                        @TextProvider.Get("DASHBOARD_TASK_STATISTIK_BUCKET")
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="chart-data">
+                                        <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                            <ChartLegend Visible="true" Position="ChartLegendPosition.Top">
+                                            </ChartLegend>
+                                            <ChartSeriesItems>
+                                                <ChartSeries Type="ChartSeriesType.Donut"
+                                                         Data="@UserStatistikBucketList"
+                                                         HoleSize="45"
+                                                         Field="@nameof(V_TASK_Statistik_User_Bucket.Count)"
+                                                         CategoryField="@nameof(V_TASK_Statistik_User_Bucket.Description)">
+                                                    <ChartSeriesTooltip Visible="true" Context="item">
+                                                        <Template>
+                                                            @(item.Category): @item.FormattedValue
+                                                        </Template>
+                                                    </ChartSeriesTooltip>
+                                                </ChartSeries>
+                                            </ChartSeriesItems>
+                                        </TelerikChart>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="dashboard-no-data">
+                                        @TextProvider.Get("DASHBOARD_TASK_NO_DATA")
+                                    </div>
+                                }
+                            </div>
+                            <div class="dashboard-card dashboard-status-chart">
+                                @if (UserStatistikStatusList != null && UserStatistikStatusList.Count() > 0)
+                                {
+                                    <div class="h3 chart-title custom-color-primary">
+                                        @TextProvider.Get("DASHBOARD_TASK_STATISTIK_STATUS")
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="chart-data">
+                                        <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                            <ChartLegend Visible="true" Position="ChartLegendPosition.Top">
+                                            </ChartLegend>
+                                            <ChartSeriesItems>
+                                                <ChartSeries Type="ChartSeriesType.Donut"
+                                                         Data="@UserStatistikStatusList"
+                                                         HoleSize="45"
+                                                         Field="@nameof(V_TASK_Statistik_User_Status.Count)"
+                                                         CategoryField="@nameof(V_TASK_Statistik_User_Status.Description)">
+                                                    <ChartSeriesTooltip Visible="true" Context="item">
+                                                        <Template>
+                                                            @(item.Category): @item.FormattedValue
+                                                        </Template>
+                                                    </ChartSeriesTooltip>
+                                                </ChartSeries>
+                                            </ChartSeriesItems>
+                                        </TelerikChart>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="dashboard-no-data">
+                                        @TextProvider.Get("DASHBOARD_TASK_NO_DATA")
+                                    </div>
+                                }
+                            </div>
+                            <div class="dashboard-card dashboard-priority-chart">
+                                @if (UserStatistikPriorityList != null && UserStatistikPriorityList.Count() > 0)
+                                {
+                                    <div class="h3 chart-title custom-color-primary">
+                                        @TextProvider.Get("DASHBOARD_TASK_STATISTIK_PRIORITY")
+                                    </div>
+                                    <div class="extra-small-element-separator"></div>
+                                    <div class="chart-data">
+                                        <TelerikChart RenderAs="@RenderingMode.SVG" Height="200px">
+                                            <ChartLegend Visible="true" Position="ChartLegendPosition.Top">
+                                            </ChartLegend>
+                                            <ChartSeriesItems>
+                                                <ChartSeries Type="ChartSeriesType.Donut"
+                                                         Data="@UserStatistikPriorityList"
+                                                         HoleSize="45"
+                                                         Field="@nameof(V_TASK_Statistik_User_Priority.Count)"
+                                                         CategoryField="@nameof(V_TASK_Statistik_User_Priority.Description)">
+                                                    <ChartSeriesTooltip Visible="true" Context="item">
+                                                        <Template>
+                                                            @(item.Category): @item.FormattedValue
+                                                        </Template>
+                                                    </ChartSeriesTooltip>
+                                                </ChartSeries>
+                                            </ChartSeriesItems>
+                                        </TelerikChart>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="dashboard-no-data">
+                                        @TextProvider.Get("DASHBOARD_TASK_NO_DATA")
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="element-separator"></div>
+                        <div class="tasks-overview-quick-action">
+                            <div class="tasks-redirect" @onclick="@(() => GoToTaskSeeAll())">
+                                @TextProvider.Get("DASHBOARD_TASK_SEE_ALL")
+                                <i class="fa-regular fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        <div class="extra-small-element-separator"></div>
+                        <div class="tasks-overview-page">
+                            @if (UserStatistikList != null && UserStatistikList.Count() > 0)
+                            {
+                                <div class="h3 chart-title custom-color-primary">
+                                    @TextProvider.Get("DASHBOARD_TASK_STATISTIK_OPEN_TASKS")
+                                </div>
+                                <div class="extra-small-element-separator"></div>
+                                <ICWebApp.Components.Tasks.DashboardComponents.TaskListDetailTemplate Tasks="UserTasks" DisplayContextInSmallTasks="@true">
+                                    
+                                </ICWebApp.Components.Tasks.DashboardComponents.TaskListDetailTemplate>
+                            }
+                            else
+                            {
+                                <div class="dashboard-no-data">
+                                    @TextProvider.Get("DASHBOARD_TASK_NO_OPEN_TASKS")
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </Content>
+            </WizardStep>
+            <WizardStep Label="@TextProvider.Get("BACKEND_DASHBOARD_MY_AUTHORITES")" Icon="@("fa-regular fa-city")">
+                <Content>
+                    <div class="dashboard-wizard-page">
+                        @if (SessionWrapper.CurrentUser != null)
+                        {
+                            <div class="dashboard-filter-container">
+                                @if (AuthorityList != null && AuthorityList.Count() > 1)
+                                {
+                                    <div class="filter-element filter-authorities">
+                                        @foreach (var auth in AuthorityList.OrderBy(p => p.SortOrder))
+                                        {
+                                            if (AllowedAuthorities.Contains(auth.ID))
+                                            {
+                                                string buttonCSS = "btn-secondary";
+
+                                                if (DashboardSettings != null && DashboardSettings.SelectedAreasFilter != null && DashboardSettings.SelectedAreasFilter.Split(";").Contains(auth.ID.ToString()))
+                                                {
+                                                    buttonCSS = "btn-primary";
+                                                }
+
+                                                <div class="btn @buttonCSS authority-tag" @onclick="@(() => SetSettings(auth.ID.ToString()))" @onclick:stopPropagation="true">
+                                                    <span>
+                                                        <TelerikIcon Icon="@auth.Icon"></TelerikIcon>
+                                                        @auth.Description
+                                                    </span>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="element-separator"></div>
+                            <div class="dashboard-container" style="width: 100%">
+                                <TelerikTileLayout @ref="TileLayoutInstance" Columns="4" RowHeight="100px" Resizable="true" Reorderable="true" OnReorder="SaveState" OnResize="SaveState">
+                                    <TileLayoutItems>
+                                        <TileLayoutItem HeaderText="@TextProvider.Get("BACKEND_DASHBOARD_CHATS")" RowSpan="4" ColSpan="2">
+                                            <HeaderTemplate>
+                                                <div class="tile-header-template custom-color-primary">
+                                                    <div class="tile-header-icon">
+                                                        <TelerikIcon Icon="@("fa-regular fa-message")"></TelerikIcon>
+                                                    </div>
+                                                    <div class="tile-header-content">
+                                                        <h3>@TextProvider.Get("BACKEND_DASHBOARD_CHATS")</h3>
+                                                    </div>
+                                                </div>
+                                            </HeaderTemplate>
+                                            <Content>
+                                                <div class="tile-container">
+                                                    <TelerikWindow Modal="true" @bind-Visible="@ChatWindowVisible" Width="900px">
+                                                        <WindowTitle>
+                                                            @TextProvider.Get("DASHBOARD_CHAT_WINDOW")
+                                                        </WindowTitle>
+                                                        <WindowContent>
+                                                            <div class="chat-popup-container">
+                                                                @if (CurrentChatApplicationID != null)
+                                                                {
+                                                                    <ICWebApp.Components.Form.Chat.FormChat FORM_Application_ID="@CurrentChatApplicationID.Value" ForceChatButton="true"></ICWebApp.Components.Form.Chat.FormChat>
+                                                                }
+                                                            </div>
+                                                        </WindowContent>
+                                                        <WindowActions>
+                                                            <WindowAction Name="Close" OnClick="HideChat" />
+                                                        </WindowActions>
+                                                    </TelerikWindow>
+                                                    <TelerikGrid Data="@UserChat.OrderByDescending(p => p.ChatLastMessageDate)" OnRowClick="OnRowClick" Pageable="false" Sortable="false" Resizable="false">
+                                                        <GridColumns>
+                                                            <GridColumn Field="@nameof(V_DASH_UserChat.CitizenName)" Title="@TextProvider.Get("DASHBOARD_CHATS_USER")">
+                                                                <Template>
+                                                                    @{
+                                                                    V_DASH_UserChat item = context as V_DASH_UserChat;
+
+                                                                    <span class="@item.MessageCSS">
+                                                                        @item.CitizenName
+                                                                    </span>
+                                                                }
+                                                            </Template>
+                                                        </GridColumn>
+                                                        <GridColumn Field="@nameof(V_DASH_UserChat.FormName)" Title="@TextProvider.Get("DASHBOARD_CHATS_APPLICATION")">
+                                                            <Template>
+                                                                @{
+                                                                    V_DASH_UserChat item = context as V_DASH_UserChat;
+
+                                                                    <span class="@item.MessageCSS">
+                                                                        @item.FormName
+                                                                    </span>
+                                                                }
+                                                            </Template>
+                                                        </GridColumn>
+                                                        <GridColumn Field="@nameof(V_DASH_UserChat.ChatLastMessageDate)" Title="@TextProvider.Get("DASHBOARD_CHATS_LAST_MESSAGE_DATE")">
+                                                            <Template>
+                                                                @{
+                                                                    V_DASH_UserChat item = context as V_DASH_UserChat;
+
+                                                                    @if (item != null && item.ChatLastMessageDate != null)
+                                                                    {
+                                                                        <span class="@item.MessageCSS">
+                                                                            @item.ChatLastMessageDate.Value.ToString("dd.MM.yyyy HH:mm")
+                                                                        </span>
+                                                                    }
+                                                                }
+                                                            </Template>
+                                                        </GridColumn>
+                                                        <GridColumn Field="@nameof(V_DASH_UserChat.ShortMessage)" Title="@TextProvider.Get("DASHBOARD_CHATS_LAST_MESSAGE")">
+                                                            <Template>
+                                                                @{
+                                                                    V_DASH_UserChat item = context as V_DASH_UserChat;
+
+                                                                    <span class="@item.MessageCSS">
+                                                                        @item.ShortMessage
+                                                                    </span>
+                                                                }
+                                                            </Template>
+                                                        </GridColumn>
+                                                        <GridCommandColumn Context="chatContext" Width="120px" Title="@TextProvider.Get("ACTIONS")">
+                                                            @{
+                                                                V_DASH_UserChat item = chatContext as V_DASH_UserChat;
+
+                                                                if (item != null && item.Application_ID != null)
+                                                                {
+                                                                    <GridCommandButton Class="btn btn-secondary" OnClick="@(() => ShowChat(item.Application_ID))" Icon="SvgIcon.Eye" title="@TextProvider.Get("TOOLTIP_SHOW")"></GridCommandButton>
+                                                                }
+                                                            }
+                                                        </GridCommandColumn>
+                                                    </GridColumns>
+                                                </TelerikGrid>
+                                            </div>
+                                        </Content>
+                                    </TileLayoutItem>
+                                    @if (DashboardSettings != null && DashboardSettings.SelectedAreasFilter != null && AllowedAuthorities != null && AuthorityList != null)
+                                        {
+                                            @foreach (var dash in DashboardSettings.SelectedAreasFilter.Split(";"))
+                                            {
+                                                if (AllowedAuthorities != null && AllowedAuthorities.FirstOrDefault(p => p.ToString() == dash) != null)
+                                                {
+                                                    var auth = AuthorityList.FirstOrDefault(p => p.ID.ToString() == dash);
+
+                                                    if (auth != null)
+                                                    {
+                                                        <TileLayoutItem HeaderText="@auth.Name" RowSpan="4" ColSpan="2">
+                                                            <HeaderTemplate>
+                                                                <div class="tile-header-template custom-color-primary">
+                                                                    <div class="tile-header-icon">
+                                                                        <TelerikIcon Icon="@auth.Icon"></TelerikIcon>
+                                                                    </div>
+                                                                    <div class="tile-header-content">
+                                                                        <h3>@auth.Description</h3>
+                                                                    </div>
+                                                                </div>
+                                                            </HeaderTemplate>
+                                                            <Content>
+                                                                <div class="tile-container">
+                                                                    @if (auth.IsRooms == true)
+                                                                    {
+                                                                        <ICWebApp.Components.Dashboard.RoomContainer AuthorityID="@auth.ID.ToString()"></ICWebApp.Components.Dashboard.RoomContainer>
+                                                                    }
+                                                                    else if (auth.IsMensa == true)
+                                                                    {
+                                                                        <ICWebApp.Components.Dashboard.CanteenContainer AuthorityID="@auth.ID.ToString()"></ICWebApp.Components.Dashboard.CanteenContainer>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <ICWebApp.Components.Dashboard.AuthorityContainer AuthorityID="@auth.ID.ToString()"></ICWebApp.Components.Dashboard.AuthorityContainer>
+                                                                    }
+                                                                </div>
+                                                            </Content>
+                                                        </TileLayoutItem>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </TileLayoutItems>
+                                </TelerikTileLayout>
+                            </div>
+                        }
+                    </div>
+                </Content>
+            </WizardStep>
+        </WizardSteps>
+        <WizardButtons Context="SubContext">
+        </WizardButtons>
+        <WizardSettings>
+            <WizardStepperSettings Linear="false" />
+        </WizardSettings>
+    </TelerikWizard>
+    
+    <TelerikWindow Modal="true" @bind-Visible="@BucketWindowVisibility" Width="90vw" Height="90vh" Class="task-bucket-window">
+        <WindowTitle>
+            @TextProvider.Get("TASK_BUCKET_WINDOW_TITLE")
+        </WindowTitle>
+        <WindowContent>
+            <ICWebApp.Components.Tasks.BucketView Cancelled="HideBucketWindow"></ICWebApp.Components.Tasks.BucketView>
+        </WindowContent>
+        <WindowActions>
+            <WindowAction Name="Close" OnClick="HideBucketWindow" />
+        </WindowActions>
+    </TelerikWindow>
+</div>

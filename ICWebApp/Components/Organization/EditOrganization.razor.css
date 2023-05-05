@@ -1,0 +1,50 @@
+﻿.form-group-multicolumn {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.next-step-container {
+    border: 1px dashed #d9d9d9;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+    .next-step-container:hover {
+        color: #0F7173;
+        border-color: #0F7173;
+    }
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.form-group-multicolumn .full-width {
+    flex: 1;
+}
+
+.gesetzlicher-vertreter-container {
+    border: 1px solid #0F7173;
+    padding: 20px;
+}
+
+
+.upload-error {
+    border: 1px solid red;
+}
+
+.container-error {
+    color: red;
+}
+.address-not-found-container {
+    cursor: pointer;
+}
+
+    .address-not-found-container:hover {
+        color: #25CCDB !important;
+        text-decoration: underline !important;
+    }
+

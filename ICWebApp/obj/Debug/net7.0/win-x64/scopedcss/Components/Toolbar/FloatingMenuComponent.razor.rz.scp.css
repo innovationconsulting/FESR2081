@@ -1,0 +1,91 @@
+.floating-menu-container[b-0702b4pvaf] {
+    position: fixed;
+    right: 145px;
+    top: 80px;
+    z-index: 1;
+    display: flex;
+    justify-content: flex-end;
+    flex-flow: row-reverse;
+    gap: 10px;
+}
+
+.floating-menu-button[b-0702b4pvaf] {
+    width: 52px;
+    height: 52px;
+    border-radius: 30px;
+    background-color: #0F7173;
+    display: flex;
+    justify-content: space-evenly;
+    line-height: 46px;
+    cursor: pointer;
+    position: relative;
+}
+    .floating-menu-button:hover[b-0702b4pvaf] {
+        background-color: #1DA2AF !important;
+    }
+
+.lord-icon[b-0702b4pvaf]{
+    width: 32px;
+    height: 32px;
+    margin: auto;
+}
+
+.floating-sub-menu-container[b-0702b4pvaf] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.floating-sub-menu-button[b-0702b4pvaf]{
+    width: 38px;
+    height: 38px;
+    background-color: #0F7173;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    line-height: 38px;
+    cursor: pointer;
+    margin: auto;
+}
+.floating-sub-menu-button i[b-0702b4pvaf]{
+    color: white !important;
+    margin: auto;
+}
+    .floating-sub-menu-button svg[b-0702b4pvaf] {
+        color: white !important;
+        margin: auto;
+    }
+
+    .floating-sub-menu-button:hover[b-0702b4pvaf] {
+        background-color: #1DA2AF !important;
+    }
+.all-tasks-count[b-0702b4pvaf] {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #b02531;
+    color: white;
+    /*width: 18px;*/
+    padding: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    line-height: 14px;
+    text-align: center;
+    border: 2px solid #b02531;
+    border-radius: 10px;
+    display: none;
+}
+.my-tasks-count[b-0702b4pvaf] {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #b02531;
+    color: white;
+    /*width: 18px;*/
+    padding: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    line-height: 14px;
+    text-align: center;
+    border: 2px solid #b02531;
+    border-radius: 10px;
+}

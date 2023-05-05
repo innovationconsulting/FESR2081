@@ -1,0 +1,36 @@
+﻿.custom-background-primary {
+    background-color: #0F7173;
+}
+
+.custom-background-secondary {
+    background-color: #707070;
+}
+
+.custom-background-background {
+    background-color: #F2F2F2;
+}
+
+.custom-background-default {
+    background-color: white;
+}
+
+.custom-background-details {
+    background-color: #CADB80;
+}
+
+.custom-color-primary {
+    color: #0F7173;
+}
+.custom-color-secondary {
+    color: white;
+}
+.custom-color-details {
+    color: #707070;
+}
+
+.custom-border-primary {
+    border-color: #dfdfdf;
+}
+.custom-border-secondary {
+    border-color: #0F7173;
+}

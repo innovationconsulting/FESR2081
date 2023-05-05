@@ -1,0 +1,61 @@
+﻿@using ICWebApp.Application.Settings
+@if (SessionWrapper != null && SessionWrapper.CurrentUser != null)
+{
+    <div class="nav-item-backend @ShowUserMenuCSS" @onclick="ToggleUserMenu">
+        <div class="top-row-menu-item-icon k-icon-size-large backend-user-support-icon nav-fa-item">
+            <TelerikIcon Icon="@("fa-solid fa-user")" />
+        </div>
+    </div>
+    @if (ShowUserMenu)
+    {
+        <div class="user-popup-menu" id="user-popup-menu">
+            @if (Municipality != null && Municipality.Logo != null)
+            {
+                string base64String = Convert.ToBase64String(Municipality.Logo, 0, Municipality.Logo.Length);
+
+                <div class="user-popup-menu-profile-icon k-icon-size-extra-large">
+                    <img src="@("data:image/png;base64," + base64String)">
+                </div>
+            }
+            else
+            {
+                <div class="user-popup-menu-profile-icon k-icon-size-extra-large">
+                    <TelerikIcon Icon="@("fa-solid fa-user")"></TelerikIcon>
+                </div>
+            }
+            <div class="element-separator"></div>
+            <div class="user-popup-menu-title" style="margin-bottom: -5px;">
+                <h3 class="custom-color-primary">@SessionWrapper.CurrentUser.Firstname @SessionWrapper.CurrentUser.Lastname</h3>
+            </div>
+            @if (Municipality != null)
+            {
+                <div class="user-popup-menu-title">
+                    <div class="font-bold custom-color-primary">@TextProvider.Get("MUNICIPALITY") @Municipality.Name</div>
+                </div>
+            }
+            <div class="small-element-separator"></div>
+            <div class="user-popup-menu-footer">
+                <div class="user-popup-menu-left">
+                    @if (CurrentLanguage != null)
+                    {
+                        @if (CurrentLanguage.ID == LanguageSettings.Italian)
+                        {
+                            <div class="btn btn-secondary" @onclick="ToggleLanguage">
+                                Tedesco
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="btn btn-secondary" @onclick="ToggleLanguage">
+                                Italienisch
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="user-popup-menu-right">
+                    <LogoutComponent></LogoutComponent>
+                </div>
+            </div>
+        </div>
+    }
+}

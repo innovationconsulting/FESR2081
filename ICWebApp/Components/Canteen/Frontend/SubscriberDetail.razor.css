@@ -1,0 +1,19 @@
+﻿
+.application-label {
+    width: 250px;
+}
+
+.application-value {
+    font-weight: 600;
+    word-break: break-all;
+}
+.phone-container {
+    justify-content: flex-start;
+    gap: 5px;
+}
+    .phone-container .btn {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0px;
+        line-height: 36px;
+    }

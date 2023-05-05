@@ -1,0 +1,54 @@
+@media (max-width: 680px) {
+
+    .login-logo[b-tslks9913c] {
+        display: none;
+    }
+
+    .login-title[b-tslks9913c] {
+        margin-top: unset !important;
+        border-bottom: 0px !important;
+    }
+}
+.login-logo[b-tslks9913c]{
+    width: 100%;
+}
+
+.login-title[b-tslks9913c] {
+}
+
+.login-logo img[b-tslks9913c]{
+    width: 100%;
+}
+
+.login-label[b-tslks9913c]{
+}
+
+.login-row[b-tslks9913c]{
+    display: flex;
+}
+
+.login-row-left[b-tslks9913c] {
+    width: 50%;
+    justify-content: left;
+}
+
+.login-row-right[b-tslks9913c] {
+    width: 50%;
+    text-align: right;
+    justify-content: right;
+}
+
+.login-busy-loader[b-tslks9913c] {
+    padding-left: calc(50% - 40px) !important;
+    padding-left: -moz-calc(50% - 40px) !important;
+    padding-left: -webkit-calc(50% - 40px) !important;
+    padding-left: -o-calc(50% - 40px) !important;
+}
+
+@media(max-width: 800px) {
+    .button-container[b-tslks9913c] {
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+    }
+}

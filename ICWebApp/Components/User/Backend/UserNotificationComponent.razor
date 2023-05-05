@@ -1,0 +1,133 @@
+﻿@if (SessionWrapper != null && SessionWrapper.CurrentUser != null)
+{
+    <div class="nav-item-backend @ShowPopupMenuCSS" @onclick="ToggleMenu">
+        <div class="top-row-menu-item-icon k-icon-size-large">
+            <div id="notification-head-backend" class="bw-head">
+                <TelerikIcon Icon="@("fa-regular fa-envelope")" Class="telerik-fa-icons"></TelerikIcon>
+                @if (MessagesToRead > 0 && MessagesToRead < 100)
+                {
+                    <span id="notification_badge" class="badge badge-info notification-badge">@MessagesToRead</span>
+                }
+                @if (MessagesToRead > 0 && MessagesToRead >= 100)
+                {
+                    <span id="notification_badge" class="badge badge-info notification-badge">+99</span>
+                }
+
+            </div>
+        </div>
+    </div>
+    @if (ShowPopupMenu)
+    {
+        <div class="notification-popup-menu" id="notification-popup-menu">
+            <div class="user-message-title custom-color-primary h5">
+                @TextProvider.Get("NOTIFICATIONS_MY_MESSAGES")
+            </div>
+            @if (Messages == null || Messages.Count() == 0)
+            {
+                <div class="user-popup-content">
+                    @TextProvider.Get("NOTIFICATIONS_EMPTY")
+                </div>
+            }
+            else
+            {
+                <div class="user-popup-toolbar">
+                    <div class="toolbar-mark-all font-small" @onclick="SetAllasRead">
+                        @TextProvider.Get("NOTIFICATIONS_SET_ALL_AS_READ")
+                    </div>
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="user-popup-content">
+                    @foreach (var message in Messages)
+                    {
+                        string messageUnReadCSS = "";
+
+                        @if (message.FirstReadDate == null)
+                        {
+                            messageUnReadCSS = "message-unread";
+                        }
+
+                        <div class="user-message-container @messageUnReadCSS" @onclick="@(() => ShowMessage(message))">
+                            @if (message.FirstReadDate == null)
+                            {
+                                <div class="user-message-icon-container">
+                                    <div>
+                                        <TelerikIcon Icon="@("fa-regular fa-envelope-dot")"></TelerikIcon>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="user-message-icon-container">
+                                    <div>
+                                        <TelerikIcon Icon="@("fa-regular fa-envelope-open")"></TelerikIcon>
+                                    </div>
+                                </div>
+                            }
+                            <div class="user-message-data">
+                                <div class="user-message-text font-normal">
+                                    <div class="message-date font-detail">
+                                        @if (message.CreationDate != null)
+                                        {
+                                            @message.CreationDate.Value.ToString("dd.MM.yyyy - HH:mm")
+                                        }
+                                    </div>
+                                    <div class="message-subject">
+                                        @message.Subject
+                                    </div>
+                                </div>
+                                <div class="news-item-buttons">
+                                    <div class="news-button" @onclick="@(() => ShowMessage(message))">
+                                        <div class="news-button-icon">
+                                            <TelerikIcon Icon="@("fa-regular fa-chevron-right")"></TelerikIcon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="user-message-footer">
+                    <div class="show-all-button" @onclick="ShowAllMessages">@TextProvider.Get("NOTIFICATIONS_SHOW_ALL")</div>
+                </div>
+            }
+        </div>
+    }
+}
+
+<TelerikWindow Class="trasition-window" Width="640px"  Centered="true" Draggable="true" @bind-Visible=@WindowVisible Modal="true">
+    <WindowTitle>
+        <div class="icon-Container">
+            <TelerikIcon Icon="@("fa-solid fa-envelope-open")"></TelerikIcon>
+        </div>
+        @if (CurrentMessage != null)
+        {
+            <div>@CurrentMessage.Subject</div>
+        }
+    </WindowTitle>
+    <WindowActions>
+        <WindowAction Name="Close" />
+    </WindowActions>
+    <WindowContent>
+        <div class="message-peek-container">
+            @if (CurrentMessage != null)
+            {
+                <div class="form-group">
+                    <p>
+                        @{
+                            MarkupString htmlString = new MarkupString(CurrentMessage.Messagetext);
+                        }
+                        @htmlString
+                    </p>
+
+                </div>
+                <div class="message-peek-footer">
+                    <div class="link-button" @onclick="@(() => GoToMessage(CurrentMessage))">
+                        @TextProvider.Get("MESSAGE_GO_TO_PAGE_LINK")
+                        <i class="fa-regular fa-chevron-right"></i>
+                    </div>
+                </div>
+            }
+        </div>    
+    </WindowContent>
+</TelerikWindow>

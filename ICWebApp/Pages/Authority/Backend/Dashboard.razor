@@ -1,0 +1,207 @@
+﻿@page "/Backend/Authority/{AuthorityID}"
+
+@layout MainLayout
+
+@if (Authority != null)
+{
+    <div class="element-separator"></div>
+    <div class="authority-container">
+        @if (AuthorityStatistik != null)
+        {
+            <div class="authority-status-title custom-color-primary">
+                <h5>@TextProvider.Get("AUTHORITY_STATISTIK_APPLICATION")</h5>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="authority-first-row">
+                <div class="authority-card custom-color-primary" @onclick="@(() => ShowListByStatusGroup(1))">
+                    <div class="authority-card-icon">
+                        <TelerikIcon Icon="@("fa-regular fa-file-circle-xmark")"></TelerikIcon>
+                    </div>
+                    <div class="authority-card-content">
+                        <div class="authority-card-value h5">
+                            @AuthorityStatistik.ApplicationNotComittedCount
+                        </div>
+                        <div class="authority-card-description">
+                            <div class="font-normal">
+                                @TextProvider.Get("AUTHORITY_STATISTIK_NOT_COMITTED_COUNT")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="authority-card custom-color-primary" @onclick="@(() => ShowListByStatusGroup(2))">
+                    <div class="authority-card-icon">
+                        <TelerikIcon Icon="@("fa-regular fa-file-import")"></TelerikIcon>
+                    </div>
+                    <div class="authority-card-content">
+                        <div class="authority-card-value h5">
+                            @AuthorityStatistik.ApplicationOpenCount
+                        </div>
+                        <div class="authority-card-description">
+                            <div class="font-normal">
+                                @TextProvider.Get("AUTHORITY_STATISTIK_OPEN_COUNT")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="authority-card custom-color-primary" @onclick="@(() => ShowListByStatusGroup(3))">
+                    <div class="authority-card-icon">
+                        <TelerikIcon Icon="@("fa-regular fa-file-signature")"></TelerikIcon>
+                    </div>
+                    <div class="authority-card-content">
+                        <div class="authority-card-value h5">
+                            @AuthorityStatistik.ApplicationInEditCount
+                        </div>
+                        <div class="authority-card-description">
+                            <div class="font-normal">
+                                @TextProvider.Get("AUTHORITY_STATISTIK_INEDIT_COUNT")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="authority-card custom-color-primary" @onclick="@(() => ShowListByStatusGroup(4))">
+                    <div class="authority-card-icon">
+                        <TelerikIcon Icon="@("fa-regular fa-alarm-exclamation")"></TelerikIcon>
+                    </div>
+                    <div class="authority-card-content">
+                        <div class="authority-card-value h5">
+                            @AuthorityStatistik.ApplicationAfterEstimatedDeadlineCount
+                        </div>
+                        <div class="authority-card-description">
+                            <div class="font-normal">
+                                @TextProvider.Get("AUTHORITY_STATISTIK_OVER_ESTIMATE_TIME_COUNT")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="authority-card custom-color-primary" @onclick="@(() => ShowListByStatusGroup(5))">
+                    <div class="authority-card-icon">
+                        <TelerikIcon Icon="@("fa-regular fa-gavel")"></TelerikIcon>
+                    </div>
+                    <div class="authority-card-content">
+                        <div class="authority-card-value h5">
+                            @AuthorityStatistik.ApplicationAfterLegalDeadlineCount
+                        </div>
+                        <div class="authority-card-description">
+                            <div class="font-normal">
+                                @TextProvider.Get("AUTHORITY_STATISTIK_OVER_LEGAL_DEADLINE_COUNT")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="authority-card custom-color-primary" @onclick="@(() => ShowListByStatusGroup(6))">
+                    <div class="authority-card-icon">
+                        <TelerikIcon Icon="@("fa-regular fa-box-archive")"></TelerikIcon>
+                    </div>
+                    <div class="authority-card-content">
+                        <div class="authority-card-value h5">
+                            @AuthorityStatistik.ApplicationFinishedCount
+                        </div>
+                        <div class="authority-card-description">
+                            <div class="font-normal">
+                                @TextProvider.Get("AUTHORITY_STATISTIK_ARCHIVED_COUNT")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="element-separator"></div>
+            <div class="element-separator"></div>
+            <div class="authority-second-row">
+                @if (StatusList != null && StatusList.Count() > 0)
+                {
+                    <div class="authority-second-row-left">
+                        <div class="authority-status-title custom-color-primary">
+                            <h5>@TextProvider.Get("AUTHORITY_STATISTIK_STATUS")</h5>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="authority-status-container">
+                            @foreach (var status in StatusList.OrderBy(p => p.SortOrder))
+                            {
+                                V_FORM_Application_Status_Statistik? statusStat = null;
+
+                                @if (StatusStatistik != null)
+                                {
+                                    statusStat = StatusStatistik.FirstOrDefault(p => p.ID == status.ID);
+                                }
+
+                                <div class="authority-status-element" @onclick="@(() => ShowListByStatus(status.ID))">
+                                    <div class="authority-status-element-value">
+                                        @if (statusStat != null)
+                                        {
+                                            <span>@statusStat.ApplicationCount</span>
+                                        }
+                                        else
+                                        {
+                                            <span>0</span>
+                                        }
+                                    </div>
+                                    <div class="authority-status-element-description">
+                                        <span class="icon-element">
+                                            <TelerikIcon Icon="@status.Icon"></TelerikIcon>
+                                            <span style="margin-left: 5px;">
+                                                @status.Name
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="element-separator"></div>
+                <div class="element-separator"></div>
+                <div class="authority-second-row-right">
+                    @if (PriorityList != null && PriorityList.Count() > 0)
+                    {
+                        <div class="authority-priority-title custom-color-primary">
+                            <h5>@TextProvider.Get("AUTHORITY_STATISTIK_PRIORITY")</h5>
+                        </div>
+                        <div class="small-element-separator"></div>
+                        <div class="authority-priority-container">
+                            @foreach (var prio in PriorityList.OrderBy(p => p.SortOrder))
+                            {
+                                <div class="authority-priority-element" @onclick="@(() => ShowListByPriority(prio.ID))">
+                                    <div class="authority-priority-element-value">
+                                        @prio.Amount
+                                    </div>
+                                    <div class="authority-priority-element-description">
+                                        <span class="icon-element">
+                                            <TelerikIcon Icon="@prio.Icon"></TelerikIcon>
+                                            <span style="margin-left: 5px;">
+                                                @prio.Name
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    @if (DefinitionStatistik != null && DefinitionStatistik.Count() > 0)
+                    {
+                        <div class="element-separator"></div>
+                        <div class="element-separator"></div>
+                        <div class="authority-third-row">
+                            <div class="authority-form-title custom-color-primary">
+                                <h5>@TextProvider.Get("AUTHORITY_STATISTIK_DEFINITION")</h5>
+                            </div>
+                            <div class="small-element-separator"></div>
+                            <div class="authority-form-container">
+                                @foreach (var def in DefinitionStatistik)
+                                {
+                                    <div class="authority-form-element">
+                                        <div class="authority-form-element-value">
+                                            @def.ApplicationCount
+                                        </div>
+                                        <div class="authority-form-element-description">
+                                            @def.FormName
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,44 @@
+.backend-form-selection[b-kydtw8gha3]
+{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.backend-form-selection div[b-kydtw8gha3]{
+    flex: 1;
+}
+
+.backend-step-container[b-kydtw8gha3]{
+    min-height: 500px;
+}
+
+.previous-selection-container[b-kydtw8gha3] {
+    display: flex;
+    gap: 100px;
+    justify-content: flex-start;
+    border-bottom: 1px solid #0F7173;
+    padding-bottom: 20px;
+    flex-wrap: wrap;
+}
+.map-container[b-kydtw8gha3] {
+    width: 100%;
+    /*max-width: 600px;*/
+    height: 600px;
+    border: 3px solid #0F7173 !important;
+}
+.authority-tag[b-kydtw8gha3] {
+    width: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 30px !important;
+    height: auto !important;
+    border: 2px solid #0F7173 !important;
+}
+
+.mantainance-priority[b-kydtw8gha3] {
+    display: flex;
+    gap: 10px;
+}

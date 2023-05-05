@@ -1,0 +1,75 @@
+.closed[b-ad4gua3rts] {
+    color: white;
+    background: #0F7173;
+    min-width: 10px;
+}
+
+.open[b-ad4gua3rts] {
+    color: #00a1e8;
+    background: #0F7173;
+    min-width: 25px;
+    color: white;
+}
+
+.disabled[b-ad4gua3rts] {
+    outline: none;
+    cursor: default;
+    opacity: 0.6;
+    filter: grayscale(0.1);
+    pointer-events: none;
+    box-shadow: none;
+    min-width: 25px;
+    background: gainsboro;
+}
+
+.holliday[b-ad4gua3rts] {
+    color: white;
+    background: #dc3545;
+    min-width: 25px;
+}
+
+.k-calendar-nav[b-ad4gua3rts] {
+    display: none!important;
+}
+
+.k-hstack[b-ad4gua3rts] {
+    display: none !important;
+}
+
+.k-calendar .k-other-month[b-ad4gua3rts] {
+    visibility: hidden;
+}
+
+.calender-container[b-ad4gua3rts] {
+    margin-bottom: 10px;
+}
+
+.k-calendar .k-calendar-td.k-state-selected .k-link[b-ad4gua3rts] {
+    border-color: transparent;
+    background: transparent;
+}
+
+
+.k-grid-small[b-ad4gua3rts] {
+    min-height: 100px!important;
+}
+
+.show-previous[b-ad4gua3rts] {
+    cursor: pointer;
+    float: left;
+    width: 15px;
+}
+
+.show-next[b-ad4gua3rts] {
+    cursor: pointer;
+    width: 15px;
+    float: left;
+    margin-left: 5px;
+}
+
+.form-inline[b-ad4gua3rts]  {
+                              display: inline-block;
+                              margin-bottom: 0;
+                              vertical-align: middle;
+    min-width: 150px;
+}

@@ -1,0 +1,44 @@
+﻿@if(List != null)
+{
+    <div class="comment-control-container">
+        <div class="comment-list-container">
+            @foreach(var item in List.OrderBy(p => p.SendAt))
+            {
+                <div class="comment-item-container">
+                    <div class="comment-first-row">
+                        <div class="comment-user">
+                            @{
+                                var UserData = AUTHProvider.GetUserSync(item.AUTH_Users_ID.Value);
+                                string Text = "";
+                            }
+                            <UserCard User="UserData"></UserCard>
+                        </div>
+                        <div class="comment-properties font-small">
+                            @if(item.SendAt != null)
+                            {
+                                @item.SendAt.Value.ToString("dd.MM.yyyy HH:mm");
+                            }
+                        </div>
+                    </div>
+                    <div class="comment-second-row">
+                            @item.Message
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="send-comment-container">            
+            <div class="comment-input font-normal">
+                <EditForm Model="@Input" OnValidSubmit="SendMessage">
+                    <div class="comment-send-container">
+                        <InputText @bind-Value="@Input.Text" class="form-control" placeholder="@TextProvider.Get("TASK_COMMENT_SEND_PLACEHOLDER")"></InputText>
+                        <div class="comment-send-buttons">
+                            <div class="send-button" @onclick="@SendMessage">
+                                <i class="fa-regular fa-paper-plane-top"></i>
+                            </div>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}

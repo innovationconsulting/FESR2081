@@ -1,0 +1,31 @@
+﻿.schedule-container {
+    height: calc(100% - 45px) !important;
+    height: -moz-calc(100% - 45px) !important;
+    height: -webkit-calc(100% - 45px) !important;
+    height: -o-calc(100% - 45px) !important;
+}
+
+.scheduler-legend-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.scheduler-legend-dash {
+    height: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 60px;
+}
+
+.scheduler-legend-item {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.scheduler-appointment-editor-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}

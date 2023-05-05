@@ -1,0 +1,341 @@
+﻿@page "/Backend/Canteen/Subscriptionlist"
+
+@using ICWebApp.Components.Canteen
+@using SQLitePCL
+
+@layout MainLayout
+
+<div class="small-element-separator"></div>
+<div class="element-separator"></div>
+<div class="segment-container-no-margin custom-background-default application-detail-container">
+    <div class="application-detail-left">
+        <h5>@TextProvider.Get("CANTEEN_DASHBOARD_SUBSCRIPTIONLIST")</h5>
+        <div class="small-element-separator"></div>
+        <div class="filter-container">
+            <ICWebApp.Components.Canteen.CanteenFilterComponent Filter="@Filter" OnSearch="FilterSearch"></ICWebApp.Components.Canteen.CanteenFilterComponent>
+        </div>
+        <div class="element-separator"></div>
+        <div class="grid-data-container segment-loader-container">
+            <CustomLoader Visible="@(IsDataBusy)"
+                          Text="@null" Class="initial-data-loader">
+            </CustomLoader>
+            <TelerikGrid Data="@Subscribers.OrderByDescending(p => p.SignedDate).ToList()" Pageable="true" Sortable="false" Resizable="false" PageSize="500"
+                         SelectionMode="GridSelectionMode.Multiple" @bind-SelectedItems="@SelectedItems" OnStateChanged="@((GridStateEventArgs<V_CANTEEN_Subscriber> args) => CheckBulkOperationGrid(args))"
+                         ScrollMode="@GridScrollMode.Scrollable" Groupable="false" Reorderable="false">
+                <DetailTemplate Context="contextDetail">
+                    @{
+                        var SubscriberDetail = contextDetail as V_CANTEEN_Subscriber;
+                        <SubscriptionDetailComponent SubscriberDetailList="@(new List<Guid> {SubscriberDetail.ID})"></SubscriptionDetailComponent>
+                    }
+                </DetailTemplate>
+                <GridColumns>
+                    <GridCheckboxColumn SelectAll="true"></GridCheckboxColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber.StatusText)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_STATUS")" Width="150px"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber.SignedDate)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_DATE")" DisplayFormat="{0:dd.MM.yyyy}" Width="200px"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber.ProgressivNumber)" Title="@TextProvider.Get("PROGRESSIV_NUMBER")" Width="200px"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber.FullName)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_NAME")" Width="150px">
+                        <Template>
+                            @{
+                                V_CANTEEN_Subscriber subscriber = context as V_CANTEEN_Subscriber;
+                                if (subscriber.InChange == true)
+                                {
+                                    <div>
+                                        @TextProvider.Get("CANTEEN_CHANGED_APPLICATION") - @subscriber.FullName
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        @subscriber.FullName
+                                    </div>
+                                }
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber.TaxNumber)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_TAXNUMBER")" Width="150px"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber.CanteenNameText)" Title="@TextProvider.Get("CANTEEN_DASHBOARD_CANTEEN")" Width="150px"></GridColumn>
+                    <GridColumn Field="@nameof(V_CANTEEN_Subscriber.ReminderDate)" DisplayFormat="{0:dd.MM.yyyy HH:mm}" Title="@TextProvider.Get("CANTEEN_DASHBOARD_LAST_REMINDER")" Width="150px"></GridColumn>
+                </GridColumns>
+            </TelerikGrid>
+        </div>
+    </div>
+    <div class="application-detail-right">
+        <h3>@TextProvider.Get("CANTEEN_SELECTED_REQUESTS"): @SelectedItems.Count()</h3>
+        <div class="small-element-separator"></div>
+        <h5>@TextProvider.Get("CANTEEN_BLUCK_ACTIONS")</h5>
+        <div class="small-element-separator"></div>
+        <div class="toolbar-container">
+            @if (BulkEnabled)
+            {
+                <div class="toolbar-button btn btn-primary" @onclick="@ShowChangeStatusWindow" @onclick:stopPropagation="true">
+                    <i class="fa-regular fa-bars-progress"></i>
+                    @TextProvider.Get("CANTEEN_BULK_ACTION_CHANGE_STATUS")
+                </div>
+                <div class="toolbar-button btn btn-primary" @onclick="@ShowCanteenChangeWindow" @onclick:stopPropagation="true">
+                    <i class="fa-solid fa-fork-knife"></i>
+                    @TextProvider.Get("CANTEEN_BULK_ACTION_CHANGE_CANTEEN")
+                </div>
+                @if (BulkReminderEnabled)
+                {
+                    <div class="toolbar-button btn btn-primary" @onclick="@ShowReminderWindow" @onclick:stopPropagation="true">
+                        <i class="fa-regular fa-alarm-exclamation"></i>
+                        @TextProvider.Get("CANTEEN_BULK_ACTION_SEND_REMINDER")
+                    </div>
+                }
+                else
+                {
+                    <div class="toolbar-button toolbar-button-disabled btn btn-primary">
+                        <i class="fa-regular fa-alarm-exclamation"></i>
+                        @TextProvider.Get("CANTEEN_BULK_ACTION_SEND_REMINDER")
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="toolbar-button toolbar-button-disabled btn btn-primary">
+                    <i class="fa-regular fa-bars-progress"></i>
+                    @TextProvider.Get("CANTEEN_BULK_ACTION_CHANGE_STATUS")
+                </div>
+                <div class="toolbar-button toolbar-button-disabled btn btn-primary">
+                    <i class="fa-solid fa-fork-knife"></i>
+                    @TextProvider.Get("CANTEEN_BULK_ACTION_CHANGE_CANTEEN")
+                </div>
+                <div class="toolbar-button toolbar-button-disabled btn btn-primary">
+                    <i class="fa-regular fa-alarm-exclamation"></i>
+                    @TextProvider.Get("CANTEEN_BULK_ACTION_SEND_REMINDER")
+                </div>
+            }
+        </div>
+        <div class="small-element-separator"></div>
+        <h5>@TextProvider.Get("CANTEEN_FREE_CAPACITY_SIMULATION")</h5>
+        <div class="small-element-separator"></div>
+        @foreach (var canteenstat in Canteens)
+        {
+            <div class="canteen-box-wrapper">
+                <div class="canteenRessource">
+                    <div class="progress-info-title">@canteenstat.Name</div>
+                    @if (canteenstat.DayMo == true)
+                    {
+                        <div class="progress-element">
+                            <div class="progress-week-day">
+                                @TextProvider.Get("MONDAY")
+                            </div>
+                            <div class="progress-detail font-detail">
+                                <div class="progress-detail-current">
+                                    @TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TOTAL_SELECTED"): <span style="font-weight: bold">@(GetCanteenChartData(canteenstat.ID, 1)) </span>
+                                </div>
+                                <div class="progress-detail-total">
+                                    @TextProvider.Get("CANTEEN_TOTAL_CAPACITY"): <span style="font-weight: bold"> @(canteenstat.TotalSpots ?? 0)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="canteen-progress">
+                            <SfProgressBar Value="GetCanteenChartData(canteenstat.ID,1)" Minimum="0" Maximum="canteenstat.TotalSpots ?? 0"
+                                   TrackThickness="20" ProgressThickness="20" ProgressColor="#0F7173" Height="30"></SfProgressBar>
+                        </div>
+                    }
+                    @if (canteenstat.DayTue == true)
+                    {
+                        <div class="progress-element">
+                            <div class="progress-week-day">
+                                @TextProvider.Get("TUESDAY")
+                            </div>
+                            <div class="progress-detail font-detail">
+                                <div class="progress-detail-current">
+                                    @TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TOTAL_SELECTED"): <span style="font-weight: bold">@(GetCanteenChartData(canteenstat.ID, 2)) </span>
+                                </div>
+                                <div class="progress-detail-total">
+                                    @TextProvider.Get("CANTEEN_TOTAL_CAPACITY"): <span style="font-weight: bold"> @(canteenstat.TotalSpots ?? 0)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="canteen-progress">
+                            <SfProgressBar Value="GetCanteenChartData(canteenstat.ID,2)" Minimum="0" Maximum="canteenstat.TotalSpots ?? 0"
+                                   TrackThickness="20" ProgressThickness="20" ProgressColor="#0F7173" Height="30"></SfProgressBar>
+                        </div>
+                    }
+                    @if (canteenstat.DayWed == true)
+                    {
+                        <div class="progress-element">
+                            <div class="progress-week-day">
+                                @TextProvider.Get("WEDNESDAY")
+                            </div>
+                            <div class="progress-detail font-detail">
+                                <div class="progress-detail-current">
+                                    @TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TOTAL_SELECTED"): <span style="font-weight: bold">@(GetCanteenChartData(canteenstat.ID, 3)) </span>
+                                </div>
+                                <div class="progress-detail-total">
+                                    @TextProvider.Get("CANTEEN_TOTAL_CAPACITY"): <span style="font-weight: bold"> @(canteenstat.TotalSpots ?? 0)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="canteen-progress">
+                            <SfProgressBar Value="GetCanteenChartData(canteenstat.ID, 3)" Minimum="0" Maximum="canteenstat.TotalSpots ?? 0"
+                                   TrackThickness="20" ProgressThickness="20" ProgressColor="#0F7173" Height="30"></SfProgressBar>
+                        </div>
+                    }
+                    @if (canteenstat.DayThu == true)
+                    {
+                        <div class="progress-element">
+                            <div class="progress-week-day">
+                                @TextProvider.Get("THURSDAY")
+                            </div>
+                            <div class="progress-detail font-detail">
+                                <div class="progress-detail-current">
+                                    @TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TOTAL_SELECTED"): <span style="font-weight: bold">@(GetCanteenChartData(canteenstat.ID, 4)) </span>
+                                </div>
+                                <div class="progress-detail-total">
+                                    @TextProvider.Get("CANTEEN_TOTAL_CAPACITY"): <span style="font-weight: bold"> @(canteenstat.TotalSpots ?? 0)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="canteen-progress">
+                            <SfProgressBar Value="GetCanteenChartData(canteenstat.ID, 4)" Minimum="0" Maximum="canteenstat.TotalSpots ?? 0"
+                                   TrackThickness="20" ProgressThickness="20" ProgressColor="#0F7173" Height="30"></SfProgressBar>
+                        </div>
+                    }
+                    @if (canteenstat.DayFri == true)
+                    {
+                        <div class="progress-element">
+                            <div class="progress-week-day">
+                                @TextProvider.Get("FRIDAY")
+                            </div>
+                            <div class="progress-detail font-detail">
+                                <div class="progress-detail-current">
+                                    @TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TOTAL_SELECTED"): <span style="font-weight: bold">@(GetCanteenChartData(canteenstat.ID, 5)) </span>
+                                </div>
+                                <div class="progress-detail-total">
+                                    @TextProvider.Get("CANTEEN_TOTAL_CAPACITY"): <span style="font-weight: bold"> @(canteenstat.TotalSpots ?? 0)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="canteen-progress">
+                            <SfProgressBar Value="GetCanteenChartData(canteenstat.ID, 5)" Minimum="0" Maximum="canteenstat.TotalSpots ?? 0"
+                                   TrackThickness="20" ProgressThickness="20" ProgressColor="#0F7173" Height="30"></SfProgressBar>
+                        </div>
+                    }
+                    @if (canteenstat.DaySat == true)
+                    {
+                        <div class="progress-element">
+                            <div class="progress-week-day">
+                                @TextProvider.Get("SATURDAY")
+                            </div>
+                            <div class="progress-detail font-detail">
+                                <div class="progress-detail-current">
+                                    @TextProvider.Get("CANTEEN_CREATE_SUBSCRIPTION_TOTAL_SELECTED"): <span style="font-weight: bold">@(GetCanteenChartData(canteenstat.ID, 6)) </span>
+                                </div>
+                                <div class="progress-detail-total">
+                                    @TextProvider.Get("CANTEEN_TOTAL_CAPACITY"): <span style="font-weight: bold"> @(canteenstat.TotalSpots ?? 0)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="canteen-progress">
+                            <SfProgressBar Value="GetCanteenChartData(canteenstat.ID, 6)" Minimum="0" Maximum="canteenstat.TotalSpots ?? 0"
+                                   TrackThickness="20" ProgressThickness="20" ProgressColor="#0F7173" Height="30"></SfProgressBar>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="small-element-separator"></div>
+        }
+    </div>
+</div>
+
+<TelerikWindow Modal="true" @bind-Visible="@ChangeStatusWindowVisible" Width="800px">
+    <WindowTitle>
+        @TextProvider.Get("POPUP_CHANGE_STATUS_TITLE")
+    </WindowTitle>
+    <WindowContent>
+        <div class="change-status-container">
+            <div class="application-value">
+                <SfDropDownList DataSource="StatusActionlist.OrderBy(p => p.SortOrder).ToList()" @bind-Value="@(searchFilter.CurrentStatusActionID)" TValue="Guid?" TItem="@CANTEEN_Subscriber_Status" OnChange="StatusActionChanged">
+                    <DropDownListFieldSettings Text="Name" Value="ID"></DropDownListFieldSettings>
+                    <DropDownListTemplates TItem="CANTEEN_Subscriber_Status">
+                        <ItemTemplate>
+                            @{
+                                var ItemContext = context as CANTEEN_Subscriber_Status;
+                            }
+                            <div class="application-status-item">
+                                <i class="@ItemContext.IconString"></i>
+                                @TextProvider.Get(ItemContext.TEXT_SystemTexts_Code)
+                            </div>
+                        </ItemTemplate>
+                        <ValueTemplate>
+                            @{
+                                var ItemContext = context as CANTEEN_Subscriber_Status;
+                            }
+                            <div class="application-status-value">
+                                <i class="@ItemContext.IconString"></i>
+                                @TextProvider.Get(ItemContext.TEXT_SystemTexts_Code)
+                            </div>
+                        </ValueTemplate>
+                    </DropDownListTemplates>
+                </SfDropDownList>
+            </div>
+            <div class="change-status-container">
+                <div class="small-element-separator"></div>
+                <div class="application-label font-small">
+                    @TextProvider.Get("APPLICATION_STATUS_REASON")
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <div class="font-extra-small">
+                    @TextProvider.Get("APPLICATION_STATUS_REASON_DETAIL")
+                </div>
+                <div class="extra-small-element-separator"></div>
+                <TextTemplateSelector ExternalContext="CANTEEN" ExternalID="@searchFilter.CurrentStatusActionID.ToString()" TextItem="@TextItem"></TextTemplateSelector>
+            </div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                               OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button" OnClick="@SetNewStatus">@TextProvider.Get("APPLICATION_STATUS_CHANGE")</TelerikButton>                
+            </div>
+        </div>
+    </WindowContent>
+</TelerikWindow>
+<TelerikWindow Modal="true" @bind-Visible="@ChangeCanteenWindowVisible" Width="800px">
+    <WindowTitle>
+        @TextProvider.Get("POPUP_CHANGE_CANTEEN_TITLE")
+    </WindowTitle>
+    <WindowContent>
+        <div class="change-status-container">
+            <div class="application-value">
+                <TelerikDropDownList Data="@PossibleCanteensList.OrderBy(p => p.CanteenDisplaylName)" @bind-Value="@searchFilter.CurrentCanteenID"
+                                     ValueField="ID" TextField="Name">    
+                </TelerikDropDownList>
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="application-label font-small">
+                @TextProvider.Get("CANTEEN_CANTEEN_CHANGE_REASON")
+            </div>
+            <div class="extra-small-element-separator"></div>
+            <div class="font-extra-small">
+                @((MarkupString)TextProvider.Get("CANTEEN_CANTEEN_CHANGE_REASON_DETAIL"))
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                               OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"OnClick="@SetCanteen">@TextProvider.Get("SAVE")</TelerikButton>                
+            </div>
+        </div>
+    </WindowContent>
+</TelerikWindow>
+<TelerikWindow Modal="true" @bind-Visible="@ReminderWindowVisible" Width="800px">
+    <WindowTitle>
+        @TextProvider.Get("POPUP_SEND_REMINDER_TITLE")
+    </WindowTitle>
+    <WindowContent>
+        <div class="change-status-container">
+            <div class="small-element-separator"></div>
+            <div class="application-label font-small">
+                @TextProvider.Get("CANTEEN_REMINDER_REASON_DETAIL")
+            </div>
+            <div class="small-element-separator"></div>
+            <div class="segment-button-toolbar">
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Secondary" Icon="SvgIcon.X" Class="k-standalone-button"
+                               OnClick="@ReturnToPreviousPage">@TextProvider.Get("BUTTON_CANCEL")</TelerikButton>
+                <TelerikButton ButtonType="ButtonType.Button" ThemeColor="Primary" Icon="SvgIcon.ArrowRight" Class="k-standalone-button"OnClick="@SetReminder">@TextProvider.Get("BUTTON_SEND")</TelerikButton>                
+            </div>
+        </div>
+    </WindowContent>
+</TelerikWindow>

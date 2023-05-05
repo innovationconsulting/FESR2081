@@ -1,0 +1,49 @@
+﻿.segment-line .form-group{
+    width: 100%;
+}
+
+
+.subscriber-container-add {
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    border: 1px dashed #dfdfdf;
+    padding-top: 15px;
+    text-transform: uppercase;
+    color: #707070;
+    cursor: pointer;
+}
+    .subscriber-container-add:hover {
+        height: 50px;
+        width: 100%;
+        text-align: center;
+        border: 1px dashed #0F7173;
+        color: #0F7173;
+        background-color: #f5f5f5;
+    }
+
+.subscriber-container-title {
+    margin-left: -11px;
+    margin-top: -10px;
+    margin-right: -11px;
+    background-color: #0F7173;
+    color: white !important;
+    padding-left: 11px;
+    padding-right: 6px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+    .subscriber-container-title .segment-line-right{
+        display: flex;
+        justify-content: flex-end !important;
+    }
+
+    .subscriber-container-title .segment-title{
+        line-height: 30px;
+    }
+
+
+h5, .h5 {
+    color: #0f7173;
+}

@@ -1,0 +1,71 @@
+.tag-item[b-k7wyuxorsr] {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-radius: 10px;
+    border: 1px solid;
+    cursor: pointer;
+}
+    .tag-item:hover[b-k7wyuxorsr] {
+        opacity: 0.8;
+    }
+
+
+.tag-description[b-k7wyuxorsr] {
+    --switch: calc((80 - 60) * -100%);
+    color: hsl(0, 0%, var(--switch));
+    height: 18px;
+    line-height: 18px;
+}
+.task-container[b-k7wyuxorsr]{
+    cursor: pointer;
+    text-align: center;
+}
+.task-properties[b-k7wyuxorsr] {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.task-tags[b-k7wyuxorsr] {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    overflow:  hidden;
+    flex-wrap: nowrap;
+}
+
+.task-responsible[b-k7wyuxorsr] {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.check-element[b-k7wyuxorsr] {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #808080;
+    border-radius: 9px;
+    margin: auto;
+    cursor: pointer;
+}
+
+    .check-element:hover[b-k7wyuxorsr] {
+        border-color: #0F7173;
+        background-color: #0F717388;
+    }
+
+.check-element-aktive[b-k7wyuxorsr] {
+    border-color: #0F7173;
+    background-color: #0F7173CC;
+}
+
+    .check-element-aktive:hover[b-k7wyuxorsr] {
+        border-color: #0F7173;
+        background-color: #0F717388;
+    }
+
+.tag-loader[b-k7wyuxorsr]{
+    position: relative;
+}

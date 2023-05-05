@@ -1,0 +1,27 @@
+﻿@page "/Organization/Application/Sign/{ID}"
+
+
+@layout FrontendLayout
+
+
+<AuthorizeView>
+    <Authorized>    
+        <div class="container">
+            <div class="row mt-lg-80 mt-3 mb-4">
+                <div class="col-12">
+                    <div class="segment-container">
+                        @if (Data != null && File_FileInfo != null)
+                        {    
+                            <ICWebApp.Components.Signing.Signing File_FileInfoID="@File_FileInfo.ID" MultiSign="@false"
+                                                                    OnDocumentSigned="DocumentSigned" ShowBackButton="false">
+                            </ICWebApp.Components.Signing.Signing>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin RedirectURL="@NavManager.Uri"></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>
